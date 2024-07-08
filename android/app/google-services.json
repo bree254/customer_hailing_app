@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1040823718714",
+    "project_id": "ride-hailing-d819c",
+    "storage_bucket": "ride-hailing-d819c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1040823718714:android:89ebb71bc30672b914b603",
+        "android_client_info": {
+          "package_name": "com.cymelle.hailing.customer_hailing"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDEDLwNsrT2WRYnjd_I1SDOhrPZs2h07aY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
