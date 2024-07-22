@@ -1,4 +1,5 @@
 import 'package:customer_hailing/core/app_export.dart';
+import 'package:customer_hailing/presentation/splash/splash_screen.dart';
 import 'package:customer_hailing/routes/routes.dart';
 import 'package:flutter/material.dart';
 
@@ -18,6 +19,7 @@ class Hailing extends StatelessWidget {
         initialBinding: InitialBindings(),
         initialRoute: AppRoutes.home,
         getPages: AppRoutes.pages,
+        home: SplashScreen(),
       );
     });
   }
