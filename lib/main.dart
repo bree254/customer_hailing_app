@@ -19,7 +19,7 @@ class Hailing extends StatelessWidget {
         initialBinding: InitialBindings(),
         initialRoute: AppRoutes.home,
         getPages: AppRoutes.pages,
-        home: SplashScreen(),
+        home: const SplashScreen(),
       );
     });
   }

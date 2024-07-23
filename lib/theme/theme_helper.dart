@@ -221,7 +221,7 @@ class ColorSchemes {
     secondaryContainer: Color(0xFF4a4458),
 
     // Error colors
-    onError: Color(0xFF01410),
+    onError: Color(0x0ff01410),
     errorContainer: Color(0xFF8c1d18),
     onErrorContainer: Color(0xFFf9dedc),
 

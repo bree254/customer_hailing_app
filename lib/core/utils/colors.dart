@@ -5,6 +5,7 @@ const primaryColor = Color(0xFF7145D6);
 const whiteTextColor = Color(0xFFFAFAFA);
 const blackTextColor = Color(0xFF313942);
 const formTextLabelColor =Color(0xFF434343);
+const resendCodeTextColor =Color(0xFF7B7B7B);
 
 const disabledButtonGrey =Color(0xFF9D9D9D);
 const buttonGrey = Color(0xFFEEF0F3);

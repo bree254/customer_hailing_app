@@ -1,4 +1,3 @@
-import 'dart:ui';
 
 import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/core/utils/colors.dart';
@@ -59,7 +58,7 @@ class _LoginOrSignupScreenState extends State<LoginOrSignupScreen> {
         padding: const EdgeInsets.fromLTRB(16, 84, 16, 0),
         child: Column(
           children: [
-            Align(
+            const Align(
               alignment: Alignment.center,
               child: Text(
                 "Login or Signup",
@@ -79,7 +78,7 @@ class _LoginOrSignupScreenState extends State<LoginOrSignupScreen> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      const Text(
                         "Enter your mobile number",
                         style: TextStyle(
                           color: blackTextColor,
@@ -88,7 +87,7 @@ class _LoginOrSignupScreenState extends State<LoginOrSignupScreen> {
                           fontSize: 14,
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       Row(
@@ -112,7 +111,7 @@ class _LoginOrSignupScreenState extends State<LoginOrSignupScreen> {
                                       borderSide:
                                           BorderSide.none, // No border side
                                     ),
-                                    contentPadding: EdgeInsets.symmetric(
+                                    contentPadding: const EdgeInsets.symmetric(
                                         vertical: 15.0, horizontal: 10.0),
                                   ),
                                   initialCountryCode: 'KE',
@@ -120,7 +119,7 @@ class _LoginOrSignupScreenState extends State<LoginOrSignupScreen> {
                               ),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 5,
                           ),
                           Expanded(
@@ -142,7 +141,7 @@ class _LoginOrSignupScreenState extends State<LoginOrSignupScreen> {
                           ),
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       CustomElevatedButton(
@@ -150,7 +149,7 @@ class _LoginOrSignupScreenState extends State<LoginOrSignupScreen> {
                         onPressed: (){
                           Get.offNamed(AppRoutes.verification);
                         },
-                        buttonTextStyle: TextStyle(
+                        buttonTextStyle: const TextStyle(
                           color: whiteTextColor,
                           fontFamily: 'br_omny_regular',
                           fontWeight: FontWeight.w600,
@@ -169,11 +168,11 @@ class _LoginOrSignupScreenState extends State<LoginOrSignupScreen> {
                   )),
             ),
 
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
 
-            Text(
+            const Text(
                 "or",
               style:TextStyle(
                 color: formTextLabelColor,
@@ -182,7 +181,7 @@ class _LoginOrSignupScreenState extends State<LoginOrSignupScreen> {
                 fontSize: 12,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 5,
             ),
 
@@ -195,7 +194,7 @@ class _LoginOrSignupScreenState extends State<LoginOrSignupScreen> {
                     height: 16.0,
                     child: Image.asset('assets/images/google.png'),
                   ),
-                  buttonTextStyle: TextStyle(
+                  buttonTextStyle: const TextStyle(
                     color: blackTextColor,
                     fontFamily: 'br_omny_regular',
                     fontWeight: FontWeight.w600,
@@ -208,7 +207,7 @@ class _LoginOrSignupScreenState extends State<LoginOrSignupScreen> {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 8,
                 ),
                 CustomElevatedButton(
@@ -218,7 +217,7 @@ class _LoginOrSignupScreenState extends State<LoginOrSignupScreen> {
                     height: 16.0,
                     child: Image.asset('assets/images/mail.png'),
                   ),
-                  buttonTextStyle: TextStyle(
+                  buttonTextStyle: const TextStyle(
                     color: blackTextColor,
                     fontFamily: 'br_omny_regular',
                     fontWeight: FontWeight.w600,

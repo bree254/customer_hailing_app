@@ -2,11 +2,10 @@ import 'package:customer_hailing/core/utils/colors.dart';
 import 'package:flutter/material.dart';
 import '../core/app_export.dart';
 import 'package:customer_hailing/theme/app_text_styles.dart';
-import '../theme/theme_helper.dart';
 
 class CustomTextFormField extends StatelessWidget {
   const CustomTextFormField({
-    Key? key,
+    super.key,
     this.alignment,
     this.width,
     this.scrollPadding,
@@ -33,9 +32,7 @@ class CustomTextFormField extends StatelessWidget {
     this.filled = false,
     this.validator,
 
-  }) : super(
-          key: key,
-        );
+  });
 
   final Alignment? alignment;
 
@@ -135,7 +132,7 @@ class CustomTextFormField extends StatelessWidget {
     border: borderDecoration ??
         OutlineInputBorder(
           borderRadius: BorderRadius.circular(10.0),
-          borderSide: BorderSide(
+          borderSide: const BorderSide(
             color: Colors.purple,
             width: 1.0,
           ),
@@ -143,7 +140,7 @@ class CustomTextFormField extends StatelessWidget {
     enabledBorder: borderDecoration ??
         OutlineInputBorder(
           borderRadius: BorderRadius.circular(10.0),
-          borderSide: BorderSide(
+          borderSide: const BorderSide(
             color: primaryColor,
             width: 1.0,
           ),
@@ -151,7 +148,7 @@ class CustomTextFormField extends StatelessWidget {
     focusedBorder: borderDecoration ??
         OutlineInputBorder(
           borderRadius: BorderRadius.circular(10.0),
-          borderSide: BorderSide(
+          borderSide: const BorderSide(
             color: primaryColor,
             width: 1.0,
           ),
@@ -159,7 +156,7 @@ class CustomTextFormField extends StatelessWidget {
     errorBorder: borderDecoration ??
         OutlineInputBorder(
           borderRadius: BorderRadius.circular(10.0),
-          borderSide: BorderSide(
+          borderSide: const BorderSide(
             color: textfieldErrorRedColor,
             width: 1.0,
           ),
@@ -167,7 +164,7 @@ class CustomTextFormField extends StatelessWidget {
     focusedErrorBorder: borderDecoration ??
         OutlineInputBorder(
           borderRadius: BorderRadius.circular(10.0),
-          borderSide: BorderSide(
+          borderSide: const BorderSide(
             color: textfieldErrorRedColor,
             width: 1.0,
           ),

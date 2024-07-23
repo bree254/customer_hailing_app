@@ -18,7 +18,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   _navigateToNextScreen()async {
-    await Future.delayed(Duration(seconds: 3));
+    await Future.delayed(const Duration(seconds: 3));
     bool isLoggedIn=false;
     if(isLoggedIn){
       Get.offNamed(AppRoutes.home);
@@ -28,6 +28,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   }
 
+  @override
   Widget build(BuildContext context) {
     return  const Scaffold(
       backgroundColor: primaryColor,
