@@ -32,6 +32,7 @@ class CustomTextFormField extends StatelessWidget {
     this.fillColor,
     this.filled = false,
     this.validator,
+
   }) : super(
           key: key,
         );
@@ -136,7 +137,7 @@ class CustomTextFormField extends StatelessWidget {
           borderRadius: BorderRadius.circular(10.0),
           borderSide: BorderSide(
             color: Colors.purple,
-            width: 2.0,
+            width: 1.0,
           ),
         ),
     enabledBorder: borderDecoration ??
@@ -144,7 +145,7 @@ class CustomTextFormField extends StatelessWidget {
           borderRadius: BorderRadius.circular(10.0),
           borderSide: BorderSide(
             color: primaryColor,
-            width: 2.0,
+            width: 1.0,
           ),
         ),
     focusedBorder: borderDecoration ??
@@ -152,7 +153,7 @@ class CustomTextFormField extends StatelessWidget {
           borderRadius: BorderRadius.circular(10.0),
           borderSide: BorderSide(
             color: primaryColor,
-            width: 2.0,
+            width: 1.0,
           ),
         ),
     errorBorder: borderDecoration ??
@@ -160,7 +161,7 @@ class CustomTextFormField extends StatelessWidget {
           borderRadius: BorderRadius.circular(10.0),
           borderSide: BorderSide(
             color: textfieldErrorRedColor,
-            width: 2.0,
+            width: 1.0,
           ),
         ),
     focusedErrorBorder: borderDecoration ??
@@ -168,7 +169,7 @@ class CustomTextFormField extends StatelessWidget {
           borderRadius: BorderRadius.circular(10.0),
           borderSide: BorderSide(
             color: textfieldErrorRedColor,
-            width: 2.0,
+            width: 1.0,
           ),
         ),
       );
