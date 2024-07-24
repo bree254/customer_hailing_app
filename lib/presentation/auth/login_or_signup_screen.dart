@@ -3,6 +3,7 @@ import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/core/utils/colors.dart';
 import 'package:customer_hailing/routes/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginOrSignupScreen extends StatefulWidget {
   const LoginOrSignupScreen({super.key});
@@ -17,6 +18,7 @@ class _LoginOrSignupScreenState extends State<LoginOrSignupScreen> {
   bool _isButtonEnabled = false;
   String? errorMessage;
   InputBorder? inputBorder;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
 
 
   @override
@@ -51,95 +53,19 @@ class _LoginOrSignupScreenState extends State<LoginOrSignupScreen> {
       });
     }
   }
-
-  void _showGoogleSignInOptions(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(20.0),
-        ),
-      ),
-      builder: (BuildContext context) {
-        return Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Image.asset(
-                    height: 21.5,
-                      width: 21.5,
-                      "assets/images/google.png"),
-                  Text(
-                    'Sign in to Taxi with Google',
-                    style: TextStyle(
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Icon(Icons.cancel_outlined)
-                ],
-              ),
-              const SizedBox(height: 20.0),
-              ListTile(
-                leading: CircleAvatar(
-                  backgroundImage: AssetImage('assets/images/user1.png'),
-                ),
-                title: const Text('Ariana Grandeur'),
-                subtitle: const Text('arianagrandeur@gmail.com'),
-                onTap: () {
-                  // Handle the account selection
-                },
-              ),
-              Divider(color: resendCodeTextColor,),
-              ListTile(
-                leading: CircleAvatar(
-                  backgroundImage: AssetImage('assets/images/user2.png'),
-                ),
-                title: const Text('Ariana Grandeur'),
-                subtitle: const Text('grandeurarianar@gmail.com'),
-                onTap: () {
-                  // Handle the account selection
-                },
-              ),
-              Divider(color: resendCodeTextColor,),
-              ListTile(
-                leading: CircleAvatar(
-                  backgroundImage: AssetImage('assets/images/user3.png'),
-                ),
-                title: const Text('Ariana Grandeur'),
-                subtitle: const Text('ariana_grandeur@gmail.com'),
-                onTap: () {
-                  // Handle the account selection
-                },
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-
-  void _handleSubmit() {
-    if (_formKey.currentState != null && _formKey.currentState!.validate()) {
-      // Add your logic to check if the number exists
-      bool numberExists = false; // Replace this with actual check
-
-      if (numberExists) {
-        // ScaffoldMessenger.of(context).showSnackBar(
-        //   SnackBar(content: Text('This number already exists.')),
-        // );
-      } else {
-
+  Future<void> _handleGoogleSignIn() async {
+    try {
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      if (googleUser != null) {
+        // The user successfully signed in, you can now access their info
+        print('Google User: ${googleUser.displayName}');
+        // Handle your logic after successful sign-in
       }
+    } catch (error) {
+      print('Google Sign-In error: $error');
+      // Handle the error accordingly
     }
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -256,7 +182,7 @@ class _LoginOrSignupScreenState extends State<LoginOrSignupScreen> {
               children: [
                 CustomElevatedButton(
                   onPressed: () {
-                    _showGoogleSignInOptions(context);
+                   _handleGoogleSignIn();
                   },
                   text: 'Continue with Google',
                   leftIcon: SizedBox(

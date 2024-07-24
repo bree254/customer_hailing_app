@@ -47,6 +47,7 @@ dependencies:
   permission_handler: ^11.3.1
   intl_phone_field: ^3.2.0
   country_picker: ^2.0.26
+  google_sign_in: ^6.2.1
 
 dev_dependencies:
   build_runner: ^2.4.6
