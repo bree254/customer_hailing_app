@@ -1,4 +1,4 @@
-import 'package:customer_hailing/presentation/auth/login_or_signup_screen.dart';
+import 'package:customer_hailing/presentation/auth/phone_number/login_or_signup_screen.dart';
 import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/presentation/auth/verification.dart';
 import 'package:customer_hailing/presentation/home/binding/home_binding.dart';

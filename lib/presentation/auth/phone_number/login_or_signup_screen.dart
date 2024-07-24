@@ -1,6 +1,7 @@
 import 'package:customer_hailing/components/phone_field/custom_phone_input.dart';
 import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/core/utils/colors.dart';
+import 'package:customer_hailing/presentation/auth/google/google_sign_in_up_screen.dart';
 import 'package:customer_hailing/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -53,10 +54,17 @@ class _LoginOrSignupScreenState extends State<LoginOrSignupScreen> {
       });
     }
   }
+
   Future<void> _handleGoogleSignIn() async {
     try {
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
       if (googleUser != null) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => GoogleSignInUpScreen(),
+          ),
+        );
         // The user successfully signed in, you can now access their info
         print('Google User: ${googleUser.displayName}');
         // Handle your logic after successful sign-in
@@ -65,12 +73,11 @@ class _LoginOrSignupScreenState extends State<LoginOrSignupScreen> {
       print('Google Sign-In error: $error');
       // Handle the error accordingly
     }
-  }
-  @override
+  }  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 84, 16, 0),
+        padding: const EdgeInsets.fromLTRB(16, 32, 16, 0),
         child: Column(
           children: [
             const Align(
@@ -86,7 +93,7 @@ class _LoginOrSignupScreenState extends State<LoginOrSignupScreen> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 32.0),
+              padding: const EdgeInsets.only(top: 40.0),
               child: Form(
                   key: _formKey,
                   child: Column(

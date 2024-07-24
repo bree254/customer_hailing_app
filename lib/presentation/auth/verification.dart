@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:customer_hailing/presentation/auth/phone_number/privacy_policy_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:customer_hailing/core/utils/colors.dart';
@@ -54,6 +55,12 @@ class _VerificationScreenState extends State<VerificationScreen> {
         if (pin == "1234") { // Replace with your actual verification logic
           // Code is correct
           _showInvalidCode = false;
+          //navigate to the privacy policy screen
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => PrivacyPolicyScreen()),
+          );
+
         } else {
           // Code is incorrect
           _showInvalidCode = true;
@@ -67,7 +74,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 84, 16, 0),
+        padding: const EdgeInsets.fromLTRB(16, 32, 16, 0),
         child: Column(
           children: [
             const Align(

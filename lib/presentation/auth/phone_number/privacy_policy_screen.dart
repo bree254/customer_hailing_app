@@ -10,6 +10,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.fromLTRB(16,55,16,0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Image.asset(
               alignment: Alignment.center,
@@ -23,16 +24,26 @@ class PrivacyPolicyScreen extends StatelessWidget {
               style: TextStyle(
                 color: blackTextColor,
                 fontFamily: 'br_omny_regular',
-                fontWeight: FontWeight.w400,
-                fontSize: 12,
+                fontWeight: FontWeight.w600,
+                fontSize: 20,
               ),
             ),
             SizedBox(height: 32,),
-            Text(
-                "By tapping,”I Agree” below, \n you acknowledge having reviewed and agreed to the Terms of Use \n and the Privacy Notice of Taxi.",
+            Align(
+              alignment: Alignment.center,
+              child: Text(
+                  "By tapping,”I Agree” below,\n you acknowledge having reviewed\n and agreed to the Terms of Useand the Privacy Notice of Taxi.",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: blackTextColor,
+                  fontFamily: 'br_omny_regular',
+                  fontWeight: FontWeight.w400,
+                  fontSize: 14,
+                ),
+              ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 351.0),
+              padding: const EdgeInsets.only(top: 431.0),
               child: CustomElevatedButton(
                 text: 'Continue',
                 onPressed: (){},
