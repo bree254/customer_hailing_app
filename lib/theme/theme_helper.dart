@@ -245,6 +245,7 @@ class PrimaryColors {
   Color get primaryDark => const Color(0xFF5A37AB);
 
   Color get error => const Color(0xFFB00020);
+  Color get inputError => const Color(0xFFFF1507);
 
   // Gray
   Color get gray100 => const Color(0xFFF4F4F5);
@@ -258,6 +259,11 @@ class PrimaryColors {
 
   // black
   Color get black => const Color(0xFF000000);
+  Color get textColor => const Color(0xFF313942);
+  Color get lightTextColor => const Color(0xFF434343);
+
+  Color get grayBackground => const Color(0xFFF5F5F5);
+  Color get disabledButton => const Color(0xFF9D9D9D);
 
   // Pink
   Color get pink => const Color(0xFF8A413E);

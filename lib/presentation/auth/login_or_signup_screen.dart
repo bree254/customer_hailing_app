@@ -1,10 +1,8 @@
-
+import 'package:customer_hailing/components/phone_field/custom_phone_input.dart';
 import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/core/utils/colors.dart';
 import 'package:customer_hailing/routes/routes.dart';
 import 'package:flutter/material.dart';
-import 'package:intl_phone_field/intl_phone_field.dart';
-import '../../widgets/custom_text_form_field.dart';
 
 class LoginOrSignupScreen extends StatefulWidget {
   const LoginOrSignupScreen({super.key});
@@ -17,6 +15,9 @@ class _LoginOrSignupScreenState extends State<LoginOrSignupScreen> {
   final _formKey = GlobalKey<FormFieldState>();
   final TextEditingController _phoneController = TextEditingController();
   bool _isButtonEnabled = false;
+  String? errorMessage;
+  InputBorder? inputBorder;
+
 
   @override
   void initState() {
@@ -35,6 +36,94 @@ class _LoginOrSignupScreenState extends State<LoginOrSignupScreen> {
       _isButtonEnabled = _phoneController.text.isNotEmpty;
     });
   }
+  void navigateToVerificationScreen() {
+    // Assuming the correct length is 9
+    if (_phoneController.text.length == 9) {
+      Get.toNamed(AppRoutes.verification);
+    } else {
+      // Update the UI to show an error or change the input border color
+      setState(() {
+        errorMessage = 'Incomplete number';
+        inputBorder = OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10.h),
+          borderSide: BorderSide(color: appTheme.inputError),
+        );
+      });
+    }
+  }
+
+  void _showGoogleSignInOptions(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(20.0),
+        ),
+      ),
+      builder: (BuildContext context) {
+        return Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Image.asset(
+                    height: 21.5,
+                      width: 21.5,
+                      "assets/images/google.png"),
+                  Text(
+                    'Sign in to Taxi with Google',
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Icon(Icons.cancel_outlined)
+                ],
+              ),
+              const SizedBox(height: 20.0),
+              ListTile(
+                leading: CircleAvatar(
+                  backgroundImage: AssetImage('assets/images/user1.png'),
+                ),
+                title: const Text('Ariana Grandeur'),
+                subtitle: const Text('arianagrandeur@gmail.com'),
+                onTap: () {
+                  // Handle the account selection
+                },
+              ),
+              Divider(color: resendCodeTextColor,),
+              ListTile(
+                leading: CircleAvatar(
+                  backgroundImage: AssetImage('assets/images/user2.png'),
+                ),
+                title: const Text('Ariana Grandeur'),
+                subtitle: const Text('grandeurarianar@gmail.com'),
+                onTap: () {
+                  // Handle the account selection
+                },
+              ),
+              Divider(color: resendCodeTextColor,),
+              ListTile(
+                leading: CircleAvatar(
+                  backgroundImage: AssetImage('assets/images/user3.png'),
+                ),
+                title: const Text('Ariana Grandeur'),
+                subtitle: const Text('ariana_grandeur@gmail.com'),
+                onTap: () {
+                  // Handle the account selection
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
 
   void _handleSubmit() {
     if (_formKey.currentState != null && _formKey.currentState!.validate()) {
@@ -90,65 +179,43 @@ class _LoginOrSignupScreenState extends State<LoginOrSignupScreen> {
                       const SizedBox(
                         height: 20,
                       ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.only(right: 30.0),
-                              child: SizedBox(
-                                height: 60,
-                                child: IntlPhoneField(
-                                  dropdownIconPosition: IconPosition.trailing,
-                                  showCursor: false,
-                                  decoration: InputDecoration(
-                                    filled: true,
-                                    fillColor: countryTextFieldColor,
-                                    counterText: " ",
-                                    // Gray background color
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                      // Circular border
-                                      borderSide:
-                                          BorderSide.none, // No border side
-                                    ),
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        vertical: 15.0, horizontal: 10.0),
-                                  ),
-                                  initialCountryCode: 'KE',
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 5,
-                          ),
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.only(bottom: 15.0),
-                              child: CustomTextFormField(
-                                width: 245,
-                                controller: _phoneController,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please enter your mobile number';
-                                  } else if (value.length < 10) {
-                                    return "incomplete number";
-                                  }
-                                  return null;
-                                },
-                              ),
-                            ),
-                          ),
-                        ],
+                      CustomPhoneInput(
+                        controller: _phoneController,
+                        onInputChanged: (value) {
+                          String? newErrorMessage;
+                          InputBorder newInputBorder;
+
+                          if (value.length == 9) {
+                            newErrorMessage = null;
+                            newInputBorder = OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.h),
+                              borderSide: BorderSide(color: appTheme.colorPrimary),
+                            );
+                          } else {
+                            newErrorMessage = 'Incomplete number';
+                            newInputBorder = OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.h),
+                              borderSide: BorderSide(color: appTheme.inputError),
+                            );
+                          }
+                          setState(() {
+                            errorMessage = newErrorMessage;
+                            inputBorder = newInputBorder;
+                          });
+                        },
+                        inputBorder: inputBorder,
+                        errorMessage: errorMessage,
                       ),
                       const SizedBox(
                         height: 20,
                       ),
                       CustomElevatedButton(
                         text: 'Continue',
-                        onPressed: (){
-                          Get.offNamed(AppRoutes.verification);
-                        },
+                        onPressed:  _phoneController.text.isNotEmpty
+                            ? () {
+                          navigateToVerificationScreen();
+                        }
+                            : null,
                         buttonTextStyle: const TextStyle(
                           color: whiteTextColor,
                           fontFamily: 'br_omny_regular',
@@ -188,6 +255,9 @@ class _LoginOrSignupScreenState extends State<LoginOrSignupScreen> {
             Column(
               children: [
                 CustomElevatedButton(
+                  onPressed: () {
+                    _showGoogleSignInOptions(context);
+                  },
                   text: 'Continue with Google',
                   leftIcon: SizedBox(
                     width: 16.0,
