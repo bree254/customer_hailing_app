@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../core/app_export.dart';
-import '../theme/app_text_styles.dart';
 
 class CustomElevatedButton extends BaseButton {
   const CustomElevatedButton({

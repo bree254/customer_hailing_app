@@ -1,7 +1,8 @@
 import 'dart:async';
-
+import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/presentation/auth/phone_number/privacy_policy_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:customer_hailing/core/utils/colors.dart';
 
@@ -14,34 +15,52 @@ class VerificationScreen extends StatefulWidget {
 
 class _VerificationScreenState extends State<VerificationScreen> {
   final TextEditingController _pinController = TextEditingController();
+
+  String? verificationType;
+  String? phoneNumber;
   bool _showResendCode = false;
   bool _showInvalidCode = false;
   bool _isLoading = false;
   bool _hasStartedInputting = false;
   String _resendCodeText = "Resend code in 30 seconds";
   Timer? _timer;
+  int _resendTimerSeconds = 30;
+
+  void initState(){
+    super.initState();
+    phoneNumber = Get.arguments['phone_number'];
+    verificationType = Get.arguments['verification_type'];
+  }
 
   @override
   void dispose() {
     _timer?.cancel();
+    _pinController.dispose();
     super.dispose();
   }
 
+
   void _startResendTimer() {
+    _resendTimerSeconds = 30; // Reset timer to 30 seconds
     setState(() {
-      _resendCodeText = "Resend code in 30 seconds";
+      _resendCodeText = "Resend code in $_resendTimerSeconds seconds";
     });
 
-    _timer = Timer(const Duration(seconds: 30), () {
-      if (_hasStartedInputting) {
-        setState(() {
-          _showResendCode = true;
-          _resendCodeText = "Resend code";
-        });
-      }
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {
+        _resendTimerSeconds--;
+        if (_resendTimerSeconds > 0) {
+          _resendCodeText = "Resend code in $_resendTimerSeconds seconds";
+        } else {
+          _timer?.cancel();
+          if (_hasStartedInputting) {
+            _showResendCode = true;
+            _resendCodeText = "Resend code";
+          }
+        }
+      });
     });
   }
-
   void _verifyCode(String pin) {
     setState(() {
       _isLoading = true;
@@ -58,7 +77,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
           //navigate to the privacy policy screen
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => PrivacyPolicyScreen()),
+            MaterialPageRoute(builder: (context) => const PrivacyPolicyScreen()),
           );
 
         } else {
@@ -77,10 +96,10 @@ class _VerificationScreenState extends State<VerificationScreen> {
         padding: const EdgeInsets.fromLTRB(16, 32, 16, 0),
         child: Column(
           children: [
-            const Align(
+             Align(
               alignment: Alignment.center,
               child: Text(
-                "Verify your mobile number",
+                "Verify your $verificationType",
                 style: TextStyle(
                   color: blackTextColor,
                   fontFamily: 'br_omny_regular',
@@ -90,10 +109,10 @@ class _VerificationScreenState extends State<VerificationScreen> {
               ),
             ),
             const SizedBox(height: 32),
-            const Column(
+             Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(
+                const Text(
                   "Please enter the OTP sent to",
                   style: TextStyle(
                     color: blackTextColor,
@@ -103,8 +122,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
                   ),
                 ),
                 Text(
-                  "0712345678",
-                  style: TextStyle(
+                  phoneNumber!,
+                  style: const TextStyle(
                     color: blackTextColor,
                     fontFamily: 'br_omny_regular',
                     fontWeight: FontWeight.w600,
@@ -169,7 +188,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
               const CircularProgressIndicator(),
             ] else if (_showInvalidCode) ...[
               const Text(
-                "Invalid code",
+                "Invalid OTP",
                 style: TextStyle(
                     color: textfieldErrorRedColor,
                   fontFamily: 'br_omny_regular',

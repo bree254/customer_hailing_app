@@ -7,7 +7,7 @@ class CountrySelector extends StatelessWidget {
   final List<Country> countries;
   final Function(Country) onCountryChanged;
 
-  CountrySelector({required this.countries, required this.onCountryChanged});
+  const CountrySelector({super.key, required this.countries, required this.onCountryChanged});
 
   @override
   Widget build(BuildContext context) {

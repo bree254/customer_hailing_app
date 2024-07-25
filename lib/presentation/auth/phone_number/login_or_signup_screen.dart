@@ -42,7 +42,12 @@ class _LoginOrSignupScreenState extends State<LoginOrSignupScreen> {
   void navigateToVerificationScreen() {
     // Assuming the correct length is 9
     if (_phoneController.text.length == 9) {
-      Get.toNamed(AppRoutes.verification);
+      Get.toNamed(
+          AppRoutes.verification,
+        arguments: {
+          "phone_number": _phoneController.text, "verification_type": "mobile number"
+        }
+      );
     } else {
       // Update the UI to show an error or change the input border color
       setState(() {
@@ -62,7 +67,7 @@ class _LoginOrSignupScreenState extends State<LoginOrSignupScreen> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => GoogleSignInUpScreen(),
+            builder: (context) => const GoogleSignInUpScreen(),
           ),
         );
         // The user successfully signed in, you can now access their info
@@ -214,6 +219,9 @@ class _LoginOrSignupScreenState extends State<LoginOrSignupScreen> {
                   height: 8,
                 ),
                 CustomElevatedButton(
+                  onPressed: (){
+                    Get.offNamed(AppRoutes.emailSignOn);
+                  },
                   text: 'Continue with email',
                   leftIcon:SizedBox(
                     width: 16.0,

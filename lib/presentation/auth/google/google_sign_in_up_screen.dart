@@ -19,126 +19,162 @@ class _GoogleSignInUpScreenState extends State<GoogleSignInUpScreen> {
   String? errorMessage;
   InputBorder? inputBorder;
 
+
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
-      body: Padding(
-        padding: EdgeInsets.fromLTRB(16, 32, 16, 0),
-        child: Column(
-          children: [
-            Align(
-              alignment: Alignment.center,
-              child: Text(
-                "Enter your details",
-                style: TextStyle(
-                  color: blackTextColor,
-                  fontFamily: 'br_omny_regular',
-                  fontWeight: FontWeight.w600,
-                  fontSize: 20,
+      body: Container(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16, 32, 16, 0),
+          child: Column(
+            children: [
+              const Align(
+                alignment: Alignment.center,
+                child: Text(
+                  "Enter your details",
+                  style: TextStyle(
+                    color: blackTextColor,
+                    fontFamily: 'br_omny_regular',
+                    fontWeight: FontWeight.w600,
+                    fontSize: 20,
+                  ),
                 ),
               ),
-            ),
-            Padding(
-                padding: EdgeInsets.only(top: 40),
-              child: Form(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "First name",
-                        style: TextStyle(
-                          color: formTextLabelColor,
-                          fontFamily: 'br_omny_regular',
-                          fontWeight: FontWeight.w400,
-                          fontSize: 14,
+              Padding(
+                  padding: const EdgeInsets.only(top: 40),
+                child: Form(
+                  key:_formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          "First name",
+                          style: TextStyle(
+                            color: formTextLabelColor,
+                            fontFamily: 'br_omny_regular',
+                            fontWeight: FontWeight.w400,
+                            fontSize: 14,
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      CustomTextFormField(
-                        hintText: "Ariana",
-                        hintStyle: TextStyle(
-                          color: blackTextColor,
-                          fontFamily: 'br_omny_regular',
-                          fontWeight: FontWeight.w500,
-                          fontSize: 14,
+                        const SizedBox(
+                          height: 10,
                         ),
-                      ),
-                      SizedBox(
-                        height: 24,
-                      ),
-                      Text(
-                        "Last name",
-                        style: TextStyle(
-                          color: formTextLabelColor,
-                          fontFamily: 'br_omny_regular',
-                          fontWeight: FontWeight.w400,
-                          fontSize: 14,
+                        CustomTextFormField(
+                          controller: firstNameController,
+                          filled: true,
+                          fillColor: countryTextFieldColor,
+                          borderDecoration: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10)
+                          ),
+                          hintText: "Ariana",
+                          hintStyle: const TextStyle(
+                            color: blackTextColor,
+                            fontFamily: 'br_omny_regular',
+                            fontWeight: FontWeight.w500,
+                            fontSize: 14,
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      CustomTextFormField(
-                        hintText: "Grandeur",
-                        hintStyle: TextStyle(
-                          color: blackTextColor,
-                          fontFamily: 'br_omny_regular',
-                          fontWeight: FontWeight.w500,
-                          fontSize: 14,
+                        const SizedBox(
+                          height: 24,
                         ),
-                      ),
-                      SizedBox(
-                        height: 24,
-                      ),
-                      Text(
-                        "Enter your mobile number",
-                        style: TextStyle(
-                          color: formTextLabelColor,
-                          fontFamily: 'br_omny_regular',
-                          fontWeight: FontWeight.w400,
-                          fontSize: 14,
+                        const Text(
+                          "Last name",
+                          style: TextStyle(
+                            color: formTextLabelColor,
+                            fontFamily: 'br_omny_regular',
+                            fontWeight: FontWeight.w400,
+                            fontSize: 14,
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 24,
-                      ),
-                      CustomPhoneInput(
-                        controller: phoneController,
-                        onInputChanged: (value) {
-                          String? newErrorMessage;
-                          InputBorder newInputBorder;
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        CustomTextFormField(
+                          controller: firstNameController,
+                          filled: true,
+                          fillColor: countryTextFieldColor,
+                          borderDecoration: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10)
+                          ),
+                          hintText: "Grandeur",
+                          hintStyle: const TextStyle(
+                            color: blackTextColor,
+                            fontFamily: 'br_omny_regular',
+                            fontWeight: FontWeight.w500,
+                            fontSize: 14,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 24,
+                        ),
+                        const Text(
+                          "Enter your mobile number",
+                          style: TextStyle(
+                            color: formTextLabelColor,
+                            fontFamily: 'br_omny_regular',
+                            fontWeight: FontWeight.w400,
+                            fontSize: 14,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 24,
+                        ),
+                        CustomPhoneInput(
+                          controller: phoneController,
+                          onInputChanged: (value) {
+                            String? newErrorMessage;
+                            InputBorder newInputBorder;
 
-                          if (value.length == 9) {
-                            newErrorMessage = null;
-                            newInputBorder = OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.h),
-                              borderSide: BorderSide(color: appTheme.colorPrimary),
-                            );
-                          } else {
-                            newErrorMessage = 'Incomplete number';
-                            newInputBorder = OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.h),
-                              borderSide: BorderSide(color: appTheme.inputError),
-                            );
-                          }
-                          setState(() {
-                            errorMessage = newErrorMessage;
-                            inputBorder = newInputBorder;
-                          });
-                        },
-                        inputBorder: inputBorder,
-                        errorMessage: errorMessage,
-                      ),
-                    ],
+                            if (value.length == 9) {
+                              newErrorMessage = null;
+                              newInputBorder = OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.h),
+                                borderSide: BorderSide(color: appTheme.colorPrimary),
+                              );
+                            } else {
+                              newErrorMessage = 'Incomplete number';
+                              newInputBorder = OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.h),
+                                borderSide: BorderSide(color: appTheme.inputError),
+                              );
+                            }
+                            setState(() {
+                              errorMessage = newErrorMessage;
+                              inputBorder = newInputBorder;
+                            });
+                          },
+                          inputBorder: inputBorder,
+                          errorMessage: errorMessage,
+                        ),
+                        Spacer(),
+                        Padding(
+                            padding: EdgeInsets.zero,
+                          child: CustomElevatedButton(
+                            text: 'Confirm',
+                            buttonTextStyle: const TextStyle(
+                              color: whiteTextColor,
+                              fontFamily: 'br_omny_regular',
+                              fontWeight: FontWeight.w600,
+                              fontSize: 12,
+                            ),
+                            buttonStyle: ElevatedButton.styleFrom(
+                              backgroundColor: primaryColor,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                            ),
+
+                          ),
+                        )
+                      ],
 
 
 
-              )),
+                )),
 
-            ),
-          ],
+              ),
+            ],
+          ),
         ),
       ),
 

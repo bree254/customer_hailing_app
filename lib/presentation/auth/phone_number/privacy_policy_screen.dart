@@ -18,8 +18,8 @@ class PrivacyPolicyScreen extends StatelessWidget {
                 width: 53,
                 'assets/images/insurance.png',
             ),
-            SizedBox(height: 55,),
-            Text(
+            const SizedBox(height: 55,),
+            const Text(
                 "Terms of Use & Privacy Notice",
               style: TextStyle(
                 color: blackTextColor,
@@ -28,11 +28,11 @@ class PrivacyPolicyScreen extends StatelessWidget {
                 fontSize: 20,
               ),
             ),
-            SizedBox(height: 32,),
-            Align(
+            const SizedBox(height: 32,),
+            const Align(
               alignment: Alignment.center,
               child: Text(
-                  "By tapping,”I Agree” below,\n you acknowledge having reviewed\n and agreed to the Terms of Useand the Privacy Notice of Taxi.",
+                  "By tapping,”I Agree” below,you acknowledge\n having reviewed and agreed to the Terms of Use\n and the Privacy Notice of Taxi.",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: blackTextColor,
@@ -42,8 +42,9 @@ class PrivacyPolicyScreen extends StatelessWidget {
                 ),
               ),
             ),
+            Spacer(),
             Padding(
-              padding: const EdgeInsets.only(top: 431.0),
+              padding: EdgeInsets.zero,
               child: CustomElevatedButton(
                 text: 'Continue',
                 onPressed: (){},
@@ -61,8 +62,8 @@ class PrivacyPolicyScreen extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 24,),
-            Text(
+            const SizedBox(height: 24,),
+            const Text(
               "Back",
               style: TextStyle(
                 color: primaryColor,
