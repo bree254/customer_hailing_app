@@ -23,8 +23,7 @@ class _GoogleSignInUpScreenState extends State<GoogleSignInUpScreen> {
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
-      body: Container(
-        child: Padding(
+      body: Padding(
           padding: const EdgeInsets.fromLTRB(16, 32, 16, 0),
           child: Column(
             children: [
@@ -40,9 +39,8 @@ class _GoogleSignInUpScreenState extends State<GoogleSignInUpScreen> {
                   ),
                 ),
               ),
-              Padding(
-                  padding: const EdgeInsets.only(top: 40),
-                child: Form(
+              SizedBox(height: 40,),
+              Form(
                   key:_formKey,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -146,9 +144,9 @@ class _GoogleSignInUpScreenState extends State<GoogleSignInUpScreen> {
                           inputBorder: inputBorder,
                           errorMessage: errorMessage,
                         ),
-                        Spacer(),
+                        // Spacer(),
                         Padding(
-                            padding: EdgeInsets.zero,
+                            padding: EdgeInsets.only(top: 302),
                           child: CustomElevatedButton(
                             text: 'Confirm',
                             buttonTextStyle: const TextStyle(
@@ -167,17 +165,10 @@ class _GoogleSignInUpScreenState extends State<GoogleSignInUpScreen> {
                           ),
                         )
                       ],
-
-
-
                 )),
-
-              ),
             ],
           ),
         ),
-      ),
-
     );
   }
 }
