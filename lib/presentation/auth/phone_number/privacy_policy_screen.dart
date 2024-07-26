@@ -1,4 +1,5 @@
 import 'package:customer_hailing/core/utils/colors.dart';
+import 'package:customer_hailing/theme/app_text_styles.dart';
 import 'package:customer_hailing/widgets/custom_elevated_button.dart';
 import 'package:flutter/material.dart';
 class PrivacyPolicyScreen extends StatelessWidget {
@@ -12,6 +13,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+
             Image.asset(
               alignment: Alignment.center,
               height: 53,
@@ -23,7 +25,6 @@ class PrivacyPolicyScreen extends StatelessWidget {
                 "Terms of Use & Privacy Notice",
               style: TextStyle(
                 color: blackTextColor,
-                fontFamily: 'br_omny_regular',
                 fontWeight: FontWeight.w600,
                 fontSize: 20,
               ),
@@ -36,24 +37,18 @@ class PrivacyPolicyScreen extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: blackTextColor,
-                  fontFamily: 'br_omny_regular',
                   fontWeight: FontWeight.w400,
                   fontSize: 14,
                 ),
               ),
             ),
-            Spacer(),
+            const Spacer(),
             Padding(
               padding: EdgeInsets.zero,
               child: CustomElevatedButton(
                 text: 'Continue',
                 onPressed: (){},
-                buttonTextStyle: const TextStyle(
-                  color: whiteTextColor,
-                  fontFamily: 'br_omny_regular',
-                  fontWeight: FontWeight.w600,
-                  fontSize: 12,
-                ),
+                buttonTextStyle: AppTextStyles.titleMedium.copyWith(color: whiteTextColor),
                 buttonStyle: ElevatedButton.styleFrom(
                   backgroundColor: primaryColor,
                   shape: RoundedRectangleBorder(
@@ -63,13 +58,17 @@ class PrivacyPolicyScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 24,),
-            const Text(
-              "Back",
-              style: TextStyle(
-                color: primaryColor,
-                fontFamily: 'br_omny_regular',
-                fontWeight: FontWeight.w600,
-                fontSize: 12,
+            GestureDetector(
+              onTap: (){},
+              child: Center(
+                child: const Text(
+                  "Back",
+                  style: TextStyle(
+                    color: primaryColor,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 12,
+                  ),
+                ),
               ),
             ),
             

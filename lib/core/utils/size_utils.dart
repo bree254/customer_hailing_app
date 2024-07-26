@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
-num appWidth = MediaQuery.of(Get.context!).size.width;
-num appHeight = MediaQuery.of(Get.context!).size.height;
+const num appWidth = 411;
+const num appHeight = 823;
 const num defaultStatusBar = 0;
 
 typedef ResponsiveBuild = Widget Function(

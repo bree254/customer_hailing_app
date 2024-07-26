@@ -37,7 +37,6 @@ class _SplashScreenState extends State<SplashScreen> {
           'Taxi App',
           style: TextStyle(
               color: whiteTextColor,
-            fontFamily: 'br_omny_regular',
             fontWeight: FontWeight.w700,
             fontSize: 32
           ),),

@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/presentation/auth/phone_number/privacy_policy_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:customer_hailing/core/utils/colors.dart';
 
@@ -17,7 +16,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
   final TextEditingController _pinController = TextEditingController();
 
   String? verificationType;
-  String? phoneNumber;
+  String? phoneEmail;
+  String? email;
   bool _showResendCode = false;
   bool _showInvalidCode = false;
   bool _isLoading = false;
@@ -26,9 +26,11 @@ class _VerificationScreenState extends State<VerificationScreen> {
   Timer? _timer;
   int _resendTimerSeconds = 30;
 
+  @override
   void initState(){
     super.initState();
-    phoneNumber = Get.arguments['phone_number'];
+    phoneEmail = Get.arguments['phone_email'];
+    email= Get.arguments['email'];
     verificationType = Get.arguments['verification_type'];
   }
 
@@ -46,7 +48,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
       _resendCodeText = "Resend code in $_resendTimerSeconds seconds";
     });
 
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
         _resendTimerSeconds--;
         if (_resendTimerSeconds > 0) {
@@ -96,13 +98,14 @@ class _VerificationScreenState extends State<VerificationScreen> {
         padding: const EdgeInsets.fromLTRB(16, 32, 16, 0),
         child: Column(
           children: [
+
+            const SizedBox(height: 32,),
              Align(
               alignment: Alignment.center,
               child: Text(
                 "Verify your $verificationType",
-                style: TextStyle(
+                style: const TextStyle(
                   color: blackTextColor,
-                  fontFamily: 'br_omny_regular',
                   fontWeight: FontWeight.w600,
                   fontSize: 20,
                 ),
@@ -116,16 +119,14 @@ class _VerificationScreenState extends State<VerificationScreen> {
                   "Please enter the OTP sent to",
                   style: TextStyle(
                     color: blackTextColor,
-                    fontFamily: 'br_omny_regular',
                     fontWeight: FontWeight.w400,
                     fontSize: 14,
                   ),
                 ),
                 Text(
-                  phoneNumber!,
+                  phoneEmail!,
                   style: const TextStyle(
                     color: blackTextColor,
-                    fontFamily: 'br_omny_regular',
                     fontWeight: FontWeight.w600,
                     fontSize: 14,
                   ),
@@ -139,7 +140,6 @@ class _VerificationScreenState extends State<VerificationScreen> {
               animationType: AnimationType.none,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               textStyle: const TextStyle(
-                fontFamily: 'br_omny_regular',
                 fontWeight: FontWeight.w400,
                 fontSize: 14,
               ),
@@ -179,7 +179,6 @@ class _VerificationScreenState extends State<VerificationScreen> {
             if (_hasStartedInputting && !_showResendCode)
               Text(_resendCodeText, style: const TextStyle(
                 color: resendCodeTextColor,
-                fontFamily: 'br_omny_regular',
                 fontWeight: FontWeight.w400,
                 fontSize: 14,
               )),
@@ -191,7 +190,6 @@ class _VerificationScreenState extends State<VerificationScreen> {
                 "Invalid OTP",
                 style: TextStyle(
                     color: textfieldErrorRedColor,
-                  fontFamily: 'br_omny_regular',
                   fontWeight: FontWeight.w400,
                   fontSize: 12,
                 ),
@@ -206,7 +204,6 @@ class _VerificationScreenState extends State<VerificationScreen> {
                   style: TextStyle(
                     color: resendCodeTextColor,
                     decoration: TextDecoration.underline,
-                    fontFamily: 'br_omny_regular',
                     fontWeight: FontWeight.w400,
                     fontSize: 14,
                   ),

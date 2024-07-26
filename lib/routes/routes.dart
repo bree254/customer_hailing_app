@@ -31,15 +31,15 @@ class AppRoutes {
     ),
     GetPage(
         name: googleSignOn,
-        page: ()=> GoogleSignInUpScreen(),
+        page: ()=> const GoogleSignInUpScreen(),
     ),
     GetPage(
         name: emailSignOn,
-        page: ()=> EmailSignInUpScreen(),
+        page: ()=> const EmailSignInUpScreen(),
     ),
     GetPage(
         name: emailPhoneNumber,
-        page: ()=> EmailPhoneNumberScreen(),
+        page: ()=> const EmailPhoneNumberScreen(),
     )
   ];
 }

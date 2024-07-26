@@ -10,6 +10,7 @@ class EmailPhoneNumberScreen extends StatefulWidget {
 }
 
 class _EmailPhoneNumberScreenState extends State<EmailPhoneNumberScreen> {
+
   String? errorMessage;
   InputBorder? inputBorder;
 
@@ -18,80 +19,81 @@ class _EmailPhoneNumberScreenState extends State<EmailPhoneNumberScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.fromLTRB(16, 32, 16, 0),
-        child: Column(
-          children: [
-            Text(
-              "What’s your mobile number?",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: blackTextColor,
-                fontFamily: 'br_omny_regular',
-                fontWeight: FontWeight.w600,
-                fontSize: 20,
-              ),
-            ),
-            SizedBox(height: 40),
-            CustomPhoneInput(
-              controller: phoneController,
-              onInputChanged: (value) {
-                String? newErrorMessage;
-                InputBorder newInputBorder;
-
-                if (value.length == 9) {
-                  newErrorMessage = null;
-                  newInputBorder = OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.h),
-                    borderSide: BorderSide(color: appTheme.colorPrimary),
-                  );
-                } else {
-                  newErrorMessage = 'Incomplete number';
-                  newInputBorder = OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.h),
-                    borderSide: BorderSide(color: appTheme.inputError),
-                  );
-                }
-                setState(() {
-                  errorMessage = newErrorMessage;
-                  inputBorder = newInputBorder;
-                });
-              },
-              inputBorder: inputBorder,
-              errorMessage: errorMessage,
-            ),
-            Spacer(),
-            Padding(
-              padding: EdgeInsets.zero,
-              child: CustomElevatedButton(
-                text: 'Continue',
-                onPressed: (){},
-                buttonTextStyle: const TextStyle(
-                  color: whiteTextColor,
-                  fontFamily: 'br_omny_regular',
+      body: SingleChildScrollView(
+        physics: NeverScrollableScrollPhysics(),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16, 32, 16, 0),
+          child: Column(
+            children: [
+              const SizedBox(height: 32,),
+              const Text(
+                "What’s your mobile number?",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: blackTextColor,
                   fontWeight: FontWeight.w600,
-                  fontSize: 12,
+                  fontSize: 20,
                 ),
-                buttonStyle: ElevatedButton.styleFrom(
-                  backgroundColor: primaryColor,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),
+              ),
+              const SizedBox(height: 40),
+              CustomPhoneInput(
+                controller: phoneController,
+                onInputChanged: (value) {
+                  String? newErrorMessage;
+                  InputBorder newInputBorder;
+
+                  if (value.length == 9) {
+                    newErrorMessage = null;
+                    newInputBorder = OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.h),
+                      borderSide: BorderSide(color: appTheme.colorPrimary),
+                    );
+                  } else {
+                    newErrorMessage = 'Incomplete number';
+                    newInputBorder = OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.h),
+                      borderSide: BorderSide(color: appTheme.inputError),
+                    );
+                  }
+                  setState(() {
+                    errorMessage = newErrorMessage;
+                    inputBorder = newInputBorder;
+                  });
+                },
+                inputBorder: inputBorder,
+                errorMessage: errorMessage,
+              ),
+              const Spacer(),
+              Padding(
+                padding: EdgeInsets.zero,
+                child: CustomElevatedButton(
+                  text: 'Continue',
+                  onPressed: (){},
+                  buttonTextStyle: const TextStyle(
+                    color: whiteTextColor,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 12,
+                  ),
+                  buttonStyle: ElevatedButton.styleFrom(
+                    backgroundColor: primaryColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
                   ),
                 ),
               ),
-            ),
-            const SizedBox(height: 24,),
-            const Text(
-              "Back",
-              style: TextStyle(
-                color: primaryColor,
-                fontFamily: 'br_omny_regular',
-                fontWeight: FontWeight.w600,
-                fontSize: 12,
+              const SizedBox(height: 24,),
+              const Text(
+                "Back",
+                style: TextStyle(
+                  color: primaryColor,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 12,
+                ),
               ),
-            ),
 
-          ],
+            ],
+          ),
         ),
       ),
     );

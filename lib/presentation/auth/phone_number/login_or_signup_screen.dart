@@ -45,7 +45,7 @@ class _LoginOrSignupScreenState extends State<LoginOrSignupScreen> {
       Get.toNamed(
           AppRoutes.verification,
         arguments: {
-          "phone_number": _phoneController.text, "verification_type": "mobile number"
+          "phone_email": _phoneController.text, "verification_type": "mobile number"
         }
       );
     } else {
@@ -64,12 +64,16 @@ class _LoginOrSignupScreenState extends State<LoginOrSignupScreen> {
     try {
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
       if (googleUser != null) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const GoogleSignInUpScreen(),
-          ),
-        );
+
+        debugPrint('Google User: ${googleUser.displayName}');
+
+        List<String> name = googleUser.displayName!.split(' ');
+
+        Get.toNamed(AppRoutes.googleSignOn, arguments: {
+          'firstname': name[0],
+          'lastname': name[1],
+          'email': googleUser.email,
+        });
         // The user successfully signed in, you can now access their info
         print('Google User: ${googleUser.displayName}');
         // Handle your logic after successful sign-in
@@ -85,13 +89,13 @@ class _LoginOrSignupScreenState extends State<LoginOrSignupScreen> {
         padding: const EdgeInsets.fromLTRB(16, 32, 16, 0),
         child: Column(
           children: [
+            const SizedBox(height: 32,),
             const Align(
               alignment: Alignment.center,
               child: Text(
                 "Login or Signup",
                 style: TextStyle(
                   color: blackTextColor,
-                  fontFamily: 'br_omny_regular',
                   fontWeight: FontWeight.w600,
                   fontSize: 20,
                 ),
@@ -109,7 +113,6 @@ class _LoginOrSignupScreenState extends State<LoginOrSignupScreen> {
                         "Enter your mobile number",
                         style: TextStyle(
                           color: blackTextColor,
-                          fontFamily: 'br_omny_regular',
                           fontWeight: FontWeight.w400,
                           fontSize: 14,
                         ),
@@ -154,12 +157,6 @@ class _LoginOrSignupScreenState extends State<LoginOrSignupScreen> {
                           navigateToVerificationScreen();
                         }
                             : null,
-                        buttonTextStyle: const TextStyle(
-                          color: whiteTextColor,
-                          fontFamily: 'br_omny_regular',
-                          fontWeight: FontWeight.w600,
-                          fontSize: 12,
-                        ),
                         buttonStyle: ElevatedButton.styleFrom(
                           backgroundColor: _isButtonEnabled
                               ? primaryColor
@@ -181,7 +178,6 @@ class _LoginOrSignupScreenState extends State<LoginOrSignupScreen> {
                 "or",
               style:TextStyle(
                 color: formTextLabelColor,
-                fontFamily: 'br_omny_regular',
                 fontWeight: FontWeight.w400,
                 fontSize: 12,
               ),
@@ -202,18 +198,13 @@ class _LoginOrSignupScreenState extends State<LoginOrSignupScreen> {
                     height: 16.0,
                     child: Image.asset('assets/images/google.png'),
                   ),
-                  buttonTextStyle: const TextStyle(
-                    color: blackTextColor,
-                    fontFamily: 'br_omny_regular',
-                    fontWeight: FontWeight.w600,
-                    fontSize: 12,
-                  ),
                   buttonStyle: ElevatedButton.styleFrom(
                     backgroundColor:buttonGrey,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0),
                     ),
                   ),
+                  buttonTextStyle: AppTextStyles.titleMedium.copyWith(color: formTextLabelColor),
                 ),
                 const SizedBox(
                   height: 8,
@@ -228,18 +219,14 @@ class _LoginOrSignupScreenState extends State<LoginOrSignupScreen> {
                     height: 16.0,
                     child: Image.asset('assets/images/mail.png'),
                   ),
-                  buttonTextStyle: const TextStyle(
-                    color: blackTextColor,
-                    fontFamily: 'br_omny_regular',
-                    fontWeight: FontWeight.w600,
-                    fontSize: 12,
-                  ),
                   buttonStyle: ElevatedButton.styleFrom(
                     backgroundColor:buttonGrey,
+                    elevation: 0,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0),
                     ),
                   ),
+                    buttonTextStyle: AppTextStyles.titleMedium.copyWith(color: formTextLabelColor),
                 ),
 
               ],

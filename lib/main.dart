@@ -32,6 +32,7 @@ class Hailing extends StatelessWidget {
       return GetMaterialApp(
         title: 'Taxi App',
         debugShowCheckedModeBanner: false,
+        theme: theme,
         initialBinding: InitialBindings(),
         initialRoute: AppRoutes.home,
         getPages: AppRoutes.pages,

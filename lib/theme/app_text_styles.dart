@@ -152,7 +152,7 @@ class AppTextStyles {
 extension on TextStyle {
   TextStyle get omny {
     return copyWith(
-      fontFamily: 'br_omny',
+      fontFamily: 'BrOmny',
     );
   }
 }
