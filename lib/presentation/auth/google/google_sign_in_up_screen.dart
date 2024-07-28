@@ -91,6 +91,8 @@ class _GoogleSignInUpScreenState extends State<GoogleSignInUpScreen> {
                         fontWeight: FontWeight.w500,
                         fontSize: 14,
                       ),
+                      height: 96.h,
+                      contentPadding: EdgeInsets.symmetric(vertical: 15.v, horizontal: 10.h),
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'First name is required';
@@ -124,6 +126,8 @@ class _GoogleSignInUpScreenState extends State<GoogleSignInUpScreen> {
                         fontWeight: FontWeight.w500,
                         fontSize: 14,
                       ),
+                      height: 96.h,
+                      contentPadding: EdgeInsets.symmetric(vertical: 15.v, horizontal: 10.h),
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'Last name is required';

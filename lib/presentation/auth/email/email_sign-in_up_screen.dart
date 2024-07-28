@@ -32,7 +32,7 @@ class _EmailSignInUpScreenState extends State<EmailSignInUpScreen> {
     if (_formKey.currentState!.validate()) {
       
       Get.toNamed(AppRoutes.emailPhoneNumber, arguments: {
-        'phone_email': Get.arguments['email'],
+        'phone_email': emailController.text,
         "verification_type": "email"
       });
     }
@@ -42,8 +42,9 @@ class _EmailSignInUpScreenState extends State<EmailSignInUpScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 32, 16, 0),
+        padding: const EdgeInsets.fromLTRB(16, 32, 16, 32),
         child: Form(
+          key: _formKey,
             child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -78,13 +79,24 @@ class _EmailSignInUpScreenState extends State<EmailSignInUpScreen> {
               controller: emailController,
               filled: true,
               fillColor: countryTextFieldColor,
-              borderDecoration:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
               hintText: "name@email.com",
               hintStyle: const TextStyle(
                 color: blackTextColor,
                 fontWeight: FontWeight.w400,
                 fontSize: 14,
+              ),
+              autofocus: false,
+              height: 96.h,
+              contentPadding: EdgeInsets.symmetric(vertical: 15.v, horizontal: 10.h),
+              validator: (value) {
+                if (value!.isEmpty) {
+                  return 'Email is required';
+                }
+                return null;
+              },
+              borderDecoration: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.h),
+                borderSide: const BorderSide(color: Colors.transparent, width: 0),
               ),
             ),
             const Spacer(),
@@ -110,9 +122,11 @@ class _EmailSignInUpScreenState extends State<EmailSignInUpScreen> {
               height: 24,
             ),
             GestureDetector(
-              onTap: (){},
-              child: Center(
-                child: const Text(
+              onTap: (){
+               Get.back();
+              },
+              child: const Center(
+                child: Text(
                   "Back",
                   style: TextStyle(
                     color: primaryColor,

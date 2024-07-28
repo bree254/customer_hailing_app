@@ -2,6 +2,7 @@ import 'package:customer_hailing/components/phone_field/custom_phone_input.dart'
 import 'package:customer_hailing/core/utils/colors.dart';
 import 'package:flutter/material.dart';
 import '../../../core/app_export.dart';
+import '../../../routes/routes.dart';
 class EmailPhoneNumberScreen extends StatefulWidget {
   const EmailPhoneNumberScreen({super.key});
 
@@ -18,11 +19,14 @@ class _EmailPhoneNumberScreenState extends State<EmailPhoneNumberScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Retrieve arguments from the previous screen
+    final arguments = Get.arguments;
+    final String phoneEmail = arguments['phone_email'] ?? '';
+    final String verificationType = arguments['verification_type'] ?? '';
+
     return Scaffold(
-      body: SingleChildScrollView(
-        physics: NeverScrollableScrollPhysics(),
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(16, 32, 16, 0),
+      body: Padding(
+          padding: const EdgeInsets.fromLTRB(16, 32, 16, 32),
           child: Column(
             children: [
               const SizedBox(height: 32,),
@@ -68,7 +72,15 @@ class _EmailPhoneNumberScreenState extends State<EmailPhoneNumberScreen> {
                 padding: EdgeInsets.zero,
                 child: CustomElevatedButton(
                   text: 'Continue',
-                  onPressed: (){},
+                  onPressed: () {
+                    // Navigate to the next screen, passing the email and phone number
+                    Get.toNamed(AppRoutes.verification, arguments: {
+                      'phone_email': phoneEmail,
+                      'verification_type':verificationType,
+                      // 'phone_number': phoneController.text,
+
+                    });
+                  },
                   buttonTextStyle: const TextStyle(
                     color: whiteTextColor,
                     fontWeight: FontWeight.w600,
@@ -83,18 +95,22 @@ class _EmailPhoneNumberScreenState extends State<EmailPhoneNumberScreen> {
                 ),
               ),
               const SizedBox(height: 24,),
-              const Text(
-                "Back",
-                style: TextStyle(
-                  color: primaryColor,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 12,
+              GestureDetector(
+                onTap: (){
+                  Get.back();
+                },
+                child: const Text(
+                  "Back",
+                  style: TextStyle(
+                    color: primaryColor,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 12,
+                  ),
                 ),
               ),
 
             ],
           ),
-        ),
       ),
     );
   }

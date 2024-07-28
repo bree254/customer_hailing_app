@@ -45,7 +45,8 @@ class _LoginOrSignupScreenState extends State<LoginOrSignupScreen> {
       Get.toNamed(
           AppRoutes.verification,
         arguments: {
-          "phone_email": _phoneController.text, "verification_type": "mobile number"
+          "phone_email": _phoneController.text,
+          "verification_type": "mobile number"
         }
       );
     } else {
@@ -89,7 +90,7 @@ class _LoginOrSignupScreenState extends State<LoginOrSignupScreen> {
         padding: const EdgeInsets.fromLTRB(16, 32, 16, 0),
         child: Column(
           children: [
-            const SizedBox(height: 32,),
+            SizedBox(height: 32.v),
             const Align(
               alignment: Alignment.center,
               child: Text(
@@ -117,8 +118,8 @@ class _LoginOrSignupScreenState extends State<LoginOrSignupScreen> {
                           fontSize: 14,
                         ),
                       ),
-                      const SizedBox(
-                        height: 20,
+                       SizedBox(
+                        height: 20.v,
                       ),
                       CustomPhoneInput(
                         controller: _phoneController,
@@ -147,8 +148,8 @@ class _LoginOrSignupScreenState extends State<LoginOrSignupScreen> {
                         inputBorder: inputBorder,
                         errorMessage: errorMessage,
                       ),
-                      const SizedBox(
-                        height: 20,
+                       SizedBox(
+                        height: 20.v,
                       ),
                       CustomElevatedButton(
                         text: 'Continue',
@@ -170,8 +171,8 @@ class _LoginOrSignupScreenState extends State<LoginOrSignupScreen> {
                   )),
             ),
 
-            const SizedBox(
-              height: 20,
+            SizedBox(
+              height: 20.v,
             ),
 
             const Text(
@@ -211,7 +212,7 @@ class _LoginOrSignupScreenState extends State<LoginOrSignupScreen> {
                 ),
                 CustomElevatedButton(
                   onPressed: (){
-                    Get.offNamed(AppRoutes.emailSignOn);
+                    Get.toNamed(AppRoutes.emailSignOn);
                   },
                   text: 'Continue with email',
                   leftIcon:SizedBox(

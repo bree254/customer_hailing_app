@@ -30,7 +30,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
   void initState(){
     super.initState();
     phoneEmail = Get.arguments['phone_email'];
-    email= Get.arguments['email'];
+
     verificationType = Get.arguments['verification_type'];
   }
 

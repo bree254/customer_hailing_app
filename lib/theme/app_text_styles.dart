@@ -31,6 +31,13 @@ class AppTextStyles {
         color: appTheme.grayBlack,
         fontSize: 14,
       );
+  static get labelStyle => theme.textTheme.labelMedium!.copyWith(
+    color: appTheme.grayText,
+    fontSize: 14,
+  );
+
+  static get titleStyle => theme.textTheme.labelMedium!
+      .copyWith(color: appTheme.grayText, fontSize: 20, fontWeight: FontWeight.w600);
 
   // Headline text style
   static get headlineSmall => theme.textTheme.headlineSmall!.copyWith(

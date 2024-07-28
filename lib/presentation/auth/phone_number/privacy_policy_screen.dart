@@ -1,3 +1,4 @@
+import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/core/utils/colors.dart';
 import 'package:customer_hailing/theme/app_text_styles.dart';
 import 'package:customer_hailing/widgets/custom_elevated_button.dart';
@@ -9,7 +10,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(16,55,16,0),
+        padding: const EdgeInsets.fromLTRB(16,55,16,32),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -59,7 +60,9 @@ class PrivacyPolicyScreen extends StatelessWidget {
             ),
             const SizedBox(height: 24,),
             GestureDetector(
-              onTap: (){},
+              onTap: (){
+                Get.back();
+              },
               child: Center(
                 child: const Text(
                   "Back",
