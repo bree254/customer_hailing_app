@@ -72,4 +72,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'ride-hailing-d819c.appspot.com',
     iosBundleId: 'com.cymelle.hailing.customerHailing',
   );
+
 }

@@ -6,9 +6,11 @@ import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/presentation/auth/verification.dart';
 import 'package:customer_hailing/presentation/order_request/binding/home_binding.dart';
 import 'package:customer_hailing/presentation/order_request/home_screen.dart';
+import 'package:customer_hailing/presentation/splash/splash_screen.dart';
 
 class AppRoutes {
-  static const String home = '/';
+  static const String splash = '/';
+  static const String home = '/home';
   static const String loginorsignup ="/login_or_signup";
   static const String verification ="/verification";
   static const String googleSignOn ="/google_sign_on";
@@ -17,6 +19,10 @@ class AppRoutes {
 
 
   static List<GetPage> pages = [
+    GetPage(
+      name: splash,
+      page: () => const SplashScreen(),
+    ),
     GetPage(
       name: home,
       page: () => const HomeScreen(),

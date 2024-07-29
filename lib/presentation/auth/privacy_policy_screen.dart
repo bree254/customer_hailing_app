@@ -50,7 +50,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
               child: CustomElevatedButton(
                 text: 'Continue',
                 onPressed: (){
-                  Get.toNamed(AppRoutes.home);
+                  // Get.toNamed(AppRoutes.home);
                 },
                 buttonTextStyle: AppTextStyles.titleMedium.copyWith(color: whiteTextColor),
                 buttonStyle: ElevatedButton.styleFrom(

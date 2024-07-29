@@ -11,6 +11,7 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  bool isLoggedIn=true;
   @override
   void initState() {
     super.initState();
@@ -19,7 +20,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   _navigateToNextScreen()async {
     await Future.delayed(const Duration(seconds: 3));
-    bool isLoggedIn=false;
+
     if(isLoggedIn){
       Get.offNamed(AppRoutes.home);
     }else{

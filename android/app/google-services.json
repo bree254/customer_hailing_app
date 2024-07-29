@@ -7,6 +7,25 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:1040823718714:android:6a2e427e0bd8719614b603",
+        "android_client_info": {
+          "package_name": "com.cymelle.driver.driver_hailing"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDEDLwNsrT2WRYnjd_I1SDOhrPZs2h07aY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:1040823718714:android:89ebb71bc30672b914b603",
         "android_client_info": {
           "package_name": "com.cymelle.hailing.customer_hailing"
