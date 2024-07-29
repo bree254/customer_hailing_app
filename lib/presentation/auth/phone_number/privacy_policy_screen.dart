@@ -15,7 +15,6 @@ class PrivacyPolicyScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(height: 55,),
-
             Image.asset(
               alignment: Alignment.center,
               height: 53,
@@ -80,7 +79,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
         
         ),
       ),
-
+""
     );
   }
 }
