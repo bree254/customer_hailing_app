@@ -26,7 +26,7 @@ class _EmailPhoneNumberScreenState extends State<EmailPhoneNumberScreen> {
 
     return Scaffold(
       body: Padding(
-          padding: const EdgeInsets.fromLTRB(16, 32, 16, 32),
+          padding: const EdgeInsets.fromLTRB(16, 32, 16, 16),
           child: Column(
             children: [
               const SizedBox(height: 32,),
@@ -81,11 +81,6 @@ class _EmailPhoneNumberScreenState extends State<EmailPhoneNumberScreen> {
 
                     });
                   },
-                  buttonTextStyle: const TextStyle(
-                    color: whiteTextColor,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 12,
-                  ),
                   buttonStyle: ElevatedButton.styleFrom(
                     backgroundColor: primaryColor,
                     shape: RoundedRectangleBorder(

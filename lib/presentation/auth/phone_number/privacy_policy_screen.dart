@@ -10,10 +10,11 @@ class PrivacyPolicyScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(16,55,16,32),
+        padding: const EdgeInsets.fromLTRB(16,55,16,16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            SizedBox(height: 55,),
 
             Image.asset(
               alignment: Alignment.center,

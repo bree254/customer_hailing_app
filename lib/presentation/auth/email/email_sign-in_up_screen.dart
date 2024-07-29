@@ -42,7 +42,7 @@ class _EmailSignInUpScreenState extends State<EmailSignInUpScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 32, 16, 32),
+        padding: const EdgeInsets.fromLTRB(16, 32, 16, 16),
         child: Form(
           key: _formKey,
             child: Column(
