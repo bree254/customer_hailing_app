@@ -69,7 +69,7 @@ class _CustomPhoneInputState extends State<CustomPhoneInput> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 16.h),
+      // margin: EdgeInsets.symmetric(horizontal: 16.h),
       child: Column(
         children: [
           Row(

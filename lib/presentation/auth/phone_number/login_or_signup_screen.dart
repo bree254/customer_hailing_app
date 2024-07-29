@@ -201,6 +201,7 @@ class _LoginOrSignupScreenState extends State<LoginOrSignupScreen> {
                   ),
                   buttonStyle: ElevatedButton.styleFrom(
                     backgroundColor:buttonGrey,
+                    elevation: 0,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0),
                     ),

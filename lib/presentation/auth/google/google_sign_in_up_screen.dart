@@ -23,7 +23,6 @@ class _GoogleSignInUpScreenState extends State<GoogleSignInUpScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     firstNameController.text = Get.arguments["firstname"];
     lastNameController.text = Get.arguments["lastname"];
@@ -41,170 +40,169 @@ class _GoogleSignInUpScreenState extends State<GoogleSignInUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       body: Padding(
-          padding: EdgeInsets.fromLTRB(16.h, 32.v, 16.h, 16.v),
-          child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    height: 32.v,
+        padding: EdgeInsets.fromLTRB(16.h, 32.v, 16.h, 16.v),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: 32.v,
+              ),
+              const Align(
+                alignment: Alignment.center,
+                child: Text(
+                  "Enter your details",
+                  style: TextStyle(
+                    color: blackTextColor,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 20,
                   ),
-                  const Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      "Enter your details",
-                      style: TextStyle(
-                        color: blackTextColor,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 20,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 40.v,
-                  ),
-                  const Text(
-                    "First name",
-                    style: TextStyle(
-                      color: formTextLabelColor,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 14,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10.v,
-                  ),
-                  CustomTextFormField(
-                    controller: firstNameController,
-                    filled: true,
-                    fillColor: countryTextFieldColor,
-                    borderDecoration: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide:
-                          const BorderSide(color: Colors.transparent, width: 0),
-                    ),
-                    hintText: "Ariana",
-                    hintStyle: const TextStyle(
-                      color: blackTextColor,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 14,
-                    ),
-                    // height: 96.h,
-                    contentPadding:
-                        EdgeInsets.symmetric(vertical: 15.v, horizontal: 10.h),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'First name is required';
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(
-                    height: 24.v,
-                  ),
-                  const Text(
-                    "Last name",
-                    style: TextStyle(
-                      color: formTextLabelColor,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 14,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10.v,
-                  ),
-                  CustomTextFormField(
-                    controller: lastNameController,
-                    filled: true,
-                    fillColor: countryTextFieldColor,
-                    borderDecoration: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide:
-                          const BorderSide(color: Colors.transparent, width: 0),
-                    ),
-                    hintText: "Grandeur",
-                    hintStyle: const TextStyle(
-                      color: blackTextColor,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 14,
-                    ),
-                    // height: 96.h,
-                    contentPadding:
-                        EdgeInsets.symmetric(vertical: 15.v, horizontal: 10.h),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Last name is required';
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(
-                    height: 24.v,
-                  ),
-                  const Text(
-                    "Enter your mobile number",
-                    style: TextStyle(
-                      color: formTextLabelColor,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 14,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10.v,
-                  ),
-                  CustomPhoneInput(
-                    controller: phoneController,
-                    onInputChanged: (value) {
-                      String? newErrorMessage;
-                      InputBorder newInputBorder;
+                ),
+              ),
+              SizedBox(
+                height: 40.v,
+              ),
+              const Text(
+                "First name",
+                style: TextStyle(
+                  color: formTextLabelColor,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 14,
+                ),
+              ),
+              SizedBox(
+                height: 10.v,
+              ),
+              CustomTextFormField(
+                controller: firstNameController,
+                filled: true,
+                fillColor: countryTextFieldColor,
+                borderDecoration: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: const BorderSide(color: Colors.transparent, width: 0),
+                ),
+                hintText: "Ariana",
+                hintStyle: const TextStyle(
+                  color: blackTextColor,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 14,
+                ),
+                contentPadding: EdgeInsets.symmetric(vertical: 15.v, horizontal: 10.h),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'First name is required';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(
+                height: 24.v,
+              ),
+              const Text(
+                "Last name",
+                style: TextStyle(
+                  color: formTextLabelColor,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 14,
+                ),
+              ),
+              SizedBox(
+                height: 10.v,
+              ),
+              CustomTextFormField(
+                controller: lastNameController,
+                filled: true,
+                fillColor: countryTextFieldColor,
+                borderDecoration: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: const BorderSide(color: Colors.transparent, width: 0),
+                ),
+                hintText: "Grandeur",
+                hintStyle: const TextStyle(
+                  color: blackTextColor,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 14,
+                ),
+                contentPadding: EdgeInsets.symmetric(vertical: 15.v, horizontal: 10.h),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Last name is required';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(
+                height: 24.v,
+              ),
+              const Text(
+                "Enter your mobile number",
+                style: TextStyle(
+                  color: formTextLabelColor,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 14,
+                ),
+              ),
+              SizedBox(
+                height: 10.v,
+              ),
+              CustomPhoneInput(
+                controller: phoneController,
+                onInputChanged: (value) {
+                  String? newErrorMessage;
+                  InputBorder newInputBorder;
 
-                      if (value.length == 9) {
-                        newErrorMessage = null;
-                        newInputBorder = OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.h),
-                          borderSide: BorderSide(color: appTheme.colorPrimary),
-                        );
-                      } else {
-                        newErrorMessage = 'Incomplete number';
-                        newInputBorder = OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.h),
-                          borderSide: BorderSide(color: appTheme.inputError),
-                        );
-                      }
-                      setState(() {
-                        errorMessage = newErrorMessage;
-                        inputBorder = newInputBorder;
-                      });
-                    },
-                    inputBorder: inputBorder,
-                    errorMessage: errorMessage,
-                    customValidator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Phone number is required';
-                      }
-                      return null;
-                    },
+                  if (value.length == 9) {
+                    newErrorMessage = null;
+                    newInputBorder = OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.h),
+                      borderSide: BorderSide(color: appTheme.colorPrimary),
+                    );
+                  } else {
+                    newErrorMessage = 'Incomplete number';
+                    newInputBorder = OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.h),
+                      borderSide: BorderSide(color: appTheme.inputError),
+                    );
+                  }
+                  setState(() {
+                    errorMessage = newErrorMessage;
+                    inputBorder = newInputBorder;
+                  });
+                },
+                inputBorder: inputBorder,
+                errorMessage: errorMessage,
+                customValidator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Phone number is required';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(
+                height: 24.v,
+              ),
+              Spacer(),
+              CustomElevatedButton(
+                onPressed: () {
+                  onSubmit();
+                },
+                text: 'Confirm',
+                buttonTextStyle: AppTextStyles.titleMedium.copyWith(color: whiteTextColor),
+                buttonStyle: ElevatedButton.styleFrom(
+                  backgroundColor: primaryColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
                   ),
-                  Spacer(),
-                  CustomElevatedButton(
-                    onPressed: () {
-                      onSubmit();
-                    },
-                    text: 'Confirm',
-                    buttonTextStyle:
-                        AppTextStyles.titleMedium.copyWith(color: whiteTextColor),
-                    buttonStyle: ElevatedButton.styleFrom(
-                      backgroundColor: primaryColor,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                    ),
-                  ),
-                ],
-              )),
+                ),
+              ),
+            ],
+          ),
         ),
+      ),
     );
   }
 }

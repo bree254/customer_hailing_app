@@ -132,9 +132,9 @@ class AppTextStyles {
         fontSize: 16,
         fontWeight: FontWeight.w700,
       );
-
+//changed font to 12
   static get titleMedium => theme.textTheme.titleMedium!.omny
-      .copyWith(color: Colors.black, fontWeight: FontWeight.w600, fontSize: 16);
+      .copyWith(color: Colors.black, fontWeight: FontWeight.w600, fontSize: 12);
 
   static get titleSmall => theme.textTheme.titleSmall!.copyWith(
         color: appTheme.grayBlack,
