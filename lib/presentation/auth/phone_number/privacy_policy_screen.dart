@@ -1,5 +1,6 @@
 import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/core/utils/colors.dart';
+import 'package:customer_hailing/routes/routes.dart';
 import 'package:customer_hailing/theme/app_text_styles.dart';
 import 'package:customer_hailing/widgets/custom_elevated_button.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +49,9 @@ class PrivacyPolicyScreen extends StatelessWidget {
               padding: EdgeInsets.zero,
               child: CustomElevatedButton(
                 text: 'Continue',
-                onPressed: (){},
+                onPressed: (){
+                  Get.toNamed(AppRoutes.home);
+                },
                 buttonTextStyle: AppTextStyles.titleMedium.copyWith(color: whiteTextColor),
                 buttonStyle: ElevatedButton.styleFrom(
                   backgroundColor: primaryColor,

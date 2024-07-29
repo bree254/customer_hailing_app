@@ -4,8 +4,8 @@ import 'package:customer_hailing/presentation/auth/google/google_sign_in_up_scre
 import 'package:customer_hailing/presentation/auth/phone_number/login_or_signup_screen.dart';
 import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/presentation/auth/verification.dart';
-import 'package:customer_hailing/presentation/home/binding/home_binding.dart';
-import 'package:customer_hailing/presentation/home/home_screen.dart';
+import 'package:customer_hailing/presentation/order_request/binding/home_binding.dart';
+import 'package:customer_hailing/presentation/order_request/home_screen.dart';
 
 class AppRoutes {
   static const String home = '/';
@@ -14,6 +14,7 @@ class AppRoutes {
   static const String googleSignOn ="/google_sign_on";
   static const String emailSignOn ="/email_sign_on";
   static const String emailPhoneNumber = "/email_phone_no";
+
 
   static List<GetPage> pages = [
     GetPage(

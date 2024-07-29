@@ -48,6 +48,7 @@ dependencies:
   intl_phone_field:
   country_picker:
   google_sign_in:
+  google_maps_flutter: ^2.2.8
 
 dev_dependencies:
   build_runner: ^2.4.6
