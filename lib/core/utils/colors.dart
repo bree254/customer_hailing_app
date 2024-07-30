@@ -16,3 +16,6 @@ const countryTextFieldColor = Color(0xFFF5F5F5);
 const textfieldErrorRedColor =Color(0xFFFF1507);
 
 const backButtonBlack =Color(0x197B7B7B);
+const historyIcon =Color(0xFF979797);
+
+const selectRideColor = Color(0xFfEFE9FA);

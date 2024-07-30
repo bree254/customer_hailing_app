@@ -7,6 +7,7 @@ import 'package:customer_hailing/presentation/auth/verification.dart';
 import 'package:customer_hailing/presentation/order_request/binding/home_binding.dart';
 import 'package:customer_hailing/presentation/order_request/home_screen.dart';
 import 'package:customer_hailing/presentation/order_request/search_screen.dart';
+import 'package:customer_hailing/presentation/order_request/select_ride_screen.dart';
 import 'package:customer_hailing/presentation/splash/splash_screen.dart';
 
 class AppRoutes {
@@ -18,6 +19,7 @@ class AppRoutes {
   static const String emailSignOn ="/email_sign_on";
   static const String emailPhoneNumber = "/email_phone_no";
   static const String search ="/search";
+  static const String selectRide = "/rides";
 
 
   static List<GetPage> pages = [
@@ -53,5 +55,8 @@ class AppRoutes {
     GetPage(
         name: search,
         page: ()=> SearchScreen()),
+    GetPage(
+        name: selectRide,
+        page: ()=> SelectRideScreen()),
   ];
 }

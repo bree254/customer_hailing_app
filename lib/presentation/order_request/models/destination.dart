@@ -1,6 +1,6 @@
 class Destination {
-  final String name;
   final String address;
+  final String location;
 
-  Destination({required this.name, required this.address});
+  Destination({required this.address, required this.location});
 }
