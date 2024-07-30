@@ -6,6 +6,7 @@ import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/presentation/auth/verification.dart';
 import 'package:customer_hailing/presentation/order_request/binding/home_binding.dart';
 import 'package:customer_hailing/presentation/order_request/home_screen.dart';
+import 'package:customer_hailing/presentation/order_request/search_screen.dart';
 import 'package:customer_hailing/presentation/splash/splash_screen.dart';
 
 class AppRoutes {
@@ -16,6 +17,7 @@ class AppRoutes {
   static const String googleSignOn ="/google_sign_on";
   static const String emailSignOn ="/email_sign_on";
   static const String emailPhoneNumber = "/email_phone_no";
+  static const String search ="/search";
 
 
   static List<GetPage> pages = [
@@ -47,6 +49,9 @@ class AppRoutes {
     GetPage(
         name: emailPhoneNumber,
         page: ()=> const EmailPhoneNumberScreen(),
-    )
+    ),
+    GetPage(
+        name: search,
+        page: ()=> SearchScreen()),
   ];
 }

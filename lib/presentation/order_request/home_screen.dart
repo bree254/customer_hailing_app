@@ -1,9 +1,14 @@
-import 'dart:async';
 import 'package:customer_hailing/core/app_export.dart';
-import 'package:customer_hailing/global_variables/index.dart';
+import 'package:customer_hailing/core/utils/colors.dart';
+import 'package:customer_hailing/presentation/order_request/search_screen.dart';
+import 'package:customer_hailing/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+
+import 'controller/ride_request_controller.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -13,167 +18,145 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final Completer<GoogleMapController> googleMapCompleterController = Completer<GoogleMapController>();
-  GoogleMapController? controllerGoogleMap;
-  Position? currentPositionOfUser;
-
-   CameraPosition googlePlexInitialPosition = CameraPosition(
-    target: LatLng(37.43296265331129, -122.08832357078792),
-  );
-
-  Future<void> getCurrentLiveLocationOfUser() async {
-    // Get the current position of the user
-    Position positionOfUser = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.bestForNavigation,);
-
-
-
-    // Update the current position
-    setState(() {
-      currentPositionOfUser = positionOfUser;
-    });
-
-    // Convert the position to LatLng and move the camera
-    LatLng positionOfUserInLatLng = LatLng(
-      currentPositionOfUser!.latitude,
-      currentPositionOfUser!.longitude,
-    );
-    CameraPosition cameraPosition = CameraPosition(
-      target: positionOfUserInLatLng,
-      zoom: 15,
-    );
-    controllerGoogleMap?.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
-
-    // Listen for position updates and move the camera accordingly
-    Geolocator.getPositionStream(
-      locationSettings: const LocationSettings(
-        accuracy: LocationAccuracy.bestForNavigation,
-      ),
-    ).listen((Position position) {
-      setState(() {
-        currentPositionOfUser = position;
-      });
-
-      LatLng updatedPosition = LatLng(position.latitude, position.longitude);
-      controllerGoogleMap?.animateCamera(CameraUpdate.newLatLng(updatedPosition));
-    });
-  }
+  GoogleMapController? mapController;
+  LatLng? _center;
+  Position? _currentPosition;
 
   @override
   void initState() {
     super.initState();
-    getCurrentLiveLocationOfUser();
+    _getUserLocation();
+  }
+
+  void _onMapCreated(GoogleMapController controller) {
+    mapController = controller;
+  }
+
+  _getUserLocation() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+// Check if location services are enabled
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return;
+    }
+// Request permission to get the user's location
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.deniedForever) {
+      return;
+    }
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission != LocationPermission.whileInUse &&
+          permission != LocationPermission.always) {
+        return;
+      }
+    }
+// Get the current location of the user
+    _currentPosition = await Geolocator.getCurrentPosition();
+    setState(() {
+      _center = LatLng(_currentPosition!.latitude, _currentPosition!.longitude);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-
-
-          GoogleMap(
-            mapType: MapType.normal,
-            myLocationEnabled: true,
-            initialCameraPosition: googlePlexInitialPosition,
-            onMapCreated: (GoogleMapController mapController) {
-              controllerGoogleMap = mapController;
-              googleMapCompleterController.complete(controllerGoogleMap);
-            },
-          ),
-
-          DraggableScrollableSheet(
-            initialChildSize: 0.3,
-            minChildSize: 0.3,
-            maxChildSize: 0.6,
-            builder: (context, scrollController) {
-              return Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black26,
-                      blurRadius: 10,
-                      spreadRadius: 5,
+        body: Stack(
+      children: [
+        _center == null
+            ? const Center(child: CircularProgressIndicator())
+            : SizedBox(
+                height: double.infinity,
+                child: GoogleMap(
+                  onMapCreated: _onMapCreated,
+                  initialCameraPosition: CameraPosition(
+                    target: _center!,
+                    zoom: 15.0,
+                  ),
+                  markers: {
+                    Marker(
+                      markerId: const MarkerId('user_location'),
+                      position: _center!,
+                      infoWindow: const InfoWindow(title: 'Your Location'),
                     ),
-                  ],
+                  },
                 ),
-                child: Column(
-                  children: [
-                    Expanded(
-                      child: SingleChildScrollView(
-                        controller: scrollController,
-                        child: Column(
-                          children: [
-                            // Scrollable part of the bottom sheet
-                            ListTile(
-                              leading: Icon(Icons.directions_car),
-                              title: Text('Economy'),
-                              subtitle: Text('Ksh 460.0'),
-                            ),
-                            ListTile(
-                              leading: Icon(Icons.motorcycle),
-                              title: Text('Boda'),
-                              subtitle: Text('Ksh 210.0'),
-                            ),
-                            ListTile(
-                              leading: Icon(Icons.local_taxi),
-                              title: Text('Taxi Comfort'),
-                              subtitle: Text('Ksh 520.0'),
-                            ),
-                          ],
-                        ),
+              ),
+        DestinationBottomSheet(),
+      ],
+    ));
+  }
+}
+
+class DestinationBottomSheet extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // final RideRequestController controller = Get.find<RideRequestController>();
+
+    return DraggableScrollableSheet(
+      initialChildSize: 0.3,
+      minChildSize: 0.2,
+      maxChildSize: 0.8,
+      builder: (BuildContext context, ScrollController scrollController) {
+        return Container(
+          // padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
+          ),
+          child: Column(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  Get.toNamed(AppRoutes.search);
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                  child: AbsorbPointer(
+                    child: TextField(
+                      decoration: InputDecoration(
+                        labelText: 'where do you want to go',
+                        labelStyle: TextStyle(
+                          color: searchtextGrey,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                      height: 0.14,
+                      letterSpacing: 0.25,
+                    ),
+                        fillColor: searchButtonGrey,
+                        filled: true,
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide.none),
+                        prefixIcon: Icon(Icons.search,size:16),
                       ),
                     ),
-
-                    // Fixed part of the bottom sheet
-                    Container(
-                      padding: EdgeInsets.all(16),
-                      color: Colors.white,
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              Container(
-                                child: Row(
-                                  children: [
-                                    Icon(Icons.money),
-                                    SizedBox(width: 8),
-                                    Text('Cash'),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(width: 10,),
-                              Container(
-                                child: Row(
-                                  children: [
-                                    Icon(Icons.credit_card),
-                                    SizedBox(width: 8),
-                                    Text('Card'),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 10,),
-                          CustomElevatedButton(text: 'Select economy'),
-                          // ElevatedButton(
-                          //   onPressed: () {},
-                          //   child: Text('Select economy'),
-                          //   style: ElevatedButton.styleFrom(
-                          //     backgroundColor: Colors.purple,
-                          //   ),
-                          // ),
-                        ],
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
-              );
-            },
+              )
+
+              // Expanded(
+              //   child: Obx(
+              //         () => ListView.builder(
+              //       controller: scrollController,
+              //       itemCount: controller.destinations.length,
+              //       itemBuilder: (context, index) {
+              //         final destination = controller.destinations[index];
+              //         return Card(
+              //           child: ListTile(
+              //             title: Text(destination.name),
+              //             subtitle: Text(destination.address),
+              //           ),
+              //         );
+              //       },
+              //     ),
+              //   ),
+              // ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }
