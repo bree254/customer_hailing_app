@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:customer_hailing/core/app_export.dart';
-import 'package:customer_hailing/presentation/auth/phone_number/privacy_policy_screen.dart';
+import 'package:customer_hailing/presentation/auth/privacy_policy_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:customer_hailing/core/utils/colors.dart';
