@@ -3,6 +3,7 @@ import 'package:customer_hailing/core/utils/colors.dart';
 import 'package:customer_hailing/routes/routes.dart';
 import 'package:customer_hailing/widgets/custom_text_form_field.dart';
 import 'package:flutter/material.dart';
+
 import '../../../core/app_export.dart';
 
 class GoogleSignInUpScreen extends StatefulWidget {
@@ -30,10 +31,8 @@ class _GoogleSignInUpScreenState extends State<GoogleSignInUpScreen> {
 
   void onSubmit() {
     if (_formKey.currentState!.validate()) {
-      Get.toNamed(AppRoutes.verification, arguments: {
-        'phone_email': Get.arguments['email'],
-        "verification_type": "email"
-      });
+      Get.toNamed(AppRoutes.verification,
+          arguments: {'phone_email': Get.arguments['email'], "verification_type": "email"});
     }
   }
 
@@ -91,7 +90,7 @@ class _GoogleSignInUpScreenState extends State<GoogleSignInUpScreen> {
                   fontWeight: FontWeight.w500,
                   fontSize: 14,
                 ),
-                contentPadding: EdgeInsets.symmetric(vertical: 15.v, horizontal: 10.h),
+                contentPadding: EdgeInsets.symmetric(vertical: 14.v, horizontal: 10.h),
                 validator: (value) {
                   if (value!.isEmpty) {
                     return 'First name is required';
@@ -100,7 +99,7 @@ class _GoogleSignInUpScreenState extends State<GoogleSignInUpScreen> {
                 },
               ),
               SizedBox(
-                height: 24.v,
+                height: 20.v,
               ),
               const Text(
                 "Last name",
@@ -127,7 +126,7 @@ class _GoogleSignInUpScreenState extends State<GoogleSignInUpScreen> {
                   fontWeight: FontWeight.w500,
                   fontSize: 14,
                 ),
-                contentPadding: EdgeInsets.symmetric(vertical: 15.v, horizontal: 10.h),
+                contentPadding: EdgeInsets.symmetric(vertical: 16.v, horizontal: 10.h),
                 validator: (value) {
                   if (value!.isEmpty) {
                     return 'Last name is required';
@@ -181,9 +180,6 @@ class _GoogleSignInUpScreenState extends State<GoogleSignInUpScreen> {
                   }
                   return null;
                 },
-              ),
-              SizedBox(
-                height: 24.v,
               ),
               Spacer(),
               CustomElevatedButton(

@@ -11,39 +11,33 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  bool isLoggedIn=true;
+  bool isLoggedIn = false;
   @override
   void initState() {
     super.initState();
     _navigateToNextScreen();
   }
 
-  _navigateToNextScreen()async {
+  _navigateToNextScreen() async {
     await Future.delayed(const Duration(seconds: 3));
 
-    if(isLoggedIn){
+    if (isLoggedIn) {
       Get.offNamed(AppRoutes.home);
-    }else{
+    } else {
       Get.offNamed(AppRoutes.loginorsignup);
     }
-
   }
 
   @override
   Widget build(BuildContext context) {
-    return  const Scaffold(
+    return const Scaffold(
       backgroundColor: primaryColor,
       body: Center(
         child: Text(
           'Taxi App',
-          style: TextStyle(
-              color: whiteTextColor,
-            fontWeight: FontWeight.w700,
-            fontSize: 32
-          ),),
-
+          style: TextStyle(color: whiteTextColor, fontWeight: FontWeight.w700, fontSize: 32),
+        ),
       ),
-
     );
   }
 }
