@@ -1,7 +1,6 @@
 import 'package:customer_hailing/components/phone_field/custom_phone_input.dart';
 import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/core/utils/colors.dart';
-import 'package:customer_hailing/presentation/auth/google/google_sign_in_up_screen.dart';
 import 'package:customer_hailing/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -21,7 +20,6 @@ class _LoginOrSignupScreenState extends State<LoginOrSignupScreen> {
   InputBorder? inputBorder;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
-
   @override
   void initState() {
     super.initState();
@@ -39,16 +37,12 @@ class _LoginOrSignupScreenState extends State<LoginOrSignupScreen> {
       _isButtonEnabled = _phoneController.text.isNotEmpty;
     });
   }
+
   void navigateToVerificationScreen() {
     // Assuming the correct length is 9
     if (_phoneController.text.length == 9) {
-      Get.toNamed(
-          AppRoutes.verification,
-        arguments: {
-          "phone_email": _phoneController.text,
-          "verification_type": "mobile number"
-        }
-      );
+      Get.toNamed(AppRoutes.verification,
+          arguments: {"phone_email": _phoneController.text, "verification_type": "mobile number"});
     } else {
       // Update the UI to show an error or change the input border color
       setState(() {
@@ -65,7 +59,6 @@ class _LoginOrSignupScreenState extends State<LoginOrSignupScreen> {
     try {
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
       if (googleUser != null) {
-
         debugPrint('Google User: ${googleUser.displayName}');
 
         List<String> name = googleUser.displayName!.split(' ');
@@ -83,7 +76,9 @@ class _LoginOrSignupScreenState extends State<LoginOrSignupScreen> {
       print('Google Sign-In error: $error');
       // Handle the error accordingly
     }
-  }  @override
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
@@ -118,7 +113,7 @@ class _LoginOrSignupScreenState extends State<LoginOrSignupScreen> {
                           fontSize: 14,
                         ),
                       ),
-                       SizedBox(
+                      SizedBox(
                         height: 20.v,
                       ),
                       CustomPhoneInput(
@@ -148,20 +143,18 @@ class _LoginOrSignupScreenState extends State<LoginOrSignupScreen> {
                         inputBorder: inputBorder,
                         errorMessage: errorMessage,
                       ),
-                       SizedBox(
+                      SizedBox(
                         height: 20.v,
                       ),
                       CustomElevatedButton(
                         text: 'Continue',
-                        onPressed:  _phoneController.text.isNotEmpty
+                        onPressed: _phoneController.text.isNotEmpty
                             ? () {
-                          navigateToVerificationScreen();
-                        }
+                                navigateToVerificationScreen();
+                              }
                             : null,
                         buttonStyle: ElevatedButton.styleFrom(
-                          backgroundColor: _isButtonEnabled
-                              ? primaryColor
-                              : disabledButtonGrey,
+                          backgroundColor: _isButtonEnabled ? primaryColor : disabledButtonGrey,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.0),
                           ),
@@ -170,14 +163,12 @@ class _LoginOrSignupScreenState extends State<LoginOrSignupScreen> {
                     ],
                   )),
             ),
-
             SizedBox(
               height: 20.v,
             ),
-
             const Text(
-                "or",
-              style:TextStyle(
+              "or",
+              style: TextStyle(
                 color: formTextLabelColor,
                 fontWeight: FontWeight.w400,
                 fontSize: 12,
@@ -186,12 +177,11 @@ class _LoginOrSignupScreenState extends State<LoginOrSignupScreen> {
             const SizedBox(
               height: 5,
             ),
-
             Column(
               children: [
                 CustomElevatedButton(
                   onPressed: () {
-                   _handleGoogleSignIn();
+                    _handleGoogleSignIn();
                   },
                   text: 'Continue with Google',
                   leftIcon: SizedBox(
@@ -200,7 +190,7 @@ class _LoginOrSignupScreenState extends State<LoginOrSignupScreen> {
                     child: Image.asset('assets/images/google.png'),
                   ),
                   buttonStyle: ElevatedButton.styleFrom(
-                    backgroundColor:buttonGrey,
+                    backgroundColor: buttonGrey,
                     elevation: 0,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0),
@@ -212,25 +202,24 @@ class _LoginOrSignupScreenState extends State<LoginOrSignupScreen> {
                   height: 8,
                 ),
                 CustomElevatedButton(
-                  onPressed: (){
+                  onPressed: () {
                     Get.toNamed(AppRoutes.emailSignOn);
                   },
                   text: 'Continue with email',
-                  leftIcon:SizedBox(
+                  leftIcon: SizedBox(
                     width: 16.0,
                     height: 16.0,
                     child: Image.asset('assets/images/mail.png'),
                   ),
                   buttonStyle: ElevatedButton.styleFrom(
-                    backgroundColor:buttonGrey,
+                    backgroundColor: buttonGrey,
                     elevation: 0,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0),
                     ),
                   ),
-                    buttonTextStyle: AppTextStyles.titleMedium.copyWith(color: formTextLabelColor),
+                  buttonTextStyle: AppTextStyles.titleMedium.copyWith(color: formTextLabelColor),
                 ),
-
               ],
             )
           ],

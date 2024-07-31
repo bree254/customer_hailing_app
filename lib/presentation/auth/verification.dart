@@ -1,9 +1,10 @@
 import 'dart:async';
+
 import 'package:customer_hailing/core/app_export.dart';
+import 'package:customer_hailing/core/utils/colors.dart';
 import 'package:customer_hailing/presentation/auth/privacy_policy_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-import 'package:customer_hailing/core/utils/colors.dart';
 
 class VerificationScreen extends StatefulWidget {
   const VerificationScreen({super.key});
@@ -27,7 +28,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
   int _resendTimerSeconds = 30;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     phoneEmail = Get.arguments['phone_email'];
 
@@ -40,7 +41,6 @@ class _VerificationScreenState extends State<VerificationScreen> {
     _pinController.dispose();
     super.dispose();
   }
-
 
   void _startResendTimer() {
     _resendTimerSeconds = 30; // Reset timer to 30 seconds
@@ -63,6 +63,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
       });
     });
   }
+
   void _verifyCode(String pin) {
     setState(() {
       _isLoading = true;
@@ -73,7 +74,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
     Future.delayed(const Duration(seconds: 2), () {
       setState(() {
         _isLoading = false;
-        if (pin == "1234") { // Replace with your actual verification logic
+        if (pin == "1234") {
+          // Replace with your actual verification logic
           // Code is correct
           _showInvalidCode = false;
           //navigate to the privacy policy screen
@@ -81,7 +83,6 @@ class _VerificationScreenState extends State<VerificationScreen> {
             context,
             MaterialPageRoute(builder: (context) => const PrivacyPolicyScreen()),
           );
-
         } else {
           // Code is incorrect
           _showInvalidCode = true;
@@ -90,7 +91,6 @@ class _VerificationScreenState extends State<VerificationScreen> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -98,9 +98,10 @@ class _VerificationScreenState extends State<VerificationScreen> {
         padding: const EdgeInsets.fromLTRB(16, 32, 16, 0),
         child: Column(
           children: [
-
-            const SizedBox(height: 32,),
-             Align(
+            const SizedBox(
+              height: 32,
+            ),
+            Align(
               alignment: Alignment.center,
               child: Text(
                 "Verify your $verificationType",
@@ -112,7 +113,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
               ),
             ),
             const SizedBox(height: 32),
-             Column(
+            Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const Text(
@@ -177,11 +178,12 @@ class _VerificationScreenState extends State<VerificationScreen> {
             ),
             const SizedBox(height: 8),
             if (_hasStartedInputting && !_showResendCode)
-              Text(_resendCodeText, style: const TextStyle(
-                color: resendCodeTextColor,
-                fontWeight: FontWeight.w400,
-                fontSize: 14,
-              )),
+              Text(_resendCodeText,
+                  style: const TextStyle(
+                    color: resendCodeTextColor,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 14,
+                  )),
             const SizedBox(height: 16),
             if (_isLoading) ...[
               const CircularProgressIndicator(),
@@ -189,7 +191,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
               const Text(
                 "Invalid OTP",
                 style: TextStyle(
-                    color: textfieldErrorRedColor,
+                  color: textfieldErrorRedColor,
                   fontWeight: FontWeight.w400,
                   fontSize: 12,
                 ),
@@ -200,7 +202,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                   // Handle resend code action
                 },
                 child: const Text(
-                    "Resend code",
+                  "Resend code",
                   style: TextStyle(
                     color: resendCodeTextColor,
                     decoration: TextDecoration.underline,

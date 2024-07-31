@@ -82,7 +82,7 @@ class _SearchScreenState extends State<SearchScreen> {
         iconTheme: IconThemeData(color: Colors.black),
       ),
       body: Padding(
-        padding: EdgeInsets.only(top: 24.0,left: 16,bottom: 8,right: 16),
+        padding: EdgeInsets.only(top: 24.0, left: 16, bottom: 8, right: 16),
         child: Column(
           children: [
             TextField(
@@ -97,8 +97,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   height: 0.14,
                   letterSpacing: 0.25,
                 ),
-                fillColor:
-                    _focusNode.hasFocus ? Colors.white : searchButtonGrey,
+                fillColor: _focusNode.hasFocus ? Colors.white : searchButtonGrey,
                 filled: true,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
@@ -142,9 +141,7 @@ class _SearchScreenState extends State<SearchScreen> {
                             height: 0.14,
                             letterSpacing: 0.25,
                           ),
-                          fillColor: _focusNode.hasFocus
-                              ? Colors.white
-                              : searchButtonGrey,
+                          fillColor: _focusNode.hasFocus ? Colors.white : searchButtonGrey,
                           filled: true,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
@@ -187,8 +184,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   height: 0.14,
                   letterSpacing: 0.25,
                 ),
-                fillColor:
-                    _focusNode.hasFocus ? Colors.white : searchButtonGrey,
+                fillColor: _focusNode.hasFocus ? Colors.white : searchButtonGrey,
                 filled: true,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
@@ -211,26 +207,28 @@ class _SearchScreenState extends State<SearchScreen> {
               ),
             ),
             SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                GestureDetector(
-                  onTap: _addStopover,
-                  child: Icon(Icons.add_circle_outlined,
-                      color: primaryColor, size: 14),
+            GestureDetector(
+              onTap: _addStopover,
+              child: Container(
+                color: Colors.transparent,
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.add_circle_outlined, color: primaryColor, size: 14),
+                    SizedBox(width: 5),
+                    Text(
+                      'Add stop over',
+                      style: TextStyle(
+                        color: primaryColor,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        height: 0.14,
+                        letterSpacing: 0.25,
+                      ),
+                    ),
+                  ],
                 ),
-                SizedBox(width: 5),
-                Text(
-                  'Add stop over',
-                  style: TextStyle(
-                    color: primaryColor,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
-                    height: 0.14,
-                    letterSpacing: 0.25,
-                  ),
-                ),
-              ],
+              ),
             ),
           ],
         ),

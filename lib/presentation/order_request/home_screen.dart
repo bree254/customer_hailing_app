@@ -1,14 +1,11 @@
 import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/core/utils/colors.dart';
-import 'package:customer_hailing/presentation/order_request/models/data.dart';
-import 'package:customer_hailing/presentation/order_request/search_screen.dart';
 import 'package:customer_hailing/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'controller/ride_request_controller.dart';
+
+import 'models/data.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -47,8 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
-      if (permission != LocationPermission.whileInUse &&
-          permission != LocationPermission.always) {
+      if (permission != LocationPermission.whileInUse && permission != LocationPermission.always) {
         return;
       }
     }
@@ -58,7 +54,6 @@ class _HomeScreenState extends State<HomeScreen> {
       _center = LatLng(_currentPosition!.latitude, _currentPosition!.longitude);
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -126,9 +121,8 @@ class DestinationBottomSheet extends StatelessWidget {
                         fillColor: searchButtonGrey,
                         filled: true,
                         border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide.none),
-                        prefixIcon: Icon(Icons.search,size:16),
+                            borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+                        prefixIcon: Icon(Icons.search, size: 16),
                       ),
                     ),
                   ),
@@ -136,35 +130,43 @@ class DestinationBottomSheet extends StatelessWidget {
               ),
               Expanded(
                   child: ListView.builder(
-                    controller: scrollController,
-                    scrollDirection: Axis.vertical,
-                itemCount: MyData.destinations.length,
-                  itemBuilder: (context,index){
-                    var destination=MyData.destinations[index];
-                    return Card(
-                      margin: EdgeInsets.symmetric(horizontal: 16,vertical: 5),
-                      elevation: 0,
-                      color: searchButtonGrey,
-                      // color: whiteTextColor,
-                      child: ListTile(
-                        onTap: (){
-                          Get.toNamed(AppRoutes.selectRide);
-                        },
-                        leading: Icon(Icons.history,color: historyIcon,),
-                        title: Text(destination.address,style:TextStyle(
-                          color: searchtextGrey,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                        ),),
-                        subtitle: Text(destination.location,style: TextStyle(
-                          color: searchtextGrey,
-                          fontSize: 10,
-                          fontWeight: FontWeight.w400,
-                        ),),
-                      ),
-                    );
-                  }
-              ))
+                      controller: scrollController,
+                      scrollDirection: Axis.vertical,
+                      itemCount: MyData.destinations.length,
+                      itemBuilder: (context, index) {
+                        var destination = MyData.destinations[index];
+                        return Card(
+                          margin: EdgeInsets.symmetric(horizontal: 16, vertical: 5),
+                          elevation: 0,
+                          color: searchButtonGrey,
+                          // color: whiteTextColor,
+                          child: ListTile(
+                            onTap: () {
+                              Get.toNamed(AppRoutes.selectRide);
+                            },
+                            leading: Icon(
+                              Icons.history,
+                              color: historyIcon,
+                            ),
+                            title: Text(
+                              destination.address,
+                              style: TextStyle(
+                                color: searchtextGrey,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            subtitle: Text(
+                              destination.location,
+                              style: TextStyle(
+                                color: searchtextGrey,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ),
+                        );
+                      }))
 
               // Expanded(
               //   child: Obx(
