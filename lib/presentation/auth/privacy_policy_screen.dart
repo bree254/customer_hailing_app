@@ -32,15 +32,51 @@ class PrivacyPolicyScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 32,),
-            const Align(
+             Align(
               alignment: Alignment.center,
-              child: Text(
-                  "By tapping,”I Agree” below,you acknowledge\n having reviewed and agreed to the Terms of Use\n and the Privacy Notice of Taxi.",
+              child: RichText(
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: blackTextColor,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 14,
+                text: TextSpan(
+                  text: 'By tapping, “I Agree” below, you acknowledge\n having reviewed and agreed to the ',
+                  style: TextStyle(
+                    color: blackTextColor, // Replace with your desired text color
+                    fontWeight: FontWeight.w400,
+                    fontSize: 14,
+                  ),
+                  children: [
+                    TextSpan(
+                      text: 'Terms of Use',
+                      style: TextStyle(
+                        color: primaryColor, // Color for Terms of Use
+                        fontWeight: FontWeight.w400,
+                        fontSize: 14,
+                      ),
+                    ),
+                    TextSpan(
+                      text: ' and the ',
+                      style: TextStyle(
+                        color: blackTextColor, // Replace with your desired text color
+                        fontWeight: FontWeight.w400,
+                        fontSize: 14,
+                      ),
+                    ),
+                    TextSpan(
+                      text: 'Privacy Notice',
+                      style: TextStyle(
+                        color: primaryColor, // Color for Privacy Notice
+                        fontWeight: FontWeight.w400,
+                        fontSize: 14,
+                      ),
+                    ),
+                    TextSpan(
+                      text: ' of Taxi.',
+                      style: TextStyle(
+                        color: blackTextColor, // Replace with your desired text color
+                        fontWeight: FontWeight.w400,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
