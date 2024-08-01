@@ -6,13 +6,12 @@ import 'package:flutter/services.dart';
 import 'country_model.dart';
 import 'country_selector.dart';
 
-
 class CustomPhoneInput extends StatefulWidget {
   final TextEditingController controller;
   final String? Function(String?)? customValidator;
   final Function(String)? onInputChanged;
-  InputBorder? inputBorder;
-  String? errorMessage;
+  final InputBorder? inputBorder;
+  final String? errorMessage;
 
   CustomPhoneInput({
     super.key,
@@ -57,7 +56,7 @@ class _CustomPhoneInputState extends State<CustomPhoneInput> {
     loadCountries();
   }
 
-  //load countries
+  // Load countries
   loadCountries() async {
     List<Country> countries = PhoneController.getCountriesData();
     setState(() {
@@ -69,7 +68,6 @@ class _CustomPhoneInputState extends State<CustomPhoneInput> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // margin: EdgeInsets.symmetric(horizontal: 16.h),
       child: Column(
         children: [
           Row(
@@ -77,12 +75,13 @@ class _CustomPhoneInputState extends State<CustomPhoneInput> {
             textBaseline: TextBaseline.alphabetic,
             children: [
               CountrySelector(
-                countries: countries, // Pass your list of countries here
+                countries: countries,
                 onCountryChanged: (Country country) {
                   setState(() {
                     selectedCountry = country;
                   });
                 },
+                selectedCountry: selectedCountry!, // Pass selectedCountry
               ),
               Flexible(
                 child: Container(
@@ -94,8 +93,8 @@ class _CustomPhoneInputState extends State<CustomPhoneInput> {
                         prefix: selectedCountry == null
                             ? null
                             : Text(
-                                '${selectedCountry!.dialCode} ',
-                              ),
+                          '${selectedCountry!.dialCode} ',
+                        ),
                         floatingLabelBehavior: FloatingLabelBehavior.never,
                         counterText: '',
                         border: widget.inputBorder ??

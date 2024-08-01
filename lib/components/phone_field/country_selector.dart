@@ -6,8 +6,14 @@ import 'country_model.dart'; // Import your country model
 class CountrySelector extends StatelessWidget {
   final List<Country> countries;
   final Function(Country) onCountryChanged;
+  final Country selectedCountry; // Add selectedCountry parameter
 
-  const CountrySelector({super.key, required this.countries, required this.onCountryChanged});
+  const CountrySelector({
+    super.key,
+    required this.countries,
+    required this.onCountryChanged,
+    required this.selectedCountry, // Initialize selectedCountry
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +31,7 @@ class CountrySelector extends StatelessWidget {
           children: <Widget>[
             SizedBox(width: 10.h),
             Image.asset(
-              countries[0].flagUri,
+              selectedCountry.flagUri, // Use selectedCountry's flag
               width: 20,
               height: 20,
               fit: BoxFit.contain,
