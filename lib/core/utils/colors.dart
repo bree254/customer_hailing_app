@@ -20,3 +20,6 @@ const historyIcon =Color(0xFF979797);
 
 const selectRideColor = Color(0xFfEFE9FA);
 const lightGrey = Color(0xFFE2E2E2);
+
+const cancelButton = Color(0xFFFFE7E6);
+const cancelText =Color(0xFFFF0000);

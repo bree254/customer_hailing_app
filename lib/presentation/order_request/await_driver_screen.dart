@@ -1,4 +1,6 @@
+import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/core/utils/colors.dart';
+import 'package:customer_hailing/presentation/order_request/controller/ride_status_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -15,6 +17,129 @@ class _AwaitDriverScreenState extends State<AwaitDriverScreen> {
   Position? _currentPosition;
 
   bool isSelected = false;
+  final RideStatusController rideStatusController = Get.put(RideStatusController());
+
+  // final RideStatusController rideStatusController = Get.put(RideStatusController());
+
+  Widget _buildStatusContent() {
+    return Obx(() {
+      switch (rideStatusController.currentStatus.value) {
+        case RideStatus.searching:
+          return _buildSearchingContent();
+        case RideStatus.connecting:
+          return _buildConnectingContent();
+        case RideStatus.lookingForAnother:
+          return _buildLookingForAnotherContent();
+        default:
+          return Container();
+      }
+    });
+  }
+
+  Widget _buildSearchingContent() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+         Center(child: Padding(
+           padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 60.0),
+           child: LinearProgressIndicator(minHeight:4,borderRadius: BorderRadius.circular(20),),
+         )),
+        Text("Searching for nearby drivers",  style: TextStyle(
+            fontSize: 16,
+            color: primaryColor,
+            fontWeight: FontWeight.w600
+        ),),
+        SizedBox(height: 10),
+        Text("Sit tight as we get the nearest available driver for you"),
+        SizedBox(height: 20),
+        CustomElevatedButton(
+          onPressed: () {
+            // Handle cancel
+          },
+          buttonStyle: ElevatedButton.styleFrom(
+            backgroundColor: cancelButton,
+          ),
+          buttonTextStyle: TextStyle(
+              color: cancelText,
+            fontSize: 12,
+            fontWeight: FontWeight.w500
+          ),
+          text: 'Cancel',
+        ),
+      ],
+    );
+  }
+
+  Widget _buildConnectingContent() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Center(child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 60.0),
+          child: LinearProgressIndicator(minHeight:4,borderRadius: BorderRadius.circular(20),),
+        )),
+        Text("Connecting you to your driver",  style: TextStyle(
+            fontSize: 16,
+            color: primaryColor,
+            fontWeight: FontWeight.w600
+        ),),
+        SizedBox(height: 10),
+        CircularProgressIndicator(),
+        SizedBox(height: 20),
+        CustomElevatedButton(
+          onPressed: () {
+            // Handle cancel
+          },
+          buttonStyle: ElevatedButton.styleFrom(
+            backgroundColor: cancelButton,
+          ),
+          buttonTextStyle: TextStyle(
+              color: cancelText,
+              fontSize: 12,
+              fontWeight: FontWeight.w500
+          ),
+          text: 'Cancel',
+        ),
+      ],
+    );
+  }
+
+  Widget _buildLookingForAnotherContent() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Center(child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 60.0),
+          child: LinearProgressIndicator(minHeight:4,borderRadius: BorderRadius.circular(20),),
+        )),
+        Text(
+            "Looking for another driver",
+          style: TextStyle(
+            fontSize: 16,
+            color: primaryColor,
+            fontWeight: FontWeight.w600
+          ),
+        ),
+        SizedBox(height: 10),
+        Text("Your previous driver did not confirm your request"),
+        SizedBox(height: 20),
+        CustomElevatedButton(
+          onPressed: () {
+            // Handle cancel
+          },
+          buttonStyle: ElevatedButton.styleFrom(
+            backgroundColor: cancelButton,
+          ),
+          buttonTextStyle: TextStyle(
+              color: cancelText,
+              fontSize: 12,
+              fontWeight: FontWeight.w500
+          ),
+          text: 'Cancel',
+        ),
+      ],
+    );
+  }
 
   @override
   void initState() {
@@ -96,7 +221,29 @@ class _AwaitDriverScreenState extends State<AwaitDriverScreen> {
                 tooltip: 'Open Menu',
               ),
             ),
-          )
+          ),
+          DraggableScrollableSheet(
+            initialChildSize: 0.3,
+            minChildSize: 0.3,
+            maxChildSize: 0.3,
+            builder: (BuildContext context, ScrollController scrollController) {
+              return Container(
+                padding: EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(10),
+                    topRight: Radius.circular(10),
+                  ),
+                ),
+                child: SingleChildScrollView(
+                  controller: scrollController,
+                  child: _buildStatusContent(),
+                ),
+              );
+            },
+          ),
+
         ]
       )
 
