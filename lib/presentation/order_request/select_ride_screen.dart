@@ -4,7 +4,8 @@ import 'package:customer_hailing/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-
+import 'package:get/get.dart';
+import 'controller/ride_status_controller.dart';
 import 'models/data.dart';
 
 class SelectRideScreen extends StatefulWidget {
@@ -22,6 +23,9 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
   bool isSelected = false;
   String? _selectedRide;
 
+//initialize the controller
+  final RideStatusController rideStatusController = Get.put(RideStatusController());
+
   @override
   void initState() {
     super.initState();
@@ -35,12 +39,12 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
   _getUserLocation() async {
     bool serviceEnabled;
     LocationPermission permission;
-// Check if location services are enabled
+
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       return;
     }
-// Request permission to get the user's location
+
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.deniedForever) {
       return;
@@ -52,11 +56,16 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
         return;
       }
     }
-// Get the current location of the user
+
     _currentPosition = await Geolocator.getCurrentPosition();
     setState(() {
       _center = LatLng(_currentPosition!.latitude, _currentPosition!.longitude);
     });
+  }
+//method to start the ride request that will trigger the different status updates in the search for driver method
+  void _startRideRequest() {
+    rideStatusController.searchForDriver();
+    Get.toNamed(AppRoutes.awaitDriver, arguments: _selectedRide);
   }
 
   @override
@@ -67,22 +76,22 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
           _center == null
               ? const Center(child: CircularProgressIndicator())
               : SizedBox(
-                  height: double.infinity,
-                  child: GoogleMap(
-                    onMapCreated: _onMapCreated,
-                    initialCameraPosition: CameraPosition(
-                      target: _center!,
-                      zoom: 15.0,
-                    ),
-                    markers: {
-                      Marker(
-                        markerId: const MarkerId('user_location'),
-                        position: _center!,
-                        infoWindow: const InfoWindow(title: 'Your Location'),
-                      ),
-                    },
-                  ),
+            height: double.infinity,
+            child: GoogleMap(
+              onMapCreated: _onMapCreated,
+              initialCameraPosition: CameraPosition(
+                target: _center!,
+                zoom: 15.0,
+              ),
+              markers: {
+                Marker(
+                  markerId: const MarkerId('user_location'),
+                  position: _center!,
+                  infoWindow: const InfoWindow(title: 'Your Location'),
                 ),
+              },
+            ),
+          ),
           Positioned(
             top: 50,
             left: 16,
@@ -103,11 +112,11 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
               child: TextField(
                 textAlign: TextAlign.center,
                 decoration: InputDecoration(
-                  hintText: 'Mövenpick Residences Nairobi',
-                  hintStyle: TextStyle(fontWeight: FontWeight.w400,fontSize: 14,backgroundColor: searchButtonGrey),
-                  border: InputBorder.none,
-                  prefixIcon: Icon(Icons.arrow_back),
-                  suffixIcon: Icon(Icons.add_circle_outlined,color: primaryColor,)
+                    hintText: 'Mövenpick Residences Nairobi',
+                    hintStyle: TextStyle(fontWeight: FontWeight.w400,fontSize: 14,backgroundColor: searchButtonGrey),
+                    border: InputBorder.none,
+                    prefixIcon: Icon(Icons.arrow_back),
+                    suffixIcon: Icon(Icons.add_circle_outlined,color: primaryColor,)
                 ),
               ),
             ),
@@ -127,7 +136,6 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                     Container(
                       margin: const EdgeInsets.only(top: 8),
                       width: 50,
-                      // clipBehavior: Clip.hardEdge,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(600),
                       ),
@@ -192,7 +200,7 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                                     MainAxisAlignment.center,
                                     children: [
                                       Text(
-                                          'Ksh ${request.discountedPrice.toString()}',
+                                        'Ksh ${request.discountedPrice.toString()}',
                                         style: const TextStyle(
                                           color: searchtextGrey,
                                           fontSize: 14,
@@ -205,7 +213,7 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                                             color: searchtextGrey,
                                             fontSize: 10,
                                             fontWeight: FontWeight.w400,
-                                          decoration: TextDecoration.lineThrough
+                                            decoration: TextDecoration.lineThrough
                                         ),
                                       ),
                                     ],
@@ -295,12 +303,12 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                           const SizedBox(
                             height: 10,
                           ),
-                           CustomElevatedButton(
-                              text: 'select ${_selectedRide  }',
+                          CustomElevatedButton(
+                            text: 'select ${_selectedRide  }',
                             onPressed :(){
-                                if(_selectedRide != null){
-                                  Get.toNamed(AppRoutes.awaitDriver,arguments:_selectedRide);
-                                }
+                              if(_selectedRide != null){
+                                _startRideRequest(); // Trigger the ride request
+                              }
                             },
                           ),
                         ],
