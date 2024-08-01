@@ -20,6 +20,7 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
   Position? _currentPosition;
 
   bool isSelected = false;
+  String? _selectedRide;
 
   @override
   void initState() {
@@ -82,6 +83,35 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                     },
                   ),
                 ),
+          Positioned(
+            top: 50,
+            left: 16,
+            right: 16,
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(8),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black26,
+                    blurRadius: 10,
+                    spreadRadius: 5,
+                  ),
+                ],
+              ),
+              child: TextField(
+                textAlign: TextAlign.center,
+                decoration: InputDecoration(
+                  hintText: 'Mövenpick Residences Nairobi',
+                  hintStyle: TextStyle(fontWeight: FontWeight.w400,fontSize: 14,backgroundColor: searchButtonGrey),
+                  border: InputBorder.none,
+                  prefixIcon: Icon(Icons.arrow_back),
+                  suffixIcon: Icon(Icons.add_circle_outlined,color: primaryColor,)
+                ),
+              ),
+            ),
+          ),
           DraggableScrollableSheet(
             initialChildSize: 0.3,
             minChildSize: 0.3,
@@ -91,13 +121,6 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                 decoration: const BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
-                  // boxShadow: [
-                  //   BoxShadow(
-                  //     color: Colors.black26,
-                  //     blurRadius: 5,
-                  //     spreadRadius: 2,
-                  //   ),
-                  // ],
                 ),
                 child: Column(
                   children: [
@@ -111,7 +134,6 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                       child: const Divider(
                         height: 15,
                         thickness: 4,
-                        // color: colorwhite,
                         color: lightGrey,
                       ),
                     ),
@@ -122,60 +144,78 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                           itemCount: MyData.requests.length,
                           itemBuilder: (context, index) {
                             var request = MyData.requests[index];
-                            return Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                              margin: const EdgeInsets.fromLTRB( 16, 0,16,8),
-                              clipBehavior: Clip.antiAlias,
-                              decoration: ShapeDecoration(
-                                color: const Color(0x3FFAFAFA),
-                                shape: RoundedRectangleBorder(
-                                  side: BorderSide(
-                                    width: 1,
-                                    color: Colors.black.withOpacity(0.05000000074505806),
-                                  ),
+                            bool isSelected = _selectedRide == request.ridetype;
+                            return GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  _selectedRide = request.ridetype;
+                                });
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16, vertical: 10),
+                                margin: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                                decoration: BoxDecoration(
+                                  color: isSelected
+                                      ? selectRideColor
+                                      : const Color(0x3FFAFAFA),
                                   borderRadius: BorderRadius.circular(10),
-                                ),
-                              ),
-                              child: ListTile(
-                                selectedColor: selectRideColor,
-                                selectedTileColor: selectRideColor,
-                                onTap: () {
-                                  Get.toNamed(AppRoutes.selectRide);
-                                },
-                                leading:
-                                    Image(image: AssetImage(request.imageUrl)),
-                                title: Text(
-                                  request.ridetype,
-                                  style: const TextStyle(
-                                    color: searchtextGrey,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w500,
+                                  border: Border.all(
+                                    color: isSelected
+                                        ? selectRideColor
+                                        : Colors.black.withOpacity(0.05),
                                   ),
                                 ),
-                                subtitle: Text(
-                                  request.timeEstimate,
-                                  style: const TextStyle(
-                                    color: searchtextGrey,
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                                trailing: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(request.discountedPrice.toString()),
-                                    Text(
-                                      request.originalprice.toString(),
-                                      style: const TextStyle(
-                                          // decoration: TextDecoration.underline
-                                          ),
+                                child: ListTile(
+                                  selectedColor: selectRideColor,
+                                  selectedTileColor: selectRideColor,
+                                  leading: Image(
+                                      image: AssetImage(request.imageUrl)),
+                                  title: Text(
+                                    request.ridetype,
+                                    style: const TextStyle(
+                                      color: searchtextGrey,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
                                     ),
-                                  ],
+                                  ),
+                                  subtitle: Text(
+                                    request.timeEstimate,
+                                    style: const TextStyle(
+                                      color: searchtextGrey,
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                  trailing: Column(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                          'Ksh ${request.discountedPrice.toString()}',
+                                        style: const TextStyle(
+                                          color: searchtextGrey,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      Text(
+                                        'Ksh ${request.originalprice.toString()}',
+                                        style: const TextStyle(
+                                            color: searchtextGrey,
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w400,
+                                          decoration: TextDecoration.lineThrough
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             );
                           }),
                     ),
+
 
                     // Fixed part of the bottom sheet
                     Container(
@@ -190,9 +230,18 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
 
                                 },
                                 child: Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                                  margin: const EdgeInsets.fromLTRB(16, 0, 16, 8),
                                   decoration: BoxDecoration(
-                                    color: isSelected ? selectRideColor : whiteTextColor,
-                                    // border: BorderSide(width: 1,color: disabledButtonGrey)
+                                    color: isSelected
+                                        ? selectRideColor
+                                        : const Color(0x3FFAFAFA),
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(
+                                      color: isSelected
+                                          ? selectRideColor
+                                          : Colors.black.withOpacity(0.05),
+                                    ),
                                   ),
                                   child: const Row(
                                     children: [
@@ -215,6 +264,19 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
 
                                 },
                                 child: Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                                  margin: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                                  decoration: BoxDecoration(
+                                    color: isSelected
+                                        ? selectRideColor
+                                        : const Color(0x3FFAFAFA),
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(
+                                      color: isSelected
+                                          ? selectRideColor
+                                          : Colors.black.withOpacity(0.05),
+                                    ),
+                                  ),
                                   child: const Row(
                                     children: [
                                       Image(
@@ -233,7 +295,14 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                           const SizedBox(
                             height: 10,
                           ),
-                          const CustomElevatedButton(text: 'Select economy'),
+                           CustomElevatedButton(
+                              text: 'select ${_selectedRide  }',
+                            onPressed :(){
+                                if(_selectedRide != null){
+                                  Get.toNamed(AppRoutes.awaitDriver,arguments:_selectedRide);
+                                }
+                            },
+                          ),
                         ],
                       ),
                     ),

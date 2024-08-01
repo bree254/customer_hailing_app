@@ -3,6 +3,7 @@ import 'package:customer_hailing/presentation/auth/email/email_sign-in_up_screen
 import 'package:customer_hailing/presentation/auth/email/enter_your_number.dart';
 import 'package:customer_hailing/presentation/auth/google/google_sign_in_up_screen.dart';
 import 'package:customer_hailing/presentation/auth/verification.dart';
+import 'package:customer_hailing/presentation/order_request/await_driver_screen.dart';
 import 'package:customer_hailing/presentation/order_request/binding/home_binding.dart';
 import 'package:customer_hailing/presentation/order_request/home_screen.dart';
 import 'package:customer_hailing/presentation/order_request/search_screen.dart';
@@ -21,6 +22,7 @@ class AppRoutes {
   static const String emailPhoneNumber = "/email_phone_no";
   static const String search = "/search";
   static const String selectRide = "/rides";
+  static const String awaitDriver = "/await_driver";
 
   static List<GetPage> pages = [
     GetPage(
@@ -52,7 +54,17 @@ class AppRoutes {
       name: emailPhoneNumber,
       page: () => const EmailPhoneNumberScreen(),
     ),
-    GetPage(name: search, page: () => const SearchScreen()),
-    GetPage(name: selectRide, page: () => const SelectRideScreen()),
+    GetPage(
+        name: search,
+        page: () => const SearchScreen(),
+    ),
+    GetPage(
+        name: selectRide,
+        page: () => const SelectRideScreen(),
+    ),
+    GetPage(
+        name: awaitDriver,
+        page: () => const AwaitDriverScreen(),
+    ),
   ];
 }
