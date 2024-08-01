@@ -1,6 +1,4 @@
 import 'package:customer_hailing/core/app_export.dart';
-import 'package:customer_hailing/presentation/order_request/home_screen.dart';
-import 'package:customer_hailing/presentation/splash/splash_screen.dart';
 import 'package:customer_hailing/routes/routes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';

@@ -1,10 +1,8 @@
 import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/core/utils/colors.dart';
 import 'package:customer_hailing/routes/routes.dart';
-import 'package:customer_hailing/widgets/custom_elevated_button.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'models/data.dart';
@@ -90,7 +88,7 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
             maxChildSize: 0.6,
             builder: (context, scrollController) {
               return Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
                   // boxShadow: [
@@ -104,13 +102,13 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                 child: Column(
                   children: [
                     Container(
-                      margin: EdgeInsets.only(top: 8),
+                      margin: const EdgeInsets.only(top: 8),
                       width: 50,
                       // clipBehavior: Clip.hardEdge,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(600),
                       ),
-                      child: Divider(
+                      child: const Divider(
                         height: 15,
                         thickness: 4,
                         // color: colorwhite,
@@ -129,7 +127,7 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                               margin: const EdgeInsets.fromLTRB( 16, 0,16,8),
                               clipBehavior: Clip.antiAlias,
                               decoration: ShapeDecoration(
-                                color: Color(0x3FFAFAFA),
+                                color: const Color(0x3FFAFAFA),
                                 shape: RoundedRectangleBorder(
                                   side: BorderSide(
                                     width: 1,
@@ -148,7 +146,7 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                                     Image(image: AssetImage(request.imageUrl)),
                                 title: Text(
                                   request.ridetype,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     color: searchtextGrey,
                                     fontSize: 12,
                                     fontWeight: FontWeight.w500,
@@ -156,7 +154,7 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                                 ),
                                 subtitle: Text(
                                   request.timeEstimate,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     color: searchtextGrey,
                                     fontSize: 10,
                                     fontWeight: FontWeight.w400,
@@ -168,7 +166,7 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                                     Text(request.discountedPrice.toString()),
                                     Text(
                                       request.originalprice.toString(),
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           // decoration: TextDecoration.underline
                                           ),
                                     ),
@@ -181,7 +179,7 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
 
                     // Fixed part of the bottom sheet
                     Container(
-                      padding: EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(16),
                       color: Colors.white,
                       child: Column(
                         children: [
@@ -196,7 +194,7 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                                     color: isSelected ? selectRideColor : whiteTextColor,
                                     // border: BorderSide(width: 1,color: disabledButtonGrey)
                                   ),
-                                  child: Row(
+                                  child: const Row(
                                     children: [
                                       Image(
                                           width: 13,
@@ -209,7 +207,7 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                                   ),
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 10,
                               ),
                               GestureDetector(
@@ -217,7 +215,7 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
 
                                 },
                                 child: Container(
-                                  child: Row(
+                                  child: const Row(
                                     children: [
                                       Image(
                                           width: 13,
@@ -232,10 +230,10 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                               ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
-                          CustomElevatedButton(text: 'Select economy'),
+                          const CustomElevatedButton(text: 'Select economy'),
                         ],
                       ),
                     ),

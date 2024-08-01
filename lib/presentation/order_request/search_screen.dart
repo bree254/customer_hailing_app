@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class SearchScreen extends StatefulWidget {
+  const SearchScreen({super.key});
+
   @override
   State<SearchScreen> createState() => _SearchScreenState();
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  FocusNode _focusNode = FocusNode();
+  final FocusNode _focusNode = FocusNode();
   final TextEditingController _locationController = TextEditingController();
   final TextEditingController _destinationController = TextEditingController();
   final List<TextEditingController> _stopoverControllers = [];
@@ -61,7 +63,7 @@ class _SearchScreenState extends State<SearchScreen> {
           onPressed: () {
             Get.back();
           },
-          icon: Icon(
+          icon: const Icon(
             Icons.arrow_back,
             size: 17,
             color: blackTextColor,
@@ -69,7 +71,7 @@ class _SearchScreenState extends State<SearchScreen> {
         ),
         backgroundColor: Colors.white,
         elevation: 0,
-        title: Text(
+        title: const Text(
           'Enter trip details',
           style: TextStyle(
             color: searchtextGrey,
@@ -79,10 +81,10 @@ class _SearchScreenState extends State<SearchScreen> {
             letterSpacing: 0.25,
           ),
         ),
-        iconTheme: IconThemeData(color: Colors.black),
+        iconTheme: const IconThemeData(color: Colors.black),
       ),
       body: Padding(
-        padding: EdgeInsets.only(top: 24.0, left: 16, bottom: 8, right: 16),
+        padding: const EdgeInsets.only(top: 24.0, left: 16, bottom: 8, right: 16),
         child: Column(
           children: [
             TextField(
@@ -90,7 +92,7 @@ class _SearchScreenState extends State<SearchScreen> {
               focusNode: _focusNode,
               decoration: InputDecoration(
                 hintText: 'Enter your location',
-                hintStyle: TextStyle(
+                hintStyle: const TextStyle(
                   color: searchtextGrey,
                   fontSize: 12,
                   fontWeight: FontWeight.w500,
@@ -105,7 +107,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide(color: primaryColor),
+                  borderSide: const BorderSide(color: primaryColor),
                 ),
                 suffixIcon: _focusNode.hasFocus
                     ? Padding(
@@ -119,7 +121,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     : null,
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ..._stopoverControllers.asMap().entries.map((entry) {
               int index = entry.key;
               TextEditingController controller = entry.value;
@@ -134,7 +136,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         focusNode: focusNode,
                         decoration: InputDecoration(
                           hintText: 'Enter stop ${index + 1}',
-                          hintStyle: TextStyle(
+                          hintStyle: const TextStyle(
                             color: searchtextGrey,
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
@@ -149,7 +151,7 @@ class _SearchScreenState extends State<SearchScreen> {
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide(color: primaryColor),
+                            borderSide: const BorderSide(color: primaryColor),
                           ),
                           suffixIcon: focusNode.hasFocus
                               ? Padding(
@@ -165,19 +167,19 @@ class _SearchScreenState extends State<SearchScreen> {
                       ),
                     ),
                     IconButton(
-                      icon: Icon(Icons.cancel, color: disabledButtonGrey),
+                      icon: const Icon(Icons.cancel, color: disabledButtonGrey),
                       onPressed: () => _removeStopover(index),
                     ),
                   ],
                 ),
               );
-            }).toList(),
+            }),
             TextField(
               controller: _destinationController,
               focusNode: _focusNode,
               decoration: InputDecoration(
                 hintText: 'Enter your destination',
-                hintStyle: TextStyle(
+                hintStyle: const TextStyle(
                   color: searchtextGrey,
                   fontSize: 12,
                   fontWeight: FontWeight.w500,
@@ -192,7 +194,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide(color: primaryColor),
+                  borderSide: const BorderSide(color: primaryColor),
                 ),
                 suffixIcon: _focusNode.hasFocus
                     ? Padding(
@@ -206,7 +208,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     : null,
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             GestureDetector(
               onTap: _addStopover,
               child: Container(

@@ -79,23 +79,23 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                 ),
               ),
-        DestinationBottomSheet(),
+        const DestinationBottomSheet(),
         Positioned(
           top: 40,
           left: 20,
           child: Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               shape: BoxShape.circle,
               color: whiteTextColor,
             ),
             child: IconButton(
-              icon: Icon(Icons.menu, color: Colors.black),
+              icon: const Icon(Icons.menu, color: Colors.black),
               onPressed: () {
                 // Handle menu button press
               },
               color: Colors.white,
               iconSize: 30.0,
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               tooltip: 'Open Menu',
             ),
           ),
@@ -106,6 +106,8 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 class DestinationBottomSheet extends StatelessWidget {
+  const DestinationBottomSheet({super.key});
+
   @override
   Widget build(BuildContext context) {
     // final RideRequestController controller = Get.find<RideRequestController>();
@@ -117,7 +119,7 @@ class DestinationBottomSheet extends StatelessWidget {
       builder: (BuildContext context, ScrollController scrollController) {
         return Container(
           padding: const EdgeInsets.only(top:  8),
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
           ),
@@ -129,7 +131,7 @@ class DestinationBottomSheet extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(600),
                 ),
-                child: Divider(
+                child: const Divider(
                   height: 20,
                   thickness: 4,
                   // color: colorwhite,
@@ -147,7 +149,7 @@ class DestinationBottomSheet extends StatelessWidget {
                     child: TextField(
                       decoration: InputDecoration(
                         labelText: 'where do you want to go',
-                        labelStyle: TextStyle(
+                        labelStyle: const TextStyle(
                           color: searchtextGrey,
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
@@ -157,7 +159,7 @@ class DestinationBottomSheet extends StatelessWidget {
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                             borderSide: BorderSide.none),
-                        prefixIcon: Icon(Icons.search, size: 16),
+                        prefixIcon: const Icon(Icons.search, size: 16),
                       ),
                     ),
                   ),
@@ -173,7 +175,7 @@ class DestinationBottomSheet extends StatelessWidget {
                         return Container(
                           margin: const EdgeInsets.fromLTRB( 10,0,10 ,8),
                           decoration: ShapeDecoration(
-                            color: Color(0x7FFAFAFA),
+                            color: const Color(0x7FFAFAFA),
                             shape: RoundedRectangleBorder(
                               side: BorderSide(
                                 width: 1,
@@ -186,13 +188,13 @@ class DestinationBottomSheet extends StatelessWidget {
                             onTap: () {
                               Get.toNamed(AppRoutes.selectRide);
                             },
-                            leading: Icon(
+                            leading: const Icon(
                               Icons.history,
                               color: historyIcon,
                             ),
                             title: Text(
                               destination.address,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: searchtextGrey,
                                 fontSize: 12,
                                 fontWeight: FontWeight.w500,
@@ -200,7 +202,7 @@ class DestinationBottomSheet extends StatelessWidget {
                             ),
                             subtitle: Text(
                               destination.location,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: searchtextGrey,
                                 fontSize: 10,
                                 fontWeight: FontWeight.w400,

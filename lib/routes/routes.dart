@@ -52,7 +52,7 @@ class AppRoutes {
       name: emailPhoneNumber,
       page: () => const EmailPhoneNumberScreen(),
     ),
-    GetPage(name: search, page: () => SearchScreen()),
-    GetPage(name: selectRide, page: () => SelectRideScreen()),
+    GetPage(name: search, page: () => const SearchScreen()),
+    GetPage(name: selectRide, page: () => const SelectRideScreen()),
   ];
 }

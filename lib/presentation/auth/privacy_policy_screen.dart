@@ -1,8 +1,6 @@
 import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/core/utils/colors.dart';
 import 'package:customer_hailing/routes/routes.dart';
-import 'package:customer_hailing/theme/app_text_styles.dart';
-import 'package:customer_hailing/widgets/custom_elevated_button.dart';
 import 'package:flutter/material.dart';
 class PrivacyPolicyScreen extends StatelessWidget {
   const PrivacyPolicyScreen({super.key});
@@ -15,7 +13,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(height: 55,),
+            const SizedBox(height: 55,),
             Image.asset(
               alignment: Alignment.center,
               height: 53,
@@ -36,10 +34,10 @@ class PrivacyPolicyScreen extends StatelessWidget {
               alignment: Alignment.center,
               child: RichText(
                 textAlign: TextAlign.center,
-                text: TextSpan(
+                text: const TextSpan(
                   text: 'By tapping, “I Agree” below, you acknowledge\n having reviewed and agreed to the ',
                   style: TextStyle(
-                    color: blackTextColor, // Replace with your desired text color
+                    color: blackTextColor,
                     fontWeight: FontWeight.w400,
                     fontSize: 14,
                   ),
@@ -47,7 +45,8 @@ class PrivacyPolicyScreen extends StatelessWidget {
                     TextSpan(
                       text: 'Terms of Use',
                       style: TextStyle(
-                        color: primaryColor, // Color for Terms of Use
+                        fontFamily: "",
+                        color: primaryColor,
                         fontWeight: FontWeight.w400,
                         fontSize: 14,
                       ),
@@ -55,7 +54,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
                     TextSpan(
                       text: ' and the ',
                       style: TextStyle(
-                        color: blackTextColor, // Replace with your desired text color
+                        color: blackTextColor,
                         fontWeight: FontWeight.w400,
                         fontSize: 14,
                       ),
@@ -63,7 +62,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
                     TextSpan(
                       text: 'Privacy Notice',
                       style: TextStyle(
-                        color: primaryColor, // Color for Privacy Notice
+                        color: primaryColor,
                         fontWeight: FontWeight.w400,
                         fontSize: 14,
                       ),
@@ -102,8 +101,8 @@ class PrivacyPolicyScreen extends StatelessWidget {
               onTap: (){
                 Get.back();
               },
-              child: Center(
-                child: const Text(
+              child: const Center(
+                child: Text(
                   "Back",
                   style: TextStyle(
                     color: primaryColor,

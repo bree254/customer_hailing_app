@@ -13,7 +13,7 @@ class CustomPhoneInput extends StatefulWidget {
   final InputBorder? inputBorder;
   final String? errorMessage;
 
-  CustomPhoneInput({
+  const CustomPhoneInput({
     super.key,
     required this.controller,
     this.customValidator,

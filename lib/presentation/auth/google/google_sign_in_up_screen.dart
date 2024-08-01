@@ -180,7 +180,7 @@ class _GoogleSignInUpScreenState extends State<GoogleSignInUpScreen> {
                   return null;
                 },
               ),
-              Spacer(),
+              const Spacer(),
               CustomElevatedButton(
                 onPressed: () {
                   onSubmit();
