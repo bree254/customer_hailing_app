@@ -93,16 +93,30 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black26,
-                      blurRadius: 10,
-                      spreadRadius: 5,
-                    ),
-                  ],
+                  // boxShadow: [
+                  //   BoxShadow(
+                  //     color: Colors.black26,
+                  //     blurRadius: 5,
+                  //     spreadRadius: 2,
+                  //   ),
+                  // ],
                 ),
                 child: Column(
                   children: [
+                    Container(
+                      margin: EdgeInsets.only(top: 8),
+                      width: 50,
+                      // clipBehavior: Clip.hardEdge,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(600),
+                      ),
+                      child: Divider(
+                        height: 15,
+                        thickness: 4,
+                        // color: colorwhite,
+                        color: lightGrey,
+                      ),
+                    ),
                     Expanded(
                       child: ListView.builder(
                           controller: scrollController,
@@ -110,12 +124,20 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                           itemCount: MyData.requests.length,
                           itemBuilder: (context, index) {
                             var request = MyData.requests[index];
-                            return Card(
-                              margin: EdgeInsets.symmetric(
-                                  horizontal: 16, vertical: 5),
-                              elevation: 0,
-                              color: searchButtonGrey,
-                              // color: whiteTextColor,
+                            return Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                              margin: const EdgeInsets.fromLTRB( 16, 0,16,8),
+                              clipBehavior: Clip.antiAlias,
+                              decoration: ShapeDecoration(
+                                color: Color(0x3FFAFAFA),
+                                shape: RoundedRectangleBorder(
+                                  side: BorderSide(
+                                    width: 1,
+                                    color: Colors.black.withOpacity(0.05000000074505806),
+                                  ),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
                               child: ListTile(
                                 selectedColor: selectRideColor,
                                 selectedTileColor: selectRideColor,

@@ -19,3 +19,4 @@ const backButtonBlack =Color(0x197B7B7B);
 const historyIcon =Color(0xFF979797);
 
 const selectRideColor = Color(0xFfEFE9FA);
+const lightGrey = Color(0xFFE2E2E2);

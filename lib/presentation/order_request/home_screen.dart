@@ -4,7 +4,6 @@ import 'package:customer_hailing/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-
 import 'models/data.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -44,7 +43,8 @@ class _HomeScreenState extends State<HomeScreen> {
     }
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
-      if (permission != LocationPermission.whileInUse && permission != LocationPermission.always) {
+      if (permission != LocationPermission.whileInUse &&
+          permission != LocationPermission.always) {
         return;
       }
     }
@@ -80,6 +80,26 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
         DestinationBottomSheet(),
+        Positioned(
+          top: 40,
+          left: 20,
+          child: Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: whiteTextColor,
+            ),
+            child: IconButton(
+              icon: Icon(Icons.menu, color: Colors.black),
+              onPressed: () {
+                // Handle menu button press
+              },
+              color: Colors.white,
+              iconSize: 30.0,
+              padding: EdgeInsets.all(10),
+              tooltip: 'Open Menu',
+            ),
+          ),
+        )
       ],
     ));
   }
@@ -96,19 +116,33 @@ class DestinationBottomSheet extends StatelessWidget {
       maxChildSize: 0.8,
       builder: (BuildContext context, ScrollController scrollController) {
         return Container(
-          // padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          padding: const EdgeInsets.only(top:  8),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
           ),
           child: Column(
             children: [
+              Container(
+                width: 50,
+                // clipBehavior: Clip.hardEdge,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(600),
+                ),
+                child: Divider(
+                  height: 20,
+                  thickness: 4,
+                  // color: colorwhite,
+                  color: lightGrey,
+                ),
+              ),
               GestureDetector(
                 onTap: () {
                   Get.toNamed(AppRoutes.search);
                 },
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                  margin:
+                      const EdgeInsets.fromLTRB( 10, 8,10,0),
                   child: AbsorbPointer(
                     child: TextField(
                       decoration: InputDecoration(
@@ -121,7 +155,8 @@ class DestinationBottomSheet extends StatelessWidget {
                         fillColor: searchButtonGrey,
                         filled: true,
                         border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide.none),
                         prefixIcon: Icon(Icons.search, size: 16),
                       ),
                     ),
@@ -135,11 +170,18 @@ class DestinationBottomSheet extends StatelessWidget {
                       itemCount: MyData.destinations.length,
                       itemBuilder: (context, index) {
                         var destination = MyData.destinations[index];
-                        return Card(
-                          margin: EdgeInsets.symmetric(horizontal: 16, vertical: 5),
-                          elevation: 0,
-                          color: searchButtonGrey,
-                          // color: whiteTextColor,
+                        return Container(
+                          margin: const EdgeInsets.fromLTRB( 10,0,10 ,8),
+                          decoration: ShapeDecoration(
+                            color: Color(0x7FFAFAFA),
+                            shape: RoundedRectangleBorder(
+                              side: BorderSide(
+                                width: 1,
+                                color: Colors.black.withOpacity(0.02500000037252903),
+                              ),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
                           child: ListTile(
                             onTap: () {
                               Get.toNamed(AppRoutes.selectRide);
@@ -152,7 +194,7 @@ class DestinationBottomSheet extends StatelessWidget {
                               destination.address,
                               style: TextStyle(
                                 color: searchtextGrey,
-                                fontSize: 14,
+                                fontSize: 12,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
@@ -160,7 +202,7 @@ class DestinationBottomSheet extends StatelessWidget {
                               destination.location,
                               style: TextStyle(
                                 color: searchtextGrey,
-                                fontSize: 12,
+                                fontSize: 10,
                                 fontWeight: FontWeight.w400,
                               ),
                             ),
