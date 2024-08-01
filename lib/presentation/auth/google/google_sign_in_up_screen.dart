@@ -52,7 +52,7 @@ class _GoogleSignInUpScreenState extends State<GoogleSignInUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true,
+      // resizeToAvoidBottomInset: true,
       body: Padding(
         padding: EdgeInsets.fromLTRB(16.h, 32.v, 16.h, 16.v),
         child: Form(

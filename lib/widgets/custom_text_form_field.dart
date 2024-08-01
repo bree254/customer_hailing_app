@@ -232,8 +232,8 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
     ),
     errorBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(10.0),
-      borderSide: const BorderSide(
-        color: textfieldErrorRedColor,
+      borderSide:  BorderSide(
+        color: _isNotEmpty ? appTheme.colorPrimary : appTheme.inputError,
         width: 1.0,
       ),
     ),
