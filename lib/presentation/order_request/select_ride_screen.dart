@@ -4,7 +4,6 @@ import 'package:customer_hailing/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:get/get.dart';
 import 'controller/ride_status_controller.dart';
 import 'models/data.dart';
 
@@ -97,11 +96,11 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
             left: 16,
             right: 16,
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(8),
-                boxShadow: [
+                boxShadow: const [
                   BoxShadow(
                     color: Colors.black26,
                     blurRadius: 10,
@@ -109,7 +108,7 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                   ),
                 ],
               ),
-              child: TextField(
+              child: const TextField(
                 textAlign: TextAlign.center,
                 decoration: InputDecoration(
                     hintText: 'Mövenpick Residences Nairobi',

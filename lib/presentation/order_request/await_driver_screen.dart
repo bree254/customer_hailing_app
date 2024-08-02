@@ -17,9 +17,8 @@ class _AwaitDriverScreenState extends State<AwaitDriverScreen> {
   Position? _currentPosition;
 
   bool isSelected = false;
-  final RideStatusController rideStatusController = Get.put(RideStatusController());
 
-  // final RideStatusController rideStatusController = Get.put(RideStatusController());
+  final RideStatusController rideStatusController = Get.put(RideStatusController());
 
   Widget _buildStatusContent() {
     return Obx(() {
@@ -44,27 +43,39 @@ class _AwaitDriverScreenState extends State<AwaitDriverScreen> {
            padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 60.0),
            child: LinearProgressIndicator(minHeight:4,borderRadius: BorderRadius.circular(20),),
          )),
-        Text("Searching for nearby drivers",  style: TextStyle(
+        const SizedBox(height: 14),
+        const Text("Searching for nearby drivers",  style: TextStyle(
             fontSize: 16,
             color: primaryColor,
             fontWeight: FontWeight.w600
         ),),
-        SizedBox(height: 10),
-        Text("Sit tight as we get the nearest available driver for you"),
-        SizedBox(height: 20),
-        CustomElevatedButton(
-          onPressed: () {
-            // Handle cancel
-          },
-          buttonStyle: ElevatedButton.styleFrom(
-            backgroundColor: cancelButton,
-          ),
-          buttonTextStyle: TextStyle(
-              color: cancelText,
+        const SizedBox(height: 14),
+        const Text(
+          'Sit tight as we get the nearest available \ndriver for you!',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: resendCodeTextColor,
             fontSize: 12,
-            fontWeight: FontWeight.w500
+            fontWeight: FontWeight.w400,
           ),
-          text: 'Cancel',
+        ),
+        const SizedBox(height: 22),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
+          child: CustomElevatedButton(
+            onPressed: () {
+              // Handle cancel
+            },
+            buttonStyle: ElevatedButton.styleFrom(
+              backgroundColor: cancelButton,
+            ),
+            buttonTextStyle: const TextStyle(
+                color: cancelText,
+              fontSize: 12,
+              fontWeight: FontWeight.w500
+            ),
+            text: 'Cancel',
+          ),
         ),
       ],
     );
@@ -78,29 +89,35 @@ class _AwaitDriverScreenState extends State<AwaitDriverScreen> {
           padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 60.0),
           child: LinearProgressIndicator(minHeight:4,borderRadius: BorderRadius.circular(20),),
         )),
-        Center(
-          child: Text("Connecting you to your driver",  style: TextStyle(
+        const SizedBox(height: 14),
+        const Center(
+          child: Text(
+            "Connecting you to your driver",
+            style: TextStyle(
               fontSize: 16,
               color: primaryColor,
               fontWeight: FontWeight.w600
           ),),
         ),
-        SizedBox(height: 10),
-        CircularProgressIndicator(),
-        SizedBox(height: 20),
-        CustomElevatedButton(
-          onPressed: () {
-            // Handle cancel
-          },
-          buttonStyle: ElevatedButton.styleFrom(
-            backgroundColor: cancelButton,
+        const SizedBox(height: 14),
+        const CircularProgressIndicator(),
+        const SizedBox(height: 22),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
+          child: CustomElevatedButton(
+            onPressed: () {
+              // Handle cancel
+            },
+            buttonStyle: ElevatedButton.styleFrom(
+              backgroundColor: cancelButton,
+            ),
+            buttonTextStyle: const TextStyle(
+                color: cancelText,
+                fontSize: 12,
+                fontWeight: FontWeight.w500
+            ),
+            text: 'Cancel',
           ),
-          buttonTextStyle: TextStyle(
-              color: cancelText,
-              fontSize: 12,
-              fontWeight: FontWeight.w500
-          ),
-          text: 'Cancel',
         ),
       ],
     );
@@ -114,7 +131,8 @@ class _AwaitDriverScreenState extends State<AwaitDriverScreen> {
           padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 60.0),
           child: LinearProgressIndicator(minHeight:4,borderRadius: BorderRadius.circular(20),),
         )),
-        Text(
+        const SizedBox(height: 14),
+        const Text(
             "Looking for another driver",
           style: TextStyle(
             fontSize: 16,
@@ -122,22 +140,38 @@ class _AwaitDriverScreenState extends State<AwaitDriverScreen> {
             fontWeight: FontWeight.w600
           ),
         ),
-        SizedBox(height: 10),
-        Center(child: Text("Your previous driver did not confirm your request")),
-        SizedBox(height: 20),
-        CustomElevatedButton(
-          onPressed: () {
-            // Handle cancel
-          },
-          buttonStyle: ElevatedButton.styleFrom(
-            backgroundColor: cancelButton,
+        const SizedBox(height: 14),
+        const Padding(
+          padding: EdgeInsets.symmetric(vertical: 0,horizontal:0 ),
+          child: Center(
+              child: Text(
+                  "Your previous driver did not confirm your request",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: resendCodeTextColor,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
           ),
-          buttonTextStyle: TextStyle(
-              color: cancelText,
-              fontSize: 12,
-              fontWeight: FontWeight.w500
+        ),
+        const SizedBox(height: 22),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
+          child: CustomElevatedButton(
+            onPressed: () {
+              // Handle cancel
+            },
+            buttonStyle: ElevatedButton.styleFrom(
+              backgroundColor: cancelButton,
+            ),
+            buttonTextStyle: const TextStyle(
+                color: cancelText,
+                fontSize: 12,
+                fontWeight: FontWeight.w500
+            ),
+            text: 'Cancel',
           ),
-          text: 'Cancel',
         ),
       ],
     );
@@ -230,8 +264,8 @@ class _AwaitDriverScreenState extends State<AwaitDriverScreen> {
             maxChildSize: 0.3,
             builder: (BuildContext context, ScrollController scrollController) {
               return Container(
-                padding: EdgeInsets.all(16),
-                decoration: BoxDecoration(
+                padding: const EdgeInsets.all(16),
+                decoration: const BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(10),

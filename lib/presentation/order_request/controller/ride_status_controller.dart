@@ -18,11 +18,11 @@ class RideStatusController extends GetxController {
     updateStatus(RideStatus.searching);
 
     // Simulate searching for driver
-    Future.delayed(Duration(seconds: 3), () {
+    Future.delayed(const Duration(seconds: 3), () {
       updateStatus(RideStatus.connecting);
 
       // Simulate connecting to driver
-      Future.delayed(Duration(seconds: 3), () {
+      Future.delayed(const Duration(seconds: 5), () {
         // If failed to connect, look for another driver
         updateStatus(RideStatus.lookingForAnother);
       });
