@@ -78,11 +78,13 @@ class _AwaitDriverScreenState extends State<AwaitDriverScreen> {
           padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 60.0),
           child: LinearProgressIndicator(minHeight:4,borderRadius: BorderRadius.circular(20),),
         )),
-        Text("Connecting you to your driver",  style: TextStyle(
-            fontSize: 16,
-            color: primaryColor,
-            fontWeight: FontWeight.w600
-        ),),
+        Center(
+          child: Text("Connecting you to your driver",  style: TextStyle(
+              fontSize: 16,
+              color: primaryColor,
+              fontWeight: FontWeight.w600
+          ),),
+        ),
         SizedBox(height: 10),
         CircularProgressIndicator(),
         SizedBox(height: 20),
@@ -121,7 +123,7 @@ class _AwaitDriverScreenState extends State<AwaitDriverScreen> {
           ),
         ),
         SizedBox(height: 10),
-        Text("Your previous driver did not confirm your request"),
+        Center(child: Text("Your previous driver did not confirm your request")),
         SizedBox(height: 20),
         CustomElevatedButton(
           onPressed: () {

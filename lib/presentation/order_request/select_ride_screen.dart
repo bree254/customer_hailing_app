@@ -20,8 +20,8 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
   LatLng? _center;
   Position? _currentPosition;
 
-  bool isSelected = false;
   String? _selectedRide;
+  String? _selectedPaymentMode;
 
 //initialize the controller
   final RideStatusController rideStatusController = Get.put(RideStatusController());
@@ -122,7 +122,7 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
             ),
           ),
           DraggableScrollableSheet(
-            initialChildSize: 0.3,
+            initialChildSize: 0.4,
             minChildSize: 0.3,
             maxChildSize: 0.6,
             builder: (context, scrollController) {
@@ -234,32 +234,36 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                           Row(
                             children: [
                               GestureDetector(
-                                onTap:(){
-
+                                onTap: () {
+                                  setState(() {
+                                    _selectedPaymentMode = 'Cash';
+                                  });
                                 },
                                 child: Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                                  margin: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                                  padding: const EdgeInsets.only(top: 4, left: 8, right: 16, bottom: 4),
                                   decoration: BoxDecoration(
-                                    color: isSelected
-                                        ? selectRideColor
-                                        : const Color(0x3FFAFAFA),
-                                    borderRadius: BorderRadius.circular(10),
+                                    color: _selectedPaymentMode == 'Cash' ? selectRideColor : const Color(0x3FFAFAFA),
+                                    borderRadius: BorderRadius.circular(5),
                                     border: Border.all(
-                                      color: isSelected
-                                          ? selectRideColor
-                                          : Colors.black.withOpacity(0.05),
+                                      color: _selectedPaymentMode == 'Cash' ? selectRideColor : Colors.black.withOpacity(0.05),
                                     ),
                                   ),
                                   child: const Row(
                                     children: [
                                       Image(
-                                          width: 13,
-                                          height: 13,
-                                          image: AssetImage(
-                                              'assets/images/cash.png')),
+                                        width: 13,
+                                        height: 13,
+                                        image: AssetImage('assets/images/cash.png'),
+                                      ),
                                       SizedBox(width: 8),
-                                      Text('Cash'),
+                                      Text(
+                                        'Cash',
+                                        style: TextStyle(
+                                          color: formTextLabelColor,
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -268,32 +272,36 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                                 width: 10,
                               ),
                               GestureDetector(
-                                onTap:(){
-
+                                onTap: () {
+                                  setState(() {
+                                    _selectedPaymentMode = 'Card';
+                                  });
                                 },
                                 child: Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                                  margin: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                                  padding: const EdgeInsets.only(top: 4, left: 8, right: 16, bottom: 4),
                                   decoration: BoxDecoration(
-                                    color: isSelected
-                                        ? selectRideColor
-                                        : const Color(0x3FFAFAFA),
-                                    borderRadius: BorderRadius.circular(10),
+                                    color: _selectedPaymentMode == 'Card' ? selectRideColor : const Color(0x3FFAFAFA),
+                                    borderRadius: BorderRadius.circular(5),
                                     border: Border.all(
-                                      color: isSelected
-                                          ? selectRideColor
-                                          : Colors.black.withOpacity(0.05),
+                                      color: _selectedPaymentMode == 'Card' ? selectRideColor : Colors.black.withOpacity(0.05),
                                     ),
                                   ),
                                   child: const Row(
                                     children: [
                                       Image(
-                                          width: 13,
-                                          height: 13,
-                                          image: AssetImage(
-                                              'assets/images/card.png')),
+                                        width: 13,
+                                        height: 13,
+                                        image: AssetImage('assets/images/card.png'),
+                                      ),
                                       SizedBox(width: 8),
-                                      Text('Card'),
+                                      Text(
+                                        'Card',
+                                        style: TextStyle(
+                                          color: formTextLabelColor,
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -304,7 +312,7 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                             height: 10,
                           ),
                           CustomElevatedButton(
-                            text: 'select ${_selectedRide  }',
+                            text: 'select ${_selectedRide  ?? "your ride"}',
                             onPressed :(){
                               if(_selectedRide != null){
                                 _startRideRequest(); // Trigger the ride request
