@@ -11,23 +11,31 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  final FocusNode _focusNode = FocusNode();
   final TextEditingController _locationController = TextEditingController();
   final TextEditingController _destinationController = TextEditingController();
+
+  final FocusNode _locationFocusNode = FocusNode();
+  final FocusNode _destinationFocusNode = FocusNode();
+
   final List<TextEditingController> _stopoverControllers = [];
   final List<FocusNode> _stopoverFocusNodes = [];
 
   @override
   void initState() {
     super.initState();
-    _focusNode.addListener(() {
+    _locationFocusNode.addListener(() {
+      setState(() {});
+    });
+    _destinationFocusNode.addListener(() {
       setState(() {});
     });
   }
 
   @override
   void dispose() {
-    _focusNode.dispose();
+    _locationFocusNode.dispose();
+    _destinationFocusNode.dispose();
+
     _locationController.dispose();
     _destinationController.dispose();
     for (var controller in _stopoverControllers) {
@@ -41,8 +49,12 @@ class _SearchScreenState extends State<SearchScreen> {
 
   void _addStopover() {
     setState(() {
+      final focusNode = FocusNode();
+      focusNode.addListener(() {
+        setState(() {});
+      });
       _stopoverControllers.add(TextEditingController());
-      _stopoverFocusNodes.add(FocusNode());
+      _stopoverFocusNodes.add(focusNode);
     });
   }
 
@@ -50,9 +62,21 @@ class _SearchScreenState extends State<SearchScreen> {
     setState(() {
       _stopoverControllers[index].dispose();
       _stopoverFocusNodes[index].dispose();
+
       _stopoverControllers.removeAt(index);
       _stopoverFocusNodes.removeAt(index);
     });
+  }
+
+  Widget _buildDotIndicator(bool isActive) {
+    return Container(
+      width: 10,
+      height: 10,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: isActive ? primaryColor : disabledButtonGrey,
+      ),
+    );
   }
 
   @override
@@ -94,126 +118,167 @@ class _SearchScreenState extends State<SearchScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      TextField(
-                        controller: _locationController,
-                        focusNode: _focusNode,
-                        decoration: InputDecoration(
-                          hintText: 'Enter your location',
-                          hintStyle: const TextStyle(
-                            color: searchtextGrey,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                            height: 0.14,
-                            letterSpacing: 0.25,
-                          ),
-                          fillColor: _focusNode.hasFocus ? Colors.white : searchButtonGrey,
-                          filled: true,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide.none,
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(color: primaryColor),
-                          ),
-                          suffixIcon: _focusNode.hasFocus
-                              ? Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Image.asset(
-                              "assets/images/location.png",
-                              width: 24,
-                              height: 24,
+                      Row(
+                        children: [
+                          _buildDotIndicator(_locationFocusNode.hasFocus),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: TextField(
+                              controller: _locationController,
+                              focusNode: _locationFocusNode,
+                              decoration: InputDecoration(
+                                hintText: 'Enter your location',
+                                hintStyle: const TextStyle(
+                                  color: searchtextGrey,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                  height: 0.14,
+                                  letterSpacing: 0.25,
+                                ),
+                                fillColor: _locationFocusNode.hasFocus ? Colors.white : searchButtonGrey,
+                                filled: true,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: BorderSide.none,
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: const BorderSide(color: primaryColor),
+                                ),
+                                suffixIcon: _locationFocusNode.hasFocus
+                                    ? Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Image.asset(
+                                    "assets/images/location.png",
+                                    width: 24,
+                                    height: 24,
+                                  ),
+                                )
+                                    : null,
+                              ),
                             ),
-                          )
-                              : null,
-                        ),
+                          ),
+                        ],
                       ),
                       const SizedBox(height: 20),
-                      ..._stopoverControllers.asMap().entries.map((entry) {
-                        int index = entry.key;
-                        TextEditingController controller = entry.value;
-                        FocusNode focusNode = _stopoverFocusNodes[index];
-                        return Padding(
-                          padding: const EdgeInsets.only(bottom: 10),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: TextField(
-                                  controller: controller,
-                                  focusNode: focusNode,
-                                  decoration: InputDecoration(
-                                    hintText: 'Enter stop ${index + 1}',
-                                    hintStyle: const TextStyle(
-                                      color: searchtextGrey,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w500,
-                                      height: 0.14,
-                                      letterSpacing: 0.25,
-                                    ),
-                                    fillColor: _focusNode.hasFocus ? Colors.white : searchButtonGrey,
-                                    filled: true,
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: BorderSide.none,
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(color: primaryColor),
-                                    ),
-                                    suffixIcon: focusNode.hasFocus
-                                        ? Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Image.asset(
-                                        "assets/images/location.png",
-                                        width: 24,
-                                        height: 24,
+                      SizedBox(
+                        height: 50,
+                        child: ReorderableListView(
+                          onReorder: (oldIndex, newIndex) {
+                            setState(() {
+                              if (newIndex > oldIndex) {
+                                newIndex -= 1;
+                              }
+                              final TextEditingController controller = _stopoverControllers.removeAt(oldIndex);
+                              final FocusNode focusNode = _stopoverFocusNodes.removeAt(oldIndex);
+                              _stopoverControllers.insert(newIndex, controller);
+                              _stopoverFocusNodes.insert(newIndex, focusNode);
+                            });
+                          },
+                          children: _stopoverControllers.asMap().entries.map((entry) {
+                            int index = entry.key;
+                            TextEditingController controller = entry.value;
+                            FocusNode focusNode = _stopoverFocusNodes[index];
+                            return Padding(
+                              key: ValueKey('stopover_$index'),
+                              padding: const EdgeInsets.only(bottom: 10),
+                              child: Row(
+                                children: [
+                                  _buildDotIndicator(focusNode.hasFocus),
+                                  const SizedBox(width: 8),
+                                  Expanded(
+                                    child: TextField(
+                                      controller: controller,
+                                      focusNode: focusNode,
+                                      decoration: InputDecoration(
+                                        hintText: 'Enter stop ${index + 1}',
+                                        hintStyle: const TextStyle(
+                                          color: searchtextGrey,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w500,
+                                          height: 0.14,
+                                          letterSpacing: 0.25,
+                                        ),
+                                        fillColor: focusNode.hasFocus ? Colors.white : searchButtonGrey,
+                                        filled: true,
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(10),
+                                          borderSide: BorderSide.none,
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(10),
+                                          borderSide: const BorderSide(color: primaryColor),
+                                        ),
+                                        suffixIcon: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            if (focusNode.hasFocus)
+                                              Padding(
+                                                padding: const EdgeInsets.all(8.0),
+                                                child: Image.asset(
+                                                  "assets/images/location.png",
+                                                  width: 24,
+                                                  height: 24,
+                                                ),
+                                              ),
+                                            IconButton(
+                                              icon: const Icon(Icons.cancel, color: Colors.grey),
+                                              onPressed: () => _removeStopover(index),
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    )
-                                        : null,
+                                    ),
                                   ),
-                                ),
+                                  const SizedBox(width: 8),
+                                  const Icon(Icons.drag_handle),
+                                ],
                               ),
-                              IconButton(
-                                icon: const Icon(Icons.cancel, color: disabledButtonGrey),
-                                onPressed: () => _removeStopover(index),
-                              ),
-                            ],
-                          ),
-                        );
-                      }),
-                      TextField(
-                        controller: _destinationController,
-                        focusNode: _focusNode,
-                        decoration: InputDecoration(
-                          hintText: 'Enter your destination',
-                          hintStyle: const TextStyle(
-                            color: searchtextGrey,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                            height: 0.14,
-                            letterSpacing: 0.25,
-                          ),
-                          fillColor: _focusNode.hasFocus ? Colors.white : searchButtonGrey,
-                          filled: true,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide.none,
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(color: primaryColor),
-                          ),
-                          suffixIcon: _focusNode.hasFocus
-                              ? Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Image.asset(
-                              "assets/images/location.png",
-                              width: 24,
-                              height: 24,
-                            ),
-                          )
-                              : null,
+                            );
+                          }).toList(),
                         ),
+                      ),
+                      Row(
+                        children: [
+                          _buildDotIndicator(_destinationFocusNode.hasFocus),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: TextField(
+                              controller: _destinationController,
+                              focusNode: _destinationFocusNode,
+                              decoration: InputDecoration(
+                                hintText: 'Enter your destination',
+                                hintStyle: const TextStyle(
+                                  color: searchtextGrey,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                  height: 0.14,
+                                  letterSpacing: 0.25,
+                                ),
+                                fillColor: _destinationFocusNode.hasFocus ? Colors.white : searchButtonGrey,
+                                filled: true,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: BorderSide.none,
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: const BorderSide(color: primaryColor),
+                                ),
+                                suffixIcon: _destinationFocusNode.hasFocus
+                                    ? Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Image.asset(
+                                    "assets/images/location.png",
+                                    width: 24,
+                                    height: 24,
+                                  ),
+                                )
+                                    : null,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                       const SizedBox(height: 20),
                       GestureDetector(
@@ -295,4 +360,3 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 }
-

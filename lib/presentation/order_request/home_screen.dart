@@ -118,7 +118,7 @@ class DestinationBottomSheet extends StatelessWidget {
       maxChildSize: 0.8,
       builder: (BuildContext context, ScrollController scrollController) {
         return Container(
-          padding: const EdgeInsets.only(top:  8),
+          padding: const EdgeInsets.only(top:8),
           decoration: const BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.vertical(top: Radius.circular(10)),

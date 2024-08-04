@@ -1,5 +1,4 @@
 import 'package:customer_hailing/core/utils/colors.dart';
-import 'package:customer_hailing/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'models/data.dart';
@@ -12,23 +11,31 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  final FocusNode _focusNode = FocusNode();
   final TextEditingController _locationController = TextEditingController();
   final TextEditingController _destinationController = TextEditingController();
+
+  final FocusNode _locationFocusNode = FocusNode();
+  final FocusNode _destinationFocusNode = FocusNode();
+
   final List<TextEditingController> _stopoverControllers = [];
   final List<FocusNode> _stopoverFocusNodes = [];
 
   @override
   void initState() {
     super.initState();
-    _focusNode.addListener(() {
+    _locationFocusNode.addListener(() {
+      setState(() {});
+    });
+    _destinationFocusNode.addListener(() {
       setState(() {});
     });
   }
 
   @override
   void dispose() {
-    _focusNode.dispose();
+    _locationFocusNode.dispose();
+    _destinationFocusNode.dispose();
+
     _locationController.dispose();
     _destinationController.dispose();
     for (var controller in _stopoverControllers) {
@@ -42,70 +49,271 @@ class _SearchScreenState extends State<SearchScreen> {
 
   void _addStopover() {
     setState(() {
+      final focusNode = FocusNode();
+      focusNode.addListener(() {
+        setState(() {});
+      });
       _stopoverControllers.add(TextEditingController());
-      _stopoverFocusNodes.add(FocusNode());
+      _stopoverFocusNodes.add(focusNode);
     });
   }
+
 
   void _removeStopover(int index) {
     setState(() {
       _stopoverControllers[index].dispose();
       _stopoverFocusNodes[index].dispose();
+
       _stopoverControllers.removeAt(index);
       _stopoverFocusNodes.removeAt(index);
     });
   }
 
+  Widget _buildDotIndicator(bool isActive) {
+    return Container(
+      width: 10,
+      height: 10,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: isActive ? primaryColor : disabledButtonGrey,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: const Text(
-          'Enter trip details',
-          style: TextStyle(
-            color: searchtextGrey,
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
-            height: 0.10,
-            letterSpacing: 0.25,
-          ),
-        ),
-        iconTheme: const IconThemeData(color: Colors.black),
-        leading: IconButton(
-          onPressed: () {
-            Get.back();
-          },
-          icon: const Icon(
-            Icons.arrow_back,
-            size: 17,
-            color: blackTextColor,
-          ),
-        ),
-      ),
-      body: Stack(
+      body: Column(
         children: [
-          ListView.builder(
-              scrollDirection: Axis.vertical,
+          Container(
+            color: Colors.white,
+            child: Column(
+              children: [
+                AppBar(
+                  backgroundColor: Colors.white,
+                  elevation: 0,
+                  title: const Text(
+                    'Enter trip details',
+                    style: TextStyle(
+                      color: searchtextGrey,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      height: 0.10,
+                      letterSpacing: 0.25,
+                    ),
+                  ),
+                  iconTheme: const IconThemeData(color: Colors.black),
+                  leading: IconButton(
+                    onPressed: () {
+                      Get.back();
+                    },
+                    icon: const Icon(
+                      Icons.arrow_back,
+                      size: 17,
+                      color: blackTextColor,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0, left: 16, bottom: 8, right: 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          _buildDotIndicator(_locationFocusNode.hasFocus),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: TextField(
+                              controller: _locationController,
+                              focusNode: _locationFocusNode,
+                              decoration: InputDecoration(
+                                hintText: 'Enter your location',
+                                hintStyle: const TextStyle(
+                                  color: searchtextGrey,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                  height: 0.14,
+                                  letterSpacing: 0.25,
+                                ),
+                                fillColor: _locationFocusNode.hasFocus ? Colors.white : searchButtonGrey,
+                                filled: true,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: BorderSide.none,
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: const BorderSide(color: primaryColor),
+                                ),
+                                suffixIcon: _locationFocusNode.hasFocus
+                                    ? Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Image.asset(
+                                    "assets/images/location.png",
+                                    width: 24,
+                                    height: 24,
+                                  ),
+                                )
+                                    : null,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      ..._stopoverControllers.asMap().entries.map((entry) {
+                        int index = entry.key;
+                        TextEditingController controller = entry.value;
+                        FocusNode focusNode = _stopoverFocusNodes[index];
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 10),
+                          child: Row(
+                            children: [
+                              _buildDotIndicator(focusNode.hasFocus),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: TextField(
+                                  controller: controller,
+                                  focusNode: focusNode,
+                                  decoration: InputDecoration(
+                                    hintText: 'Enter stop ${index + 1}',
+                                    hintStyle: const TextStyle(
+                                      color: searchtextGrey,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w500,
+                                      height: 0.14,
+                                      letterSpacing: 0.25,
+                                    ),
+                                    fillColor: focusNode.hasFocus ? Colors.white : searchButtonGrey,
+                                    filled: true,
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: BorderSide.none,
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(color: primaryColor),
+                                    ),
+                                    suffixIcon: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        if (focusNode.hasFocus)
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Image.asset(
+                                              "assets/images/location.png",
+                                              width: 24,
+                                              height: 24,
+                                            ),
+                                          ),
+                                        IconButton(
+                                          icon: const Icon(Icons.cancel, color: Colors.grey),
+                                          onPressed: () => _removeStopover(index),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              const Icon(Icons.drag_handle),
+                            ],
+                          ),
+                        );
+                      }),
+                      Row(
+                        children: [
+                          _buildDotIndicator(_destinationFocusNode.hasFocus),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: TextField(
+                              controller: _destinationController,
+                              focusNode: _destinationFocusNode,
+                              decoration: InputDecoration(
+                                hintText: 'Enter your destination',
+                                hintStyle: const TextStyle(
+                                  color: searchtextGrey,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                  height: 0.14,
+                                  letterSpacing: 0.25,
+                                ),
+                                fillColor: _destinationFocusNode.hasFocus ? Colors.white : searchButtonGrey,
+                                filled: true,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: BorderSide.none,
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: const BorderSide(color: primaryColor),
+                                ),
+                                suffixIcon: _destinationFocusNode.hasFocus
+                                    ? Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Image.asset(
+                                    "assets/images/location.png",
+                                    width: 24,
+                                    height: 24,
+                                  ),
+                                )
+                                    : null,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      GestureDetector(
+                        onTap: _addStopover,
+                        child: Container(
+                          color: Colors.transparent,
+                          child: const Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.add_circle_outlined, color: primaryColor, size: 14),
+                              SizedBox(width: 5),
+                              Text(
+                                'Add stop over',
+                                style: TextStyle(
+                                  color: primaryColor,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                  height: 0.14,
+                                  letterSpacing: 0.25,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Flexible(
+            child: ListView.builder(
               itemCount: MyData.destinations.length,
-              itemBuilder: (context, index) {
+              itemBuilder: (BuildContext context, int index) {
                 var destination = MyData.destinations[index];
+
                 return Container(
-                  margin: const EdgeInsets.fromLTRB( 10,0,10 ,8),
+                  margin: const EdgeInsets.fromLTRB(10, 0, 10, 8),
                   decoration: ShapeDecoration(
                     color: const Color(0x7FFAFAFA),
                     shape: RoundedRectangleBorder(
                       side: BorderSide(
                         width: 1,
-                        color: Colors.black.withOpacity(0.02500000037252903),
+                        color: Colors.black.withOpacity(0.025),
                       ),
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
                   child: ListTile(
-                    onTap: () {
-                      Get.toNamed(AppRoutes.selectRide);
-                    },
+                    onTap: () {},
                     leading: const Icon(
                       Icons.history,
                       color: historyIcon,
@@ -129,29 +337,10 @@ class _SearchScreenState extends State<SearchScreen> {
                   ),
                 );
               },
-          ),
-          Positioned(
-              child: Expanded(
-              child: Container(
-                width: 360,
-                height: 198,
-                clipBehavior: Clip.antiAlias,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border(
-                    left: BorderSide(),
-                    top: BorderSide(),
-                    right: BorderSide(),
-                    bottom: BorderSide(width: 1),
-
-                  ),
-          ),
-              ),
-              ),
+            ),
           ),
         ],
-      )
+      ),
     );
   }
 }
-
