@@ -23,3 +23,6 @@ const lightGrey = Color(0xFFE2E2E2);
 
 const cancelButton = Color(0xFFFFE7E6);
 const cancelText =Color(0xFFFF0000);
+
+const disabledText =  Color(0xFF9F9F9F);
+const trailertext =Color(0xFF0000F9);

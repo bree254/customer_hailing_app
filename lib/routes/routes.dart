@@ -8,6 +8,7 @@ import 'package:customer_hailing/presentation/order_request/binding/home_binding
 import 'package:customer_hailing/presentation/order_request/home_screen.dart';
 import 'package:customer_hailing/presentation/order_request/search_screen.dart';
 import 'package:customer_hailing/presentation/order_request/select_ride_screen.dart';
+import 'package:customer_hailing/presentation/order_request/trip_status_screen.dart';
 import 'package:customer_hailing/presentation/splash/splash_screen.dart';
 
 import '../presentation/auth/phone_number/login_or_signup_screen.dart';
@@ -23,6 +24,7 @@ class AppRoutes {
   static const String search = "/search";
   static const String selectRide = "/rides";
   static const String awaitDriver = "/await_driver";
+  static const String tripStatus ="/trip_status";
 
   static List<GetPage> pages = [
     GetPage(
@@ -65,6 +67,10 @@ class AppRoutes {
     GetPage(
         name: awaitDriver,
         page: () => const AwaitDriverScreen(),
+    ),
+    GetPage(
+      name: tripStatus,
+      page: () => const TripStatusScreen(),
     ),
   ];
 }

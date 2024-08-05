@@ -1,6 +1,7 @@
 import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/core/utils/colors.dart';
 import 'package:customer_hailing/presentation/order_request/controller/ride_status_controller.dart';
+import 'package:customer_hailing/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -65,6 +66,7 @@ class _AwaitDriverScreenState extends State<AwaitDriverScreen> {
           child: CustomElevatedButton(
             onPressed: () {
               // Handle cancel
+              Get.toNamed(AppRoutes.tripStatus);
             },
             buttonStyle: ElevatedButton.styleFrom(
               backgroundColor: cancelButton,
@@ -220,7 +222,12 @@ class _AwaitDriverScreenState extends State<AwaitDriverScreen> {
       body:Stack(
         children :[
           _center == null
-              ? const Center(child: CircularProgressIndicator())
+              ? Image.asset(
+            'assets/images/map.png', // Path to your cached map image
+            fit: BoxFit.cover,
+            width: double.infinity,
+            height: double.infinity,
+          )
               : SizedBox(
             height: double.infinity,
             child: GoogleMap(

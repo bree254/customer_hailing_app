@@ -73,7 +73,12 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
       body: Stack(
         children: [
           _center == null
-              ? const Center(child: CircularProgressIndicator())
+              ? Image.asset(
+            'assets/images/map.png', // Path to your cached map image
+            fit: BoxFit.cover,
+            width: double.infinity,
+            height: double.infinity,
+          )
               : SizedBox(
             height: double.infinity,
             child: GoogleMap(
