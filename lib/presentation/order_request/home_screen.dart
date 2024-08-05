@@ -1,11 +1,8 @@
-import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/core/utils/colors.dart';
-import 'package:customer_hailing/routes/routes.dart';
 import 'package:customer_hailing/widgets/destination_bottomsheet_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'models/data.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

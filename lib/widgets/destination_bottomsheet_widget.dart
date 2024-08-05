@@ -3,7 +3,6 @@ import 'package:customer_hailing/core/utils/colors.dart';
 import 'package:customer_hailing/presentation/order_request/models/data.dart';
 import 'package:customer_hailing/routes/routes.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
 class DestinationBottomSheet extends StatelessWidget {
   const DestinationBottomSheet({super.key});
 

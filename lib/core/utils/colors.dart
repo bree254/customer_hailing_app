@@ -25,4 +25,6 @@ const cancelButton = Color(0xFFFFE7E6);
 const cancelText =Color(0xFFFF0000);
 
 const disabledText =  Color(0xFF9F9F9F);
+
 const trailertext =Color(0xFF0000F9);
+const NoThanksText =Color(0xFF7D7D7D);

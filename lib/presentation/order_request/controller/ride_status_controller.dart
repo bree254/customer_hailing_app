@@ -14,7 +14,7 @@ class RideStatusController extends GetxController {
     currentStatus.value = status;
 
     if (status == RideStatus.connecting) {
-      Future.delayed(Duration(seconds: 3), () {
+      Future.delayed(const Duration(seconds: 3), () {
         bool driverFound = _checkForDriver();
 
         if (driverFound) {
