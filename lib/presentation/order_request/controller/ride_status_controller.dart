@@ -1,3 +1,4 @@
+import 'package:customer_hailing/routes/routes.dart';
 import 'package:get/get.dart';
 
 enum RideStatus {
@@ -11,7 +12,29 @@ class RideStatusController extends GetxController {
 
   void updateStatus(RideStatus status) {
     currentStatus.value = status;
+
+    if (status == RideStatus.connecting) {
+      Future.delayed(Duration(seconds: 3), () {
+        bool driverFound = _checkForDriver();
+
+        if (driverFound) {
+          Get.toNamed(AppRoutes.tripStatus); // Navigate to the ride confirmed screen
+        } else {
+          updateStatus(RideStatus.lookingForAnother);
+        }
+      });
+    }
   }
+
+  bool _checkForDriver() {
+    // Simulate driver check. Replace with actual logic.
+    return DateTime.now().second % 2 == 0;
+    // Randomly returns true or false based on the current second
+
+    // return true; // or false based on actual condition
+  }
+
+
 
   void searchForDriver() {
     // Update status to searching
@@ -21,11 +44,6 @@ class RideStatusController extends GetxController {
     Future.delayed(const Duration(seconds: 3), () {
       updateStatus(RideStatus.connecting);
 
-      // Simulate connecting to driver
-      Future.delayed(const Duration(seconds: 5), () {
-        // If failed to connect, look for another driver
-        updateStatus(RideStatus.lookingForAnother);
-      });
     });
   }
 

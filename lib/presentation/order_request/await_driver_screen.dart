@@ -66,7 +66,7 @@ class _AwaitDriverScreenState extends State<AwaitDriverScreen> {
           child: CustomElevatedButton(
             onPressed: () {
               // Handle cancel
-              Get.toNamed(AppRoutes.tripStatus);
+              // Get.toNamed(AppRoutes.tripStatus);
             },
             buttonStyle: ElevatedButton.styleFrom(
               backgroundColor: cancelButton,
@@ -266,9 +266,9 @@ class _AwaitDriverScreenState extends State<AwaitDriverScreen> {
             ),
           ),
           DraggableScrollableSheet(
-            initialChildSize: 0.3,
-            minChildSize: 0.3,
-            maxChildSize: 0.3,
+            initialChildSize: 0.35,
+            minChildSize: 0.35,
+            maxChildSize: 0.35,
             builder: (BuildContext context, ScrollController scrollController) {
               return Container(
                 padding: const EdgeInsets.all(16),
