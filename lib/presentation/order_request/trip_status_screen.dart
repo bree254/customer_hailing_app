@@ -5,6 +5,8 @@ import 'package:customer_hailing/widgets/trip_status_bottomsheet_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+
+import 'controller/trip_status_controller.dart';
 class TripStatusScreen extends StatefulWidget {
   const TripStatusScreen({super.key});
 
@@ -13,6 +15,9 @@ class TripStatusScreen extends StatefulWidget {
 }
 
 class _TripStatusScreenState extends State<TripStatusScreen> {
+
+  final TripStatusController tripStatusController = Get.put(TripStatusController());
+
   GoogleMapController? mapController;
   LatLng? _center;
   Position? _currentPosition;
