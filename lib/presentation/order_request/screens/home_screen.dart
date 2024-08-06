@@ -1,4 +1,3 @@
-import 'package:customer_hailing/core/utils/colors.dart';
 import 'package:customer_hailing/widgets/destination_bottomsheet_widget.dart';
 import 'package:customer_hailing/widgets/menu_icon_widget.dart';
 import 'package:flutter/material.dart';
@@ -84,7 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
         const DestinationBottomSheet(),
-        Positioned(
+        const Positioned(
           top: 40,
           left: 20,
           child: MenuIconWidget(),

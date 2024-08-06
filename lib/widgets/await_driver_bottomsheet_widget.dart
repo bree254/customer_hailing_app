@@ -2,7 +2,6 @@ import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/core/utils/colors.dart';
 import 'package:customer_hailing/presentation/order_request/controller/ride_status_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
 class AwaitDriverBottomsheetWidget extends StatelessWidget {
    AwaitDriverBottomsheetWidget({super.key});
 

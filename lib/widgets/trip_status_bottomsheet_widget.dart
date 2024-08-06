@@ -307,7 +307,7 @@ class TripStatusBottomSheet extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Image(
+              const Image(
                   width: 60,
                   height: 30,
                   image: AssetImage("assets/images/mazda.png")),
@@ -317,7 +317,7 @@ class TripStatusBottomSheet extends StatelessWidget {
                      Get.toNamed(AppRoutes.shareTrip);
 
                    },
-                   child: Text(
+                   child: const Text(
                       'Share ride details',
                       style: TextStyle(
                         color: Color(0xFF0000F9),

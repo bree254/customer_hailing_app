@@ -10,6 +10,7 @@ import 'package:customer_hailing/presentation/order_request/screens/rate_ride_sc
 import 'package:customer_hailing/presentation/order_request/screens/search_screen.dart';
 import 'package:customer_hailing/presentation/order_request/screens/select_ride_screen.dart';
 import 'package:customer_hailing/presentation/order_request/screens/share_trip_details_screen.dart';
+import 'package:customer_hailing/presentation/order_request/screens/share_with_screen.dart';
 import 'package:customer_hailing/presentation/order_request/screens/trip_status_screen.dart';
 import 'package:customer_hailing/presentation/splash/splash_screen.dart';
 
@@ -29,6 +30,7 @@ class AppRoutes {
   static const String tripStatus ="/trip_status";
   static const String rateRide = "/rate_ride";
   static const String shareTrip ="/share_trip";
+  static const String shareWith = "/share_with";
 
   static List<GetPage> pages = [
     GetPage(
@@ -83,6 +85,10 @@ class AppRoutes {
     GetPage(
       name: shareTrip,
       page: () => const ShareTripDetailsScreen(),
+    ),
+    GetPage(
+      name: shareWith,
+      page: () => const ShareWithScreen(),
     ),
   ];
 }

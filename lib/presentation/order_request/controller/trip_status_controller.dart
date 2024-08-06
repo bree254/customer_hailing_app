@@ -8,7 +8,7 @@ class TripStatusController extends GetxController {
 
  TripStatusController() {
   // Simulate background process to update trip status periodically
-  Timer.periodic(Duration(seconds: 10), (timer) {
+  Timer.periodic(const Duration(seconds: 10), (timer) {
    switch (tripStatus.value) {
     case TripStatus.onTheWay:
      updateTripStatus(TripStatus.arrived);
