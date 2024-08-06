@@ -1,26 +1,27 @@
 import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/core/utils/colors.dart';
-import 'package:customer_hailing/routes/routes.dart';
-import 'package:customer_hailing/widgets/trip_status_bottomsheet_widget.dart';
+import 'package:customer_hailing/presentation/order_request/controller/ride_status_controller.dart';
+import 'package:customer_hailing/widgets/await_driver_bottomsheet_widget.dart';
+import 'package:customer_hailing/widgets/menu_icon_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-
-import 'controller/trip_status_controller.dart';
-class TripStatusScreen extends StatefulWidget {
-  const TripStatusScreen({super.key});
+class AwaitDriverScreen extends StatefulWidget {
+  const AwaitDriverScreen({super.key});
 
   @override
-  State<TripStatusScreen> createState() => _TripStatusScreenState();
+  State<AwaitDriverScreen> createState() => _AwaitDriverScreenState();
 }
 
-class _TripStatusScreenState extends State<TripStatusScreen> {
-
-  final TripStatusController tripStatusController = Get.put(TripStatusController());
-
+class _AwaitDriverScreenState extends State<AwaitDriverScreen> {
   GoogleMapController? mapController;
   LatLng? _center;
   Position? _currentPosition;
+
+  bool isSelected = false;
+
+  final RideStatusController rideStatusController = Get.put(RideStatusController());
+
 
   @override
   void initState() {
@@ -58,11 +59,12 @@ class _TripStatusScreenState extends State<TripStatusScreen> {
       _center = LatLng(_currentPosition!.latitude, _currentPosition!.longitude);
     });
   }
+
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-      body: Stack(
-        children: [
+    return Scaffold(
+      body:Stack(
+        children :[
           _center == null
               ? Image.asset(
             'assets/images/map.png', // Path to your cached map image
@@ -87,29 +89,16 @@ class _TripStatusScreenState extends State<TripStatusScreen> {
               },
             ),
           ),
-          const TripStatusBottomSheet(),
           Positioned(
             top: 40,
             left: 20,
-            child: Container(
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: whiteTextColor,
-              ),
-              child: IconButton(
-                icon: const Icon(Icons.menu, color: Colors.black),
-                onPressed: () {
-                  // Handle menu button press
-                },
-                color: Colors.white,
-                iconSize: 30.0,
-                padding: const EdgeInsets.all(10),
-                tooltip: 'Open Menu',
-              ),
-            ),
-          )
-        ],
-      ),
+           child: MenuIconWidget(),
+          ),
+          AwaitDriverBottomsheetWidget(),
+
+        ]
+      )
+
     );
   }
 }

@@ -3,14 +3,14 @@ import 'package:customer_hailing/presentation/auth/email/email_sign-in_up_screen
 import 'package:customer_hailing/presentation/auth/email/enter_your_number.dart';
 import 'package:customer_hailing/presentation/auth/google/google_sign_in_up_screen.dart';
 import 'package:customer_hailing/presentation/auth/verification.dart';
-import 'package:customer_hailing/presentation/order_request/await_driver_screen.dart';
+import 'package:customer_hailing/presentation/order_request/screens/await_driver_screen.dart';
 import 'package:customer_hailing/presentation/order_request/binding/home_binding.dart';
-import 'package:customer_hailing/presentation/order_request/home_screen.dart';
-import 'package:customer_hailing/presentation/order_request/rate_ride_screen.dart';
-import 'package:customer_hailing/presentation/order_request/search_screen.dart';
-import 'package:customer_hailing/presentation/order_request/select_ride_screen.dart';
-import 'package:customer_hailing/presentation/order_request/share_trip_details_screen.dart';
-import 'package:customer_hailing/presentation/order_request/trip_status_screen.dart';
+import 'package:customer_hailing/presentation/order_request/screens/home_screen.dart';
+import 'package:customer_hailing/presentation/order_request/screens/rate_ride_screen.dart';
+import 'package:customer_hailing/presentation/order_request/screens/search_screen.dart';
+import 'package:customer_hailing/presentation/order_request/screens/select_ride_screen.dart';
+import 'package:customer_hailing/presentation/order_request/screens/share_trip_details_screen.dart';
+import 'package:customer_hailing/presentation/order_request/screens/trip_status_screen.dart';
 import 'package:customer_hailing/presentation/splash/splash_screen.dart';
 
 import '../presentation/auth/phone_number/login_or_signup_screen.dart';

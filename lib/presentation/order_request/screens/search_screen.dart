@@ -1,7 +1,7 @@
 import 'package:customer_hailing/core/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'models/data.dart';
+import '../models/data.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -57,7 +57,6 @@ class _SearchScreenState extends State<SearchScreen> {
       _stopoverFocusNodes.add(focusNode);
     });
   }
-
 
   void _removeStopover(int index) {
     setState(() {
@@ -162,66 +161,83 @@ class _SearchScreenState extends State<SearchScreen> {
                         ],
                       ),
                       const SizedBox(height: 20),
-                      ..._stopoverControllers.asMap().entries.map((entry) {
-                        int index = entry.key;
-                        TextEditingController controller = entry.value;
-                        FocusNode focusNode = _stopoverFocusNodes[index];
-                        return Padding(
-                          padding: const EdgeInsets.only(bottom: 10),
-                          child: Row(
-                            children: [
-                              _buildDotIndicator(focusNode.hasFocus),
-                              const SizedBox(width: 8),
-                              Expanded(
-                                child: TextField(
-                                  controller: controller,
-                                  focusNode: focusNode,
-                                  decoration: InputDecoration(
-                                    hintText: 'Enter stop ${index + 1}',
-                                    hintStyle: const TextStyle(
-                                      color: searchtextGrey,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w500,
-                                      height: 0.14,
-                                      letterSpacing: 0.25,
-                                    ),
-                                    fillColor: focusNode.hasFocus ? Colors.white : searchButtonGrey,
-                                    filled: true,
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: BorderSide.none,
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(color: primaryColor),
-                                    ),
-                                    suffixIcon: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        if (focusNode.hasFocus)
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Image.asset(
-                                              "assets/images/location.png",
-                                              width: 24,
-                                              height: 24,
-                                            ),
-                                          ),
-                                        IconButton(
-                                          icon: const Icon(Icons.cancel, color: Colors.grey),
-                                          onPressed: () => _removeStopover(index),
+                      SizedBox(
+                        height: 50,
+                        child: ReorderableListView(
+                          onReorder: (oldIndex, newIndex) {
+                            setState(() {
+                              if (newIndex > oldIndex) {
+                                newIndex -= 1;
+                              }
+                              final TextEditingController controller = _stopoverControllers.removeAt(oldIndex);
+                              final FocusNode focusNode = _stopoverFocusNodes.removeAt(oldIndex);
+                              _stopoverControllers.insert(newIndex, controller);
+                              _stopoverFocusNodes.insert(newIndex, focusNode);
+                            });
+                          },
+                          children: _stopoverControllers.asMap().entries.map((entry) {
+                            int index = entry.key;
+                            TextEditingController controller = entry.value;
+                            FocusNode focusNode = _stopoverFocusNodes[index];
+                            return Padding(
+                              key: ValueKey('stopover_$index'),
+                              padding: const EdgeInsets.only(bottom: 10),
+                              child: Row(
+                                children: [
+                                  _buildDotIndicator(focusNode.hasFocus),
+                                  const SizedBox(width: 8),
+                                  Expanded(
+                                    child: TextField(
+                                      controller: controller,
+                                      focusNode: focusNode,
+                                      decoration: InputDecoration(
+                                        hintText: 'Enter stop ${index + 1}',
+                                        hintStyle: const TextStyle(
+                                          color: searchtextGrey,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w500,
+                                          height: 0.14,
+                                          letterSpacing: 0.25,
                                         ),
-                                      ],
+                                        fillColor: focusNode.hasFocus ? Colors.white : searchButtonGrey,
+                                        filled: true,
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(10),
+                                          borderSide: BorderSide.none,
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(10),
+                                          borderSide: const BorderSide(color: primaryColor),
+                                        ),
+                                        suffixIcon: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            if (focusNode.hasFocus)
+                                              Padding(
+                                                padding: const EdgeInsets.all(8.0),
+                                                child: Image.asset(
+                                                  "assets/images/location.png",
+                                                  width: 24,
+                                                  height: 24,
+                                                ),
+                                              ),
+                                            IconButton(
+                                              icon: const Icon(Icons.cancel, color: Colors.grey),
+                                              onPressed: () => _removeStopover(index),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
                                     ),
                                   ),
-                                ),
+                                  const SizedBox(width: 8),
+                                  const Icon(Icons.drag_handle),
+                                ],
                               ),
-                              const SizedBox(width: 8),
-                              const Icon(Icons.drag_handle),
-                            ],
-                          ),
-                        );
-                      }),
+                            );
+                          }).toList(),
+                        ),
+                      ),
                       Row(
                         children: [
                           _buildDotIndicator(_destinationFocusNode.hasFocus),

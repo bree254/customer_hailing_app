@@ -4,8 +4,8 @@ import 'package:customer_hailing/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'controller/ride_status_controller.dart';
-import 'models/data.dart';
+import '../controller/ride_status_controller.dart';
+import '../models/data.dart';
 
 class SelectRideScreen extends StatefulWidget {
   const SelectRideScreen({super.key});
