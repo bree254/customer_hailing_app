@@ -1,5 +1,6 @@
 import 'package:customer_hailing/presentation/order_request/models/ride.dart';
 
+import 'Profiles.dart';
 import 'destination.dart';
 
 class MyData {
@@ -40,5 +41,11 @@ class MyData {
         imageUrl: 'assets/images/economy.png',
         discountedPrice: 660,
         originalprice: 720),
+  ];
+  static List<ShareProfiles> profiles =[
+    ShareProfiles(imageUrl: 'assets/images/alejandro.png', name: 'Alejandro'),
+    ShareProfiles(imageUrl: 'assets/images/ela.png', name: 'Ela'),
+    ShareProfiles(imageUrl: 'assets/images/jacinta.png', name: 'Jecinta'),
+    ShareProfiles(imageUrl: 'assets/images/steve.png', name: 'Steve'),
   ];
 }
