@@ -66,7 +66,7 @@ class AppRoutes {
     ),
     GetPage(
         name: search,
-        page: () => const SearchScreen(),
+        page: () => SearchScreen(),
     ),
     GetPage(
         name: selectRide,

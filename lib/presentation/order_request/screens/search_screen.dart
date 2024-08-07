@@ -29,6 +29,8 @@ class _SearchScreenState extends State<SearchScreen> {
     _destinationFocusNode.addListener(() {
       setState(() {});
     });
+    _stopoverControllers.add(_destinationController);
+    _stopoverFocusNodes.add(_destinationFocusNode);
   }
 
   @override
@@ -82,37 +84,37 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        title: const Text(
+          'Enter trip details',
+          style: TextStyle(
+            color: searchtextGrey,
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+            height: 0.10,
+            letterSpacing: 0.25,
+          ),
+        ),
+        iconTheme: const IconThemeData(color: Colors.black),
+        leading: IconButton(
+          onPressed: () {
+            Get.back();
+          },
+          icon: const Icon(
+            Icons.arrow_back,
+            size: 17,
+            color: blackTextColor,
+          ),
+        ),
+      ),
       body: Column(
         children: [
           Container(
             color: Colors.white,
             child: Column(
               children: [
-                AppBar(
-                  backgroundColor: Colors.white,
-                  elevation: 0,
-                  title: const Text(
-                    'Enter trip details',
-                    style: TextStyle(
-                      color: searchtextGrey,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      height: 0.10,
-                      letterSpacing: 0.25,
-                    ),
-                  ),
-                  iconTheme: const IconThemeData(color: Colors.black),
-                  leading: IconButton(
-                    onPressed: () {
-                      Get.back();
-                    },
-                    icon: const Icon(
-                      Icons.arrow_back,
-                      size: 17,
-                      color: blackTextColor,
-                    ),
-                  ),
-                ),
                 Padding(
                   padding: const EdgeInsets.only(top: 8.0, left: 16, bottom: 8, right: 16),
                   child: Column(
@@ -162,8 +164,9 @@ class _SearchScreenState extends State<SearchScreen> {
                       ),
                       const SizedBox(height: 20),
                       SizedBox(
-                        height: 50,
+                        height: 100,
                         child: ReorderableListView(
+                          clipBehavior: Clip.none,
                           onReorder: (oldIndex, newIndex) {
                             setState(() {
                               if (newIndex > oldIndex) {
@@ -191,7 +194,9 @@ class _SearchScreenState extends State<SearchScreen> {
                                       controller: controller,
                                       focusNode: focusNode,
                                       decoration: InputDecoration(
-                                        hintText: 'Enter stop ${index + 1}',
+                                        hintText: index == _stopoverControllers.length - 1
+                                            ? 'Enter your destination'
+                                            : 'Enter stop ${index + 1}',
                                         hintStyle: const TextStyle(
                                           color: searchtextGrey,
                                           fontSize: 12,
@@ -221,10 +226,11 @@ class _SearchScreenState extends State<SearchScreen> {
                                                   height: 24,
                                                 ),
                                               ),
-                                            IconButton(
-                                              icon: const Icon(Icons.cancel, color: Colors.grey),
-                                              onPressed: () => _removeStopover(index),
-                                            ),
+                                            if (index != _stopoverControllers.length - 1) // Show cancel button only for stopovers
+                                              IconButton(
+                                                icon: const Icon(Icons.cancel, color: Colors.grey),
+                                                onPressed: () => _removeStopover(index),
+                                              ),
                                           ],
                                         ),
                                       ),
@@ -237,48 +243,6 @@ class _SearchScreenState extends State<SearchScreen> {
                             );
                           }).toList(),
                         ),
-                      ),
-                      Row(
-                        children: [
-                          _buildDotIndicator(_destinationFocusNode.hasFocus),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: TextField(
-                              controller: _destinationController,
-                              focusNode: _destinationFocusNode,
-                              decoration: InputDecoration(
-                                hintText: 'Enter your destination',
-                                hintStyle: const TextStyle(
-                                  color: searchtextGrey,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500,
-                                  height: 0.14,
-                                  letterSpacing: 0.25,
-                                ),
-                                fillColor: _destinationFocusNode.hasFocus ? Colors.white : searchButtonGrey,
-                                filled: true,
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide: BorderSide.none,
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide: const BorderSide(color: primaryColor),
-                                ),
-                                suffixIcon: _destinationFocusNode.hasFocus
-                                    ? Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Image.asset(
-                                    "assets/images/location.png",
-                                    width: 24,
-                                    height: 24,
-                                  ),
-                                )
-                                    : null,
-                              ),
-                            ),
-                          ),
-                        ],
                       ),
                       const SizedBox(height: 20),
                       GestureDetector(
