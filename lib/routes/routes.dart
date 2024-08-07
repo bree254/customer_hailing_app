@@ -5,6 +5,7 @@ import 'package:customer_hailing/presentation/auth/google/google_sign_in_up_scre
 import 'package:customer_hailing/presentation/auth/verification.dart';
 import 'package:customer_hailing/presentation/order_request/screens/await_driver_screen.dart';
 import 'package:customer_hailing/presentation/order_request/binding/home_binding.dart';
+import 'package:customer_hailing/presentation/order_request/screens/chat_screen.dart';
 import 'package:customer_hailing/presentation/order_request/screens/home_screen.dart';
 import 'package:customer_hailing/presentation/order_request/screens/rate_ride_screen.dart';
 import 'package:customer_hailing/presentation/order_request/screens/search_screen.dart';
@@ -31,6 +32,7 @@ class AppRoutes {
   static const String rateRide = "/rate_ride";
   static const String shareTrip ="/share_trip";
   static const String shareWith = "/share_with";
+  static const String chats ="/chat";
 
   static List<GetPage> pages = [
     GetPage(
@@ -89,6 +91,10 @@ class AppRoutes {
     GetPage(
       name: shareWith,
       page: () => const ShareWithScreen(),
+    ),
+    GetPage(
+      name: chats,
+      page: () =>  ChatScreen(),
     ),
   ];
 }

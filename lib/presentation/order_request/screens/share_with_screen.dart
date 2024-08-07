@@ -1,5 +1,7 @@
+import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/core/utils/colors.dart';
 import 'package:customer_hailing/presentation/order_request/models/data.dart';
+import 'package:customer_hailing/routes/routes.dart';
 import 'package:customer_hailing/widgets/menu_icon_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -139,14 +141,20 @@ class _ShareWithScreenState extends State<ShareWithScreen> {
                                 var profile = MyData.profiles[index];
                                 return Column(
                                   children: [
-                                    Container(
-                                      margin:const EdgeInsets.symmetric(vertical: 0,horizontal: 14),
-                                      width: 52,
-                                      height: 52,
-                                      decoration:  BoxDecoration(
-                                        image: DecorationImage(
-                                          image: AssetImage(profile.imageUrl),
-                                          fit: BoxFit.fill,
+                                    GestureDetector(
+                                      onTap:(){
+                                        Get.toNamed(AppRoutes.chats);
+
+                                },
+                                      child: Container(
+                                        margin:const EdgeInsets.symmetric(vertical: 0,horizontal: 14),
+                                        width: 52,
+                                        height: 52,
+                                        decoration:  BoxDecoration(
+                                          image: DecorationImage(
+                                            image: AssetImage(profile.imageUrl),
+                                            fit: BoxFit.fill,
+                                          ),
                                         ),
                                       ),
                                     ),

@@ -28,3 +28,5 @@ const disabledText =  Color(0xFF9F9F9F);
 
 const trailertext =Color(0xFF0000F9);
 const NoThanksText =Color(0xFF7D7D7D);
+const chatIcons = Color(0xFF65558F);
+const senderColor = Color(0xFFF8F2FA);
