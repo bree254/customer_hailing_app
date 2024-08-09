@@ -116,6 +116,7 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
               child: const TextField(
                 textAlign: TextAlign.center,
                 decoration: InputDecoration(
+                  // contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     hintText: 'Mövenpick Residences Nairobi',
                     hintStyle: TextStyle(fontWeight: FontWeight.w400,fontSize: 14,backgroundColor: searchButtonGrey),
                     border: InputBorder.none,
@@ -244,6 +245,8 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                                   });
                                 },
                                 child: Container(
+                                  width: 72,
+                                  height: 28,
                                   padding: const EdgeInsets.only(top: 4, left: 8, right: 16, bottom: 4),
                                   decoration: BoxDecoration(
                                     color: _selectedPaymentMode == 'Cash' ? selectRideColor : const Color(0x3FFAFAFA),
@@ -282,6 +285,8 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                                   });
                                 },
                                 child: Container(
+                                  width: 72,
+                                  height: 28,
                                   padding: const EdgeInsets.only(top: 4, left: 8, right: 16, bottom: 4),
                                   decoration: BoxDecoration(
                                     color: _selectedPaymentMode == 'Card' ? selectRideColor : const Color(0x3FFAFAFA),
@@ -316,7 +321,7 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                             height: 10,
                           ),
                           CustomElevatedButton(
-                            text: 'select ${_selectedRide  ?? "your ride"}',
+                            text: 'Select ${_selectedRide  ?? "your ride"}',
                             onPressed :(){
                               if(_selectedRide != null){
                                 _startRideRequest(); // Trigger the ride request
