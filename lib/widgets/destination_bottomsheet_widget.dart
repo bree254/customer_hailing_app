@@ -71,7 +71,7 @@ class DestinationBottomSheet extends StatelessWidget {
                       itemBuilder: (context, index) {
                         var destination = MyData.destinations[index];
                         return Container(
-                          margin: const EdgeInsets.fromLTRB( 10,0,10 ,8),
+                          margin: const EdgeInsets.fromLTRB( 16,0,16 ,8),
                           decoration: ShapeDecoration(
                             color: const Color(0x7FFAFAFA),
                             shape: RoundedRectangleBorder(
