@@ -16,7 +16,7 @@ class TripStatusBottomSheet extends StatelessWidget {
     return DraggableScrollableSheet(
       initialChildSize: 0.4,
       minChildSize: 0.3,
-      maxChildSize: 0.8,
+      maxChildSize: 0.6,
       builder: (BuildContext context, ScrollController scrollController) {
         return Container(
           padding: const EdgeInsets.only(top: 8),
