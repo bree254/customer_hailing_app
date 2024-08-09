@@ -188,8 +188,6 @@ class _SearchScreenState extends State<SearchScreen> {
             color: searchtextGrey,
             fontSize: 14,
             fontWeight: FontWeight.w500,
-            height: 0.10,
-            letterSpacing: 0.25,
           ),
         ),
         iconTheme: const IconThemeData(color: Colors.black),
@@ -218,7 +216,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       SizedBox(
                         height: 200,
                         child: ReorderableListView(
-                          physics: const NeverScrollableScrollPhysics(),
+                          // physics: const NeverScrollableScrollPhysics(),
                           clipBehavior: Clip.none,
                           onReorder: (oldIndex, newIndex) {
                             setState(() {

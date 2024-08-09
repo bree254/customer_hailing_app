@@ -116,7 +116,7 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
               child: const TextField(
                 textAlign: TextAlign.center,
                 decoration: InputDecoration(
-                  // contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
                     hintText: 'Mövenpick Residences Nairobi',
                     hintStyle: TextStyle(fontWeight: FontWeight.w400,fontSize: 14,backgroundColor: searchButtonGrey),
                     border: InputBorder.none,
