@@ -85,17 +85,13 @@ class _ShareWithScreenState extends State<ShareWithScreen> {
             ),
             DraggableScrollableSheet(
               initialChildSize: 0.3,
-              minChildSize: 0.2,
+              minChildSize: 0.3,
               maxChildSize: 0.3,
               builder: (BuildContext context, ScrollController scrollController) {
                 return Container(
                   padding: const EdgeInsets.only(top: 8),
                   decoration: const BoxDecoration(
                     color: Colors.white,
-                    // borderRadius: BorderRadius.only(
-                    //   topLeft: Radius.circular(10),
-                    //   topRight: Radius.circular(10),
-                    // ),
                     borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
                   ),
                   child: Column(

@@ -42,15 +42,17 @@ class MenuIconWidget extends StatelessWidget {
           )
         ],
       ),
-      child: IconButton(
-        icon: const Icon(Icons.menu, color: Colors.black),
-        onPressed: () {
-          // Handle menu button press
-        },
-        color: Colors.white,
-        // iconSize: 42.0,
-        padding: const EdgeInsets.all(10),
-        tooltip: 'Open Menu',
+      child: Center(
+        child: IconButton(
+          icon: const Icon(Icons.menu, color: Colors.black),
+          onPressed: () {
+            // Handle menu button press
+          },
+          color: Colors.white,
+          // iconSize: 42.0,
+          padding: const EdgeInsets.all(10),
+          tooltip: 'Open Menu',
+        ),
       ),
     );
   }
