@@ -96,34 +96,52 @@ class AwaitDriverBottomsheetWidget extends StatelessWidget {
                children: [
                  // Left circular avatar placeholder
                  Container(
-                   width: 60.0,
-                   height: 60.0,
+                   width: 50.0,
+                   height: 50.0,
                    decoration: BoxDecoration(
                      color: Colors.white,
                      borderRadius: BorderRadius.circular(30.0),
                    ),
                  ),
+                 SizedBox(width: 5,),
                  // Text placeholders
                  Column(
                    crossAxisAlignment: CrossAxisAlignment.start,
                    children: [
                      Container(
+                       width: 100.0,
+                       height: 10.0,
+                       decoration: BoxDecoration(
+                         color: Colors.white,
+                         borderRadius: BorderRadius.circular(15.0),
+                       ),
+                     ),
+                     const SizedBox(height: 8.0),
+                     Container(
                        width: 150.0,
                        height: 10.0,
-                       color: Colors.white,
+                       decoration: BoxDecoration(
+                         color: Colors.white,
+                         borderRadius: BorderRadius.circular(15.0),
+                       ),
                      ),
+
                      const SizedBox(height: 8.0),
                      Container(
                        width: 100.0,
                        height: 10.0,
-                       color: Colors.white,
+                       decoration: BoxDecoration(
+                         color: Colors.white,
+                         borderRadius: BorderRadius.circular(15.0),
+                       ),
                      ),
                    ],
                  ),
+                 SizedBox(width: 5,),
                  // Right circular avatar placeholder
                  Container(
-                   width: 60.0,
-                   height: 60.0,
+                   width: 50.0,
+                   height: 50.0,
                    decoration: BoxDecoration(
                      color: Colors.white,
                      borderRadius: BorderRadius.circular(30.0),
@@ -139,35 +157,35 @@ class AwaitDriverBottomsheetWidget extends StatelessWidget {
            child: Shimmer.fromColors(
              baseColor: Colors.grey[300]!,
              highlightColor: Colors.grey[100]!,
-             child: Expanded(
-               child: Row(
-                 mainAxisSize: MainAxisSize.min,
-                 children: [
-                   // Left circular avatar placeholder
-                   Container(
-                     width: 138,
-                     height: 40,
-                     decoration: ShapeDecoration(
-                       color: Color(0xBFE2E2E2),
-                       shape: RoundedRectangleBorder(
-                         borderRadius: BorderRadius.circular(10),
-                       ),
+             child: Row(
+               mainAxisSize: MainAxisSize.min,
+               children: [
+                 // Left circular avatar placeholder
+                 Container(
+                   width: 138,
+                   height: 40,
+                   padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+                   decoration: ShapeDecoration(
+                     color: Color(0xBFE2E2E2),
+                     shape: RoundedRectangleBorder(
+                       borderRadius: BorderRadius.circular(10),
                      ),
                    ),
-                   SizedBox(width: 10,),
-                   // Right circular avatar placeholder
-                   Container(
-                     width: 138,
-                     height: 40,
-                     decoration: ShapeDecoration(
-                       color: Color(0xBFE2E2E2),
-                       shape: RoundedRectangleBorder(
-                         borderRadius: BorderRadius.circular(10),
-                       ),
+                 ),
+                 SizedBox(width: 10,),
+                 // Right circular avatar placeholder
+                 Container(
+                   width: 138,
+                   height: 40,
+                   padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+                   decoration: ShapeDecoration(
+                     color: Color(0xBFE2E2E2),
+                     shape: RoundedRectangleBorder(
+                       borderRadius: BorderRadius.circular(10),
                      ),
-                   )
-                 ],
-               ),
+                   ),
+                 )
+               ],
              ),
            ),
          ),

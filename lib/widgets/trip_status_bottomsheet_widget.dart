@@ -137,6 +137,7 @@ class TripStatusBottomSheet extends StatelessWidget {
                     },
                     buttonStyle: ElevatedButton.styleFrom(
                       backgroundColor: cancelButton,
+                      elevation: 0,
                     ),
                     buttonTextStyle: const TextStyle(
                         color: cancelText,
@@ -345,7 +346,9 @@ class TripStatusBottomSheet extends StatelessWidget {
           ElevatedButton(
             onPressed: () {},
             style: ElevatedButton.styleFrom(
-                backgroundColor: selectRideColor),
+                backgroundColor: selectRideColor,
+              elevation: 0,
+            ),
             child: const Padding(
               padding: EdgeInsets.symmetric(
                   horizontal: 24, vertical: 8),
@@ -376,7 +379,9 @@ class TripStatusBottomSheet extends StatelessWidget {
           ElevatedButton(
             onPressed: () {},
             style: ElevatedButton.styleFrom(
-                backgroundColor: selectRideColor),
+                backgroundColor: selectRideColor,
+              elevation: 0,
+            ),
             child: const Padding(
               padding: EdgeInsets.symmetric(
                   horizontal: 24, vertical: 8),

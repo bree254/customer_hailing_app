@@ -71,20 +71,23 @@ class _ChatScreenState extends State<ChatScreen> {
           ),
         ),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              reverse: true,
-              itemCount: _messages.length,
-              itemBuilder: (context, index) {
-                final message = _messages[index];
-                return _buildMessage(message['text']!, message['sender']!, message['timestamp']! as DateTime);
-              },
+      body: Padding(
+        padding: const EdgeInsets.only(bottom: 16.0),
+        child: Column(
+          children: [
+            Expanded(
+              child: ListView.builder(
+                reverse: true,
+                itemCount: _messages.length,
+                itemBuilder: (context, index) {
+                  final message = _messages[index];
+                  return _buildMessage(message['text']!, message['sender']!, message['timestamp']! as DateTime);
+                },
+              ),
             ),
-          ),
-          _buildMessageComposer(),
-        ],
+            _buildMessageComposer(),
+          ],
+        ),
       ),
     );
   }
