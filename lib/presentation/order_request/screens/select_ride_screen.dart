@@ -1,6 +1,7 @@
 import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/core/utils/colors.dart';
 import 'package:customer_hailing/routes/routes.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -23,7 +24,8 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
   String? _selectedPaymentMode;
 
 //initialize the controller
-  final RideStatusController rideStatusController = Get.put(RideStatusController());
+  final RideStatusController rideStatusController =
+      Get.put(RideStatusController());
 
   @override
   void initState() {
@@ -61,6 +63,7 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
       _center = LatLng(_currentPosition!.latitude, _currentPosition!.longitude);
     });
   }
+
 //method to start the ride request that will trigger the different status updates in the search for driver method
   void _startRideRequest() {
     rideStatusController.searchForDriver();
@@ -74,28 +77,28 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
         children: [
           _center == null
               ? Image.asset(
-            'assets/images/map.png', // Path to your cached map image
-            fit: BoxFit.cover,
-            width: double.infinity,
-            height: double.infinity,
-          )
+                  'assets/images/map.png', // Path to your cached map image
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                  height: double.infinity,
+                )
               : SizedBox(
-            height: double.infinity,
-            child: GoogleMap(
-              onMapCreated: _onMapCreated,
-              initialCameraPosition: CameraPosition(
-                target: _center!,
-                zoom: 15.0,
-              ),
-              markers: {
-                Marker(
-                  markerId: const MarkerId('user_location'),
-                  position: _center!,
-                  infoWindow: const InfoWindow(title: 'Your Location'),
+                  height: double.infinity,
+                  child: GoogleMap(
+                    onMapCreated: _onMapCreated,
+                    initialCameraPosition: CameraPosition(
+                      target: _center!,
+                      zoom: 15.0,
+                    ),
+                    markers: {
+                      Marker(
+                        markerId: const MarkerId('user_location'),
+                        position: _center!,
+                        infoWindow: const InfoWindow(title: 'Your Location'),
+                      ),
+                    },
+                  ),
                 ),
-              },
-            ),
-          ),
           Positioned(
             top: 50,
             left: 16,
@@ -113,16 +116,33 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                   ),
                 ],
               ),
-              child: const TextField(
+              child: TextField(
                 textAlign: TextAlign.center,
                 decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                    contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 20),
                     hintText: 'Mövenpick Residences Nairobi',
-                    hintStyle: TextStyle(fontWeight: FontWeight.w400,fontSize: 14,backgroundColor: searchButtonGrey),
+                    hintStyle: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 14,
+                        backgroundColor: searchButtonGrey),
                     border: InputBorder.none,
-                    prefixIcon: Icon(Icons.arrow_back),
-                    suffixIcon: Icon(Icons.add_circle_outlined,color: primaryColor,)
-                ),
+                    prefixIcon: GestureDetector(
+                        onTap: () {
+                          Get.back();
+                        },
+                        child: Icon(
+                          Icons.arrow_back,
+                          size: 17,
+                        )),
+                    suffixIcon: GestureDetector(
+                      onTap:(){Get.toNamed(AppRoutes.search);} ,
+                      child: Icon(
+                        Icons.add_circle_outlined,
+                        color: primaryColor,
+                        size: 17,
+                      ),
+                    )),
               ),
             ),
           ),
@@ -201,8 +221,7 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                                     ),
                                   ),
                                   trailing: Column(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
                                         'Ksh ${request.discountedPrice.toString()}',
@@ -218,8 +237,8 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                                             color: searchtextGrey,
                                             fontSize: 10,
                                             fontWeight: FontWeight.w400,
-                                            decoration: TextDecoration.lineThrough
-                                        ),
+                                            decoration:
+                                                TextDecoration.lineThrough),
                                       ),
                                     ],
                                   ),
@@ -228,7 +247,6 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                             );
                           }),
                     ),
-
 
                     // Fixed part of the bottom sheet
                     Container(
@@ -247,12 +265,17 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                                 child: Container(
                                   width: 72,
                                   height: 28,
-                                  padding: const EdgeInsets.only(top: 4, left: 8, right: 16, bottom: 4),
+                                  padding: const EdgeInsets.only(
+                                      top: 4, left: 8, right: 16, bottom: 4),
                                   decoration: BoxDecoration(
-                                    color: _selectedPaymentMode == 'Cash' ? selectRideColor : const Color(0x3FFAFAFA),
+                                    color: _selectedPaymentMode == 'Cash'
+                                        ? selectRideColor
+                                        : const Color(0x3FFAFAFA),
                                     borderRadius: BorderRadius.circular(5),
                                     border: Border.all(
-                                      color: _selectedPaymentMode == 'Cash' ? selectRideColor : Colors.black.withOpacity(0.05),
+                                      color: _selectedPaymentMode == 'Cash'
+                                          ? selectRideColor
+                                          : Colors.black.withOpacity(0.05),
                                     ),
                                   ),
                                   child: const Row(
@@ -260,7 +283,8 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                                       Image(
                                         width: 13,
                                         height: 13,
-                                        image: AssetImage('assets/images/cash.png'),
+                                        image: AssetImage(
+                                            'assets/images/cash.png'),
                                       ),
                                       SizedBox(width: 8),
                                       Text(
@@ -287,12 +311,17 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                                 child: Container(
                                   width: 72,
                                   height: 28,
-                                  padding: const EdgeInsets.only(top: 4, left: 8, right: 16, bottom: 4),
+                                  padding: const EdgeInsets.only(
+                                      top: 4, left: 8, right: 16, bottom: 4),
                                   decoration: BoxDecoration(
-                                    color: _selectedPaymentMode == 'Card' ? selectRideColor : const Color(0x3FFAFAFA),
+                                    color: _selectedPaymentMode == 'Card'
+                                        ? selectRideColor
+                                        : const Color(0x3FFAFAFA),
                                     borderRadius: BorderRadius.circular(5),
                                     border: Border.all(
-                                      color: _selectedPaymentMode == 'Card' ? selectRideColor : Colors.black.withOpacity(0.05),
+                                      color: _selectedPaymentMode == 'Card'
+                                          ? selectRideColor
+                                          : Colors.black.withOpacity(0.05),
                                     ),
                                   ),
                                   child: const Row(
@@ -300,7 +329,8 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                                       Image(
                                         width: 13,
                                         height: 13,
-                                        image: AssetImage('assets/images/card.png'),
+                                        image: AssetImage(
+                                            'assets/images/card.png'),
                                       ),
                                       SizedBox(width: 8),
                                       Text(
@@ -321,9 +351,9 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                             height: 10,
                           ),
                           CustomElevatedButton(
-                            text: 'Select ${_selectedRide  ?? "your ride"}',
-                            onPressed :(){
-                              if(_selectedRide != null){
+                            text: 'Select ${_selectedRide ?? "your ride"}',
+                            onPressed: () {
+                              if (_selectedRide != null) {
                                 _startRideRequest(); // Trigger the ride request
                               }
                             },
