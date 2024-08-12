@@ -1,4 +1,6 @@
+import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/core/utils/colors.dart';
+import 'package:customer_hailing/routes/routes.dart';
 import 'package:flutter/material.dart';
 class DrawerWidget extends StatelessWidget {
   const DrawerWidget({super.key});
@@ -38,7 +40,7 @@ class DrawerWidget extends StatelessWidget {
                 ),
                 trailing: const Icon(Icons.arrow_forward_ios_outlined,color: searchtextGrey,size: 14,),
                 onTap: () {
-                  // Handle history tap
+                 Get.toNamed(AppRoutes.profile);
                 },
               ),
             ),

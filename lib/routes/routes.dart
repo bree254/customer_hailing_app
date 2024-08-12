@@ -7,7 +7,9 @@ import 'package:customer_hailing/presentation/order_request/screens/await_driver
 import 'package:customer_hailing/presentation/order_request/binding/home_binding.dart';
 import 'package:customer_hailing/presentation/order_request/screens/chat_screen.dart';
 import 'package:customer_hailing/presentation/order_request/screens/home_screen.dart';
+import 'package:customer_hailing/presentation/order_request/screens/profile_screen.dart';
 import 'package:customer_hailing/presentation/order_request/screens/rate_ride_screen.dart';
+import 'package:customer_hailing/presentation/order_request/screens/saved_locations_screen.dart';
 import 'package:customer_hailing/presentation/order_request/screens/search_screen.dart';
 import 'package:customer_hailing/presentation/order_request/screens/select_ride_screen.dart';
 import 'package:customer_hailing/presentation/order_request/screens/share_trip_details_screen.dart';
@@ -33,6 +35,8 @@ class AppRoutes {
   static const String shareTrip ="/share_trip";
   static const String shareWith = "/share_with";
   static const String chats ="/chat";
+  static const String profile="/profile";
+  static const String savedLocation="/saved_location";
 
   static List<GetPage> pages = [
     GetPage(
@@ -95,6 +99,14 @@ class AppRoutes {
     GetPage(
       name: chats,
       page: () =>  const ChatScreen(),
+    ),
+    GetPage(
+      name: profile,
+      page: () =>  const ProfileScreen(),
+    ),
+    GetPage(
+      name: savedLocation,
+      page: () =>  const SavedLocationsScreen(),
     ),
   ];
 }
