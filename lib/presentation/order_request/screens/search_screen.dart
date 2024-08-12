@@ -128,7 +128,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     ? 'Enter your location'
                     : isDestination
                     ? 'Enter your destination'
-                    : 'Enter stop ${index}',
+                    : 'Enter stop $index',
                 hintStyle: const TextStyle(
                   color: searchtextGrey,
                   fontSize: 12,

@@ -1,8 +1,11 @@
 import 'package:customer_hailing/core/utils/colors.dart';
 import 'package:flutter/material.dart';
 class MenuIconWidget extends StatelessWidget {
+  final VoidCallback onPressed;
+
   const MenuIconWidget({
     super.key,
+    required this.onPressed,
   });
 
   @override
@@ -45,11 +48,8 @@ class MenuIconWidget extends StatelessWidget {
       child: Center(
         child: IconButton(
           icon: const Icon(Icons.menu, color: Colors.black),
-          onPressed: () {
-            // Handle menu button press
-          },
+          onPressed: onPressed,
           color: Colors.white,
-          // iconSize: 42.0,
           padding: const EdgeInsets.all(10),
           tooltip: 'Open Menu',
         ),

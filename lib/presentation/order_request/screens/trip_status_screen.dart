@@ -1,4 +1,5 @@
 import 'package:customer_hailing/core/app_export.dart';
+import 'package:customer_hailing/widgets/drawer_widget.dart';
 import 'package:customer_hailing/widgets/menu_icon_widget.dart';
 import 'package:customer_hailing/widgets/trip_status_bottomsheet_widget.dart';
 import 'package:flutter/material.dart';
@@ -60,6 +61,7 @@ class _TripStatusScreenState extends State<TripStatusScreen> {
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
+      drawer: const DrawerWidget(),
       body: Stack(
         children: [
           _center == null
@@ -87,10 +89,14 @@ class _TripStatusScreenState extends State<TripStatusScreen> {
             ),
           ),
           const TripStatusBottomSheet(),
-          const Positioned(
+           Positioned(
             top: 40,
             left: 20,
-            child: MenuIconWidget(),
+            child: Builder(
+              builder: (context) {
+                return MenuIconWidget(onPressed: () {  Scaffold.of(context).openDrawer(); },);
+              }
+            ),
           ),
         ],
       ),

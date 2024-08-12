@@ -1,6 +1,7 @@
 import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/core/utils/colors.dart';
 import 'package:customer_hailing/routes/routes.dart';
+import 'package:customer_hailing/widgets/drawer_widget.dart';
 import 'package:customer_hailing/widgets/menu_icon_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -58,6 +59,7 @@ class _ShareTripDetailsScreenState extends State<ShareTripDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        drawer: const DrawerWidget(),
         body: Stack(
       children: [
         _center == null
@@ -93,10 +95,6 @@ class _ShareTripDetailsScreenState extends State<ShareTripDetailsScreen> {
               padding: const EdgeInsets.only(top: 8),
               decoration: const BoxDecoration(
                 color: Colors.white,
-                // borderRadius: BorderRadius.only(
-                //   topLeft: Radius.circular(10),
-                //   topRight: Radius.circular(10),
-                // ),
                 borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
               ),
               child: Column(
@@ -194,10 +192,14 @@ class _ShareTripDetailsScreenState extends State<ShareTripDetailsScreen> {
             );
           },
         ),
-        const Positioned(
+         Positioned(
           top: 40,
           left: 20,
-          child: MenuIconWidget(),
+          child: Builder(
+            builder: (context) {
+              return MenuIconWidget(onPressed: () {  Scaffold.of(context).openDrawer(); },);
+            }
+          ),
         )
       ],
     ));

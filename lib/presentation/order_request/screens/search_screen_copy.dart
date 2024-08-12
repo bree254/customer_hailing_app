@@ -121,7 +121,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       SizedBox(
                         height: 200,
                         child: ReorderableListView(
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           clipBehavior: Clip.none,
                           onReorder: (oldIndex, newIndex) {
                             setState(() {

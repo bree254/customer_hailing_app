@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class ChatScreen extends StatefulWidget {
+  const ChatScreen({super.key});
+
   @override
   _ChatScreenState createState() => _ChatScreenState();
 }
@@ -100,7 +102,7 @@ class _ChatScreenState extends State<ChatScreen> {
         children: [
           Text(
             _formatDateTime(timestamp), // Format the date and time
-            style: TextStyle(color: Colors.grey, fontSize: 12),
+            style: const TextStyle(color: Colors.grey, fontSize: 12),
           ),
           const SizedBox(height: 5),
           Row(
@@ -108,8 +110,8 @@ class _ChatScreenState extends State<ChatScreen> {
             children: [
               if (!isMe)
                 CircleAvatar(
-                  child: Text(sender[0]),
                   backgroundColor: chatIcons,
+                  child: Text(sender[0]),
                 ),
               const SizedBox(width: 8.0),
               Container(

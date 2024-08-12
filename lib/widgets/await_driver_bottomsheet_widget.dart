@@ -103,7 +103,7 @@ class AwaitDriverBottomsheetWidget extends StatelessWidget {
                      borderRadius: BorderRadius.circular(30.0),
                    ),
                  ),
-                 SizedBox(width: 5,),
+                 const SizedBox(width: 5,),
                  // Text placeholders
                  Column(
                    crossAxisAlignment: CrossAxisAlignment.start,
@@ -137,7 +137,7 @@ class AwaitDriverBottomsheetWidget extends StatelessWidget {
                      ),
                    ],
                  ),
-                 SizedBox(width: 5,),
+                 const SizedBox(width: 5,),
                  // Right circular avatar placeholder
                  Container(
                    width: 50.0,
@@ -151,7 +151,7 @@ class AwaitDriverBottomsheetWidget extends StatelessWidget {
              ),
            ),
          ),
-         SizedBox(height: 20,),
+         const SizedBox(height: 20,),
          Padding(
            padding: const EdgeInsets.symmetric(horizontal: 0.0),
            child: Shimmer.fromColors(
@@ -166,20 +166,20 @@ class AwaitDriverBottomsheetWidget extends StatelessWidget {
                    height: 40,
                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
                    decoration: ShapeDecoration(
-                     color: Color(0xBFE2E2E2),
+                     color: const Color(0xBFE2E2E2),
                      shape: RoundedRectangleBorder(
                        borderRadius: BorderRadius.circular(10),
                      ),
                    ),
                  ),
-                 SizedBox(width: 10,),
+                 const SizedBox(width: 10,),
                  // Right circular avatar placeholder
                  Container(
                    width: 138,
                    height: 40,
                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
                    decoration: ShapeDecoration(
-                     color: Color(0xBFE2E2E2),
+                     color: const Color(0xBFE2E2E2),
                      shape: RoundedRectangleBorder(
                        borderRadius: BorderRadius.circular(10),
                      ),

@@ -1,7 +1,6 @@
 import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/core/utils/colors.dart';
 import 'package:customer_hailing/routes/routes.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -122,7 +121,7 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                     contentPadding: const EdgeInsets.symmetric(
                         horizontal: 16, vertical: 20),
                     hintText: 'Mövenpick Residences Nairobi',
-                    hintStyle: TextStyle(
+                    hintStyle: const TextStyle(
                         fontWeight: FontWeight.w400,
                         fontSize: 14,
                         backgroundColor: searchButtonGrey),
@@ -131,13 +130,13 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                         onTap: () {
                           Get.back();
                         },
-                        child: Icon(
+                        child: const Icon(
                           Icons.arrow_back,
                           size: 17,
                         )),
                     suffixIcon: GestureDetector(
                       onTap:(){Get.toNamed(AppRoutes.search);} ,
-                      child: Icon(
+                      child: const Icon(
                         Icons.add_circle_outlined,
                         color: primaryColor,
                         size: 17,

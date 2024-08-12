@@ -66,7 +66,7 @@ class AppRoutes {
     ),
     GetPage(
         name: search,
-        page: () => SearchScreen(),
+        page: () => const SearchScreen(),
     ),
     GetPage(
         name: selectRide,
@@ -94,7 +94,7 @@ class AppRoutes {
     ),
     GetPage(
       name: chats,
-      page: () =>  ChatScreen(),
+      page: () =>  const ChatScreen(),
     ),
   ];
 }
