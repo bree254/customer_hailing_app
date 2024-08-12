@@ -1,5 +1,6 @@
 import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/core/utils/colors.dart';
+import 'package:customer_hailing/routes/routes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -116,7 +117,9 @@ class _SavedLocationsScreenState extends State<SavedLocationsScreen> {
                   ),
                   SizedBox(height: 34,),
                   GestureDetector(
-                    onTap:(){},
+                    onTap:(){
+                      Get.toNamed(AppRoutes.searchLocation);
+                    },
                     child: Container(
                       color: Colors.transparent,
                       child: const Row(
