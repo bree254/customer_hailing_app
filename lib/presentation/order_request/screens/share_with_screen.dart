@@ -141,7 +141,7 @@ class _ShareWithScreenState extends State<ShareWithScreen> {
                                   children: [
                                     GestureDetector(
                                       onTap:(){
-                                        Get.toNamed(AppRoutes.chats);
+                                        Get.toNamed(AppRoutes.chats,arguments: profile.name);
 
                                 },
                                       child: Container(

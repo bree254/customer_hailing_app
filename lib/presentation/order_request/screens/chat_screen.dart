@@ -1,3 +1,4 @@
+import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/core/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -10,6 +11,15 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+
+  String ? _profiles;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _profiles= Get.arguments;
+  }
   final List<Map<String, dynamic>> _messages = [
     {
       'text': 'Hey, I\'m using Taxi app. I\'m in a white Mazda Demio, number plate: KCZ 1234 travelling from GPO stage, Kenyatta Avenue to Movenpick residences Nairobi. You can track my trip here.',
@@ -54,9 +64,9 @@ class _ChatScreenState extends State<ChatScreen> {
                     color: Colors.black,
                   ),
                 ),
-                const Expanded(
+                 Expanded(
                   child: Text(
-                    'Alejandro',
+                    _profiles!,
                     style: TextStyle(
                       color: Color(0xFF1D1B20),
                       fontSize: 24,
