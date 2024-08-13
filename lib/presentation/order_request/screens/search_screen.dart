@@ -23,6 +23,13 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   void initState() {
     super.initState();
+
+    // Retrieve the current location passed from DestinationBottomSheet
+    final currentLocation = Get.arguments as String?;
+    if (currentLocation != null) {
+      _locationController.text = currentLocation;
+    }
+
     _locationFocusNode.addListener(() {
       setState(() {});
     });
@@ -133,8 +140,6 @@ class _SearchScreenState extends State<SearchScreen> {
                   color: searchtextGrey,
                   fontSize: 12,
                   fontWeight: FontWeight.w500,
-                  height: 0.14,
-                  letterSpacing: 0.25,
                 ),
                 fillColor: focusNode.hasFocus ? Colors.white : searchButtonGrey,
                 filled: true,
@@ -273,7 +278,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 var destination = MyData.destinations[index];
 
                 return Container(
-                  margin: const EdgeInsets.fromLTRB(10, 0, 10, 8),
+                  margin: const EdgeInsets.fromLTRB(16, 0, 16, 8),
                   decoration: ShapeDecoration(
                     color: const Color(0x7FFAFAFA),
                     shape: RoundedRectangleBorder(
@@ -285,7 +290,13 @@ class _SearchScreenState extends State<SearchScreen> {
                     ),
                   ),
                   child: ListTile(
-                    onTap: () {},
+                    onTap: () {
+                      // Update the destination controller with the selected destination
+                      _destinationController.text = destination.address;
+
+                      // Optionally, move focus to the destination text field
+                      _destinationFocusNode.requestFocus();
+                    },
                     leading: const Icon(
                       Icons.history,
                       color: historyIcon,
@@ -311,6 +322,7 @@ class _SearchScreenState extends State<SearchScreen> {
               },
             ),
           ),
+
         ],
       ),
     );
