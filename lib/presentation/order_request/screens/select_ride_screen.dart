@@ -22,13 +22,17 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
   String? _selectedRide;
   String? _selectedPaymentMode;
 
+  String? _destination;
+
+
+
 //initialize the controller
-  final RideStatusController rideStatusController =
-      Get.put(RideStatusController());
+  final RideStatusController rideStatusController =Get.put(RideStatusController());
 
   @override
   void initState() {
     super.initState();
+    _destination = Get.arguments; // Retrieve the passed destination
     _getUserLocation();
   }
 
@@ -120,7 +124,7 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                 decoration: InputDecoration(
                     contentPadding: const EdgeInsets.symmetric(
                         horizontal: 16, vertical: 20),
-                    hintText: 'Mövenpick Residences Nairobi',
+                    hintText: _destination,
                     hintStyle: const TextStyle(
                         fontWeight: FontWeight.w400,
                         fontSize: 14,

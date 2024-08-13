@@ -16,11 +16,11 @@ class _SearchLocationScreenState extends State<SearchLocationScreen> {
   final FocusNode _locationFocusNode = FocusNode();
   List<String> _suggestions = [];
 
-  List<String> _allocations =[
+  final List<String> _allocations =[
     'Cavalli', 'ABC place', 'Bar Next Door', 'GPO stage', 'Alchemist',
     'Blue Hills Academy', 'I&M Bank House ', 'Fortis Suite', 'Vibanda Village', 'Moi Avenue'
   ];
-  List<String> _allocationsDesc =[
+  final List<String> _allocationsDesc =[
     'Westlands Road, Nairobi, Kenya', 'Westlands Road, Nairobi, Kenya', 'Westlands Road, Nairobi, Kenya', 'Westlands Road, Nairobi, Kenya', 'AlchWestlands Road, Nairobi, Kenyaemist',
     'Westlands Road, Nairobi, Kenya', 'Westlands Road, Nairobi, Kenya', 'Westlands Road, Nairobi, Kenya', 'Westlands Road, Nairobi, Kenya'
   ];
@@ -55,7 +55,6 @@ class _SearchLocationScreenState extends State<SearchLocationScreen> {
 
   void _onLocationSelected(String location) {
     Get.toNamed(AppRoutes.nameLocation);
-    // Get.to(() => PastLocationsScreen(selectedLocation: location));
   }
   @override
   Widget build(BuildContext context) {
@@ -164,7 +163,9 @@ class _SearchLocationScreenState extends State<SearchLocationScreen> {
                           fontWeight: FontWeight.w400,
                         ),
                       ),
-                      onTap: () => _onLocationSelected(location),
+                      onTap: () {
+                        _onLocationSelected(location);
+                      },
                     )
                   );
                 },

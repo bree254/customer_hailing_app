@@ -91,8 +91,11 @@ class _NameLocationScreenState extends State<NameLocationScreen> {
             Spacer(),
             CustomElevatedButton(
               onPressed: _hasInput ? () {
-                Get.toNamed(AppRoutes.savedLocation);
-              } : null, // Disable button if no input
+                Get.toNamed(
+                  AppRoutes.savedLocation,
+                  arguments: _locationController.text, // Pass the location name
+                );
+              } : null, // Disable button if no input// Disable button if no input
               buttonStyle: ElevatedButton.styleFrom(
                 backgroundColor: _hasInput ? primaryColor : disabledButtonGrey, // Change color based on input
                 elevation: 0,
