@@ -53,12 +53,9 @@ class _HomeScreenState extends State<HomeScreen> {
       _center = LatLng(_currentPosition!.latitude, _currentPosition!.longitude);
     });
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      drawer: const DrawerWidget(),
         body: Stack(
       children: [
         _center == null
@@ -69,23 +66,23 @@ class _HomeScreenState extends State<HomeScreen> {
           height: double.infinity,
         )
             : SizedBox(
-                height: double.infinity,
-                child: GoogleMap(
-                  onMapCreated: _onMapCreated,
-                  initialCameraPosition: CameraPosition(
-                    target: _center!,
-                    zoom: 15.0,
-                  ),
-                  markers: {
-                    Marker(
-                      markerId: const MarkerId('user_location'),
-                      position: _center!,
-                      infoWindow: const InfoWindow(title: 'Your Location'),
-                    ),
-                  },
-                ),
+          height: double.infinity,
+          child: GoogleMap(
+            onMapCreated: _onMapCreated,
+            initialCameraPosition: CameraPosition(
+              target: _center!,
+              zoom: 15.0,
+            ),
+            markers: {
+              Marker(
+                markerId: const MarkerId('user_location'),
+                position: _center!,
+                infoWindow: const InfoWindow(title: 'Your Location'),
               ),
-        const DestinationBottomSheet(),
+            },
+          ),
+        ),
+        DestinationBottomSheet(currentLocation: _center != null ? "${_center!.latitude}, ${_center!.longitude}" : null),
          Positioned(
           top: 40,
           left: 20,

@@ -4,7 +4,9 @@ import 'package:customer_hailing/presentation/order_request/models/data.dart';
 import 'package:customer_hailing/routes/routes.dart';
 import 'package:flutter/material.dart';
 class DestinationBottomSheet extends StatelessWidget {
-  const DestinationBottomSheet({super.key});
+  final String? currentLocation;
+
+  const DestinationBottomSheet({super.key, this.currentLocation});
 
   @override
   Widget build(BuildContext context) {
@@ -38,8 +40,9 @@ class DestinationBottomSheet extends StatelessWidget {
               ),
               GestureDetector(
                 onTap: () {
-                  Get.toNamed(AppRoutes.search);
+                  Get.toNamed(AppRoutes.search, arguments: currentLocation);
                 },
+
                 child: Container(
                   margin:
                   const EdgeInsets.fromLTRB( 10, 8,10,0),

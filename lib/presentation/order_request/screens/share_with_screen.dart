@@ -145,9 +145,9 @@ class _ShareWithScreenState extends State<ShareWithScreen> {
 
                                 },
                                       child: Container(
-                                        margin:const EdgeInsets.symmetric(vertical: 0,horizontal: 14),
-                                        width: 52,
-                                        height: 52,
+                                        margin: EdgeInsets.symmetric(vertical: 0.v,horizontal: 14.h),
+                                        width: 52.h,
+                                        height: 52.v,
                                         decoration:  BoxDecoration(
                                           image: DecorationImage(
                                             image: AssetImage(profile.imageUrl),
