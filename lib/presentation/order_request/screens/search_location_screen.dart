@@ -1,9 +1,13 @@
+import 'dart:convert';
 import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/core/utils/colors.dart';
 import 'package:customer_hailing/routes/routes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:http/http.dart' as http;
+import '../models/predictions.dart';
+
 class SearchLocationScreen extends StatefulWidget {
   const SearchLocationScreen({super.key});
 
@@ -14,22 +18,14 @@ class SearchLocationScreen extends StatefulWidget {
 class _SearchLocationScreenState extends State<SearchLocationScreen> {
   final TextEditingController _locationController = TextEditingController();
   final FocusNode _locationFocusNode = FocusNode();
-  List<String> _suggestions = [];
-
-  final List<String> _allocations =[
-    'Cavalli', 'ABC place', 'Bar Next Door', 'GPO stage', 'Alchemist',
-    'Blue Hills Academy', 'I&M Bank House ', 'Fortis Suite', 'Vibanda Village', 'Moi Avenue'
-  ];
-  final List<String> _allocationsDesc =[
-    'Westlands Road, Nairobi, Kenya', 'Westlands Road, Nairobi, Kenya', 'Westlands Road, Nairobi, Kenya', 'Westlands Road, Nairobi, Kenya', 'Westlands Road, Nairobi, Kenya',
-    'Westlands Road, Nairobi, Kenya', 'Westlands Road, Nairobi, Kenya', 'Westlands Road, Nairobi, Kenya', 'Westlands Road, Nairobi, Kenya','Westlands Road, Nairobi, Kenya'
-  ];
+  List<Prediction> _predictions = [];
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
-    _locationController.addListener((_onLocationChanged));
+    _locationController.addListener(_onLocationChanged);
   }
+
   @override
   void dispose() {
     _locationController.removeListener(_onLocationChanged);
@@ -38,27 +34,42 @@ class _SearchLocationScreenState extends State<SearchLocationScreen> {
     super.dispose();
   }
 
-  void _onLocationChanged() {
-    final query = _locationController.text.toLowerCase();
+  void _onLocationChanged() async {
+    final query = _locationController.text;
     if (query.isNotEmpty) {
+      final response = await _fetchPredictions(query);
       setState(() {
-        _suggestions = _allocations
-            .where((location) => location.toLowerCase().contains(query))
-            .toList();
+        _predictions = _parsePredictions(response);
       });
     } else {
       setState(() {
-        _suggestions = [];
+        _predictions = [];
       });
     }
   }
 
-  void _onLocationSelected(String location) {
-    Get.toNamed(AppRoutes.nameLocation);
+  Future<String> _fetchPredictions(String input) async {
+    final url = Uri.parse(
+      'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input&key=AIzaSyAFFMad-10qvSw8wZl7KgDp0jVafz4La6E',
+    );
+    final response = await http.get(url);
+    debugPrint(jsonEncode(response.body));
+    return response.body;
   }
+
+  List<Prediction> _parsePredictions(String responseBody) {
+    final json = jsonDecode(responseBody);
+    final predictions = json['predictions'] as List;
+    return predictions.map((p) => Prediction.fromJson(p)).toList();
+  }
+
+  void _onLocationSelected(Prediction prediction) {
+    Get.toNamed(AppRoutes.nameLocation, arguments: prediction);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
@@ -68,7 +79,7 @@ class _SearchLocationScreenState extends State<SearchLocationScreen> {
             Get.back();
           },
           icon: const Icon(
-           CupertinoIcons.multiply,
+            CupertinoIcons.multiply,
             size: 17,
             color: blackTextColor,
           ),
@@ -80,10 +91,10 @@ class _SearchLocationScreenState extends State<SearchLocationScreen> {
             fontSize: 14,
             fontWeight: FontWeight.w600,
           ),
-        )
+        ),
       ),
       body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16,vertical: 20),
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
         child: Column(
           children: [
             TextField(
@@ -118,13 +129,11 @@ class _SearchLocationScreenState extends State<SearchLocationScreen> {
                     : null,
               ),
             ),
-
             Expanded(
               child: ListView.builder(
-                itemCount: _suggestions.length,
+                itemCount: _predictions.length,
                 itemBuilder: (BuildContext context, int index) {
-                  var location = _suggestions[index];
-                  var description = _allocationsDesc[_allocations.indexOf(location)];
+                  final prediction = _predictions[index];
                   return Container(
                     width: 328,
                     padding: const EdgeInsets.symmetric(vertical: 4),
@@ -139,33 +148,25 @@ class _SearchLocationScreenState extends State<SearchLocationScreen> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
-                    child:ListTile(
-                      leading:  Image.asset(
-                          width: 24,
-                          height: 24,
-                          color: searchtextGrey,
-                          'assets/images/map-pin-alt-outline.png'
+                    child: ListTile(
+                      leading: Image.asset(
+                        width: 24,
+                        height: 24,
+                        color: searchtextGrey,
+                        'assets/images/map-pin-alt-outline.png',
                       ),
                       title: Text(
-                        location,
+                        prediction.description,
                         style: TextStyle(
                           color: Color(0xFF767676),
                           fontSize: 12,
                           fontWeight: FontWeight.w400,
                         ),
                       ),
-                      subtitle: Text(
-                        description,
-                        style: TextStyle(
-                          color: Color(0xFF767676),
-                          fontSize: 10,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
                       onTap: () {
-                        _onLocationSelected(location);
+                        _onLocationSelected(prediction);
                       },
-                    )
+                    ),
                   );
                 },
               ),
@@ -176,3 +177,4 @@ class _SearchLocationScreenState extends State<SearchLocationScreen> {
     );
   }
 }
+

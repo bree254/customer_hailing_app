@@ -245,6 +245,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         onTap: _addStopover,
                         child: Container(
                           color: Colors.transparent,
+                          margin: EdgeInsets.symmetric(vertical: 10),
                           child: const Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
