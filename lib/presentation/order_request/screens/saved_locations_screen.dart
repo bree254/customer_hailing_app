@@ -106,6 +106,7 @@ class _SavedLocationsScreenState extends State<SavedLocationsScreen> {
                         Get.toNamed(AppRoutes.searchLocation);
                       },
                       child: Container(
+                        margin: EdgeInsets.symmetric(vertical: 10,horizontal: 0),
                         color: Colors.transparent,
                         child: const Row(
                           mainAxisAlignment: MainAxisAlignment.center,

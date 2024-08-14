@@ -25,9 +25,9 @@ class _SearchScreenState extends State<SearchScreen> {
     super.initState();
 
     // Retrieve the current location passed from DestinationBottomSheet
-    final currentLocation = Get.arguments as String?;
-    if (currentLocation != null) {
-      _locationController.text = currentLocation;
+    final currentAddress = Get.arguments as String?;
+    if (currentAddress != null) {
+      _locationController.text = currentAddress;
     }
 
     _locationFocusNode.addListener(() {

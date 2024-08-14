@@ -21,8 +21,8 @@ class _SearchLocationScreenState extends State<SearchLocationScreen> {
     'Blue Hills Academy', 'I&M Bank House ', 'Fortis Suite', 'Vibanda Village', 'Moi Avenue'
   ];
   final List<String> _allocationsDesc =[
-    'Westlands Road, Nairobi, Kenya', 'Westlands Road, Nairobi, Kenya', 'Westlands Road, Nairobi, Kenya', 'Westlands Road, Nairobi, Kenya', 'AlchWestlands Road, Nairobi, Kenyaemist',
-    'Westlands Road, Nairobi, Kenya', 'Westlands Road, Nairobi, Kenya', 'Westlands Road, Nairobi, Kenya', 'Westlands Road, Nairobi, Kenya'
+    'Westlands Road, Nairobi, Kenya', 'Westlands Road, Nairobi, Kenya', 'Westlands Road, Nairobi, Kenya', 'Westlands Road, Nairobi, Kenya', 'Westlands Road, Nairobi, Kenya',
+    'Westlands Road, Nairobi, Kenya', 'Westlands Road, Nairobi, Kenya', 'Westlands Road, Nairobi, Kenya', 'Westlands Road, Nairobi, Kenya','Westlands Road, Nairobi, Kenya'
   ];
 
   @override
@@ -127,7 +127,6 @@ class _SearchLocationScreenState extends State<SearchLocationScreen> {
                   var description = _allocationsDesc[_allocations.indexOf(location)];
                   return Container(
                     width: 328,
-                    height: 56,
                     padding: const EdgeInsets.symmetric(vertical: 4),
                     margin: EdgeInsets.symmetric(horizontal: 0,vertical: 5),
                     decoration: ShapeDecoration(

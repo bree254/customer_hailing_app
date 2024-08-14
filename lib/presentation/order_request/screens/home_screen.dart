@@ -2,6 +2,7 @@ import 'package:customer_hailing/widgets/destination_bottomsheet_widget.dart';
 import 'package:customer_hailing/widgets/drawer_widget.dart';
 import 'package:customer_hailing/widgets/menu_icon_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -16,6 +17,7 @@ class _HomeScreenState extends State<HomeScreen> {
   GoogleMapController? mapController;
   LatLng? _center;
   Position? _currentPosition;
+  String? _currentAddress;
 
   @override
   void initState() {
@@ -27,15 +29,19 @@ class _HomeScreenState extends State<HomeScreen> {
     mapController = controller;
   }
 
+
+// Existing method in your HomeScreen's _HomeScreenState class
   _getUserLocation() async {
     bool serviceEnabled;
     LocationPermission permission;
-// Check if location services are enabled
+
+    // Check if location services are enabled
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       return;
     }
-// Request permission to get the user's location
+
+    // Request permission to get the user's location
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.deniedForever) {
       return;
@@ -47,15 +53,29 @@ class _HomeScreenState extends State<HomeScreen> {
         return;
       }
     }
-// Get the current location of the user
+
+    // Get the current location of the user
     _currentPosition = await Geolocator.getCurrentPosition();
-    setState(() {
+
+    if (_currentPosition != null) {
       _center = LatLng(_currentPosition!.latitude, _currentPosition!.longitude);
-    });
+
+      // Convert coordinates to a human-readable address
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+        _currentPosition!.latitude,
+        _currentPosition!.longitude,
+      );
+
+      Placemark place = placemarks[0];
+      _currentAddress = "${place.street}, ${place.locality}, ${place.administrativeArea}, ${place.country}";
+
+      setState(() {});
+    }
   }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        drawer: const DrawerWidget(),
         body: Stack(
       children: [
         _center == null
@@ -82,7 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
             },
           ),
         ),
-        DestinationBottomSheet(currentLocation: _center != null ? "${_center!.latitude}, ${_center!.longitude}" : null),
+        DestinationBottomSheet(currentAddress: _currentAddress),
          Positioned(
           top: 40,
           left: 20,
