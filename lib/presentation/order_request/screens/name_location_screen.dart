@@ -3,7 +3,8 @@ import 'package:customer_hailing/core/utils/colors.dart';
 import 'package:customer_hailing/routes/routes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get.dart';
+
 class NameLocationScreen extends StatefulWidget {
   const NameLocationScreen({super.key});
 
@@ -14,7 +15,7 @@ class NameLocationScreen extends StatefulWidget {
 class _NameLocationScreenState extends State<NameLocationScreen> {
   final TextEditingController _locationController = TextEditingController();
   final FocusNode _locationFocusNode = FocusNode();
-  bool _hasInput = false; // Variable to track if text is entered
+  bool _hasInput = false;
 
   @override
   void initState() {
@@ -63,7 +64,7 @@ class _NameLocationScreenState extends State<NameLocationScreen> {
         ),
       ),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
         child: Column(
           children: [
             TextField(
@@ -88,14 +89,16 @@ class _NameLocationScreenState extends State<NameLocationScreen> {
                 ),
               ),
             ),
-            Spacer(),
+            const Spacer(),
             CustomElevatedButton(
-              onPressed: _hasInput ? () {
-                Get.toNamed(
-                  AppRoutes.savedLocation,
-                  arguments: _locationController.text, // Pass the location name
-                );
-              } : null, // Disable button if no input// Disable button if no input
+              onPressed: _hasInput
+                  ? () {
+                final name = _locationController.text;
+                final address = Get.arguments as String; // Get the passed address
+                Get.toNamed(AppRoutes.savedLocation,
+                    arguments: {'name': name, 'address': address});
+              }
+                  : null, // Disable button if no input
               buttonStyle: ElevatedButton.styleFrom(
                 backgroundColor: _hasInput ? primaryColor : disabledButtonGrey, // Change color based on input
                 elevation: 0,
@@ -107,10 +110,10 @@ class _NameLocationScreenState extends State<NameLocationScreen> {
               ),
               text: 'Next',
             ),
+
           ],
         ),
       ),
     );
   }
 }
-

@@ -3,29 +3,28 @@ import 'package:customer_hailing/core/utils/colors.dart';
 import 'package:customer_hailing/routes/routes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get.dart';
+
 class SavedLocationsScreen extends StatefulWidget {
   const SavedLocationsScreen({super.key});
 
   @override
   State<SavedLocationsScreen> createState() => _SavedLocationsScreenState();
 }
+
 class _SavedLocationsScreenState extends State<SavedLocationsScreen> {
-  List<String> _locations = [
-    'Enter Home Location',
-    'Enter Work Location',
+  List<Map<String, String>> _locations = [
+    {'name': 'Enter Home Location', 'address': ''},
+    {'name': 'Enter Work Location', 'address': ''},
   ]; // Predefined locations
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // Retrieve the arguments passed to this route
-    String? newLocationName = Get.arguments; // Get the new location name
-    if (newLocationName != null && newLocationName.isNotEmpty) {
+    final Map<String, String>? newLocation = Get.arguments as Map<String, String>?; // Retrieve the passed argument
+    if (newLocation != null) {
       setState(() {
-        if (!_locations.contains(newLocationName)) {
-          _locations.add(newLocationName); // Add new location to the list
-        }
+        _locations.add(newLocation); // Append the new location to the list
       });
     }
   }
@@ -57,7 +56,7 @@ class _SavedLocationsScreenState extends State<SavedLocationsScreen> {
         ),
       ),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 36),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 36),
         child: Column(
           children: [
             Expanded(
@@ -65,11 +64,11 @@ class _SavedLocationsScreenState extends State<SavedLocationsScreen> {
                 itemCount: _locations.length + 1, // Add 1 for the "Add stop over" button
                 itemBuilder: (context, index) {
                   if (index < _locations.length) {
+                    final location = _locations[index];
                     return Container(
                       width: 328,
-                      height: 56,
                       padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
-                      margin: EdgeInsets.symmetric(vertical: 5, horizontal: 0),
+                      margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 0),
                       decoration: ShapeDecoration(
                         color: Color(0x7FFAFAFA),
                         shape: RoundedRectangleBorder(
@@ -80,23 +79,29 @@ class _SavedLocationsScreenState extends State<SavedLocationsScreen> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
-                      child: Row(
-                        children: [
-                          Icon(_locations[index] == 'Enter Home Location'
-                              ? Icons.home_outlined
-                              : _locations[index] == 'Enter Work Location'
-                              ? CupertinoIcons.briefcase
-                              : Icons.location_on), // Default icon for new locations
-                          SizedBox(width: 16),
-                          Text(
-                            _locations[index],
-                            style: TextStyle(
-                              color: Color(0xFF767676),
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          )
-                        ],
+                      child: ListTile(
+                        leading: Icon(location['name'] == 'Enter Home Location'
+                            ? Icons.home_outlined
+                            : location['name'] == 'Enter Work Location'
+                            ? CupertinoIcons.briefcase
+                            : Icons.location_on), // Default icon for new locations
+                        title: Text(
+                          location['name']!,
+                          style: const TextStyle(
+                            color: Color(0xFF767676),
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        subtitle: location['address']!.isNotEmpty
+                            ? Text(
+                          location['address']!,
+                          style: const TextStyle(
+                            color: Color(0xFFB0B0B0),
+                            fontSize: 10,
+                          ),
+                        )
+                            : null,
                       ),
                     );
                   } else {
@@ -106,7 +111,7 @@ class _SavedLocationsScreenState extends State<SavedLocationsScreen> {
                         Get.toNamed(AppRoutes.searchLocation);
                       },
                       child: Container(
-                        margin: EdgeInsets.symmetric(vertical: 10,horizontal: 0),
+                        margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
                         color: Colors.transparent,
                         child: const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -137,8 +142,3 @@ class _SavedLocationsScreenState extends State<SavedLocationsScreen> {
     );
   }
 }
-
-
-
-
-

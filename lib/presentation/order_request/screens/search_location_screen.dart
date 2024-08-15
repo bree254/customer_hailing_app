@@ -64,7 +64,7 @@ class _SearchLocationScreenState extends State<SearchLocationScreen> {
   }
 
   void _onLocationSelected(Prediction prediction) {
-    Get.toNamed(AppRoutes.nameLocation, arguments: prediction);
+    Get.toNamed(AppRoutes.nameLocation, arguments: prediction.description);
   }
 
   @override
