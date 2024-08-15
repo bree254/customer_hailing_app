@@ -292,11 +292,18 @@ class _SearchScreenState extends State<SearchScreen> {
                   ),
                   child: ListTile(
                     onTap: () {
-                      // Update the destination controller with the selected destination
-                      _destinationController.text = destination.address;
+                      if(_destinationFocusNode.hasFocus){
+                        // Update the destination controller with the selected destination
+                        _destinationController.text = destination.address;
+                        // Optionally, move focus to the destination text field
+                        _destinationFocusNode.requestFocus();
 
-                      // Optionally, move focus to the destination text field
-                      _destinationFocusNode.requestFocus();
+                      }else if(_locationFocusNode.hasFocus){
+                        // Update the location controller with the selected location
+                        _locationController.text = destination.address;
+                        // Optionally, move focus to the location text field
+                        _locationFocusNode.requestFocus();
+                      }
                     },
                     leading: const Icon(
                       Icons.history,
