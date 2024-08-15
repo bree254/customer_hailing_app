@@ -270,8 +270,8 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                                 child: Container(
                                   width: 72,
                                   height: 28,
-                                  padding: const EdgeInsets.only(
-                                      top: 4, left: 8, right: 16, bottom: 4),
+                                  padding: const EdgeInsets.only(top: 4, left: 8, right: 0, bottom: 4),
+                                  margin:EdgeInsets.symmetric(horizontal:10),
                                   decoration: BoxDecoration(
                                     color: _selectedPaymentMode == 'Cash'
                                         ? selectRideColor
@@ -304,9 +304,9 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                                   ),
                                 ),
                               ),
-                              const SizedBox(
-                                width: 10,
-                              ),
+                              // const SizedBox(
+                              //   width: 10,
+                              // ),
                               GestureDetector(
                                 onTap: () {
                                   setState(() {
@@ -316,8 +316,7 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                                 child: Container(
                                   width: 72,
                                   height: 28,
-                                  padding: const EdgeInsets.only(
-                                      top: 4, left: 8, right: 16, bottom: 4),
+                                  padding: const EdgeInsets.only(top: 4, left: 8, right: 0, bottom: 4),
                                   decoration: BoxDecoration(
                                     color: _selectedPaymentMode == 'Card'
                                         ? selectRideColor
