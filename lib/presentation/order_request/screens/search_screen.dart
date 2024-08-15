@@ -12,6 +12,7 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
+  final String googleApiKey ="AIzaSyAFFMad-10qvSw8wZl7KgDp0jVafz4La6E";
   final TextEditingController _locationController = TextEditingController();
   final TextEditingController _destinationController = TextEditingController();
 
@@ -85,6 +86,7 @@ class _SearchScreenState extends State<SearchScreen> {
       _stopoverFocusNodes.removeAt(index);
     });
   }
+
 
   Widget _buildDotIndicator(bool isActive) {
     return Container(
