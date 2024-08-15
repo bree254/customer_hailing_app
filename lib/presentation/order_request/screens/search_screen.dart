@@ -1,4 +1,5 @@
 import 'package:customer_hailing/core/utils/colors.dart';
+import 'package:customer_hailing/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../models/data.dart';
@@ -298,12 +299,29 @@ class _SearchScreenState extends State<SearchScreen> {
                         // Optionally, move focus to the destination text field
                         _destinationFocusNode.requestFocus();
 
+                        // Get.toNamed(AppRoutes.selectRide, arguments: destination.address);
+
                       }else if(_locationFocusNode.hasFocus){
                         // Update the location controller with the selected location
                         _locationController.text = destination.address;
                         // Optionally, move focus to the location text field
                         _locationFocusNode.requestFocus();
+                      }else {
+                        // Handle stopovers
+                        for (int i = 1; i < _stopoverControllers.length - 1; i++) {
+                          if (_stopoverFocusNodes[i].hasFocus) {
+                            _stopoverControllers[i].text = destination.address;
+
+                            // Optionally, trigger autocomplete for the stopover
+                            // await _handleAutocomplete(_stopoverControllers[i], _stopoverFocusNodes[i]);
+
+                            _stopoverFocusNodes[i].requestFocus();
+                            break;
+                          }
+                        }
                       }
+
+
                     },
                     leading: const Icon(
                       Icons.history,
