@@ -1,20 +1,27 @@
+import 'dart:convert';
+import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/core/utils/colors.dart';
 import 'package:customer_hailing/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../models/data.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:http/http.dart' as http;
+import '../models/predictions.dart';
 
-class SearchScreen extends StatefulWidget {
-  const SearchScreen({super.key});
+class EnterTripDetailsScreen extends StatefulWidget {
+  const EnterTripDetailsScreen({super.key});
 
   @override
-  State<SearchScreen> createState() => _SearchScreenState();
+  State<EnterTripDetailsScreen> createState() => _EnterTripDetailsScreenState();
 }
 
-class _SearchScreenState extends State<SearchScreen> {
+class _EnterTripDetailsScreenState extends State<EnterTripDetailsScreen> {
   final String googleApiKey ="AIzaSyAFFMad-10qvSw8wZl7KgDp0jVafz4La6E";
   final TextEditingController _locationController = TextEditingController();
   final TextEditingController _destinationController = TextEditingController();
+  List<Prediction> _predictions = [];
+  // List _pastDestinations = [];
 
   final FocusNode _locationFocusNode = FocusNode();
   final FocusNode _destinationFocusNode = FocusNode();
@@ -22,9 +29,23 @@ class _SearchScreenState extends State<SearchScreen> {
   final List<TextEditingController> _stopoverControllers = [];
   final List<FocusNode> _stopoverFocusNodes = [];
 
+  final RxBool _isTyping = false.obs;
+
   @override
   void initState() {
     super.initState();
+    // _isTyping = false;
+
+
+    // Add listeners to detect typing
+    _locationController.addListener(_onTextChanged);
+    _destinationController.addListener(_onTextChanged);
+
+    _locationFocusNode.addListener(_onFocusChange);
+    _destinationFocusNode.addListener(_onFocusChange);
+
+    _locationController.addListener(_onLocationChanged);
+    _destinationController.addListener(_onLocationChanged);
 
     // Retrieve the current location passed from DestinationBottomSheet
     final currentAddress = Get.arguments as String?;
@@ -45,6 +66,17 @@ class _SearchScreenState extends State<SearchScreen> {
 
     _stopoverControllers.add(_destinationController);
     _stopoverFocusNodes.add(_destinationFocusNode);
+
+    // Add listeners to detect focus changes and clear predictions
+    for (var focusNode in _stopoverFocusNodes) {
+      focusNode.addListener(() {
+        if (!focusNode.hasFocus) {
+          setState(() {
+            _predictions = [];
+          });
+        }
+      });
+    }
   }
 
   @override
@@ -87,6 +119,86 @@ class _SearchScreenState extends State<SearchScreen> {
     });
   }
 
+  void _onTextChanged() {
+    setState(() {
+      _isTyping.value = _locationController.text.isNotEmpty ||
+          _destinationController.text.isNotEmpty ||
+          _stopoverControllers.any((controller) => controller.text.isNotEmpty);
+
+    });
+
+    debugPrint("TYPING : $_isTyping");
+  }
+
+  void _onFocusChange() {
+    setState(() {
+      _isTyping.value = _locationFocusNode.hasFocus ||
+          _destinationFocusNode.hasFocus ||
+          _stopoverFocusNodes.any((focusNode) => focusNode.hasFocus);
+    });
+    debugPrint("TYPING : $_isTyping");
+  }
+  void _onLocationChanged() async {
+    if (_locationFocusNode.hasFocus) {
+      final locationQuery = _locationController.text;
+      if (locationQuery.isNotEmpty) {
+        final response = await _fetchPredictions(locationQuery);
+        setState(() {
+          _predictions = _parsePredictions(response);
+        });
+      } else {
+        setState(() {
+          _predictions = [];
+        });
+      }
+    } else if (_destinationFocusNode.hasFocus) {
+      final destinationQuery = _destinationController.text;
+      if (destinationQuery.isNotEmpty) {
+        final response = await _fetchPredictions(destinationQuery);
+        setState(() {
+          _predictions = _parsePredictions(response);
+        });
+      } else {
+        setState(() {
+          _predictions = [];
+        });
+      }
+    } else {
+      // Handle stopovers
+      for (int i = 0; i < _stopoverControllers.length - 1; i++) {
+        if (_stopoverFocusNodes[i].hasFocus) {
+          final stopoverQuery = _stopoverControllers[i].text;
+          if (stopoverQuery.isNotEmpty) {
+            final response = await _fetchPredictions(stopoverQuery);
+            setState(() {
+              _predictions = _parsePredictions(response);
+            });
+          } else {
+            setState(() {
+              _predictions = [];
+            });
+          }
+          break;
+        }
+      }
+    }
+  }
+
+
+  Future<String> _fetchPredictions(String input) async {
+    final url = Uri.parse(
+      'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input&key=AIzaSyAFFMad-10qvSw8wZl7KgDp0jVafz4La6E',
+    );
+    final response = await http.get(url);
+    // debugPrint(jsonEncode(response.body));
+    return response.body;
+  }
+
+  List<Prediction> _parsePredictions(String responseBody) {
+    final json = jsonDecode(responseBody);
+    final predictions = json['predictions'] as List;
+    return predictions.map((p) => Prediction.fromJson(p)).toList();
+  }
 
   Widget _buildDotIndicator(bool isActive) {
     return Container(
@@ -275,8 +387,9 @@ class _SearchScreenState extends State<SearchScreen> {
               ],
             ),
           ),
-          Flexible(
-            child: ListView.builder(
+          Expanded(
+            child: Obx(() => _isTyping.value
+                ? ListView.builder(
               itemCount: MyData.destinations.length,
               itemBuilder: (BuildContext context, int index) {
                 var destination = MyData.destinations[index];
@@ -295,24 +408,26 @@ class _SearchScreenState extends State<SearchScreen> {
                   ),
                   child: ListTile(
                     onTap: () {
-                      if(_destinationFocusNode.hasFocus){
+                      if (_destinationFocusNode.hasFocus) {
                         // Update the destination controller with the selected destination
                         _destinationController.text = destination.address;
                         // Optionally, move focus to the destination text field
                         _destinationFocusNode.requestFocus();
 
                         // Get.toNamed(AppRoutes.selectRide, arguments: destination.address);
-
-                      }else if(_locationFocusNode.hasFocus){
+                      } else if (_locationFocusNode.hasFocus) {
                         // Update the location controller with the selected location
                         _locationController.text = destination.address;
                         // Optionally, move focus to the location text field
                         _locationFocusNode.requestFocus();
-                      }else {
+                      } else {
                         // Handle stopovers
-                        for (int i = 1; i < _stopoverControllers.length - 1; i++) {
+                        for (int i = 1;
+                        i < _stopoverControllers.length - 1;
+                        i++) {
                           if (_stopoverFocusNodes[i].hasFocus) {
-                            _stopoverControllers[i].text = destination.address;
+                            _stopoverControllers[i].text =
+                                destination.address;
 
                             // Optionally, trigger autocomplete for the stopover
                             // await _handleAutocomplete(_stopoverControllers[i], _stopoverFocusNodes[i]);
@@ -322,8 +437,6 @@ class _SearchScreenState extends State<SearchScreen> {
                           }
                         }
                       }
-
-
                     },
                     leading: const Icon(
                       Icons.history,
@@ -348,9 +461,73 @@ class _SearchScreenState extends State<SearchScreen> {
                   ),
                 );
               },
-            ),
-          ),
+            )
+                : ListView.builder(
+              itemCount: _predictions.length,
+              itemBuilder: (BuildContext context, int index) {
+                final prediction = _predictions[index];
+                return Container(
+                  width: 328,
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  margin: EdgeInsets.symmetric(horizontal: 0, vertical: 5),
+                  decoration: ShapeDecoration(
+                    color: Color(0x7FFAFAFA),
+                    shape: RoundedRectangleBorder(
+                      side: BorderSide(
+                        width: 1,
+                        color: Colors.black.withOpacity(0.025),
+                      ),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  child: ListTile(
+                    leading: Image.asset(
+                      width: 24,
+                      height: 24,
+                      color: searchtextGrey,
+                      'assets/images/map-pin-alt-outline.png',
+                    ),
+                    title: Text(
+                      prediction.description,
+                      style: TextStyle(
+                        color: Color(0xFF767676),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    onTap: () {
+                      final selectedPrediction = prediction.description;
 
+                      if (_locationFocusNode.hasFocus) {
+                        // Populate the location text field
+                        _locationController.text = selectedPrediction;
+                        _locationFocusNode.unfocus();
+                      } else if (_destinationFocusNode.hasFocus) {
+                        // Populate the destination text field
+                        _destinationController.text = selectedPrediction;
+                        _destinationFocusNode.unfocus();
+                      } else {
+                        // Handle stopovers
+                        for (int i = 1; i < _stopoverControllers.length - 1; i++) {
+                          if (_stopoverFocusNodes[i].hasFocus) {
+                            _stopoverControllers[i].text = selectedPrediction;
+                            _stopoverFocusNodes[i].unfocus();
+                            break;
+                          }
+                        }
+                      }
+
+                      // Clear predictions after selection
+                      setState(() {
+                        _predictions = [];
+                      });
+                    },
+
+                  ),
+                );
+              },
+            ),)
+          ),
         ],
       ),
     );

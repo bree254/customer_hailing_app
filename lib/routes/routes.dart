@@ -12,7 +12,7 @@ import 'package:customer_hailing/presentation/order_request/screens/profile_scre
 import 'package:customer_hailing/presentation/order_request/screens/rate_ride_screen.dart';
 import 'package:customer_hailing/presentation/order_request/screens/saved_locations_screen.dart';
 import 'package:customer_hailing/presentation/order_request/screens/search_location_screen.dart';
-import 'package:customer_hailing/presentation/order_request/screens/search_screen.dart';
+import 'package:customer_hailing/presentation/order_request/screens/enter_trip_details.dart';
 import 'package:customer_hailing/presentation/order_request/screens/select_ride_screen.dart';
 import 'package:customer_hailing/presentation/order_request/screens/share_trip_details_screen.dart';
 import 'package:customer_hailing/presentation/order_request/screens/share_with_screen.dart';
@@ -74,7 +74,7 @@ class AppRoutes {
     ),
     GetPage(
         name: search,
-        page: () => const SearchScreen(),
+        page: () => const EnterTripDetailsScreen(),
     ),
     GetPage(
         name: selectRide,
