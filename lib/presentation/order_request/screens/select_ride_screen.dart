@@ -1,35 +1,32 @@
-import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/core/utils/colors.dart';
+import 'package:customer_hailing/presentation/order_request/controller/ride_status_controller.dart';
+import 'package:customer_hailing/presentation/order_request/models/data.dart';
 import 'package:customer_hailing/routes/routes.dart';
+import 'package:customer_hailing/widgets/custom_elevated_button.dart';
 import 'package:customer_hailing/widgets/drawer_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import '../controller/ride_status_controller.dart';
-import '../models/data.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:get/get.dart';
 
 class SelectRideScreen extends StatefulWidget {
-  const SelectRideScreen({super.key});
-
   @override
-  State<SelectRideScreen> createState() => _SelectRideScreenState();
+  _SelectRideScreenState createState() => _SelectRideScreenState();
 }
 
 class _SelectRideScreenState extends State<SelectRideScreen> {
   GoogleMapController? mapController;
   LatLng? _center;
   Position? _currentPosition;
-
   String? _selectedRide;
   String? _selectedPaymentMode;
-
   String? _destination;
   String? _prediction;
 
+  Set<Polyline> _polylines = {};
 
-
-//initialize the controller
-  final RideStatusController rideStatusController =Get.put(RideStatusController());
+  final RideStatusController rideStatusController = Get.put(RideStatusController());
 
   @override
   void initState() {
@@ -49,7 +46,7 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
     mapController = controller;
   }
 
-  _getUserLocation() async {
+  Future<void> _getUserLocation() async {
     bool serviceEnabled;
     LocationPermission permission;
 
@@ -73,10 +70,40 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
     _currentPosition = await Geolocator.getCurrentPosition();
     setState(() {
       _center = LatLng(_currentPosition!.latitude, _currentPosition!.longitude);
+      _updatePolyline();
     });
   }
 
-//method to start the ride request that will trigger the different status updates in the search for driver method
+  Future<LatLng?> _getCoordinatesFromAddress(String address) async {
+    try {
+      List<Location> locations = await locationFromAddress(address);
+      if (locations.isNotEmpty) {
+        return LatLng(locations[0].latitude, locations[0].longitude);
+      }
+    } catch (e) {
+      print('Error getting coordinates from address: $e');
+    }
+    return null;
+  }
+
+  void _updatePolyline() async {
+    if (_center != null && (_destination != null || _prediction != null)) {
+      String address = _destination ?? _prediction ?? '';
+      LatLng? destinationCoords = await _getCoordinatesFromAddress(address);
+      if (destinationCoords != null) {
+        setState(() {
+          _polylines.add(Polyline(
+            polylineId: PolylineId('route'),
+            visible: true,
+            color: primaryColor,
+            width: 5,
+            points: [_center!, destinationCoords],
+          ));
+        });
+      }
+    }
+  }
+
   void _startRideRequest() {
     rideStatusController.searchForDriver();
     Get.toNamed(AppRoutes.awaitDriver, arguments: _selectedRide);
@@ -90,28 +117,29 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
         children: [
           _center == null
               ? Image.asset(
-                  'assets/images/map.png', // Path to your cached map image
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                  height: double.infinity,
-                )
+            'assets/images/map.png', // Path to your cached map image
+            fit: BoxFit.cover,
+            width: double.infinity,
+            height: double.infinity,
+          )
               : SizedBox(
-                  height: double.infinity,
-                  child: GoogleMap(
-                    onMapCreated: _onMapCreated,
-                    initialCameraPosition: CameraPosition(
-                      target: _center!,
-                      zoom: 15.0,
-                    ),
-                    markers: {
-                      Marker(
-                        markerId: const MarkerId('user_location'),
-                        position: _center!,
-                        infoWindow: const InfoWindow(title: 'Your Location'),
-                      ),
-                    },
-                  ),
+            height: double.infinity,
+            child: GoogleMap(
+              onMapCreated: _onMapCreated,
+              initialCameraPosition: CameraPosition(
+                target: _center!,
+                zoom: 16.0,
+              ),
+              markers: {
+                Marker(
+                  markerId: const MarkerId('user_location'),
+                  position: _center!,
+                  infoWindow: const InfoWindow(title: 'Your Location'),
                 ),
+              },
+              polylines: _polylines,
+            ),
+          ),
           Positioned(
             top: 50,
             left: 16,
@@ -251,7 +279,7 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                                             fontSize: 10,
                                             fontWeight: FontWeight.w400,
                                             decoration:
-                                                TextDecoration.lineThrough),
+                                            TextDecoration.lineThrough),
                                       ),
                                     ],
                                   ),

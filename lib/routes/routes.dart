@@ -78,7 +78,7 @@ class AppRoutes {
     ),
     GetPage(
         name: selectRide,
-        page: () => const SelectRideScreen(),
+        page: () =>  SelectRideScreen(),
     ),
     GetPage(
         name: awaitDriver,
