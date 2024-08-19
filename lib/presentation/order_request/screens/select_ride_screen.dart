@@ -24,6 +24,7 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
   String? _selectedPaymentMode;
 
   String? _destination;
+  String? _prediction;
 
 
 
@@ -33,7 +34,14 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
   @override
   void initState() {
     super.initState();
-    _destination = Get.arguments; // Retrieve the passed destination
+    Map<String, dynamic> args = Get.arguments;
+    if (args != null) {
+      if (args['type'] == 'destination') {
+        _destination = args['value'];
+      } else if (args['type'] == 'prediction') {
+        _prediction = args['value'];
+      }
+    }
     _getUserLocation();
   }
 
@@ -126,7 +134,7 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                 decoration: InputDecoration(
                     contentPadding: const EdgeInsets.symmetric(
                         horizontal: 16, vertical: 20),
-                    hintText: _destination,
+                    hintText: _destination != null ? _destination : _prediction != null ? _prediction : 'Enter location',
                     hintStyle: const TextStyle(
                         fontWeight: FontWeight.w400,
                         fontSize: 14,

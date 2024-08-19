@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/core/utils/colors.dart';
+import 'package:customer_hailing/presentation/order_request/screens/select_ride_screen.dart';
 import 'package:customer_hailing/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -200,6 +201,11 @@ class _EnterTripDetailsScreenState extends State<EnterTripDetailsScreen> {
     return predictions.map((p) => Prediction.fromJson(p)).toList();
   }
 
+  void _onPredictionSelected(Prediction prediction) {
+    Get.toNamed(AppRoutes.selectRide, arguments: {'type': 'prediction', 'value': prediction.description});
+
+  }
+
   Widget _buildDotIndicator(bool isActive) {
     return Container(
       width: 10,
@@ -388,7 +394,7 @@ class _EnterTripDetailsScreenState extends State<EnterTripDetailsScreen> {
             ),
           ),
           Expanded(
-            child: Obx(() => _isTyping.value
+            child: Obx(() => !_isTyping.value
                 ? ListView.builder(
               itemCount: MyData.destinations.length,
               itemBuilder: (BuildContext context, int index) {
@@ -521,6 +527,8 @@ class _EnterTripDetailsScreenState extends State<EnterTripDetailsScreen> {
                       setState(() {
                         _predictions = [];
                       });
+                      // Navigate to the next screen after selecting the prediction
+                      _onPredictionSelected(prediction);
                     },
 
                   ),

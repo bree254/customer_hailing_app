@@ -87,7 +87,8 @@ class DestinationBottomSheet extends StatelessWidget {
                           ),
                           child: ListTile(
                             onTap: () {
-                              Get.toNamed(AppRoutes.selectRide,arguments: destination.address);
+                              Get.toNamed(AppRoutes.selectRide, arguments: {'type': 'destination', 'value': destination.address});
+
                             },
                             leading: const Icon(
                               Icons.history,
