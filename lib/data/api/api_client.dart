@@ -73,7 +73,7 @@ class ApiClient extends GetConnect {
   }
 
   Future<Response> uploadFile(String url, String filePath, String fileName) async {
-    return await post(url, FormData({'file': await MultipartFile(filePath, filename: fileName)}));
+    return await post(url, FormData({'file': MultipartFile(filePath, filename: fileName)}));
   }
 
   // Future<Response> downloadFile(String url, String filePath) async {

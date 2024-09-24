@@ -24,7 +24,7 @@ class NetworkInterceptor extends Interceptor {
   }
 
   @override
-  void onError(DioError err, ErrorInterceptorHandler handler) {
+  void onError(DioException err, ErrorInterceptorHandler handler) {
     // Do something with response error
     print('Error occurred: ${err.error}');
     return super.onError(err, handler);

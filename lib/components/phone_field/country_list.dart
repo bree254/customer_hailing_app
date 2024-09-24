@@ -1,0 +1,102 @@
+class Countries {
+  static List<Map<String, dynamic>> get countryList => _countryList;
+
+  static final List<Map<String, dynamic>> _countryList = [
+    {
+      "num_code": "404",
+      "alpha_2_code": "KE",
+      "alpha_3_code": "KEN",
+      "en_short_name": "Kenya",
+      "nationality": "Kenyan",
+      "dial_code": "+254",
+      "nameTranslations": {
+        "sk": "Keňa",
+        "se": "Kenia",
+        "pl": "Kenia",
+        "no": "Kenya",
+        "ja": "ケニア",
+        "it": "Kenya",
+        "zh": "肯尼亚",
+        "nl": "Kenia",
+        "de": "Kenia",
+        "fr": "Kenya",
+        "es": "Kenia",
+        "en": "Kenya",
+        "pt_BR": "Quênia",
+        "sr-Cyrl": "Кенија",
+        "sr-Latn": "Kenija",
+        "zh_TW": "肯亞",
+        "tr": "Kenya",
+        "ro": "Kenya",
+        "ar": "كينيا",
+        "fa": "کنیا",
+        "yue": "肯尼亞",
+        "el": "Κένυα"
+      }
+    },
+    {
+      "num_code": "834",
+      "alpha_2_code": "TZ",
+      "alpha_3_code": "TZA",
+      "en_short_name": "Tanzania, United Republic of",
+      "nationality": "Tanzanian",
+      "dial_code": "+255",
+      "nameTranslations": {
+        "sk": "Tanzánia",
+        "se": "Tanzánia",
+        "pl": "Tanzania",
+        "no": "Tanzania",
+        "ja": "タンザニア",
+        "it": "Tanzania",
+        "zh": "坦桑尼亚",
+        "nl": "Tanzania",
+        "de": "Tansania",
+        "fr": "Tanzanie",
+        "es": "Tanzania",
+        "en": "Tanzania",
+        "pt_BR": "Tanzânia",
+        "sr-Cyrl": "Танзанија",
+        "sr-Latn": "Tanzanija",
+        "zh_TW": "坦尚尼亞",
+        "tr": "Tanzanya",
+        "ro": "Tanzania",
+        "ar": "تنزانيا",
+        "fa": "تانزانیا",
+        "yue": "坦桑尼亞，聯合共和國",
+        "el": "Τανζανία, Ηνωμένη Δημοκρατία της Τανζανίας"
+      }
+    },
+    {
+      "num_code": "800",
+      "alpha_2_code": "UG",
+      "alpha_3_code": "UGA",
+      "en_short_name": "Uganda",
+      "nationality": "Ugandan",
+      "dial_code": "+256",
+      "nameTranslations": {
+        "sk": "Uganda",
+        "se": "Uganda",
+        "pl": "Uganda",
+        "no": "Uganda",
+        "ja": "ウガンダ",
+        "it": "Uganda",
+        "zh": "乌干达",
+        "nl": "Oeganda",
+        "de": "Uganda",
+        "fr": "Ouganda",
+        "es": "Uganda",
+        "en": "Uganda",
+        "pt_BR": "Uganda",
+        "sr-Cyrl": "Уганда",
+        "sr-Latn": "Uganda",
+        "zh_TW": "烏干達",
+        "tr": "Uganda",
+        "ro": "Uganda",
+        "ar": "أوغندا",
+        "fa": "اوگاندا",
+        "yue": "烏干達",
+        "el": "Ουγκάντα"
+      }
+    }
+  ];
+}
