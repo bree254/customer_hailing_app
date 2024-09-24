@@ -1,5 +1,5 @@
-import 'package:customer_hailing/core/utils/colors.dart';
 import 'package:flutter/material.dart';
+
 import '../core/app_export.dart';
 
 class CustomTextFormField extends StatefulWidget {
@@ -112,6 +112,9 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
     super.initState();
     _focusNode = widget.focusNode ?? FocusNode();
     _focusNode!.addListener(_handleFocusChange);
+
+    widget.controller?.addListener(_handleTextChange);
+    _isNotEmpty = widget.controller?.text.isNotEmpty ?? false;
   }
 
   void _handleFocusChange() {
@@ -151,7 +154,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
   Widget textFormFieldWidget(BuildContext context) => Container(
     width: widget.width ?? double.maxFinite,
     margin: widget.margin ?? EdgeInsets.zero,
-    height: widget.height ?? 50.h,
+    height: widget.height,
     child: Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -223,27 +226,16 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
     focusedBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(10.h),
       borderSide: BorderSide(
-          color: _isNotEmpty ? appTheme.inputError : appTheme.colorPrimary,
+          color: _isNotEmpty ? appTheme.colorPrimary : appTheme.inputError,
           width: 1), // Change color based on text field content
     ),
     errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10.0),
-          borderSide: const BorderSide(
-            color: textfieldErrorRedColor,
-            width: 1.0,
-          ),
-        ),
+      borderRadius: BorderRadius.circular(10.0),
+      borderSide:  BorderSide(
+        color: _isNotEmpty ? appTheme.colorPrimary : appTheme.inputError,
+        width: 1.0,
+      ),
+    ),
   );
 }
 
-/// Extension on [CustomTextFormField] to facilitate inclusion of all types of border style etc
-extension TextFormFieldStyleHelper on CustomTextFormField {
-  static UnderlineInputBorder get underlineInput => UnderlineInputBorder(
-    borderSide: BorderSide(color: appTheme.black, width: 1),
-  );
-
-  static OutlineInputBorder get fillGray => OutlineInputBorder(
-    borderRadius: BorderRadius.circular(10.h),
-    borderSide: BorderSide.none,
-  );
-}

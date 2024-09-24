@@ -1,9 +1,9 @@
 import 'package:customer_hailing/core/app_export.dart';
-import 'package:customer_hailing/presentation/splash/splash_screen.dart';
 import 'package:customer_hailing/routes/routes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import 'firebase_options.dart';
 
@@ -13,13 +13,21 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
+  await Permission.locationWhenInUse.isDenied.then((valueOfPermission)
+  {
+    if(valueOfPermission){
+      Permission.locationWhenInUse.request();
+    }
+  }
+  );
+
   Future.wait([
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]),
     PrefUtils().init(),
   ]).then((value) async {
-  runApp(const Hailing());
+    runApp(const Hailing());
   });
 }
 
@@ -34,9 +42,9 @@ class Hailing extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: theme,
         initialBinding: InitialBindings(),
-        initialRoute: AppRoutes.home,
+        initialRoute: AppRoutes.splash,
         getPages: AppRoutes.pages,
-        home: const SplashScreen(),
+        // home: const HomeScreen(),
       );
     });
   }

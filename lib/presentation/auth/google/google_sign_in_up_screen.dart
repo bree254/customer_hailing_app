@@ -26,21 +26,33 @@ class _GoogleSignInUpScreenState extends State<GoogleSignInUpScreen> {
     super.initState();
     firstNameController.text = Get.arguments["firstname"];
     lastNameController.text = Get.arguments["lastname"];
+
+    firstNameController.addListener(() => _updateState());
+    lastNameController.addListener(() => _updateState());
+  }
+
+  void _updateState() {
+    setState(() {});
   }
 
   void onSubmit() {
     if (_formKey.currentState!.validate()) {
-      Get.toNamed(AppRoutes.verification, arguments: {
-        'phone_email': Get.arguments['email'],
-        "verification_type": "email"
-      });
+      Get.toNamed(AppRoutes.verification,
+          arguments: {'phone_email': Get.arguments['email'], "verification_type": "email"});
     }
+  }
+
+  @override
+  void dispose() {
+    firstNameController.removeListener(() => _updateState());
+    lastNameController.removeListener(() => _updateState());
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true,
+      // resizeToAvoidBottomInset: true,
       body: Padding(
         padding: EdgeInsets.fromLTRB(16.h, 32.v, 16.h, 16.v),
         child: Form(
@@ -49,9 +61,7 @@ class _GoogleSignInUpScreenState extends State<GoogleSignInUpScreen> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                height: 32.v,
-              ),
+              SizedBox(height: 32.v),
               const Align(
                 alignment: Alignment.center,
                 child: Text(
@@ -63,9 +73,7 @@ class _GoogleSignInUpScreenState extends State<GoogleSignInUpScreen> {
                   ),
                 ),
               ),
-              SizedBox(
-                height: 40.v,
-              ),
+              SizedBox(height: 40.v),
               const Text(
                 "First name",
                 style: TextStyle(
@@ -74,9 +82,7 @@ class _GoogleSignInUpScreenState extends State<GoogleSignInUpScreen> {
                   fontSize: 14,
                 ),
               ),
-              SizedBox(
-                height: 10.v,
-              ),
+              SizedBox(height: 10.v),
               CustomTextFormField(
                 controller: firstNameController,
                 filled: true,
@@ -91,7 +97,7 @@ class _GoogleSignInUpScreenState extends State<GoogleSignInUpScreen> {
                   fontWeight: FontWeight.w500,
                   fontSize: 14,
                 ),
-                contentPadding: EdgeInsets.symmetric(vertical: 15.v, horizontal: 10.h),
+                contentPadding: EdgeInsets.symmetric(vertical: 14.v, horizontal: 10.h),
                 validator: (value) {
                   if (value!.isEmpty) {
                     return 'First name is required';
@@ -99,9 +105,7 @@ class _GoogleSignInUpScreenState extends State<GoogleSignInUpScreen> {
                   return null;
                 },
               ),
-              SizedBox(
-                height: 24.v,
-              ),
+              SizedBox(height: 20.v),
               const Text(
                 "Last name",
                 style: TextStyle(
@@ -110,9 +114,7 @@ class _GoogleSignInUpScreenState extends State<GoogleSignInUpScreen> {
                   fontSize: 14,
                 ),
               ),
-              SizedBox(
-                height: 10.v,
-              ),
+              SizedBox(height: 10.v),
               CustomTextFormField(
                 controller: lastNameController,
                 filled: true,
@@ -127,7 +129,7 @@ class _GoogleSignInUpScreenState extends State<GoogleSignInUpScreen> {
                   fontWeight: FontWeight.w500,
                   fontSize: 14,
                 ),
-                contentPadding: EdgeInsets.symmetric(vertical: 15.v, horizontal: 10.h),
+                contentPadding: EdgeInsets.symmetric(vertical: 14.v, horizontal: 10.h),
                 validator: (value) {
                   if (value!.isEmpty) {
                     return 'Last name is required';
@@ -135,9 +137,7 @@ class _GoogleSignInUpScreenState extends State<GoogleSignInUpScreen> {
                   return null;
                 },
               ),
-              SizedBox(
-                height: 24.v,
-              ),
+              SizedBox(height: 20.v),
               const Text(
                 "Enter your mobile number",
                 style: TextStyle(
@@ -146,9 +146,7 @@ class _GoogleSignInUpScreenState extends State<GoogleSignInUpScreen> {
                   fontSize: 14,
                 ),
               ),
-              SizedBox(
-                height: 10.v,
-              ),
+              SizedBox(height: 10.v),
               CustomPhoneInput(
                 controller: phoneController,
                 onInputChanged: (value) {
@@ -182,10 +180,7 @@ class _GoogleSignInUpScreenState extends State<GoogleSignInUpScreen> {
                   return null;
                 },
               ),
-              SizedBox(
-                height: 24.v,
-              ),
-              Spacer(),
+              const Spacer(),
               CustomElevatedButton(
                 onPressed: () {
                   onSubmit();
@@ -206,3 +201,4 @@ class _GoogleSignInUpScreenState extends State<GoogleSignInUpScreen> {
     );
   }
 }
+
