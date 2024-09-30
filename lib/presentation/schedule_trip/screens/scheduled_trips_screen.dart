@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/app_export.dart';
+import '../../../routes/routes.dart';
 class ScheduledTripsScreen extends StatefulWidget {
   const ScheduledTripsScreen({super.key});
 
@@ -59,11 +60,13 @@ class _ScheduledTripsScreenState extends State<ScheduledTripsScreen> {
               ),
               SizedBox(height: 40.v,),
               CustomElevatedButton(
+                onPressed: (){
+                  Get.toNamed(AppRoutes.scheduleNewTrip);
+                },
                   text: 'Schedule New Trip',
                 buttonStyle: ElevatedButton.styleFrom(
                   backgroundColor: whiteTextColor,
                   side: BorderSide(color: primaryColor),
-
                   elevation: 0,
                 ),
                 buttonTextStyle: const TextStyle(
@@ -77,7 +80,6 @@ class _ScheduledTripsScreenState extends State<ScheduledTripsScreen> {
 
           ),
     )
-
     );
   }
 }

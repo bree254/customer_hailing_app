@@ -17,6 +17,7 @@ import 'package:customer_hailing/presentation/order_request/screens/select_ride_
 import 'package:customer_hailing/presentation/order_request/screens/share_trip_details_screen.dart';
 import 'package:customer_hailing/presentation/order_request/screens/share_with_screen.dart';
 import 'package:customer_hailing/presentation/order_request/screens/trip_status_screen.dart';
+import 'package:customer_hailing/presentation/schedule_trip/screens/schedule_new_trip_screens.dart';
 import 'package:customer_hailing/presentation/schedule_trip/screens/scheduled_trips_screen.dart';
 import 'package:customer_hailing/presentation/splash/splash_screen.dart';
 
@@ -43,6 +44,7 @@ class AppRoutes {
   static const String searchLocation="/search_location";
   static const String nameLocation ="/name_location";
   static const String scheduleTrip = "/schedule_trip";
+  static const String scheduleNewTrip ="/schedule_new_trip";
 
   static List<GetPage> pages = [
     GetPage(
@@ -125,6 +127,10 @@ class AppRoutes {
     GetPage(
       name: scheduleTrip,
       page: () =>  const ScheduledTripsScreen(),
+    ),
+    GetPage(
+      name: scheduleNewTrip,
+      page: () =>  const ScheduleNewTripScreen(),
     ),
   ];
 }
