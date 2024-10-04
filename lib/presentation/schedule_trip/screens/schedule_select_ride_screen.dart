@@ -26,7 +26,7 @@ class _ScheduleSelectRideScreenState extends State<ScheduleSelectRideScreen> {
 
   Set<Polyline> _polylines = {};
 
-  final RideStatusController rideStatusController = Get.put(RideStatusController());
+  //final RideStatusController rideStatusController = Get.put(RideStatusController());
 
   @override
   void initState() {
@@ -105,8 +105,7 @@ class _ScheduleSelectRideScreenState extends State<ScheduleSelectRideScreen> {
   }
 
   void _startRideRequest() {
-    rideStatusController.searchForDriver();
-    Get.toNamed(AppRoutes.awaitDriver, arguments: _selectedRide);
+    Get.toNamed(AppRoutes.scheduleTrip, arguments: _selectedRide);
   }
 
   @override
