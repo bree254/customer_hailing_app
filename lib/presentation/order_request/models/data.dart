@@ -41,7 +41,20 @@ class MyData {
         imageUrl: 'assets/images/economy.png',
         discountedPrice: 660,
         originalprice: 720),
+    RideRequest(
+        ridetype: 'Taxi Female',
+        timeEstimate: '5 min away',
+        imageUrl: 'assets/images/economy.png',
+        discountedPrice: 720,
+        originalprice: 760),
+    RideRequest(
+        ridetype: 'Taxi XL',
+        timeEstimate: '5 min away',
+        imageUrl: 'assets/images/economy.png',
+        discountedPrice: 720,
+        originalprice: 1020),
   ];
+
   static List<ShareProfiles> profiles =[
     ShareProfiles(imageUrl: 'assets/images/alejandro.png', name: 'Alejandro'),
     ShareProfiles(imageUrl: 'assets/images/ela.png', name: 'Ela'),

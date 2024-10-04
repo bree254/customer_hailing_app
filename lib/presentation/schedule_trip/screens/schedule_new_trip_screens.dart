@@ -91,7 +91,7 @@ class _ScheduleNewTripScreenState extends State<ScheduleNewTripScreen> {
             Spacer(),
             CustomElevatedButton(
               onPressed: (){
-                Get.toNamed(AppRoutes.search);
+                Get.toNamed(AppRoutes.enterScheduleTripDetails);
               },
               text: 'Next',
               buttonStyle: ElevatedButton.styleFrom(
@@ -107,7 +107,7 @@ class _ScheduleNewTripScreenState extends State<ScheduleNewTripScreen> {
             SizedBox(height: 20.v,),
             CustomElevatedButton(
               onPressed: (){
-                Get.toNamed(AppRoutes.search);
+                Get.back();
               },
               text: 'Cancel',
               buttonStyle: ElevatedButton.styleFrom(

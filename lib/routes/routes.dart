@@ -22,6 +22,8 @@ import 'package:customer_hailing/presentation/schedule_trip/screens/scheduled_tr
 import 'package:customer_hailing/presentation/splash/splash_screen.dart';
 
 import '../presentation/auth/phone_number/login_or_signup_screen.dart';
+import '../presentation/schedule_trip/screens/enter_schedule_trip_details.dart';
+import '../presentation/schedule_trip/screens/schedule_select_ride_screen.dart';
 
 class AppRoutes {
   static const String splash = '/';
@@ -45,6 +47,8 @@ class AppRoutes {
   static const String nameLocation ="/name_location";
   static const String scheduleTrip = "/schedule_trip";
   static const String scheduleNewTrip ="/schedule_new_trip";
+  static const String enterScheduleTripDetails ="/enter_schedule_trip_details";
+  static const String scheduleSelectRide ="/schedule_rides";
 
   static List<GetPage> pages = [
     GetPage(
@@ -131,6 +135,14 @@ class AppRoutes {
     GetPage(
       name: scheduleNewTrip,
       page: () =>  const ScheduleNewTripScreen(),
+    ),
+    GetPage(
+      name: enterScheduleTripDetails,
+      page: () =>  const EnterScheduleTripDetailsScreen(),
+    ),
+    GetPage(
+      name: scheduleSelectRide,
+      page: () =>  ScheduleSelectRideScreen(),
     ),
   ];
 }
