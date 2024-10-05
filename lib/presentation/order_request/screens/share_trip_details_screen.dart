@@ -159,6 +159,10 @@ class _ShareTripDetailsScreenState extends State<ShareTripDetailsScreen> {
                     )),
                   ),
                   ListTile(
+                    onTap:(){
+                      Get.toNamed(AppRoutes.emergency);
+
+                    },
                     leading: Image.asset(
                         height: 24, width: 24, 'assets/images/bell.png'),
                     title: const Column(

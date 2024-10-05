@@ -67,7 +67,7 @@ class _ChatScreenState extends State<ChatScreen> {
                  Expanded(
                   child: Text(
                     _profiles!,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Color(0xFF1D1B20),
                       fontSize: 24,
                       fontWeight: FontWeight.w400,

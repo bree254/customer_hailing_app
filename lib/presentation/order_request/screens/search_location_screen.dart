@@ -4,7 +4,6 @@ import 'package:customer_hailing/core/utils/colors.dart';
 import 'package:customer_hailing/routes/routes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:http/http.dart' as http;
 import '../models/predictions.dart';
 
@@ -94,7 +93,7 @@ class _SearchLocationScreenState extends State<SearchLocationScreen> {
         ),
       ),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
         child: Column(
           children: [
             TextField(
@@ -137,9 +136,9 @@ class _SearchLocationScreenState extends State<SearchLocationScreen> {
                   return Container(
                     width: 328,
                     padding: const EdgeInsets.symmetric(vertical: 4),
-                    margin: EdgeInsets.symmetric(horizontal: 0,vertical: 5),
+                    margin: const EdgeInsets.symmetric(horizontal: 0,vertical: 5),
                     decoration: ShapeDecoration(
-                      color: Color(0x7FFAFAFA),
+                      color: const Color(0x7FFAFAFA),
                       shape: RoundedRectangleBorder(
                         side: BorderSide(
                           width: 1,
@@ -157,7 +156,7 @@ class _SearchLocationScreenState extends State<SearchLocationScreen> {
                       ),
                       title: Text(
                         prediction.description,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Color(0xFF767676),
                           fontSize: 12,
                           fontWeight: FontWeight.w400,

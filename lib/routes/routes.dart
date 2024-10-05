@@ -6,6 +6,7 @@ import 'package:customer_hailing/presentation/auth/verification.dart';
 import 'package:customer_hailing/presentation/order_request/screens/await_driver_screen.dart';
 import 'package:customer_hailing/presentation/order_request/binding/home_binding.dart';
 import 'package:customer_hailing/presentation/order_request/screens/chat_screen.dart';
+import 'package:customer_hailing/presentation/order_request/screens/emergency_services_screen.dart';
 import 'package:customer_hailing/presentation/order_request/screens/home_screen.dart';
 import 'package:customer_hailing/presentation/order_request/screens/name_location_screen.dart';
 import 'package:customer_hailing/presentation/order_request/screens/profile_screen.dart';
@@ -41,6 +42,7 @@ class AppRoutes {
   static const String savedLocation="/saved_location";
   static const String searchLocation="/search_location";
   static const String nameLocation ="/name_location";
+  static const String emergency = "/emergency";
 
   static List<GetPage> pages = [
     GetPage(
@@ -78,7 +80,7 @@ class AppRoutes {
     ),
     GetPage(
         name: selectRide,
-        page: () =>  SelectRideScreen(),
+        page: () =>  const SelectRideScreen(),
     ),
     GetPage(
         name: awaitDriver,
@@ -119,6 +121,10 @@ class AppRoutes {
     GetPage(
       name: nameLocation,
       page: () =>  const NameLocationScreen(),
+    ),
+    GetPage(
+      name: emergency,
+      page: () =>  const EmergencyServicesScreen(),
     ),
   ];
 }

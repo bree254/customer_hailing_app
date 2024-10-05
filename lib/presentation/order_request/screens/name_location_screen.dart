@@ -3,7 +3,6 @@ import 'package:customer_hailing/core/utils/colors.dart';
 import 'package:customer_hailing/routes/routes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class NameLocationScreen extends StatefulWidget {
   const NameLocationScreen({super.key});
@@ -48,7 +47,7 @@ class _NameLocationScreenState extends State<NameLocationScreen> {
           onPressed: () {
             Get.back();
           },
-          icon: Icon(
+          icon: const Icon(
             CupertinoIcons.multiply,
             size: 17,
             color: blackTextColor,

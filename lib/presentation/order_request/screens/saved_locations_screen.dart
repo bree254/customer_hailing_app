@@ -13,7 +13,7 @@ class SavedLocationsScreen extends StatefulWidget {
 }
 
 class _SavedLocationsScreenState extends State<SavedLocationsScreen> {
-  List<Map<String, String>> _locations = [
+  final List<Map<String, String>> _locations = [
     {'name': 'Enter Home Location', 'address': ''},
     {'name': 'Enter Work Location', 'address': ''},
   ]; // Predefined locations
@@ -70,7 +70,7 @@ class _SavedLocationsScreenState extends State<SavedLocationsScreen> {
                       padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
                       margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 0),
                       decoration: ShapeDecoration(
-                        color: Color(0x7FFAFAFA),
+                        color: const Color(0x7FFAFAFA),
                         shape: RoundedRectangleBorder(
                           side: BorderSide(
                             width: 1,
