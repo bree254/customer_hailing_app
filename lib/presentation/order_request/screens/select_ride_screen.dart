@@ -11,6 +11,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 
 class SelectRideScreen extends StatefulWidget {
+  const SelectRideScreen({super.key});
+
   @override
   _SelectRideScreenState createState() => _SelectRideScreenState();
 }
@@ -24,7 +26,7 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
   String? _destination;
   String? _prediction;
 
-  Set<Polyline> _polylines = {};
+  final Set<Polyline> _polylines = {};
 
   final RideStatusController rideStatusController = Get.put(RideStatusController());
 
@@ -32,14 +34,12 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
   void initState() {
     super.initState();
     Map<String, dynamic> args = Get.arguments;
-    if (args != null) {
-      if (args['type'] == 'destination') {
-        _destination = args['value'];
-      } else if (args['type'] == 'prediction') {
-        _prediction = args['value'];
-      }
+    if (args['type'] == 'destination') {
+      _destination = args['value'];
+    } else if (args['type'] == 'prediction') {
+      _prediction = args['value'];
     }
-    _getUserLocation();
+      _getUserLocation();
   }
 
   void _onMapCreated(GoogleMapController controller) {
@@ -93,7 +93,7 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
       if (destinationCoords != null) {
         setState(() {
           _polylines.add(Polyline(
-            polylineId: PolylineId('route'),
+            polylineId: const PolylineId('route'),
             visible: true,
             color: primaryColor,
             width: 5,
@@ -162,7 +162,7 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                 decoration: InputDecoration(
                     contentPadding: const EdgeInsets.symmetric(
                         horizontal: 16, vertical: 20),
-                    hintText: _destination != null ? _destination : _prediction != null ? _prediction : 'Enter location',
+                    hintText: _destination ?? (_prediction ?? 'Enter location'),
                     hintStyle: const TextStyle(
                         fontWeight: FontWeight.w400,
                         fontSize: 14,
@@ -307,7 +307,7 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                                   width: 72,
                                   height: 28,
                                   padding: const EdgeInsets.only(top: 4, left: 8, right: 0, bottom: 4),
-                                  margin:EdgeInsets.symmetric(horizontal:10),
+                                  margin:const EdgeInsets.symmetric(horizontal:10),
                                   decoration: BoxDecoration(
                                     color: _selectedPaymentMode == 'Cash'
                                         ? selectRideColor

@@ -44,15 +44,15 @@ class _ScheduledTripsScreenState extends State<ScheduledTripsScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
+            const Text(
               'You have not scheduled any trips',
               style: TextStyle(
                 fontWeight: FontWeight.w500,
                 fontSize: 16,
               ),
             ),
-            SizedBox(height: 20.0),
-            Text(
+            const SizedBox(height: 20.0),
+            const Text(
               'Tap on, “Schedule New Trip,” below to schedule your trip for a later time.',
               style: TextStyle(
                 fontWeight: FontWeight.w500,
@@ -60,7 +60,7 @@ class _ScheduledTripsScreenState extends State<ScheduledTripsScreen> {
                 color: formTextLabelColor,
               ),
             ),
-            SizedBox(height: 40.0),
+            const SizedBox(height: 40.0),
             CustomElevatedButton(
               onPressed: () {
                 Get.toNamed(AppRoutes.scheduleNewTrip);
@@ -68,7 +68,7 @@ class _ScheduledTripsScreenState extends State<ScheduledTripsScreen> {
               text: 'Schedule New Trip',
               buttonStyle: ElevatedButton.styleFrom(
                 backgroundColor: whiteTextColor,
-                side: BorderSide(color: primaryColor),
+                side: const BorderSide(color: primaryColor),
                 elevation: 0,
               ),
               buttonTextStyle: const TextStyle(
@@ -96,7 +96,7 @@ class _ScheduledTripsScreenState extends State<ScheduledTripsScreen> {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 border: Border.all(
-                  color: Color(0xFFD1D5DB),
+                  color: const Color(0xFFD1D5DB),
                 ),
               ),
               child: const Center(
@@ -109,7 +109,7 @@ class _ScheduledTripsScreenState extends State<ScheduledTripsScreen> {
             ),
             title: Text(
               trip['dateTime'] ?? '',
-              style: TextStyle(
+              style: const TextStyle(
                 color: Color(0xFF555555),
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
@@ -120,7 +120,7 @@ class _ScheduledTripsScreenState extends State<ScheduledTripsScreen> {
               children: [
                 Text(
                   'From: ${trip['from'] ?? ''}',
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Color(0xFF9CA3AF),
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
@@ -128,7 +128,7 @@ class _ScheduledTripsScreenState extends State<ScheduledTripsScreen> {
                 ),
                 Text(
                   'To: ${trip['to'] ?? ''}',
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Color(0xFF9CA3AF),
                     fontSize: 12,
                     fontWeight: FontWeight.w400,

@@ -1,6 +1,5 @@
 import 'package:customer_hailing/widgets/custom_text_form_field.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 import '../../../core/app_export.dart';
 import '../../../routes/routes.dart';
@@ -31,11 +30,11 @@ class _ScheduleNewTripScreenState extends State<ScheduleNewTripScreen> {
         automaticallyImplyLeading: false,
       ),
       body: Padding(
-          padding: EdgeInsets.symmetric(vertical: 24,horizontal: 24),
+          padding: const EdgeInsets.symmetric(vertical: 24,horizontal: 24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               'Select date of trip',
               style: TextStyle(
                 fontWeight: FontWeight.w400,
@@ -47,7 +46,7 @@ class _ScheduleNewTripScreenState extends State<ScheduleNewTripScreen> {
               controller: dateController,
               filled: true,
               fillColor: countryTextFieldColor,
-              prefix: Icon(Icons.calendar_month_outlined),
+              prefix: const Icon(Icons.calendar_month_outlined),
               hintText: "name@email.com",
               hintStyle: const TextStyle(
                 color: blackTextColor,
@@ -62,7 +61,7 @@ class _ScheduleNewTripScreenState extends State<ScheduleNewTripScreen> {
                 borderSide: const BorderSide(color: Colors.transparent, width: 0),
               ),
             ),
-            Text(
+            const Text(
               'Select request time',
               style: TextStyle(
                 fontWeight: FontWeight.w400,
@@ -74,7 +73,7 @@ class _ScheduleNewTripScreenState extends State<ScheduleNewTripScreen> {
               controller: dateController,
               filled: true,
               fillColor: countryTextFieldColor,
-              prefix: Icon(Icons.access_time),
+              prefix: const Icon(Icons.access_time),
               hintStyle: const TextStyle(
                 color: blackTextColor,
                 fontWeight: FontWeight.w400,
@@ -88,7 +87,7 @@ class _ScheduleNewTripScreenState extends State<ScheduleNewTripScreen> {
                 borderSide: const BorderSide(color: Colors.transparent, width: 0),
               ),
             ),
-            Spacer(),
+            const Spacer(),
             CustomElevatedButton(
               onPressed: (){
                 Get.toNamed(AppRoutes.enterScheduleTripDetails);
@@ -112,7 +111,7 @@ class _ScheduleNewTripScreenState extends State<ScheduleNewTripScreen> {
               text: 'Cancel',
               buttonStyle: ElevatedButton.styleFrom(
                 backgroundColor: whiteTextColor,
-                side: BorderSide(color: primaryColor),
+                side: const BorderSide(color: primaryColor),
                 elevation: 0,
               ),
               buttonTextStyle: const TextStyle(

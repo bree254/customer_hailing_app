@@ -1,6 +1,5 @@
 import 'package:customer_hailing/core/app_export.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 import '../../../widgets/custom_stepper_widget.dart';
 class TripDetailsScreen extends StatefulWidget {
@@ -38,7 +37,7 @@ class _TripDetailsScreenState extends State<TripDetailsScreen> {
         ),
       ),
       body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16,vertical: 24),
+          padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 24),
         child: Column(
           children: [
             Container(
@@ -59,7 +58,7 @@ class _TripDetailsScreenState extends State<TripDetailsScreen> {
                   ),
                   SizedBox(
                     width: 280.h,
-                    child: Text(
+                    child: const Text(
                       'Changing of trip details will lead to cost recalculation',
                       style: TextStyle(
                         color: Color(0xFF7145D6),
@@ -73,7 +72,7 @@ class _TripDetailsScreenState extends State<TripDetailsScreen> {
                 ],
               ),
             ),
-            SizedBox(height: 32,),
+            const SizedBox(height: 32,),
             CustomStepper(
               steps: [
                 CustomStep(
@@ -98,7 +97,7 @@ class _TripDetailsScreenState extends State<TripDetailsScreen> {
               color: Colors.grey[300],
               thickness: 1,
             ),
-            ListTile(
+            const ListTile(
               title: Text(
                 'Date of trip',
                 style: TextStyle(
@@ -125,9 +124,9 @@ class _TripDetailsScreenState extends State<TripDetailsScreen> {
                 ),
               )
             ),
-            SizedBox(height: 32,),
+            const SizedBox(height: 32,),
 
-            ListTile(
+            const ListTile(
                 title: Text(
                   'Request time',
                   style: TextStyle(
@@ -154,9 +153,9 @@ class _TripDetailsScreenState extends State<TripDetailsScreen> {
                   ),
                 )
             ),
-            SizedBox(height: 32,),
+            const SizedBox(height: 32,),
 
-            ListTile(
+            const ListTile(
                 title: Text(
                   'Vehicle type',
                   style: TextStyle(
@@ -183,12 +182,12 @@ class _TripDetailsScreenState extends State<TripDetailsScreen> {
                   ),
                 )
             ),
-            SizedBox(height: 32,),
+            const SizedBox(height: 32,),
             Divider(
               color: Colors.grey[300],
               thickness: 1,
             ),
-            ListTile(
+            const ListTile(
                 title: Text(
                   'Estimated cost',
                   style: TextStyle(
@@ -208,7 +207,7 @@ class _TripDetailsScreenState extends State<TripDetailsScreen> {
                 )
             ),
 
-           Spacer(),
+           const Spacer(),
 
             Padding(
               padding: const EdgeInsets.only(bottom: 10.0),
@@ -219,7 +218,7 @@ class _TripDetailsScreenState extends State<TripDetailsScreen> {
                 text: 'Cancel Trip',
                 buttonStyle: ElevatedButton.styleFrom(
                   backgroundColor: Colors.transparent,
-                  side: BorderSide(color: primaryColor),
+                  side: const BorderSide(color: primaryColor),
                   elevation: 0,
                 ),
                 buttonTextStyle: const TextStyle(

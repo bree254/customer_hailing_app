@@ -1,6 +1,5 @@
 import 'package:customer_hailing/components/phone_field/custom_phone_input.dart';
 import 'package:customer_hailing/core/app_export.dart';
-import 'package:customer_hailing/core/utils/colors.dart';
 import 'package:customer_hailing/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';

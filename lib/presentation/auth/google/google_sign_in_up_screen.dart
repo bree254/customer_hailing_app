@@ -1,5 +1,4 @@
 import 'package:customer_hailing/components/phone_field/custom_phone_input.dart';
-import 'package:customer_hailing/core/utils/colors.dart';
 import 'package:customer_hailing/routes/routes.dart';
 import 'package:customer_hailing/widgets/custom_text_form_field.dart';
 import 'package:flutter/material.dart';

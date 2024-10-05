@@ -1,13 +1,9 @@
 import 'dart:convert';
 import 'package:customer_hailing/core/app_export.dart';
-import 'package:customer_hailing/core/utils/colors.dart';
-import 'package:customer_hailing/presentation/order_request/screens/select_ride_screen.dart';
 import 'package:customer_hailing/routes/routes.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import '../../order_request/models/data.dart';
 import '../../order_request/models/predictions.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:http/http.dart' as http;
 
 class EnterScheduleTripDetailsScreen extends StatefulWidget {
@@ -366,7 +362,7 @@ class _EnterScheduleTripDetailsScreenState extends State<EnterScheduleTripDetail
                         onTap: _addStopover,
                         child: Container(
                           color: Colors.transparent,
-                          margin: EdgeInsets.symmetric(vertical: 10),
+                          margin: const EdgeInsets.symmetric(vertical: 10),
                           child: const Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -475,9 +471,9 @@ class _EnterScheduleTripDetailsScreenState extends State<EnterScheduleTripDetail
                 return Container(
                   width: 328,
                   padding: const EdgeInsets.symmetric(vertical: 4),
-                  margin: EdgeInsets.symmetric(horizontal: 0, vertical: 5),
+                  margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
                   decoration: ShapeDecoration(
-                    color: Color(0x7FFAFAFA),
+                    color: const Color(0x7FFAFAFA),
                     shape: RoundedRectangleBorder(
                       side: BorderSide(
                         width: 1,
@@ -495,7 +491,7 @@ class _EnterScheduleTripDetailsScreenState extends State<EnterScheduleTripDetail
                     ),
                     title: Text(
                       prediction.description,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Color(0xFF767676),
                         fontSize: 12,
                         fontWeight: FontWeight.w400,

@@ -40,7 +40,7 @@ class CustomStepper extends StatelessWidget {
                     children: [
                       Text(
                         step.title,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.black,
                           fontSize: 16.0,
                           fontWeight: FontWeight.w500,
@@ -48,7 +48,7 @@ class CustomStepper extends StatelessWidget {
                       ),
                       Text(
                         step.subtitle,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.grey,
                           fontSize: 14.0,
                         ),
@@ -60,7 +60,7 @@ class CustomStepper extends StatelessWidget {
                 // Edit button
                 GestureDetector(
                   onTap: step.onEdit, // A function to handle editing
-                  child: Text(
+                  child: const Text(
                     'Edit',
                     style: TextStyle(
                       color: primaryColor,
@@ -77,7 +77,7 @@ class CustomStepper extends StatelessWidget {
               margin: EdgeInsets.symmetric(horizontal: 20.h),
               height: 30.0,
               width: 2.0,
-              color: Color(0xFFD9D9D9),
+              color: const Color(0xFFD9D9D9),
             ),
         ];
       }).toList(),

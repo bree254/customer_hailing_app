@@ -1,5 +1,4 @@
 import 'package:customer_hailing/core/utils/colors.dart';
-import 'package:customer_hailing/presentation/order_request/controller/ride_status_controller.dart';
 import 'package:customer_hailing/presentation/order_request/models/data.dart';
 import 'package:customer_hailing/routes/routes.dart';
 import 'package:customer_hailing/widgets/custom_elevated_button.dart';
@@ -11,6 +10,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 
 class ScheduleSelectRideScreen extends StatefulWidget {
+  const ScheduleSelectRideScreen({super.key});
+
   @override
   _ScheduleSelectRideScreenState createState() => _ScheduleSelectRideScreenState();
 }
@@ -24,7 +25,7 @@ class _ScheduleSelectRideScreenState extends State<ScheduleSelectRideScreen> {
   String? _destination;
   String? _prediction;
 
-  Set<Polyline> _polylines = {};
+  final Set<Polyline> _polylines = {};
 
   //final RideStatusController rideStatusController = Get.put(RideStatusController());
 
@@ -32,14 +33,12 @@ class _ScheduleSelectRideScreenState extends State<ScheduleSelectRideScreen> {
   void initState() {
     super.initState();
     Map<String, dynamic> args = Get.arguments;
-    if (args != null) {
-      if (args['type'] == 'destination') {
-        _destination = args['value'];
-      } else if (args['type'] == 'prediction') {
-        _prediction = args['value'];
-      }
+    if (args['type'] == 'destination') {
+      _destination = args['value'];
+    } else if (args['type'] == 'prediction') {
+      _prediction = args['value'];
     }
-    _getUserLocation();
+      _getUserLocation();
   }
 
   void _onMapCreated(GoogleMapController controller) {
@@ -93,7 +92,7 @@ class _ScheduleSelectRideScreenState extends State<ScheduleSelectRideScreen> {
       if (destinationCoords != null) {
         setState(() {
           _polylines.add(Polyline(
-            polylineId: PolylineId('route'),
+            polylineId: const PolylineId('route'),
             visible: true,
             color: primaryColor,
             width: 5,
@@ -161,7 +160,7 @@ class _ScheduleSelectRideScreenState extends State<ScheduleSelectRideScreen> {
                 decoration: InputDecoration(
                     contentPadding: const EdgeInsets.symmetric(
                         horizontal: 16, vertical: 20),
-                    hintText: _destination != null ? _destination : _prediction != null ? _prediction : 'Enter location',
+                    hintText: _destination ?? (_prediction ?? 'Enter location'),
                     hintStyle: const TextStyle(
                         fontWeight: FontWeight.w400,
                         fontSize: 14,
@@ -305,7 +304,7 @@ class _ScheduleSelectRideScreenState extends State<ScheduleSelectRideScreen> {
                                   width: 72,
                                   height: 28,
                                   padding: const EdgeInsets.only(top: 4, left: 8, right: 0, bottom: 4),
-                                  margin:EdgeInsets.symmetric(horizontal:10),
+                                  margin:const EdgeInsets.symmetric(horizontal:10),
                                   decoration: BoxDecoration(
                                     color: _selectedPaymentMode == 'Cash'
                                         ? selectRideColor
