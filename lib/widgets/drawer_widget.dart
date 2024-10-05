@@ -1,5 +1,4 @@
 import 'package:customer_hailing/core/app_export.dart';
-import 'package:customer_hailing/core/utils/colors.dart';
 import 'package:customer_hailing/routes/routes.dart';
 import 'package:flutter/material.dart';
 class DrawerWidget extends StatelessWidget {
@@ -111,7 +110,7 @@ class DrawerWidget extends StatelessWidget {
                 ),
               ),
               onTap: () {
-                // Handle payment tap
+                Get.toNamed(AppRoutes.paymentMethods);
               },
             ),
             const Spacer(),

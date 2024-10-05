@@ -17,6 +17,9 @@ import 'package:customer_hailing/presentation/order_request/screens/select_ride_
 import 'package:customer_hailing/presentation/order_request/screens/share_trip_details_screen.dart';
 import 'package:customer_hailing/presentation/order_request/screens/share_with_screen.dart';
 import 'package:customer_hailing/presentation/order_request/screens/trip_status_screen.dart';
+import 'package:customer_hailing/presentation/payments/screens/add_card_screen.dart';
+import 'package:customer_hailing/presentation/payments/screens/add_new_payment_screen.dart';
+import 'package:customer_hailing/presentation/payments/screens/payment_methods_screen.dart';
 import 'package:customer_hailing/presentation/splash/splash_screen.dart';
 
 import '../presentation/auth/phone_number/login_or_signup_screen.dart';
@@ -41,6 +44,9 @@ class AppRoutes {
   static const String savedLocation="/saved_location";
   static const String searchLocation="/search_location";
   static const String nameLocation ="/name_location";
+  static const String paymentMethods ="/payments_methods";
+  static const String addPaymentMethods ="/add_payments_methods";
+  static const String addCard ="/add_card";
 
   static List<GetPage> pages = [
     GetPage(
@@ -78,7 +84,7 @@ class AppRoutes {
     ),
     GetPage(
         name: selectRide,
-        page: () =>  SelectRideScreen(),
+        page: () =>  const SelectRideScreen(),
     ),
     GetPage(
         name: awaitDriver,
@@ -119,6 +125,18 @@ class AppRoutes {
     GetPage(
       name: nameLocation,
       page: () =>  const NameLocationScreen(),
+    ),
+    GetPage(
+      name: paymentMethods,
+      page: () =>  const PaymentMethodsScreen(),
+    ),
+    GetPage(
+      name: addPaymentMethods,
+      page: () =>  const AddNewPaymentScreen(),
+    ),
+    GetPage(
+      name: addCard,
+      page: () =>  const AddCardScreen(),
     ),
   ];
 }

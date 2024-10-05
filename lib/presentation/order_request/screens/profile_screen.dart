@@ -1,9 +1,7 @@
 import 'package:customer_hailing/core/app_export.dart';
-import 'package:customer_hailing/core/utils/colors.dart';
 import 'package:customer_hailing/routes/routes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -44,7 +42,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         child: Column(
           children: [
             Padding(
-              padding: EdgeInsets.all(16),
+              padding: const EdgeInsets.all(16),
               child: Column(
                 children: [
                   Center(
@@ -71,8 +69,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ],
                     ),
                   ),
-                  SizedBox(height: 13,),
-                  Text(
+                  const SizedBox(height: 13,),
+                  const Text(
                     'John Doe',
                     textAlign: TextAlign.center,
                     style: TextStyle(
@@ -81,8 +79,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  SizedBox(height: 8,),
-                  Row(
+                  const SizedBox(height: 8,),
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(Icons.star,color: primaryColor,size: 10,),
@@ -100,7 +98,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ],
               ),
             ),
-            SizedBox(height: 32,),
+            const SizedBox(height: 32,),
             ListTile(
               leading:  Image.asset(
                 width: 24,
@@ -158,7 +156,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Get.toNamed(AppRoutes.savedLocation);
               },
             ),
-            Spacer(),
+            const Spacer(),
             CustomElevatedButton(
               onPressed: () {
                 Get.back();
@@ -173,7 +171,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 fontWeight: FontWeight.w400,
               ),
               text: 'Delete Account',
-              leftIcon: Icon(CupertinoIcons.trash,color: deleteIcon,size: 12,),
+              leftIcon: const Icon(CupertinoIcons.trash,color: deleteIcon,size: 12,),
             ),
           ],
         ),
