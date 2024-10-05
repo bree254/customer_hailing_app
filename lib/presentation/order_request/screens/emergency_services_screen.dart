@@ -43,7 +43,10 @@ class EmergencyServicesScreen extends StatelessWidget {
               child: Row(
                 children: [
                   Image.asset(
-                      height: 24, width: 24, 'assets/images/bell.png'),
+                      height: 24,
+                      width: 24,
+                      'assets/images/headphones.png'
+                  ),
                 const SizedBox(width: 20,),
                 const Text(
                       'Taxi hotline',
@@ -78,7 +81,10 @@ class EmergencyServicesScreen extends StatelessWidget {
                 child: Row(
                   children: [
                     Image.asset(
-                        height: 24, width: 24, 'assets/images/headphones.png'),
+                        height: 24,
+                        width: 24,
+                        'assets/images/bell.png'
+                    ),
                     const SizedBox(width: 20,),
                     const Text(
                       'Local Authorities',
