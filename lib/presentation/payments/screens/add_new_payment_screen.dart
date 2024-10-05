@@ -57,7 +57,7 @@ class _AddNewPaymentScreenState extends State<AddNewPaymentScreen> {
                 ),
                 child: Row(
                   children: [
-                    Image.asset( height: 24, width: 24,'assets/images/card.png'),
+                    Image.asset( height: 24, width: 24,'assets/images/credit_card.png'),
                     const SizedBox(width: 16,),
                     const Text(
                       'Credit or Debit Card',
