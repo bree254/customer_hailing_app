@@ -28,7 +28,6 @@ import 'package:customer_hailing/presentation/splash/splash_screen.dart';
 import 'package:customer_hailing/presentation/trip_history/trip_history_screen.dart';
 import '../presentation/auth/phone_number/login_or_signup_screen.dart';
 import '../presentation/trip_history/history_details_screen.dart';
-import '../presentation/auth/phone_number/login_or_signup_screen.dart';
 import '../presentation/schedule_trip/screens/enter_schedule_trip_details.dart';
 import '../presentation/schedule_trip/screens/schedule_select_ride_screen.dart';
 
@@ -150,6 +149,7 @@ class AppRoutes {
     GetPage(
       name: historyDetails,
       page: () =>  const HistoryDetailsScreen(),
+  ),
     GetPage(
       name: paymentMethods,
       page: () =>  const PaymentMethodsScreen(),
@@ -161,9 +161,11 @@ class AppRoutes {
     GetPage(
       name: addCard,
       page: () =>  const AddCardScreen(),
+  ),
     GetPage(
       name: emergency,
       page: () =>  const EmergencyServicesScreen(),
+    ),
     GetPage(
       name: scheduleTrip,
       page: () =>  const ScheduledTripsScreen(),

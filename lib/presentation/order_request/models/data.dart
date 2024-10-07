@@ -6,17 +6,20 @@ import 'destination.dart';
 class MyData {
   static List<Destination> destinations = [
     Destination(address: 'The Hub Karen', location: 'Nairobi,kenya'),
-    Destination(address: 'GPO Stage Kenyatta Avenue', location: 'Nairobi,kenya'),
+    Destination(
+        address: 'GPO Stage Kenyatta Avenue', location: 'Nairobi,kenya'),
     Destination(address: 'Sarit Center', location: 'Nairobi,kenya'),
     Destination(address: 'Jamhuri Shopping center', location: 'Nairobi,kenya'),
     Destination(address: 'Blue Hills Academy', location: 'Nairobi,kenya'),
     Destination(address: 'The Hub Karen', location: 'Nairobi,kenya'),
-    Destination(address: 'GPO Stage Kenyatta Avenue', location: 'Nairobi,kenya'),
+    Destination(
+        address: 'GPO Stage Kenyatta Avenue', location: 'Nairobi,kenya'),
     Destination(address: 'Sarit Center', location: 'Nairobi,kenya'),
     Destination(address: 'Jamhuri Shopping center', location: 'Nairobi,kenya'),
     Destination(address: 'Blue Hills Academy', location: 'Nairobi,kenya'),
     Destination(address: 'The Hub Karen', location: 'Nairobi,kenya'),
-    Destination(address: 'GPO Stage Kenyatta Avenue', location: 'Nairobi,kenya'),
+    Destination(
+        address: 'GPO Stage Kenyatta Avenue', location: 'Nairobi,kenya'),
     Destination(address: 'Sarit Center', location: 'Nairobi,kenya'),
     Destination(address: 'Jamhuri Shopping center', location: 'Nairobi,kenya'),
     Destination(address: 'Blue Hills Academy', location: 'Nairobi,kenya'),
@@ -55,16 +58,15 @@ class MyData {
         originalprice: 1020),
   ];
 
-  static List<ShareProfiles> profiles =[
+  static List<ShareProfiles> profiles = [
     ShareProfiles(imageUrl: 'assets/images/alejandro.png', name: 'Alejandro'),
     ShareProfiles(imageUrl: 'assets/images/ela.png', name: 'Ela'),
     ShareProfiles(imageUrl: 'assets/images/jacinta.png', name: 'Jecinta'),
     ShareProfiles(imageUrl: 'assets/images/steve.png', name: 'Steve'),
   ];
 
-
   // Sample list of scheduled trips
-   static final List<Map<String, String>> history = [
+  static final List<Map<String, String>> history = [
     {
       'destination': 'I&M Bank Building',
       'time': '12th August - 12:05pm ',
@@ -99,6 +101,8 @@ class MyData {
       'destination': 'I&M Bank Building',
       'time': '12th August - 12:05pm ',
       'price': 'Ksh 560',
+    }
+  ];
 
   static final List<Map<String, String>> trips = [
     {
