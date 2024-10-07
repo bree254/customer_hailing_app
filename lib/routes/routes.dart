@@ -25,6 +25,9 @@ import 'package:customer_hailing/presentation/schedule_trip/screens/schedule_new
 import 'package:customer_hailing/presentation/schedule_trip/screens/scheduled_trips_screen.dart';
 import 'package:customer_hailing/presentation/schedule_trip/screens/trip_details.dart';
 import 'package:customer_hailing/presentation/splash/splash_screen.dart';
+import 'package:customer_hailing/presentation/trip_history/trip_history_screen.dart';
+import '../presentation/auth/phone_number/login_or_signup_screen.dart';
+import '../presentation/trip_history/history_details_screen.dart';
 import '../presentation/auth/phone_number/login_or_signup_screen.dart';
 import '../presentation/schedule_trip/screens/enter_schedule_trip_details.dart';
 import '../presentation/schedule_trip/screens/schedule_select_ride_screen.dart';
@@ -49,6 +52,8 @@ class AppRoutes {
   static const String savedLocation="/saved_location";
   static const String searchLocation="/search_location";
   static const String nameLocation ="/name_location";
+  static const String tripHistory ="/trip_history";
+  static const String historyDetails ="/history_details";
   static const String paymentMethods ="/payments_methods";
   static const String addPaymentMethods ="/add_payments_methods";
   static const String addCard ="/add_card";
@@ -139,6 +144,13 @@ class AppRoutes {
       page: () =>  const NameLocationScreen(),
     ),
     GetPage(
+      name: tripHistory,
+      page: () =>  const TripHistoryScreen(),
+    ),
+    GetPage(
+      name: historyDetails,
+      page: () =>  const HistoryDetailsScreen(),
+    GetPage(
       name: paymentMethods,
       page: () =>  const PaymentMethodsScreen(),
     ),
@@ -152,7 +164,7 @@ class AppRoutes {
     GetPage(
       name: emergency,
       page: () =>  const EmergencyServicesScreen(),
- GetPage(
+    GetPage(
       name: scheduleTrip,
       page: () =>  const ScheduledTripsScreen(),
     ),

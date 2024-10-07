@@ -54,7 +54,7 @@ class DrawerWidget extends StatelessWidget {
                 ),
               ),
               onTap: () {
-                // Handle history tap
+                Get.toNamed(AppRoutes.tripHistory);
               },
             ),
             ListTile(
