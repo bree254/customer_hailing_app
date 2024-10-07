@@ -1,5 +1,4 @@
 import 'package:customer_hailing/core/app_export.dart';
-import 'package:customer_hailing/core/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -67,7 +66,7 @@ class _ChatScreenState extends State<ChatScreen> {
                  Expanded(
                   child: Text(
                     _profiles!,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Color(0xFF1D1B20),
                       fontSize: 24,
                       fontWeight: FontWeight.w400,

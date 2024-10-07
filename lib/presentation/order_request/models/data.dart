@@ -48,4 +48,45 @@ class MyData {
     ShareProfiles(imageUrl: 'assets/images/jacinta.png', name: 'Jecinta'),
     ShareProfiles(imageUrl: 'assets/images/steve.png', name: 'Steve'),
   ];
+
+  // Sample list of scheduled trips
+   static final List<Map<String, String>> history = [
+    {
+      'destination': 'I&M Bank Building',
+      'time': '12th August - 12:05pm ',
+      'price': 'Ksh 560',
+    },
+    {
+      'destination': 'I&M Bank Building',
+      'time': '12th August - 12:05pm ',
+      'price': 'Ksh 560',
+    },
+    {
+      'destination': 'I&M Bank Building',
+      'time': '12th August - 12:05pm ',
+      'price': 'Ksh 560',
+    },
+    {
+      'destination': 'I&M Bank Building',
+      'time': '12th August - 12:05pm ',
+      'price': 'Ksh 560',
+    },
+    {
+      'destination': 'I&M Bank Building',
+      'time': '12th August - 12:05pm ',
+      'price': 'Ksh 560',
+    },
+    {
+      'destination': 'I&M Bank Building',
+      'time': '12th August - 12:05pm ',
+      'price': 'Ksh 560',
+    },
+    {
+      'destination': 'I&M Bank Building',
+      'time': '12th August - 12:05pm ',
+      'price': 'Ksh 560',
+    },
+    // Add more trips as needed
+  ];
+
 }
