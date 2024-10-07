@@ -2,18 +2,18 @@ import 'dart:convert';
 import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/routes/routes.dart';
 import 'package:flutter/material.dart';
-import '../models/data.dart';
+import '../../order_request/models/data.dart';
+import '../../order_request/models/predictions.dart';
 import 'package:http/http.dart' as http;
-import '../models/predictions.dart';
 
-class EnterTripDetailsScreen extends StatefulWidget {
-  const EnterTripDetailsScreen({super.key});
+class EnterScheduleTripDetailsScreen extends StatefulWidget {
+  const EnterScheduleTripDetailsScreen({super.key});
 
   @override
-  State<EnterTripDetailsScreen> createState() => _EnterTripDetailsScreenState();
+  State<EnterScheduleTripDetailsScreen> createState() => _EnterScheduleTripDetailsScreenState();
 }
 
-class _EnterTripDetailsScreenState extends State<EnterTripDetailsScreen> {
+class _EnterScheduleTripDetailsScreenState extends State<EnterScheduleTripDetailsScreen> {
   final String googleApiKey ="AIzaSyAFFMad-10qvSw8wZl7KgDp0jVafz4La6E";
   final TextEditingController _locationController = TextEditingController();
   final TextEditingController _destinationController = TextEditingController();
@@ -198,7 +198,7 @@ class _EnterTripDetailsScreenState extends State<EnterTripDetailsScreen> {
   }
 
   void _onPredictionSelected(Prediction prediction) {
-    Get.toNamed(AppRoutes.selectRide, arguments: {'type': 'prediction', 'value': prediction.description});
+    Get.toNamed(AppRoutes.scheduleSelectRide, arguments: {'type': 'prediction', 'value': prediction.description});
 
   }
 

@@ -26,7 +26,7 @@ class _AwaitDriverScreenState extends State<AwaitDriverScreen> {
   @override
   void initState() {
     super.initState();
-    _getUserLocation();
+    //_getUserLocation();
   }
 
   void _onMapCreated(GoogleMapController controller) {

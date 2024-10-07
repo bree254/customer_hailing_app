@@ -1,5 +1,4 @@
 import 'package:customer_hailing/core/utils/colors.dart';
-import 'package:customer_hailing/presentation/order_request/controller/ride_status_controller.dart';
 import 'package:customer_hailing/presentation/order_request/models/data.dart';
 import 'package:customer_hailing/routes/routes.dart';
 import 'package:customer_hailing/widgets/custom_elevated_button.dart';
@@ -10,14 +9,14 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 
-class SelectRideScreen extends StatefulWidget {
-  const SelectRideScreen({super.key});
+class ScheduleSelectRideScreen extends StatefulWidget {
+  const ScheduleSelectRideScreen({super.key});
 
   @override
-  _SelectRideScreenState createState() => _SelectRideScreenState();
+  _ScheduleSelectRideScreenState createState() => _ScheduleSelectRideScreenState();
 }
 
-class _SelectRideScreenState extends State<SelectRideScreen> {
+class _ScheduleSelectRideScreenState extends State<ScheduleSelectRideScreen> {
   GoogleMapController? mapController;
   LatLng? _center;
   Position? _currentPosition;
@@ -28,7 +27,7 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
 
   final Set<Polyline> _polylines = {};
 
-  final RideStatusController rideStatusController = Get.put(RideStatusController());
+  //final RideStatusController rideStatusController = Get.put(RideStatusController());
 
   @override
   void initState() {
@@ -105,8 +104,7 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
   }
 
   void _startRideRequest() {
-    rideStatusController.searchForDriver();
-    Get.toNamed(AppRoutes.awaitDriver, arguments: _selectedRide);
+    Get.toNamed(AppRoutes.scheduleTrip, arguments: _selectedRide);
   }
 
   @override
@@ -177,7 +175,7 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                           size: 17,
                         )),
                     suffixIcon: GestureDetector(
-                      onTap:(){Get.toNamed(AppRoutes.search);} ,
+                      onTap:(){Get.toNamed(AppRoutes.enterScheduleTripDetails);} ,
                       child: const Icon(
                         Icons.add_circle_outlined,
                         color: primaryColor,
@@ -226,8 +224,7 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                                 });
                               },
                               child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 16, vertical: 10),
+                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                                 margin: const EdgeInsets.fromLTRB(16, 0, 16, 8),
                                 decoration: BoxDecoration(
                                   color: isSelected
@@ -291,7 +288,7 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
 
                     // Fixed part of the bottom sheet
                     Container(
-                      padding: const EdgeInsets.all(16),
+                      padding: const EdgeInsets.fromLTRB(16,16,16,24),
                       color: Colors.white,
                       child: Column(
                         children: [
@@ -391,7 +388,7 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                             height: 10,
                           ),
                           CustomElevatedButton(
-                            text: 'Select ${_selectedRide ?? "your ride"}',
+                            text: 'Schedule',
                             onPressed: () {
                               if (_selectedRide != null) {
                                 _startRideRequest(); // Trigger the ride request
