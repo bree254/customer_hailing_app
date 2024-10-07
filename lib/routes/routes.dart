@@ -6,6 +6,7 @@ import 'package:customer_hailing/presentation/auth/verification.dart';
 import 'package:customer_hailing/presentation/order_request/screens/await_driver_screen.dart';
 import 'package:customer_hailing/presentation/order_request/binding/home_binding.dart';
 import 'package:customer_hailing/presentation/order_request/screens/chat_screen.dart';
+import 'package:customer_hailing/presentation/order_request/screens/emergency_services_screen.dart';
 import 'package:customer_hailing/presentation/order_request/screens/home_screen.dart';
 import 'package:customer_hailing/presentation/order_request/screens/name_location_screen.dart';
 import 'package:customer_hailing/presentation/order_request/screens/profile_screen.dart';
@@ -46,11 +47,13 @@ class AppRoutes {
   static const String savedLocation="/saved_location";
   static const String searchLocation="/search_location";
   static const String nameLocation ="/name_location";
+  static const String emergency = "/emergency";
   static const String scheduleTrip = "/schedule_trip";
   static const String scheduleNewTrip ="/schedule_new_trip";
   static const String enterScheduleTripDetails ="/enter_schedule_trip_details";
   static const String scheduleSelectRide ="/schedule_rides";
   static const String tripDetails ="/trip_details";
+
 
   static List<GetPage> pages = [
     GetPage(
@@ -131,6 +134,9 @@ class AppRoutes {
       page: () =>  const NameLocationScreen(),
     ),
     GetPage(
+      name: emergency,
+      page: () =>  const EmergencyServicesScreen(),
+ GetPage(
       name: scheduleTrip,
       page: () =>  const ScheduledTripsScreen(),
     ),
