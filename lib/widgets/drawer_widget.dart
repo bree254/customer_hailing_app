@@ -124,7 +124,7 @@ class DrawerWidget extends StatelessWidget {
                 ),
               ),
               onTap: () {
-                // Handle payment tap
+                Get.toNamed(AppRoutes.paymentMethods);
               },
             ),
             const Spacer(),
