@@ -58,6 +58,20 @@ class DrawerWidget extends StatelessWidget {
               },
             ),
             ListTile(
+              leading: const Icon(Icons.calendar_month_outlined,size: 20,),
+              title: const Text(
+                'Scheduled Trips',
+                style: TextStyle(
+                  color: Color(0xFF555555),
+                  fontSize: 12,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+              onTap: () {
+                Get.toNamed(AppRoutes.scheduleTrip);
+              },
+            ),
+            ListTile(
               leading: const Icon(Icons.settings_outlined,size: 20,),
               title: const Text(
                 'Settings',
@@ -110,7 +124,7 @@ class DrawerWidget extends StatelessWidget {
                 ),
               ),
               onTap: () {
-                // Handle payment tap
+                Get.toNamed(AppRoutes.paymentMethods);
               },
             ),
             const Spacer(),
