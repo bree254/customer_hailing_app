@@ -1,5 +1,4 @@
 import 'package:customer_hailing/core/app_export.dart';
-import 'package:customer_hailing/core/utils/colors.dart';
 import 'package:customer_hailing/routes/routes.dart';
 import 'package:flutter/material.dart';
 class PrivacyPolicyScreen extends StatelessWidget {
@@ -30,6 +29,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 32,),
+
              Align(
               alignment: Alignment.center,
               child: RichText(
@@ -76,6 +76,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
                       ),
                     ),
                   ],
+
                 ),
               ),
             ),
@@ -87,6 +88,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
                 onPressed: (){
                   Get.toNamed(AppRoutes.home);
                 },
+
                 buttonTextStyle: AppTextStyles.titleMedium.copyWith(color: whiteTextColor),
                 buttonStyle: ElevatedButton.styleFrom(
                   backgroundColor: primaryColor,
@@ -103,6 +105,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
               },
               child: const Center(
                 child: Text(
+
                   "Back",
                   style: TextStyle(
                     color: primaryColor,

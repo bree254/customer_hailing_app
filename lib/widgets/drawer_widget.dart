@@ -1,5 +1,4 @@
 import 'package:customer_hailing/core/app_export.dart';
-import 'package:customer_hailing/core/utils/colors.dart';
 import 'package:customer_hailing/routes/routes.dart';
 import 'package:flutter/material.dart';
 class DrawerWidget extends StatelessWidget {
@@ -56,6 +55,20 @@ class DrawerWidget extends StatelessWidget {
               ),
               onTap: () {
                 // Handle history tap
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.calendar_month_outlined,size: 20,),
+              title: const Text(
+                'Scheduled Trips',
+                style: TextStyle(
+                  color: Color(0xFF555555),
+                  fontSize: 12,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+              onTap: () {
+                Get.toNamed(AppRoutes.scheduleTrip);
               },
             ),
             ListTile(

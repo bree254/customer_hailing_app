@@ -1,5 +1,4 @@
 import 'package:customer_hailing/core/app_export.dart';
-import 'package:customer_hailing/core/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 

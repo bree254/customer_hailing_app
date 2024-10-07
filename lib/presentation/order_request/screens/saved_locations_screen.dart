@@ -1,9 +1,7 @@
 import 'package:customer_hailing/core/app_export.dart';
-import 'package:customer_hailing/core/utils/colors.dart';
 import 'package:customer_hailing/routes/routes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class SavedLocationsScreen extends StatefulWidget {
   const SavedLocationsScreen({super.key});
