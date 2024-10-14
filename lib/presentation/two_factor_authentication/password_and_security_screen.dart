@@ -67,7 +67,8 @@ class _PasswordAndSecurityScreenState extends State<PasswordAndSecurityScreen> {
               ),
               trailing: GestureDetector(
                   onTap:(){
-                    Get.toNamed(AppRoutes.twoFA);
+                    // Get.toNamed(AppRoutes.twoFA);
+                    Get.toNamed(AppRoutes.changePassword);
                   },
                   child: const Icon(
                     Icons.arrow_forward_ios_outlined,

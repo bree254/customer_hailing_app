@@ -26,6 +26,7 @@ import 'package:customer_hailing/presentation/schedule_trip/screens/scheduled_tr
 import 'package:customer_hailing/presentation/schedule_trip/screens/trip_details.dart';
 import 'package:customer_hailing/presentation/splash/splash_screen.dart';
 import 'package:customer_hailing/presentation/trip_history/trip_history_screen.dart';
+import 'package:customer_hailing/presentation/two_factor_authentication/change_password_screen.dart';
 import 'package:customer_hailing/presentation/two_factor_authentication/password_and_security_screen.dart';
 import 'package:customer_hailing/presentation/two_factor_authentication/two_factor_authentication_screen.dart';
 import '../presentation/auth/phone_number/login_or_signup_screen.dart';
@@ -66,7 +67,7 @@ class AppRoutes {
   static const String tripDetails ="/trip_details";
   static const String passwordSecurity="/password_security";
   static const String twoFA="/two_factor_authentication";
-
+  static const String changePassword="/change_password";
 
   static List<GetPage> pages = [
     GetPage(
@@ -197,6 +198,10 @@ class AppRoutes {
     GetPage(
       name: twoFA,
       page: () =>  const TwoFactorAuthenticationScreen(),
+    ),
+    GetPage(
+      name: changePassword,
+      page: () =>  const ChangePasswordScreen(),
     ),
   ];
 }
