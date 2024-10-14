@@ -150,6 +150,7 @@ class AppRoutes {
     GetPage(
       name: historyDetails,
       page: () =>  const HistoryDetailsScreen(),
+    ),
     GetPage(
       name: paymentMethods,
       page: () =>  const PaymentMethodsScreen(),
@@ -161,9 +162,11 @@ class AppRoutes {
     GetPage(
       name: addCard,
       page: () =>  const AddCardScreen(),
+  ),
     GetPage(
       name: emergency,
       page: () =>  const EmergencyServicesScreen(),
+    ),
     GetPage(
       name: scheduleTrip,
       page: () =>  const ScheduledTripsScreen(),

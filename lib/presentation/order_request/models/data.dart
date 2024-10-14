@@ -95,10 +95,12 @@ class MyData {
       'time': '12th August - 12:05pm ',
       'price': 'Ksh 560',
     },
-    {
-      'destination': 'I&M Bank Building',
-      'time': '12th August - 12:05pm ',
-      'price': 'Ksh 560',
+{
+'destination': 'I&M Bank Building',
+'time': '12th August - 12:05pm ',
+'price': 'Ksh 560',
+}
+];
 
   static final List<Map<String, String>> trips = [
     {
