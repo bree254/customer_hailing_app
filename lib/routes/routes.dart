@@ -26,6 +26,8 @@ import 'package:customer_hailing/presentation/schedule_trip/screens/scheduled_tr
 import 'package:customer_hailing/presentation/schedule_trip/screens/trip_details.dart';
 import 'package:customer_hailing/presentation/splash/splash_screen.dart';
 import 'package:customer_hailing/presentation/trip_history/trip_history_screen.dart';
+import 'package:customer_hailing/presentation/two_factor_authentication/password_and_security_screen.dart';
+import 'package:customer_hailing/presentation/two_factor_authentication/two_factor_authentication_screen.dart';
 import '../presentation/auth/phone_number/login_or_signup_screen.dart';
 import '../presentation/trip_history/history_details_screen.dart';
 import '../presentation/schedule_trip/screens/enter_schedule_trip_details.dart';
@@ -62,6 +64,8 @@ class AppRoutes {
   static const String enterScheduleTripDetails ="/enter_schedule_trip_details";
   static const String scheduleSelectRide ="/schedule_rides";
   static const String tripDetails ="/trip_details";
+  static const String passwordSecurity="/password_security";
+  static const String twoFA="/two_factor_authentication";
 
 
   static List<GetPage> pages = [
@@ -185,6 +189,14 @@ class AppRoutes {
     GetPage(
       name: tripDetails,
       page: () =>  const TripDetailsScreen(),
+    ),
+    GetPage(
+      name: passwordSecurity,
+      page: () =>  const PasswordAndSecurityScreen(),
+    ),
+    GetPage(
+      name: twoFA,
+      page: () =>  const TwoFactorAuthenticationScreen(),
     ),
   ];
 }

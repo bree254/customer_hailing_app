@@ -125,7 +125,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   'assets/images/shield-outline.png'
               ),
               title: const Text(
-                'Security',
+                'Password & Security',
                 style: TextStyle(
                   color: Color(0xFF555555),
                   fontSize: 12,
@@ -134,7 +134,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               trailing: const Icon(Icons.arrow_forward_ios_outlined,color: searchtextGrey,size: 14,),
               onTap: () {
-                // Handle settings tap
+                Get.toNamed(AppRoutes.passwordSecurity);
               },
             ),
             ListTile(
