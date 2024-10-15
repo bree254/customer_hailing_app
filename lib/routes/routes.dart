@@ -21,6 +21,7 @@ import 'package:customer_hailing/presentation/order_request/screens/trip_status_
 import 'package:customer_hailing/presentation/payments/screens/add_card_screen.dart';
 import 'package:customer_hailing/presentation/payments/screens/add_new_payment_screen.dart';
 import 'package:customer_hailing/presentation/payments/screens/payment_methods_screen.dart';
+import 'package:customer_hailing/presentation/personal_information/edit_profile_screen.dart';
 import 'package:customer_hailing/presentation/schedule_trip/screens/schedule_new_trip_screens.dart';
 import 'package:customer_hailing/presentation/schedule_trip/screens/scheduled_trips_screen.dart';
 import 'package:customer_hailing/presentation/schedule_trip/screens/trip_details.dart';
@@ -74,6 +75,7 @@ class AppRoutes {
   static const String forgotPassword="/forgot_password";
   static const String success="/success";
   static const String resetPassword="/reset_password";
+  static const String editProfile="/edit_profile";
 
   static List<GetPage> pages = [
     GetPage(
@@ -220,6 +222,10 @@ class AppRoutes {
     GetPage(
       name: resetPassword,
       page: () =>  const ResetPasswordScreen(),
+    ),
+    GetPage(
+      name: editProfile,
+      page: () =>  const EditProfileScreen(),
     ),
   ];
 }
