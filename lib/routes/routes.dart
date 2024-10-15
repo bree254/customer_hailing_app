@@ -27,7 +27,10 @@ import 'package:customer_hailing/presentation/schedule_trip/screens/trip_details
 import 'package:customer_hailing/presentation/splash/splash_screen.dart';
 import 'package:customer_hailing/presentation/trip_history/trip_history_screen.dart';
 import 'package:customer_hailing/presentation/two_factor_authentication/change_password_screen.dart';
+import 'package:customer_hailing/presentation/two_factor_authentication/forgot_password_screen.dart';
 import 'package:customer_hailing/presentation/two_factor_authentication/password_and_security_screen.dart';
+import 'package:customer_hailing/presentation/two_factor_authentication/reset_password_screen.dart';
+import 'package:customer_hailing/presentation/two_factor_authentication/success_screen.dart';
 import 'package:customer_hailing/presentation/two_factor_authentication/two_factor_authentication_screen.dart';
 import '../presentation/auth/phone_number/login_or_signup_screen.dart';
 import '../presentation/trip_history/history_details_screen.dart';
@@ -68,6 +71,9 @@ class AppRoutes {
   static const String passwordSecurity="/password_security";
   static const String twoFA="/two_factor_authentication";
   static const String changePassword="/change_password";
+  static const String forgotPassword="/forgot_password";
+  static const String success="/success";
+  static const String resetPassword="/reset_password";
 
   static List<GetPage> pages = [
     GetPage(
@@ -202,6 +208,18 @@ class AppRoutes {
     GetPage(
       name: changePassword,
       page: () =>  const ChangePasswordScreen(),
+    ),
+    GetPage(
+      name: forgotPassword,
+      page: () =>  const ForgotPasswordScreen(),
+    ),
+    GetPage(
+      name: success,
+      page: () =>  const SuccessScreen(),
+    ),
+    GetPage(
+      name: resetPassword,
+      page: () =>  const ResetPasswordScreen(),
     ),
   ];
 }

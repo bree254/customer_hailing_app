@@ -29,8 +29,6 @@ class _TwoFactorAuthenticationScreenState extends State<TwoFactorAuthenticationS
   @override
   void initState() {
     super.initState();
-    // phoneEmail = Get.arguments['phone_email'];
-    // verificationType = Get.arguments['verification_type'];
   }
 
   @override
