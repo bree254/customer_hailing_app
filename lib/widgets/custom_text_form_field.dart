@@ -35,7 +35,7 @@ class CustomTextFormField extends StatefulWidget {
         this.filled = false,
         this.validator,
         this.margin,
-        this.maxLength});
+        this.maxLength, this.onChanged});
 
   final Alignment? alignment;
 
@@ -97,6 +97,9 @@ class CustomTextFormField extends StatefulWidget {
   final BoxDecoration? boxDecoration;
 
   final int? maxLength;
+
+  final ValueChanged<String>? onChanged;
+
 
   @override
   State<CustomTextFormField> createState() => _CustomTextFormFieldState();
