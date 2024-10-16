@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:customer_hailing/core/utils/colors.dart';
 import 'package:customer_hailing/presentation/order_request/controller/trip_status_controller.dart';
 import 'package:customer_hailing/routes/routes.dart';
@@ -11,7 +13,8 @@ class TripStatusBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TripStatusController tripStatusController = Get.find<TripStatusController>();
+    final TripStatusController tripStatusController =
+        Get.find<TripStatusController>();
 
     return DraggableScrollableSheet(
       initialChildSize: 0.4,
@@ -129,12 +132,10 @@ class TripStatusBottomSheet extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 24, vertical: 8),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
                   child: CustomElevatedButton(
-                    onPressed: () {
-
-                    },
+                    onPressed: () {},
                     buttonStyle: ElevatedButton.styleFrom(
                       backgroundColor: cancelButton,
                       elevation: 0,
@@ -180,7 +181,7 @@ class TripStatusBottomSheet extends StatelessWidget {
           child: Text(
             'Your driver has arrived!',
             style: TextStyle(
-              color:primaryColor,
+              color: primaryColor,
               fontSize: 16,
               fontWeight: FontWeight.w600,
             ),
@@ -207,15 +208,14 @@ class TripStatusBottomSheet extends StatelessWidget {
         ),
         const SizedBox(height: 32),
         _buildDriverInfo(),
-
-
       ],
     );
   }
 
   Widget _buildDriverInfo() {
     final bool isHeadingToDestination =
-        Get.find<TripStatusController>().tripStatus.value == TripStatus.headingToDestination;
+        Get.find<TripStatusController>().tripStatus.value ==
+            TripStatus.headingToDestination;
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -313,19 +313,19 @@ class TripStatusBottomSheet extends StatelessWidget {
                   height: 30,
                   image: AssetImage("assets/images/mazda.png")),
               if (isHeadingToDestination)
-                 GestureDetector(
-                   onTap: (){
-                     Get.toNamed(AppRoutes.shareTrip);
-
-                   },
-                   child: const Text(
-                      'Share ride details',
-                      style: TextStyle(
-                        color: Color(0xFF0000F9),
-                        fontSize: 10,
-                        fontWeight: FontWeight.w400,
-                      ),),
-                 ),
+                GestureDetector(
+                  onTap: () {
+                    Get.toNamed(AppRoutes.shareTrip);
+                  },
+                  child: const Text(
+                    'Share ride details',
+                    style: TextStyle(
+                      color: Color(0xFF0000F9),
+                      fontSize: 10,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ),
             ],
           ),
         ),
@@ -336,77 +336,160 @@ class TripStatusBottomSheet extends StatelessWidget {
     );
   }
 
-
   Widget _buildButtons() {
-    return
-      Row(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(
-                backgroundColor: selectRideColor,
-              elevation: 0,
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        ElevatedButton(
+          onPressed: () {},
+          style: ElevatedButton.styleFrom(
+            backgroundColor: selectRideColor,
+            elevation: 0,
+          ),
+          child: const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.message,
+                  size: 16,
+                ),
+                SizedBox(
+                  width: 17,
+                ),
+                Text(
+                  'Message',
+                  style: TextStyle(
+                    color: Color(0xFF7145D6),
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                  ),
+                )
+              ],
             ),
-            child: const Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: 24, vertical: 8),
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.message,
-                    size: 16,
-                  ),
-                  SizedBox(
-                    width: 17,
-                  ),
-                  Text(
-                    'Message',
-                    style: TextStyle(
-                      color: Color(0xFF7145D6),
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
+          ),
+        ),
+        const SizedBox(
+          width: 8,
+        ),
+        ElevatedButton(
+          onPressed: () {
+            showModalBottomSheet(
+                backgroundColor: Colors.white,
+                context: Get.context!,
+                builder: (BuildContext context) {
+                  return Container(
+                    padding: EdgeInsets.symmetric(vertical: 32, horizontal: 32),
+                    width: double.infinity,
+                    height: 280,
+                    clipBehavior: Clip.antiAlias,
+                    decoration: ShapeDecoration(
+                      color: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(15),
+                          topRight: Radius.circular(15),
+                        ),
+                      ),
                     ),
-                  )
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(
-            width: 8,
-          ),
-          ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(
-                backgroundColor: selectRideColor,
-              elevation: 0,
-            ),
-            child: const Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: 24, vertical: 8),
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.phone,
-                    size: 16,
-                  ),
-                  SizedBox(
-                    width: 17,
-                  ),
-                  Text(
-                    'Call driver',
-                    style: TextStyle(
-                      color: Color(0xFF7145D6),
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
+                    child: Column(
+                      children: [
+                        Align(
+                          alignment:Alignment.topRight,
+                          child: GestureDetector(
+                            onTap:(){
+                              Get.back();
+                            },
+                            child: Icon(Icons.close),
+                          ),
+                        ),
+                        Text(
+                          'Contact options',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Color(0xFF7145D6),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        Text(
+                          'Carrier rates may apply',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Color(0xFF9D9D9D),
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 32,
+                        ),
+                        CustomElevatedButton(
+                          onPressed: () {
+                            Get.toNamed(AppRoutes.outgoingCalls);
+                          },
+                          text: 'In-app call',
+                          buttonStyle: ElevatedButton.styleFrom(
+                            backgroundColor: primaryColor,
+                            elevation: 0,
+                          ),
+                          buttonTextStyle: const TextStyle(
+                            color: whiteTextColor,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 16,
+                        ),
+                        CustomElevatedButton(
+                          onPressed: () {},
+                          text: 'Phone call',
+                          buttonStyle: ElevatedButton.styleFrom(
+                            backgroundColor: whiteTextColor,
+                            side: const BorderSide(color: primaryColor),
+                            elevation: 0,
+                          ),
+                          buttonTextStyle: const TextStyle(
+                            color: primaryColor,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
                     ),
-                  )
-                ],
-              ),
+                  );
+                });
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: selectRideColor,
+            elevation: 0,
+          ),
+          child: const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.phone,
+                  size: 16,
+                ),
+                SizedBox(
+                  width: 17,
+                ),
+                Text(
+                  'Call driver',
+                  style: TextStyle(
+                    color: Color(0xFF7145D6),
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                  ),
+                )
+              ],
             ),
           ),
-        ],
-      );
+        ),
+      ],
+    );
   }
 }

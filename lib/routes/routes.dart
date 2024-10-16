@@ -3,6 +3,8 @@ import 'package:customer_hailing/presentation/auth/email/email_sign-in_up_screen
 import 'package:customer_hailing/presentation/auth/email/enter_your_number.dart';
 import 'package:customer_hailing/presentation/auth/google/google_sign_in_up_screen.dart';
 import 'package:customer_hailing/presentation/auth/verification.dart';
+import 'package:customer_hailing/presentation/call-driver/screens/incoming_call_screen.dart';
+import 'package:customer_hailing/presentation/call-driver/screens/ongoing_call_screen.dart';
 import 'package:customer_hailing/presentation/order_request/screens/await_driver_screen.dart';
 import 'package:customer_hailing/presentation/order_request/binding/home_binding.dart';
 import 'package:customer_hailing/presentation/order_request/screens/chat_screen.dart';
@@ -34,6 +36,7 @@ import 'package:customer_hailing/presentation/two_factor_authentication/reset_pa
 import 'package:customer_hailing/presentation/two_factor_authentication/success_screen.dart';
 import 'package:customer_hailing/presentation/two_factor_authentication/two_factor_authentication_screen.dart';
 import '../presentation/auth/phone_number/login_or_signup_screen.dart';
+import '../presentation/call-driver/screens/outgoing_call_screen.dart';
 import '../presentation/trip_history/history_details_screen.dart';
 import '../presentation/schedule_trip/screens/enter_schedule_trip_details.dart';
 import '../presentation/schedule_trip/screens/schedule_select_ride_screen.dart';
@@ -76,7 +79,9 @@ class AppRoutes {
   static const String success="/success";
   static const String resetPassword="/reset_password";
   static const String editProfile="/edit_profile";
-
+  static const String incomingCalls="/incoming_calls";
+  static const String ongoingCalls="/ongoing_calls";
+  static const String outgoingCalls="/outgoing_calls";
   static List<GetPage> pages = [
     GetPage(
       name: splash,
@@ -226,6 +231,18 @@ class AppRoutes {
     GetPage(
       name: editProfile,
       page: () =>  const EditProfileScreen(),
+    ),
+    GetPage(
+      name: incomingCalls,
+      page: () =>   IncomingCallScreen(),
+    ),
+    GetPage(
+      name: ongoingCalls,
+      page: () =>   OngoingCallScreen(),
+    ),
+    GetPage(
+      name: outgoingCalls,
+      page: () =>   OutgoingCallScreen(),
     ),
   ];
 }
