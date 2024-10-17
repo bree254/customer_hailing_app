@@ -96,7 +96,7 @@ class DrawerWidget extends StatelessWidget {
                 ),
               ),
               onTap: () {
-                // Handle promotions tap
+                Get.toNamed(AppRoutes.promotions);
               },
             ),
             ListTile(

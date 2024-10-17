@@ -117,4 +117,9 @@ class MyData {
     },
     // Add more trips as needed
   ];
+
+  static final List<Map<String, String>> promotions = [
+
+    // Add more trips as needed
+  ];
 }

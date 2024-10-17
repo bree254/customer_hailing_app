@@ -25,6 +25,7 @@ import 'package:customer_hailing/presentation/payments/screens/add_card_screen.d
 import 'package:customer_hailing/presentation/payments/screens/add_new_payment_screen.dart';
 import 'package:customer_hailing/presentation/payments/screens/payment_methods_screen.dart';
 import 'package:customer_hailing/presentation/personal_information/edit_profile_screen.dart';
+import 'package:customer_hailing/presentation/promotions/promotions_screen.dart';
 import 'package:customer_hailing/presentation/schedule_trip/screens/schedule_new_trip_screens.dart';
 import 'package:customer_hailing/presentation/schedule_trip/screens/scheduled_trips_screen.dart';
 import 'package:customer_hailing/presentation/schedule_trip/screens/trip_details.dart';
@@ -84,6 +85,7 @@ class AppRoutes {
   static const String ongoingCalls="/ongoing_calls";
   static const String outgoingCalls="/outgoing_calls";
   static const String messageDriver="/message_driver";
+  static const String promotions="/promotions";
   static List<GetPage> pages = [
     GetPage(
       name: splash,
@@ -249,6 +251,10 @@ class AppRoutes {
     GetPage(
       name: messageDriver,
       page: () =>   MessageDriverScreen(),
+    ),
+    GetPage(
+      name: promotions,
+      page: () =>   PromotionsScreen(),
     ),
   ];
 }
