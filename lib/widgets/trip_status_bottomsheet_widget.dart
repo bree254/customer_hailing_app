@@ -342,7 +342,9 @@ class TripStatusBottomSheet extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+            Get.toNamed(AppRoutes.messageDriver);
+          },
           style: ElevatedButton.styleFrom(
             backgroundColor: selectRideColor,
             elevation: 0,

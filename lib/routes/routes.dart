@@ -5,6 +5,7 @@ import 'package:customer_hailing/presentation/auth/google/google_sign_in_up_scre
 import 'package:customer_hailing/presentation/auth/verification.dart';
 import 'package:customer_hailing/presentation/call-driver/screens/incoming_call_screen.dart';
 import 'package:customer_hailing/presentation/call-driver/screens/ongoing_call_screen.dart';
+import 'package:customer_hailing/presentation/message-driver/screens/message_driver_screen.dart';
 import 'package:customer_hailing/presentation/order_request/screens/await_driver_screen.dart';
 import 'package:customer_hailing/presentation/order_request/binding/home_binding.dart';
 import 'package:customer_hailing/presentation/order_request/screens/chat_screen.dart';
@@ -82,6 +83,7 @@ class AppRoutes {
   static const String incomingCalls="/incoming_calls";
   static const String ongoingCalls="/ongoing_calls";
   static const String outgoingCalls="/outgoing_calls";
+  static const String messageDriver="/message_driver";
   static List<GetPage> pages = [
     GetPage(
       name: splash,
@@ -243,6 +245,10 @@ class AppRoutes {
     GetPage(
       name: outgoingCalls,
       page: () =>   OutgoingCallScreen(),
+    ),
+    GetPage(
+      name: messageDriver,
+      page: () =>   MessageDriverScreen(),
     ),
   ];
 }
