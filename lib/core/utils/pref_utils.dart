@@ -31,4 +31,12 @@ class PrefUtils {
       return 'primary';
     }
   }
+
+  Future<void> setStringList(String key, List<String> value) {
+    return _sharedPreferences!.setStringList(key, value);
+  }
+
+  List<String>? getStringList(String key) {
+    return _sharedPreferences!.getStringList(key);
+  }
 }
