@@ -117,4 +117,13 @@ class MyData {
     },
     // Add more trips as needed
   ];
+
+  static final List<Map<String, String>> promotions = [
+    {
+      'dateTime': 'Oct 6, 2024 02:00 PM',
+      'from': '789 Oak St, Metropolis',
+      'to': '101 Maple St, Gotham',
+    },
+    // Add more trips as needed
+  ];
 }
