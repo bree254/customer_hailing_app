@@ -110,7 +110,7 @@ class DrawerWidget extends StatelessWidget {
                 ),
               ),
               onTap: () {
-                // Handle support tap
+                Get.toNamed(AppRoutes.support);
               },
             ),
             ListTile(
@@ -119,7 +119,7 @@ class DrawerWidget extends StatelessWidget {
                 'Payment',
                 style: TextStyle(
                   color: Color(0xFF555555),
-                  fontSize: 12,
+                  fontSize: 14,
                   fontWeight: FontWeight.w400,
                 ),
               ),
@@ -134,7 +134,7 @@ class DrawerWidget extends StatelessWidget {
                 'Logout',
                 style: TextStyle(
                   color: Color(0xFF555555),
-                  fontSize: 12,
+                  fontSize: 14,
                   fontWeight: FontWeight.w400,
                 ),
               ),
