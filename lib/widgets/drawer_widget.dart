@@ -54,7 +54,7 @@ class DrawerWidget extends StatelessWidget {
                 ),
               ),
               onTap: () {
-                // Handle history tap
+                Get.toNamed(AppRoutes.tripHistory);
               },
             ),
             ListTile(
@@ -96,7 +96,7 @@ class DrawerWidget extends StatelessWidget {
                 ),
               ),
               onTap: () {
-                // Handle promotions tap
+                Get.toNamed(AppRoutes.promotions);
               },
             ),
             ListTile(
@@ -110,7 +110,7 @@ class DrawerWidget extends StatelessWidget {
                 ),
               ),
               onTap: () {
-                // Handle support tap
+                Get.toNamed(AppRoutes.support);
               },
             ),
             ListTile(
@@ -119,12 +119,12 @@ class DrawerWidget extends StatelessWidget {
                 'Payment',
                 style: TextStyle(
                   color: Color(0xFF555555),
-                  fontSize: 12,
+                  fontSize: 14,
                   fontWeight: FontWeight.w400,
                 ),
               ),
               onTap: () {
-                // Handle payment tap
+                Get.toNamed(AppRoutes.paymentMethods);
               },
             ),
             const Spacer(),
@@ -134,7 +134,7 @@ class DrawerWidget extends StatelessWidget {
                 'Logout',
                 style: TextStyle(
                   color: Color(0xFF555555),
-                  fontSize: 12,
+                  fontSize: 14,
                   fontWeight: FontWeight.w400,
                 ),
               ),

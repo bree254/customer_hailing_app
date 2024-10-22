@@ -38,7 +38,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 24),
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24),
         child: Column(
           children: [
             Padding(
@@ -99,79 +99,121 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
             const SizedBox(height: 32,),
-            ListTile(
-              leading:  Image.asset(
-                width: 24,
-                  height: 24,
-                  'assets/images/user-circle-outline.png'
-              ),
-              title: const Text(
-                'Personal Information',
-                style: TextStyle(
-                  color: Color(0xFF555555),
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400,
+            Container(
+              width: 328,
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              margin: const EdgeInsets.symmetric(vertical: 8),
+              decoration: ShapeDecoration(
+                color: Colors.white,
+                shape: RoundedRectangleBorder(
+                  side: BorderSide(width: 1, color: Color(0xFFF5F5F5)),
+                  borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              trailing: const Icon(Icons.arrow_forward_ios_outlined,color: searchtextGrey,size: 14,),
-              onTap: () {
-                // Handle settings tap
-              },
-            ),
-            ListTile(
-              leading:  Image.asset(
+              child: ListTile(
+                leading:  Image.asset(
                   width: 24,
-                  height: 24,
-                  'assets/images/shield-outline.png'
+                    height: 24,
+                    'assets/images/user-circle-outline.png'
+                ),
+                title: const Text(
+                  'Edit Profile',
+                  style: TextStyle(
+                    color: Color(0xFF555555),
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+                trailing: const Icon(Icons.arrow_forward_ios_outlined,color: searchtextGrey,size: 14,),
+                onTap: () {
+                  Get.toNamed(AppRoutes.editProfile);
+                },
               ),
-              title: const Text(
-                'Security',
-                style: TextStyle(
-                  color: Color(0xFF555555),
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400,
+            ),
+            Container(
+              width: 328,
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              margin: const EdgeInsets.symmetric(vertical: 8),
+              decoration: ShapeDecoration(
+                color: Colors.white,
+                shape: RoundedRectangleBorder(
+                  side: BorderSide(width: 1, color: Color(0xFFF5F5F5)),
+                  borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              trailing: const Icon(Icons.arrow_forward_ios_outlined,color: searchtextGrey,size: 14,),
-              onTap: () {
-                // Handle settings tap
-              },
-            ),
-            ListTile(
-              leading:  Image.asset(
-                  width: 24,
-                  height: 24,
-                  'assets/images/map-pin-alt-outline.png'
+              child: ListTile(
+                leading:  Image.asset(
+                    width: 24,
+                    height: 24,
+                    'assets/images/shield-outline.png'
+                ),
+                title: const Text(
+                  'Password & Security',
+                  style: TextStyle(
+                    color: Color(0xFF555555),
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+                trailing: const Icon(Icons.arrow_forward_ios_outlined,color: searchtextGrey,size: 14,),
+                onTap: () {
+                  Get.toNamed(AppRoutes.passwordSecurity);
+                },
               ),
-              title: const Text(
-                'Saved Locations',
-                style: TextStyle(
-                  color: Color(0xFF555555),
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400,
+            ),
+            Container(
+              width: 328,
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              margin: const EdgeInsets.symmetric(vertical: 8),
+              decoration: ShapeDecoration(
+                color: Colors.white,
+                shape: RoundedRectangleBorder(
+                  side: BorderSide(width: 1, color: Color(0xFFF5F5F5)),
+                  borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              trailing: const Icon(Icons.arrow_forward_ios_outlined,color: searchtextGrey,size: 14,),
-              onTap: () {
-                Get.toNamed(AppRoutes.savedLocation);
-              },
+              child: ListTile(
+                leading:  Image.asset(
+                    width: 24,
+                    height: 24,
+                    'assets/images/map-pin-alt-outline.png'
+                ),
+                title: const Text(
+                  'Saved Locations',
+                  style: TextStyle(
+                    color: Color(0xFF555555),
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+                trailing: const Icon(Icons.arrow_forward_ios_outlined,color: searchtextGrey,size: 14,),
+                onTap: () {
+                  Get.toNamed(AppRoutes.savedLocation);
+                },
+              ),
             ),
-            const Spacer(),
-            CustomElevatedButton(
-              onPressed: () {
-                Get.back();
-              },
-              buttonStyle: ElevatedButton.styleFrom(
-                backgroundColor: cancelButton,
-                elevation: 0,
+            Container(
+              width: 328,
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              margin: const EdgeInsets.symmetric(vertical: 8),
+              child: ListTile(
+                leading:  Image.asset(
+                    width: 24,
+                    height: 24,
+                    'assets/images/logout.png'
+                ),
+                title: const Text(
+                  'Logout',
+                  style: TextStyle(
+                    color: deleteIcon,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+                onTap: () {
+                  Get.toNamed(AppRoutes.loginorsignup);
+                },
               ),
-              buttonTextStyle: const TextStyle(
-                color: Color(0xFFC81E1E),
-                fontSize: 12,
-                fontWeight: FontWeight.w400,
-              ),
-              text: 'Delete Account',
-              leftIcon: const Icon(CupertinoIcons.trash,color: deleteIcon,size: 12,),
             ),
           ],
         ),

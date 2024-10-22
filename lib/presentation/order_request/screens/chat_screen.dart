@@ -76,6 +76,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 const Icon(
                   Icons.more_vert_outlined,
                   color: Colors.black54,
+                  size: 24,
                 ),
               ],
             ),

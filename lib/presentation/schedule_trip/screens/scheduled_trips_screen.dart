@@ -1,8 +1,8 @@
 import 'package:customer_hailing/presentation/order_request/models/data.dart';
 import 'package:flutter/material.dart';
-
 import '../../../core/app_export.dart';
 import '../../../routes/routes.dart';
+
 class ScheduledTripsScreen extends StatefulWidget {
   const ScheduledTripsScreen({super.key});
 
