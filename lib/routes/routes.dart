@@ -30,6 +30,10 @@ import 'package:customer_hailing/presentation/schedule_trip/screens/schedule_new
 import 'package:customer_hailing/presentation/schedule_trip/screens/scheduled_trips_screen.dart';
 import 'package:customer_hailing/presentation/schedule_trip/screens/trip_details.dart';
 import 'package:customer_hailing/presentation/splash/splash_screen.dart';
+import 'package:customer_hailing/presentation/support-centre/chat_lists.dart';
+import 'package:customer_hailing/presentation/support-centre/chat_support_screen.dart';
+import 'package:customer_hailing/presentation/support-centre/faqs.dart';
+import 'package:customer_hailing/presentation/support-centre/support_centre_screen.dart';
 import 'package:customer_hailing/presentation/trip_history/trip_history_screen.dart';
 import 'package:customer_hailing/presentation/two_factor_authentication/change_password_screen.dart';
 import 'package:customer_hailing/presentation/two_factor_authentication/forgot_password_screen.dart';
@@ -86,6 +90,11 @@ class AppRoutes {
   static const String outgoingCalls="/outgoing_calls";
   static const String messageDriver="/message_driver";
   static const String promotions="/promotions";
+  static const String support="/support";
+  static const String faq="/faq";
+  static const String chatList="/chat_list";
+  static const String chatSupportScreen="/chat_support_screen";
+
   static List<GetPage> pages = [
     GetPage(
       name: splash,
@@ -255,6 +264,22 @@ class AppRoutes {
     GetPage(
       name: promotions,
       page: () =>   PromotionsScreen(),
+    ),
+    GetPage(
+      name: support,
+      page: () =>   SupportCentreScreen(),
+    ),
+    GetPage(
+      name: faq,
+      page: () =>   FaqScreen(),
+    ),
+    GetPage(
+      name: chatList,
+      page: () =>   ChatLists(),
+    ),
+    GetPage(
+      name: chatSupportScreen,
+      page: () =>   ChatSupportScreen(),
     ),
   ];
 }
