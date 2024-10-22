@@ -136,6 +136,7 @@ class AppRoutes {
     GetPage(
       name: emergency,
       page: () =>  const EmergencyServicesScreen(),
+    ),
  GetPage(
       name: scheduleTrip,
       page: () =>  const ScheduledTripsScreen(),
