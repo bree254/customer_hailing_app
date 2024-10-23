@@ -39,7 +39,7 @@ dependencies:
   sms_autofill:
   shared_preferences:
   dio:
-  connectivity_plus:
+  connectivity_plus: ^6.1.0
   intl:
   pin_code_fields:
   shimmer:
