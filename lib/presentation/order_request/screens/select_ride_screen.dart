@@ -6,9 +6,8 @@ import 'package:customer_hailing/widgets/custom_elevated_button.dart';
 import 'package:customer_hailing/widgets/drawer_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:geocoding/geocoding.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import '../controller/map_controller.dart';
 
 class SelectRideScreen extends StatefulWidget {
   const SelectRideScreen({super.key});
@@ -18,17 +17,14 @@ class SelectRideScreen extends StatefulWidget {
 }
 
 class _SelectRideScreenState extends State<SelectRideScreen> {
-  GoogleMapController? mapController;
-  LatLng? _center;
-  Position? _currentPosition;
   String? _selectedRide;
   String? _selectedPaymentMode;
   String? _destination;
   String? _prediction;
 
-  final Set<Polyline> _polylines = {};
-
   final RideStatusController rideStatusController = Get.put(RideStatusController());
+  final MapController mapController = Get.put(MapController());
+
 
   @override
   void initState() {
@@ -39,70 +35,8 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
     } else if (args['type'] == 'prediction') {
       _prediction = args['value'];
     }
-      _getUserLocation();
   }
 
-  void _onMapCreated(GoogleMapController controller) {
-    mapController = controller;
-  }
-
-  Future<void> _getUserLocation() async {
-    bool serviceEnabled;
-    LocationPermission permission;
-
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      return;
-    }
-
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.deniedForever) {
-      return;
-    }
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission != LocationPermission.whileInUse &&
-          permission != LocationPermission.always) {
-        return;
-      }
-    }
-
-    _currentPosition = await Geolocator.getCurrentPosition();
-    setState(() {
-      _center = LatLng(_currentPosition!.latitude, _currentPosition!.longitude);
-      _updatePolyline();
-    });
-  }
-
-  Future<LatLng?> _getCoordinatesFromAddress(String address) async {
-    try {
-      List<Location> locations = await locationFromAddress(address);
-      if (locations.isNotEmpty) {
-        return LatLng(locations[0].latitude, locations[0].longitude);
-      }
-    } catch (e) {
-      print('Error getting coordinates from address: $e');
-    }
-    return null;
-  }
-
-  void _updatePolyline() async {
-    if (_center != null && (_destination != null || _prediction != null)) {
-      String address = _destination ?? _prediction ?? '';
-      LatLng? destinationCoords = await _getCoordinatesFromAddress(address);
-      if (destinationCoords != null) {
-        setState(() {
-          _polylines.add(Polyline(
-            polylineId: const PolylineId('route'),
-            visible: true,
-            color: primaryColor,
-            width: 5,
-            points: [_center!, destinationCoords],
-          ));
-        });
-      }
-    }
-  }
 
   void _startRideRequest() {
     rideStatusController.searchForDriver();
@@ -115,9 +49,9 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
       drawer: const DrawerWidget(),
       body: Stack(
         children: [
-          _center == null
+          Obx(() => mapController.center.value == null
               ? Image.asset(
-            'assets/images/map.png', // Path to your cached map image
+            'assets/images/map.png',
             fit: BoxFit.cover,
             width: double.infinity,
             height: double.infinity,
@@ -125,21 +59,21 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
               : SizedBox(
             height: double.infinity,
             child: GoogleMap(
-              onMapCreated: _onMapCreated,
+              onMapCreated: mapController.onMapCreated,
               initialCameraPosition: CameraPosition(
-                target: _center!,
+                target: mapController.center.value!,
                 zoom: 16.0,
               ),
               markers: {
                 Marker(
                   markerId: const MarkerId('user_location'),
-                  position: _center!,
+                  position: mapController.center.value!,
                   infoWindow: const InfoWindow(title: 'Your Location'),
                 ),
               },
-              polylines: _polylines,
+              polylines: mapController.polylines,
             ),
-          ),
+          )),
           Positioned(
             top: 50,
             left: 16,
