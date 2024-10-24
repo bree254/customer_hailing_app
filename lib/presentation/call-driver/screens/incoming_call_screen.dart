@@ -8,7 +8,7 @@ import 'ongoing_call_screen.dart';
 class IncomingCallScreen extends StatelessWidget {
   final CallController callController = Get.put(CallController());
 
-  const IncomingCallScreen({super.key});
+   IncomingCallScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +68,7 @@ class IncomingCallScreen extends StatelessWidget {
                       backgroundColor: Colors.green,
                       onPressed: () {
                         callController.acceptCall();
-                        Get.to(() => const OngoingCallScreen()); // Navigate to the Ongoing call screen
+                        Get.to(() =>  OngoingCallScreen()); // Navigate to the Ongoing call screen
                       },
                       child: const Icon(Icons.call),
                     ),

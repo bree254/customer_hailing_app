@@ -5,7 +5,7 @@ import '../controllers/call_controller.dart';
 class OngoingCallScreen extends StatelessWidget {
   final CallController callController = Get.find<CallController>();
 
-  const OngoingCallScreen({super.key});
+   OngoingCallScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

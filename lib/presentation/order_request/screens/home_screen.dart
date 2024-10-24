@@ -9,7 +9,7 @@ import '../controller/map_controller.dart';
 class HomeScreen extends StatelessWidget {
   final MapController _mapController = Get.put(MapController());
 
-  const HomeScreen({super.key});
+   HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

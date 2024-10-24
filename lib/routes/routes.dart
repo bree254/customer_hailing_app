@@ -102,7 +102,7 @@ class AppRoutes {
     ),
     GetPage(
       name: home,
-      page: () =>  const HomeScreen(),
+      page: () =>   HomeScreen(),
       binding: HomeBinding(),
     ),
     GetPage(
@@ -247,15 +247,15 @@ class AppRoutes {
     ),
     GetPage(
       name: incomingCalls,
-      page: () =>   const IncomingCallScreen(),
+      page: () =>    IncomingCallScreen(),
     ),
     GetPage(
       name: ongoingCalls,
-      page: () =>   const OngoingCallScreen(),
+      page: () =>    OngoingCallScreen(),
     ),
     GetPage(
       name: outgoingCalls,
-      page: () =>   const OutgoingCallScreen(),
+      page: () =>    OutgoingCallScreen(),
     ),
     GetPage(
       name: messageDriver,
