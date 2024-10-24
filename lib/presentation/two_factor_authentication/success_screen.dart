@@ -1,10 +1,7 @@
 import 'package:customer_hailing/core/app_export.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
 
-import '../../core/utils/colors.dart';
 import '../../routes/routes.dart';
-import '../../widgets/custom_elevated_button.dart';
 class SuccessScreen extends StatefulWidget {
   const SuccessScreen({super.key});
 
@@ -39,7 +36,7 @@ class _SuccessScreenState extends State<SuccessScreen> {
             ),
             const SizedBox(height: 32,),
 
-            Align(
+            const Align(
               alignment: Alignment.center,
               child: Text(
                 'Please check your email and click on the link \nto reset your password',

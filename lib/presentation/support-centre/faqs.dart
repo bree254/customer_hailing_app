@@ -1,6 +1,5 @@
 import 'package:customer_hailing/core/app_export.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
 class FaqScreen extends StatefulWidget {
   const FaqScreen({super.key});
 
@@ -73,7 +72,7 @@ class _FaqScreenState extends State<FaqScreen> {
         ),
       ),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16,vertical: 32),
+        padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 32),
         child: ListView.builder(
           itemCount: questions.length,
           itemBuilder: (context, index) {
@@ -86,18 +85,18 @@ class _FaqScreenState extends State<FaqScreen> {
               child: ExpansionTile(
                 title: Text(
                   question!,
-                  style: TextStyle(
+                  style: const TextStyle(
                   color: Color(0xFF555555),
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
                 ),),
-                trailing: Icon(Icons.arrow_drop_down),
+                trailing: const Icon(Icons.arrow_drop_down),
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
                       answer!,
-                      style: TextStyle(
+                      style: const TextStyle(
                       color: Color(0xFF434343),
                       fontSize: 12,
                       fontWeight: FontWeight.w400,

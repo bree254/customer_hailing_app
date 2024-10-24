@@ -1,7 +1,6 @@
 import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/routes/routes.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 import '../../widgets/custom_text_form_field.dart';
 class ChangePasswordScreen extends StatefulWidget {

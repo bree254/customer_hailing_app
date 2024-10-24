@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/presentation/two_factor_authentication/password_and_security_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 class TwoFactorAuthenticationScreen extends StatefulWidget {
   const TwoFactorAuthenticationScreen({super.key});
@@ -117,10 +116,10 @@ class _TwoFactorAuthenticationScreenState extends State<TwoFactorAuthenticationS
         child: Column(
           children: [
             // const SizedBox(height: 32),
-            Column(
+            const Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const Text(
+                Text(
                   "Please enter the OTP sent to",
                   style: TextStyle(
                     color: blackTextColor,
@@ -130,7 +129,7 @@ class _TwoFactorAuthenticationScreenState extends State<TwoFactorAuthenticationS
                 ),
                 Text(
                   "0759633729",
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: blackTextColor,
                     fontWeight: FontWeight.w600,
                     fontSize: 14,

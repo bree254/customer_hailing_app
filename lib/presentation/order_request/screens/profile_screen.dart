@@ -1,6 +1,5 @@
 import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/routes/routes.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -106,7 +105,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               decoration: ShapeDecoration(
                 color: Colors.white,
                 shape: RoundedRectangleBorder(
-                  side: BorderSide(width: 1, color: Color(0xFFF5F5F5)),
+                  side: const BorderSide(width: 1, color: Color(0xFFF5F5F5)),
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
@@ -137,7 +136,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               decoration: ShapeDecoration(
                 color: Colors.white,
                 shape: RoundedRectangleBorder(
-                  side: BorderSide(width: 1, color: Color(0xFFF5F5F5)),
+                  side: const BorderSide(width: 1, color: Color(0xFFF5F5F5)),
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
@@ -168,7 +167,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               decoration: ShapeDecoration(
                 color: Colors.white,
                 shape: RoundedRectangleBorder(
-                  side: BorderSide(width: 1, color: Color(0xFFF5F5F5)),
+                  side: const BorderSide(width: 1, color: Color(0xFFF5F5F5)),
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),

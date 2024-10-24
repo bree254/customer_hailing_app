@@ -35,7 +35,7 @@ class _ChatSupportScreenState extends State<ChatSupportScreen> {
 
       // Automatically simulate a reply from the driver after a short delay
       if (sender == 'Me') {
-        Future.delayed(Duration(seconds: 2), () {
+        Future.delayed(const Duration(seconds: 2), () {
           _sendReceiverMessage();
         });
       }
@@ -77,11 +77,11 @@ class _ChatSupportScreenState extends State<ChatSupportScreen> {
                     color: Colors.black,
                   ),
                 ),
-               Icon(Icons.headset_mic_sharp,color: primaryColor,),
-                SizedBox(width: 16),
-                Expanded(
+               const Icon(Icons.headset_mic_sharp,color: primaryColor,),
+                const SizedBox(width: 16),
+                const Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 10.0),
+                    padding: EdgeInsets.only(top: 10.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -114,12 +114,12 @@ class _ChatSupportScreenState extends State<ChatSupportScreen> {
                     height: 36,
                     decoration: ShapeDecoration(
                       shape: RoundedRectangleBorder(
-                        side: BorderSide(width: 1, color: primaryColor),
+                        side: const BorderSide(width: 1, color: primaryColor),
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
-                    child: Center(
-                      child: const Icon(
+                    child: const Center(
+                      child: Icon(
                         Icons.phone_rounded,
                         color: primaryColor,
                       ),
@@ -132,7 +132,7 @@ class _ChatSupportScreenState extends State<ChatSupportScreen> {
         ),
       ),
       body: Container(
-        color: Color(0xFFFAFAFA),
+        color: const Color(0xFFFAFAFA),
         child: Column(
           children: [
             Expanded(
@@ -184,15 +184,15 @@ class _ChatSupportScreenState extends State<ChatSupportScreen> {
                     borderRadius: BorderRadius.only(
                       topLeft: isMe ? const Radius.circular(10) : const Radius.circular(10),
                       topRight: isMe ? const Radius.circular(0) : const Radius.circular(10),
-                      bottomLeft: Radius.circular(10),
-                      bottomRight: Radius.circular(10),
+                      bottomLeft: const Radius.circular(10),
+                      bottomRight: const Radius.circular(10),
                     ),
                   ),
                 ),
                 child: Text(
                   text,
                   style: TextStyle(
-                    color: isMe ? Color(0xFFFAFAFA) :Color(0xFF313942),
+                    color: isMe ? const Color(0xFFFAFAFA) :const Color(0xFF313942),
                     fontSize: 14,
                     fontWeight: FontWeight.w400,
                   ),
@@ -209,7 +209,7 @@ class _ChatSupportScreenState extends State<ChatSupportScreen> {
   Widget _buildMessageComposer() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 24),
-      margin: EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+      margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
       //height: 60.0,
       color: Colors.white,
       child: Row(
@@ -217,10 +217,10 @@ class _ChatSupportScreenState extends State<ChatSupportScreen> {
           Container(
             width: 330,
             height: 44,
-            padding: EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             clipBehavior: Clip.antiAlias,
             decoration: ShapeDecoration(
-              color: Color(0xFFF5F5F5),
+              color: const Color(0xFFF5F5F5),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
@@ -243,7 +243,7 @@ class _ChatSupportScreenState extends State<ChatSupportScreen> {
               },
             ),
           ),
-          SizedBox(
+          const SizedBox(
             width: 8,
           ),
           GestureDetector(
@@ -253,12 +253,12 @@ class _ChatSupportScreenState extends State<ChatSupportScreen> {
                 height: 44,
                 clipBehavior: Clip.antiAlias,
                 decoration: ShapeDecoration(
-                  color: Color(0xFF7145D6),
+                  color: const Color(0xFF7145D6),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                child: Center(
+                child: const Center(
                   child: Icon(
                     Icons.send,
                     color: Colors.white,

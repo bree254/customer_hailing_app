@@ -12,14 +12,14 @@ class ChatLists extends StatefulWidget {
 
 class _ChatListsState extends State<ChatLists> {
   List<ChatUsers> chatUsers = [
-    ChatUsers(name: "I was overcharged for my ride", messageText: "I apologise for this inconvenience, we know... ",  time: "02:00pm", iconData: Icon(Icons.headset_mic_outlined,color: primaryColor)),
-    ChatUsers(name: "I was overcharged for my ride", messageText: "I apologise for this inconvenience, we know... ", time: "02:00pm", iconData: Icon(Icons.headset_mic_outlined,color: primaryColor)),
-    ChatUsers(name: "I was overcharged for my ride", messageText: "I apologise for this inconvenience, we know...",  time: "02:00pm", iconData: Icon(Icons.headset_mic_outlined,color: primaryColor)),
-    ChatUsers(name: "I was overcharged for my ride", messageText: "I apologise for this inconvenience, we know... ", time: "02:00pm", iconData: Icon(Icons.headset_mic_outlined,color: primaryColor)),
-    ChatUsers(name: "I was overcharged for my ride", messageText: "I apologise for this inconvenience, we know...",  time: "02:00pm", iconData: Icon(Icons.headset_mic_outlined,color: primaryColor)),
-    ChatUsers(name: "I was overcharged for my ride", messageText: "I apologise for this inconvenience, we know...", time: "02:00pm", iconData: Icon(Icons.headset_mic_outlined,color: primaryColor)),
-    ChatUsers(name: "I was overcharged for my ride", messageText: "I apologise for this inconvenience, we know...", time: "02:00pm", iconData: Icon(Icons.headset_mic_outlined,color: primaryColor)),
-    ChatUsers(name: "I was overcharged for my ride", messageText: "I apologise for this inconvenience, we know...",  time: "02:00pm", iconData: Icon(Icons.headset_mic_outlined,color: primaryColor)),
+    ChatUsers(name: "I was overcharged for my ride", messageText: "I apologise for this inconvenience, we know... ",  time: "02:00pm", iconData: const Icon(Icons.headset_mic_outlined,color: primaryColor)),
+    ChatUsers(name: "I was overcharged for my ride", messageText: "I apologise for this inconvenience, we know... ", time: "02:00pm", iconData: const Icon(Icons.headset_mic_outlined,color: primaryColor)),
+    ChatUsers(name: "I was overcharged for my ride", messageText: "I apologise for this inconvenience, we know...",  time: "02:00pm", iconData: const Icon(Icons.headset_mic_outlined,color: primaryColor)),
+    ChatUsers(name: "I was overcharged for my ride", messageText: "I apologise for this inconvenience, we know... ", time: "02:00pm", iconData: const Icon(Icons.headset_mic_outlined,color: primaryColor)),
+    ChatUsers(name: "I was overcharged for my ride", messageText: "I apologise for this inconvenience, we know...",  time: "02:00pm", iconData: const Icon(Icons.headset_mic_outlined,color: primaryColor)),
+    ChatUsers(name: "I was overcharged for my ride", messageText: "I apologise for this inconvenience, we know...", time: "02:00pm", iconData: const Icon(Icons.headset_mic_outlined,color: primaryColor)),
+    ChatUsers(name: "I was overcharged for my ride", messageText: "I apologise for this inconvenience, we know...", time: "02:00pm", iconData: const Icon(Icons.headset_mic_outlined,color: primaryColor)),
+    ChatUsers(name: "I was overcharged for my ride", messageText: "I apologise for this inconvenience, we know...",  time: "02:00pm", iconData: const Icon(Icons.headset_mic_outlined,color: primaryColor)),
 
   ];
   @override
@@ -63,10 +63,10 @@ class _ChatListsState extends State<ChatLists> {
               ),
             ),
             const SizedBox(height: 20.0),
-            Center(
+            const Center(
               child: Align(
                 alignment: Alignment.center,
-                child: const Text(
+                child: Text(
                   'Tap on, “Start New Chat” below to get assistance from our support team',
                   style: TextStyle(
                     fontWeight: FontWeight.w500,
@@ -98,15 +98,15 @@ class _ChatListsState extends State<ChatLists> {
       )
           :
       SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             ListView.separated(
               itemCount: chatUsers.length,
               shrinkWrap: true,
-              padding: EdgeInsets.only(top: 16),
-              physics: NeverScrollableScrollPhysics(),
+              padding: const EdgeInsets.only(top: 16),
+              physics: const NeverScrollableScrollPhysics(),
               itemBuilder: (context, index){
                 return MessageWidget(
                   name: chatUsers[index].name,

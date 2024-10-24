@@ -1,6 +1,5 @@
 import 'package:customer_hailing/core/app_export.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
 import '../../widgets/custom_text_form_field.dart';
 import 'controllers/promotions_controller.dart';
 
@@ -132,11 +131,11 @@ class _PromotionsScreenState extends State<PromotionsScreen> {
                       itemBuilder: (context, index) {
                         return Container(
                           padding: const EdgeInsets.only(top: 9, left: 16, right: 38, bottom: 9),
-                          margin: EdgeInsets.symmetric(vertical: 8),
+                          margin: const EdgeInsets.symmetric(vertical: 8),
                           decoration: ShapeDecoration(
                             color: Colors.white,
                             shape: RoundedRectangleBorder(
-                              side: BorderSide(width: 1, color: Color(0xFFF5F5F5)),
+                              side: const BorderSide(width: 1, color: Color(0xFFF5F5F5)),
                               borderRadius: BorderRadius.circular(15),
                             ),
                           ),

@@ -1,6 +1,5 @@
 import 'package:customer_hailing/core/app_export.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 
 import '../controllers/call_controller.dart';
@@ -9,6 +8,8 @@ import 'ongoing_call_screen.dart';
 class IncomingCallScreen extends StatelessWidget {
   final CallController callController = Get.put(CallController());
 
+  const IncomingCallScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,7 +17,7 @@ class IncomingCallScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           SizedBox(height: 80.v,),
-          Text(
+          const Text(
             'Incoming call',
             style: TextStyle(
               color: Color(0xFF9D9D9D),
@@ -49,9 +50,9 @@ class IncomingCallScreen extends StatelessWidget {
           ),
           Obx(() => Text(
             callController.callerName.value,
-            style: TextStyle(fontSize: 24),
+            style: const TextStyle(fontSize: 24),
           )),
-          Spacer(),
+          const Spacer(),
           Container(
             margin: EdgeInsets.fromLTRB( 32.h,0,32.h,40.h),
             child: Row(
@@ -67,12 +68,12 @@ class IncomingCallScreen extends StatelessWidget {
                       backgroundColor: Colors.green,
                       onPressed: () {
                         callController.acceptCall();
-                        Get.to(() => OngoingCallScreen()); // Navigate to the Ongoing call screen
+                        Get.to(() => const OngoingCallScreen()); // Navigate to the Ongoing call screen
                       },
-                      child: Icon(Icons.call),
+                      child: const Icon(Icons.call),
                     ),
-                    SizedBox(height: 10,),
-                    Text(
+                    const SizedBox(height: 10,),
+                    const Text(
                       'Answer',
                       style: TextStyle(
                         color: Color(0xFF9D9D9D),
@@ -93,10 +94,10 @@ class IncomingCallScreen extends StatelessWidget {
                       onPressed: () {
                         callController.rejectCall();
                       },
-                      child: Icon(Icons.call_end),
+                      child: const Icon(Icons.call_end),
                     ),
-                    SizedBox(height: 10,),
-                    Text(
+                    const SizedBox(height: 10,),
+                    const Text(
                       'Decline',
                       style: TextStyle(
                         color: Color(0xFF9D9D9D),

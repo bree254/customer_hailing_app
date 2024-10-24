@@ -102,7 +102,7 @@ class AppRoutes {
     ),
     GetPage(
       name: home,
-      page: () =>  HomeScreen(),
+      page: () =>  const HomeScreen(),
       binding: HomeBinding(),
     ),
     GetPage(
@@ -247,39 +247,39 @@ class AppRoutes {
     ),
     GetPage(
       name: incomingCalls,
-      page: () =>   IncomingCallScreen(),
+      page: () =>   const IncomingCallScreen(),
     ),
     GetPage(
       name: ongoingCalls,
-      page: () =>   OngoingCallScreen(),
+      page: () =>   const OngoingCallScreen(),
     ),
     GetPage(
       name: outgoingCalls,
-      page: () =>   OutgoingCallScreen(),
+      page: () =>   const OutgoingCallScreen(),
     ),
     GetPage(
       name: messageDriver,
-      page: () =>   MessageDriverScreen(),
+      page: () =>   const MessageDriverScreen(),
     ),
     GetPage(
       name: promotions,
-      page: () =>   PromotionsScreen(),
+      page: () =>   const PromotionsScreen(),
     ),
     GetPage(
       name: support,
-      page: () =>   SupportCentreScreen(),
+      page: () =>   const SupportCentreScreen(),
     ),
     GetPage(
       name: faq,
-      page: () =>   FaqScreen(),
+      page: () =>   const FaqScreen(),
     ),
     GetPage(
       name: chatList,
-      page: () =>   ChatLists(),
+      page: () =>   const ChatLists(),
     ),
     GetPage(
       name: chatSupportScreen,
-      page: () =>   ChatSupportScreen(),
+      page: () =>   const ChatSupportScreen(),
     ),
   ];
 }

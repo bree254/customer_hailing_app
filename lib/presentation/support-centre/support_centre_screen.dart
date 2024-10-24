@@ -1,9 +1,7 @@
 import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/routes/routes.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
 
-import '../../core/utils/colors.dart';
 class SupportCentreScreen extends StatefulWidget {
   const SupportCentreScreen({super.key});
 
@@ -39,7 +37,7 @@ class _SupportCentreScreenState extends State<SupportCentreScreen> {
         ),
       ),
       body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16,vertical: 32),
+          padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 32),
         child: Column(
           children: [
             GestureDetector(
@@ -48,15 +46,15 @@ class _SupportCentreScreenState extends State<SupportCentreScreen> {
               },
               child: Container(
                 padding: const EdgeInsets.all(16),
-                margin: EdgeInsets.symmetric(vertical: 8),
+                margin: const EdgeInsets.symmetric(vertical: 8),
                 decoration: ShapeDecoration(
                   color: Colors.white,
                   shape: RoundedRectangleBorder(
-                    side: BorderSide(width: 1, color: Color(0xFFF5F5F5)),
+                    side: const BorderSide(width: 1, color: Color(0xFFF5F5F5)),
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
-                child: ListTile(
+                child: const ListTile(
                   title: Text(
                     'FAQs',
                     style: TextStyle(
@@ -84,15 +82,15 @@ class _SupportCentreScreenState extends State<SupportCentreScreen> {
               },
               child: Container(
                 padding: const EdgeInsets.all(16),
-                margin: EdgeInsets.symmetric(vertical: 8),
+                margin: const EdgeInsets.symmetric(vertical: 8),
                 decoration: ShapeDecoration(
                   color: Colors.white,
                   shape: RoundedRectangleBorder(
-                    side: BorderSide(width: 1, color: Color(0xFFF5F5F5)),
+                    side: const BorderSide(width: 1, color: Color(0xFFF5F5F5)),
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
-                child: ListTile(
+                child: const ListTile(
                   title: Text(
                     'Chat',
                     style: TextStyle(

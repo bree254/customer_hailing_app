@@ -1,4 +1,3 @@
-import 'dart:ui';
 
 import 'package:customer_hailing/core/utils/colors.dart';
 import 'package:customer_hailing/presentation/order_request/controller/trip_status_controller.dart';
@@ -382,11 +381,11 @@ class TripStatusBottomSheet extends StatelessWidget {
                 context: Get.context!,
                 builder: (BuildContext context) {
                   return Container(
-                    padding: EdgeInsets.symmetric(vertical: 32, horizontal: 32),
+                    padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 32),
                     width: double.infinity,
                     height: 280,
                     clipBehavior: Clip.antiAlias,
-                    decoration: ShapeDecoration(
+                    decoration: const ShapeDecoration(
                       color: Colors.white,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.only(
@@ -403,10 +402,10 @@ class TripStatusBottomSheet extends StatelessWidget {
                             onTap:(){
                               Get.back();
                             },
-                            child: Icon(Icons.close),
+                            child: const Icon(Icons.close),
                           ),
                         ),
-                        Text(
+                        const Text(
                           'Contact options',
                           textAlign: TextAlign.center,
                           style: TextStyle(
@@ -415,7 +414,7 @@ class TripStatusBottomSheet extends StatelessWidget {
                             fontWeight: FontWeight.w600,
                           ),
                         ),
-                        Text(
+                        const Text(
                           'Carrier rates may apply',
                           textAlign: TextAlign.center,
                           style: TextStyle(
@@ -424,7 +423,7 @@ class TripStatusBottomSheet extends StatelessWidget {
                             fontWeight: FontWeight.w400,
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 32,
                         ),
                         CustomElevatedButton(
@@ -442,7 +441,7 @@ class TripStatusBottomSheet extends StatelessWidget {
                             fontWeight: FontWeight.w500,
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 16,
                         ),
                         CustomElevatedButton(

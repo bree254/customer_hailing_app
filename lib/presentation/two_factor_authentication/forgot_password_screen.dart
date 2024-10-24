@@ -1,7 +1,6 @@
 import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/routes/routes.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 import '../../widgets/custom_text_form_field.dart';
 class ForgotPasswordScreen extends StatefulWidget {
@@ -102,12 +101,12 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     borderSide: const BorderSide(color: Colors.transparent, width: 0),
                   ),
                 ),
-                SizedBox(height: 83,),
+                const SizedBox(height: 83,),
                 GestureDetector(
                   onTap: (){
                     Get.back();
                   },
-                  child:  Center(
+                  child:  const Center(
                     child:Text.rich(
                       TextSpan(
                         children: [

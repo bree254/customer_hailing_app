@@ -5,6 +5,8 @@ import '../controllers/call_controller.dart';
 class OngoingCallScreen extends StatelessWidget {
   final CallController callController = Get.find<CallController>();
 
+  const OngoingCallScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -13,7 +15,7 @@ class OngoingCallScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
+            const Text(
               'Ongoing call',
               style: TextStyle(
                 color: Color(0xFF9D9D9D),
@@ -21,31 +23,31 @@ class OngoingCallScreen extends StatelessWidget {
                 fontWeight: FontWeight.w400,
               ),
             ),
-            SizedBox(height: 24),
+            const SizedBox(height: 24),
             CircleAvatar(
               backgroundColor: Colors.transparent,
               radius: 50,
               backgroundImage: AssetImage(callController.callerImageUrl.value),
             ),
-            SizedBox(height: 32),
+            const SizedBox(height: 32),
             Obx(() => Text(
               callController.callerName.value,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Color(0xFF434343),
                 fontSize: 18,
                 fontWeight: FontWeight.w500,
               ),
             )),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Obx(() => Text(
               callController.callDuration.value,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Color(0xFF9D9D9D),
                 fontSize: 12,
                 fontWeight: FontWeight.w400,
               ),
             )),
-            Spacer(),
+            const Spacer(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -53,13 +55,13 @@ class OngoingCallScreen extends StatelessWidget {
                   children: [
                     IconButton(
                         onPressed: (){},
-                        icon: Icon(
+                        icon: const Icon(
                             Icons.volume_up_outlined,
                           size: 24,
                         )
                     ),
-                    SizedBox(height: 10,),
-                    Text(
+                    const SizedBox(height: 10,),
+                    const Text(
                       'Speaker',
                       style: TextStyle(
                         color: Color(0xFF9D9D9D),
@@ -80,10 +82,10 @@ class OngoingCallScreen extends StatelessWidget {
                       onPressed: () {
                         callController.rejectCall();
                       },
-                      child: Icon(Icons.call_end),
+                      child: const Icon(Icons.call_end),
                     ),
-                    SizedBox(height: 10,),
-                    Text(
+                    const SizedBox(height: 10,),
+                    const Text(
                       'End',
                       textAlign: TextAlign.center,
                       style: TextStyle(
@@ -98,13 +100,13 @@ class OngoingCallScreen extends StatelessWidget {
                   children: [
                     IconButton(
                         onPressed: (){},
-                        icon: Icon(
+                        icon: const Icon(
                             Icons.keyboard_voice_outlined,
                             size: 24,
                         )
                     ),
-                    SizedBox(height: 10,),
-                    Text(
+                    const SizedBox(height: 10,),
+                    const Text(
                       'Speaker',
                       style: TextStyle(
                         color: Color(0xFF9D9D9D),

@@ -1,7 +1,6 @@
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:get/get.dart';
 
 import '../../../core/app_export.dart';
 
@@ -80,21 +79,19 @@ class MapController extends GetxController {
 
   // Update the polyline on the map
   void updatePolyline(String destinationAddress) async {
-    if (center != null) {
-      LatLng? destinationCoords = await getCoordinatesFromAddress(destinationAddress);
-      if (destinationCoords != null) {
-        polylines.add(
-          Polyline(
-            polylineId: const PolylineId('route'),
-            visible: true,
-            color: primaryColor, // Change the color as needed
-            width: 5,
-            points: [_center!, destinationCoords],
-          ),
-        );
-        update(); // Update the view
-      }
+    LatLng? destinationCoords = await getCoordinatesFromAddress(destinationAddress);
+    if (destinationCoords != null) {
+      polylines.add(
+        Polyline(
+          polylineId: const PolylineId('route'),
+          visible: true,
+          color: primaryColor, // Change the color as needed
+          width: 5,
+          points: [_center!, destinationCoords],
+        ),
+      );
+      update(); // Update the view
     }
-  }
+    }
 
 }

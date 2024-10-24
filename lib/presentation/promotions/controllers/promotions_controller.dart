@@ -1,5 +1,4 @@
 import 'package:customer_hailing/core/app_export.dart';
-import 'package:get/get.dart';
 
 class PromoController extends GetxController {
   var promoCode = ''.obs;

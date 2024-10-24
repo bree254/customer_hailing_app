@@ -1,7 +1,6 @@
 import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/widgets/custom_text_form_field.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 class TripSummaryScreen extends StatefulWidget {
   const TripSummaryScreen({super.key});
@@ -18,7 +17,7 @@ class _TripSummaryScreenState extends State<TripSummaryScreen> {
         padding: const EdgeInsets.fromLTRB(24, 100, 24, 24),
         child: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               width: 255,
               child: Text(
                 '5th, August, 2024',
@@ -30,10 +29,10 @@ class _TripSummaryScreenState extends State<TripSummaryScreen> {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 8,
             ),
-            SizedBox(
+            const SizedBox(
               width: 255,
               child: Text(
                 'Thank you for riding, Ariana',
@@ -45,10 +44,10 @@ class _TripSummaryScreenState extends State<TripSummaryScreen> {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 74,
             ),
-            SizedBox(
+            const SizedBox(
               width: 124,
               child: Text(
                 'Total',
@@ -60,7 +59,7 @@ class _TripSummaryScreenState extends State<TripSummaryScreen> {
                 ),
               ),
             ),
-            Text(
+            const Text(
               'KES 290',
               textAlign: TextAlign.center,
               style: TextStyle(
@@ -69,13 +68,13 @@ class _TripSummaryScreenState extends State<TripSummaryScreen> {
                 fontWeight: FontWeight.w700,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 74,
             ),
             Divider(
               color: Colors.grey[100],
             ),
-            ListTile(
+            const ListTile(
               leading: Text(
                 'Distance',
                 textAlign: TextAlign.center,
@@ -95,7 +94,7 @@ class _TripSummaryScreenState extends State<TripSummaryScreen> {
                 ),
               ),
             ),
-            ListTile(
+            const ListTile(
               leading: Text(
                 'Time',
                 textAlign: TextAlign.center,
@@ -115,7 +114,7 @@ class _TripSummaryScreenState extends State<TripSummaryScreen> {
                 ),
               ),
             ),
-            ListTile(
+            const ListTile(
               leading: Text(
                 'Base fare',
                 textAlign: TextAlign.center,
@@ -138,7 +137,7 @@ class _TripSummaryScreenState extends State<TripSummaryScreen> {
             Divider(
               color: Colors.grey[100],
             ),
-            ListTile(
+            const ListTile(
               leading: Text(
                 'Normal fare',
                 textAlign: TextAlign.center,
@@ -160,7 +159,7 @@ class _TripSummaryScreenState extends State<TripSummaryScreen> {
                 ),
               ),
             ),
-            ListTile(
+            const ListTile(
               leading: Text(
                 'Surge',
                 textAlign: TextAlign.center,
@@ -188,12 +187,12 @@ class _TripSummaryScreenState extends State<TripSummaryScreen> {
                       context: Get.context!,
                       builder: (BuildContext context) {
                         return Container(
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                               vertical: 32, horizontal: 32),
                           width: double.infinity,
                           height: 280,
                           clipBehavior: Clip.antiAlias,
-                          decoration: ShapeDecoration(
+                          decoration: const ShapeDecoration(
                             color: Colors.white,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.only(
@@ -210,10 +209,10 @@ class _TripSummaryScreenState extends State<TripSummaryScreen> {
                                   onTap: () {
                                     Get.back();
                                   },
-                                  child: Icon(Icons.close),
+                                  child: const Icon(Icons.close),
                                 ),
                               ),
-                              Text(
+                              const Text(
                                 'Tip your driver',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
@@ -222,7 +221,7 @@ class _TripSummaryScreenState extends State<TripSummaryScreen> {
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 32,
                               ),
                              CustomTextFormField(
@@ -237,7 +236,7 @@ class _TripSummaryScreenState extends State<TripSummaryScreen> {
                                  borderSide: const BorderSide(color: Colors.transparent, width: 0),
                                ),
                              ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 32,
                               ),
                               CustomElevatedButton(
@@ -259,7 +258,7 @@ class _TripSummaryScreenState extends State<TripSummaryScreen> {
                         );
                       });
                 },
-                child: Text(
+                child: const Text(
                   'Tip',
                   textAlign: TextAlign.center,
                   style: TextStyle(
@@ -269,7 +268,7 @@ class _TripSummaryScreenState extends State<TripSummaryScreen> {
                   ),
                 ),
               ),
-              trailing: Text(
+              trailing: const Text(
                 'KES 150.00',
                 textAlign: TextAlign.right,
                 style: TextStyle(
@@ -282,7 +281,7 @@ class _TripSummaryScreenState extends State<TripSummaryScreen> {
             Divider(
               color: Colors.grey[100],
             ),
-            ListTile(
+            const ListTile(
               leading: Text(
                 'Subtotal',
                 textAlign: TextAlign.center,

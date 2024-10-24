@@ -1,6 +1,5 @@
 import 'package:customer_hailing/core/app_export.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 import '../../components/phone_field/custom_phone_input.dart';
 import '../../widgets/custom_text_form_field.dart';
@@ -71,7 +70,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         ),
       ),
       body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16,vertical: 24),
+          padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 24),
         child: Column(
           children: [
             Center(
@@ -82,12 +81,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     height: 75,
                     clipBehavior: Clip.antiAlias,
                     decoration: ShapeDecoration(
-                      image: DecorationImage(
+                      image: const DecorationImage(
                         image: AssetImage("assets/images/driver.png"),
                         fit: BoxFit.cover,
                       ),
                       shape: RoundedRectangleBorder(
-                        side: BorderSide(
+                        side: const BorderSide(
                           width: 1,
                           strokeAlign: BorderSide.strokeAlignOutside,
                           color: Color(0xFF7145D6),
@@ -106,18 +105,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             width: 30,
                             height: 30,
                             padding: const EdgeInsets.all(2),
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             shape: BoxShape.circle,
                             color: primaryColor
                           ),
-                            child: Icon(Icons.camera_alt_outlined,color: Colors.white,size: 18,))
+                            child: const Icon(Icons.camera_alt_outlined,color: Colors.white,size: 18,))
                     ),
                   ),
                 ],
               ),
             ),
-            SizedBox(height: 16,),
-            Text(
+            const SizedBox(height: 16,),
+            const Text(
               'Edit photo',
               textAlign: TextAlign.center,
               style: TextStyle(
@@ -126,7 +125,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 fontWeight: FontWeight.w500,
               ),
             ),
-            SizedBox(height: 32,),
+            const SizedBox(height: 32,),
 
             Form(
                 child: Column(
@@ -306,7 +305,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         return null;
                       },
                     ),
-                    SizedBox(height: 39,),
+                    const SizedBox(height: 39,),
                     CustomElevatedButton(
                       onPressed: () {
                         onSubmit();

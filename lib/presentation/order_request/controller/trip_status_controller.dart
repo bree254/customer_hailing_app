@@ -20,7 +20,7 @@ class TripStatusController extends GetxController {
      break;
     case TripStatus.headingToDestination:
      timer.cancel();
-     Get.to(() => TripSummaryScreen());// Stop the timer after reaching the destination
+     Get.to(() => const TripSummaryScreen());// Stop the timer after reaching the destination
      break;
    }
   });

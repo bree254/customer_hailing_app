@@ -1,6 +1,5 @@
 import 'package:customer_hailing/core/app_export.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 import '../../routes/routes.dart';
 class PasswordAndSecurityScreen extends StatefulWidget {
@@ -39,7 +38,7 @@ class _PasswordAndSecurityScreenState extends State<PasswordAndSecurityScreen> {
         ),
       ),
       body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16,vertical: 32),
+          padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 32),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -75,7 +74,7 @@ class _PasswordAndSecurityScreenState extends State<PasswordAndSecurityScreen> {
                     size: 14,
                   )),
             ),
-            SizedBox(height: 16,),
+            const SizedBox(height: 16,),
             ListTile(
               title: const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

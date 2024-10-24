@@ -1,8 +1,6 @@
 import 'package:customer_hailing/core/app_export.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
 
-import '../../routes/routes.dart';
 import '../../widgets/custom_text_form_field.dart';
 class ResetPasswordScreen extends StatefulWidget {
   const ResetPasswordScreen({super.key});
