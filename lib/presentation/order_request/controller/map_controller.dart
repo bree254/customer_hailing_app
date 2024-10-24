@@ -1,6 +1,7 @@
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../../core/app_export.dart';
 
@@ -15,6 +16,7 @@ class MapController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    // checkAndRequestPermission();
     getUserLocation();
   }
 
@@ -22,37 +24,56 @@ class MapController extends GetxController {
   void onMapCreated(GoogleMapController controller) {
     mapController = controller;
   }
-
+// // Check and request location permission
+//   Future<void> checkAndRequestPermission() async {
+//     var status = await Permission.location.status;
+//
+//     // If permission is denied, request permission
+//     if (status.isDenied) {
+//       status = await Permission.location.request();
+//       if (status.isGranted) {
+//         // Permission granted, get user location
+//         await getUserLocation();
+//       } else {
+//         print('Location permission denied.');
+//       }
+//     } else if (status.isGranted) {
+//       // Permission already granted, get user location
+//       await getUserLocation();
+//     } else if (status.isPermanentlyDenied) {
+//       // Handle case where permission is permanently denied
+//       print('Location permission is permanently denied. Open settings to enable.');
+//       openAppSettings(); // Optionally prompt the user to open settings
+//     }
+//   }
   // Get the current location of the user
   Future<void> getUserLocation() async {
-    bool serviceEnabled;
-    LocationPermission permission;
-
-    // Check if location services are enabled
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      return;
-    }
-
-    // Request permission to get the user's location
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.deniedForever) {
-      return;
-    }
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission != LocationPermission.whileInUse &&
-          permission != LocationPermission.always) {
+    try {
+      bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) {
         return;
       }
-    }
 
-    // Get the user's current position
-    currentPosition.value = await Geolocator.getCurrentPosition();
+      LocationPermission permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.deniedForever) {
+        return;
+      }
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission != LocationPermission.whileInUse && permission != LocationPermission.always) {
+          return;
+        }
+      }
 
-    if (currentPosition.value != null) {
-      center.value = LatLng(currentPosition.value!.latitude, currentPosition.value!.longitude);
-      await _convertToAddress(currentPosition.value!.latitude, currentPosition.value!.longitude);
+      currentPosition.value = await Geolocator.getCurrentPosition();
+
+      if (currentPosition.value != null) {
+        _center = LatLng(currentPosition.value!.latitude, currentPosition.value!.longitude);
+        center.value = _center;
+        await _convertToAddress(currentPosition.value!.latitude, currentPosition.value!.longitude);
+      }
+    } catch (e) {
+      print('Error getting user location: $e');
     }
   }
 
