@@ -1,7 +1,8 @@
 import 'package:customer_hailing/core/app_export.dart';
-import 'package:customer_hailing/presentation/auth/email/email_sign-in_up_screen.dart';
-import 'package:customer_hailing/presentation/auth/email/enter_your_number.dart';
+import 'package:customer_hailing/presentation/auth/email/email_sign-in_screen.dart';
+import 'package:customer_hailing/presentation/auth/email/email_sign_up_screen.dart';
 import 'package:customer_hailing/presentation/auth/google/google_sign_in_up_screen.dart';
+import 'package:customer_hailing/presentation/auth/phone_number/details_phone_number_screen.dart';
 import 'package:customer_hailing/presentation/auth/verification.dart';
 import 'package:customer_hailing/presentation/call-driver/screens/incoming_call_screen.dart';
 import 'package:customer_hailing/presentation/call-driver/screens/ongoing_call_screen.dart';
@@ -41,6 +42,7 @@ import 'package:customer_hailing/presentation/two_factor_authentication/password
 import 'package:customer_hailing/presentation/two_factor_authentication/reset_password_screen.dart';
 import 'package:customer_hailing/presentation/two_factor_authentication/success_screen.dart';
 import 'package:customer_hailing/presentation/two_factor_authentication/two_factor_authentication_screen.dart';
+import '../presentation/auth/email/details_email_sign_up_screen.dart';
 import '../presentation/auth/phone_number/login_or_signup_screen.dart';
 import '../presentation/call-driver/screens/outgoing_call_screen.dart';
 import '../presentation/trip_history/history_details_screen.dart';
@@ -54,7 +56,9 @@ class AppRoutes {
   static const String verification = "/verification";
   static const String googleSignOn = "/google_sign_on";
   static const String emailSignOn = "/email_sign_on";
-  static const String emailPhoneNumber = "/email_phone_no";
+  static const String emailSignUp = "/email_sign_up";
+  static const String detailsEmailSignUp = "/details_email_sign_up";
+  static const String detailsPhoneNumber = "/details_phone_number";
   static const String search = "/search";
   static const String selectRide = "/rides";
   static const String awaitDriver = "/await_driver";
@@ -122,8 +126,16 @@ class AppRoutes {
       page: () => const EmailSignInUpScreen(),
     ),
     GetPage(
-      name: emailPhoneNumber,
-      page: () => const EmailPhoneNumberScreen(),
+      name: emailSignUp,
+      page: () => const EmailSignUpScreen(),
+    ),
+    GetPage(
+      name: detailsEmailSignUp,
+      page: () => const DetailsEmailSignUpScreen(),
+    ),
+    GetPage(
+      name: detailsPhoneNumber,
+      page: () => const DetailsPhoneNumberScreen(),
     ),
     GetPage(
         name: search,
