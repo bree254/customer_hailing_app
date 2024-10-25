@@ -36,12 +36,23 @@ class _LoginOrSignupScreenState extends State<LoginOrSignupScreen> {
       _isButtonEnabled = _phoneController.text.isNotEmpty;
     });
   }
-
-  void navigateToVerificationScreen() {
+  void onSubmit() {
+    if (_formKey.currentState!.validate()) {
+      Get.toNamed(AppRoutes.detailsPhoneNumber,
+          arguments: {
+        "phone_email": _phoneController.text,
+            "verification_type": "mobile number"
+      });
+    }
+  }
+  void navigateToDetailsreen() {
     // Assuming the correct length is 9
     if (_phoneController.text.length == 9) {
-      Get.toNamed(AppRoutes.verification,
-          arguments: {"phone_email": _phoneController.text, "verification_type": "mobile number"});
+      Get.toNamed(AppRoutes.detailsPhoneNumber,
+          arguments: {
+            "phone_email": _phoneController.text,
+            "verification_type": "mobile number"
+          });
     } else {
       // Update the UI to show an error or change the input border color
       setState(() {
@@ -53,6 +64,23 @@ class _LoginOrSignupScreenState extends State<LoginOrSignupScreen> {
       });
     }
   }
+
+  // void navigateToVerificationScreen() {
+  //   // Assuming the correct length is 9
+  //   if (_phoneController.text.length == 9) {
+  //     Get.toNamed(AppRoutes.verification,
+  //         arguments: {"phone_email": _phoneController.text, "verification_type": "mobile number"});
+  //   } else {
+  //     // Update the UI to show an error or change the input border color
+  //     setState(() {
+  //       errorMessage = 'Incomplete number';
+  //       inputBorder = OutlineInputBorder(
+  //         borderRadius: BorderRadius.circular(10.h),
+  //         borderSide: BorderSide(color: appTheme.inputError),
+  //       );
+  //     });
+  //   }
+  // }
 
   Future<void> _handleGoogleSignIn() async {
     try {
@@ -88,7 +116,7 @@ class _LoginOrSignupScreenState extends State<LoginOrSignupScreen> {
             const Align(
               alignment: Alignment.center,
               child: Text(
-                "Login or Signup",
+                "Login",
                 style: TextStyle(
                   color: blackTextColor,
                   fontWeight: FontWeight.w600,
@@ -149,7 +177,7 @@ class _LoginOrSignupScreenState extends State<LoginOrSignupScreen> {
                         text: 'Continue',
                         onPressed: _phoneController.text.isNotEmpty
                             ? () {
-                                navigateToVerificationScreen();
+                          navigateToDetailsreen();
                               }
                             : null,
                         buttonStyle: ElevatedButton.styleFrom(

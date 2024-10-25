@@ -2,6 +2,7 @@ import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/presentation/auth/email/email_sign-in_screen.dart';
 import 'package:customer_hailing/presentation/auth/email/email_sign_up_screen.dart';
 import 'package:customer_hailing/presentation/auth/google/google_sign_in_up_screen.dart';
+import 'package:customer_hailing/presentation/auth/phone_number/details_phone_number_screen.dart';
 import 'package:customer_hailing/presentation/auth/verification.dart';
 import 'package:customer_hailing/presentation/call-driver/screens/incoming_call_screen.dart';
 import 'package:customer_hailing/presentation/call-driver/screens/ongoing_call_screen.dart';
@@ -57,6 +58,7 @@ class AppRoutes {
   static const String emailSignOn = "/email_sign_on";
   static const String emailSignUp = "/email_sign_up";
   static const String detailsEmailSignUp = "/details_email_sign_up";
+  static const String detailsPhoneNumber = "/details_phone_number";
   static const String search = "/search";
   static const String selectRide = "/rides";
   static const String awaitDriver = "/await_driver";
@@ -130,6 +132,10 @@ class AppRoutes {
     GetPage(
       name: detailsEmailSignUp,
       page: () => const DetailsEmailSignUpScreen(),
+    ),
+    GetPage(
+      name: detailsPhoneNumber,
+      page: () => const DetailsPhoneNumberScreen(),
     ),
     GetPage(
         name: search,

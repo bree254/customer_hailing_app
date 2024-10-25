@@ -45,7 +45,7 @@ class _DetailsPhoneNumberScreenState extends State<DetailsPhoneNumberScreen> {
       Get.toNamed(AppRoutes.verification,
           arguments: {
         'phone_email': Get.arguments['phone_email'],
-         "verification_type": "email"
+            "verification_type": "mobile number"
       });
     }
   }
