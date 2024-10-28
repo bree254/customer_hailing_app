@@ -39,4 +39,11 @@ class PrefUtils {
   List<String>? getStringList(String key) {
     return _sharedPreferences!.getStringList(key);
   }
+  getFcmToken() async {
+    return _sharedPreferences!.getString('fcm_token');
+  }
+
+  void setFcmToken(String fcmToken) {
+    _sharedPreferences!.setString('fcm_token', fcmToken);
+  }
 }
