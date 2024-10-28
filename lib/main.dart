@@ -1,5 +1,6 @@
 import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/routes/routes.dart';
+import 'package:customer_hailing/services/notifications_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -14,22 +15,23 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  await Permission.locationWhenInUse.isDenied.then((valueOfPermission)
-  {
-    if(valueOfPermission){
+  // Request location permissions if needed
+  await Permission.locationWhenInUse.isDenied.then((valueOfPermission) {
+    if (valueOfPermission) {
       Permission.locationWhenInUse.request();
     }
-  }
-  );
+  });
 
-  Future.wait([
+  await Future.wait([
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]),
     PrefUtils().init(),
-  ]).then((value) async {
-    runApp(const Hailing());
-  });
+  ]);
+
+  FirebaseMessaging.onBackgroundMessage(NotificationService.firebaseMessagingBackgroundHandler);
+
+  runApp(const Hailing());
 }
 
 class Hailing extends StatelessWidget {
@@ -37,6 +39,7 @@ class Hailing extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    NotificationService.setUpNotificationService(context);
     return Sizer(builder: (context, orientation, deviceType) {
       return GetMaterialApp(
         title: 'Taxi App',
