@@ -7,7 +7,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import '../core/utils/pref_utils.dart';
 
 class NotificationService {
   static final NotificationService _instance = NotificationService._internal();
