@@ -21,9 +21,11 @@ class _SplashScreenState extends State<SplashScreen> {
     await Future.delayed(const Duration(seconds: 3));
 
     if (isLoggedIn) {
-      Get.offNamed(AppRoutes.loginorsignup);
-    } else {
       Get.offNamed(AppRoutes.home);
+
+    } else {
+      Get.offNamed(AppRoutes.loginorsignup);
+
     }
   }
 

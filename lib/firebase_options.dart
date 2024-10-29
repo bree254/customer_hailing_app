@@ -65,7 +65,7 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyByF20TBbVsprhEgAEPz_9iVWC8YAki5tc',
+    apiKey: 'AIzaSyAAA8pq6npeaM4-ndwclHHLGBt7oKl29FY',
     appId: '1:1040823718714:ios:a55cf6f08b1d291f14b603',
     messagingSenderId: '1040823718714',
     projectId: 'ride-hailing-d819c',
