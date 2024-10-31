@@ -16,13 +16,9 @@ class _SupportCentreScreenState extends State<SupportCentreScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        title: const Text(
+        title:  Text(
           'Support centre',
-          style: TextStyle(
-            color: Color(0xFF767676),
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-          ),
+          style: AppTextStyles.largeAppBarText,
         ),
         iconTheme: const IconThemeData(color: Colors.black),
         leading: IconButton(
