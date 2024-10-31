@@ -304,13 +304,9 @@ class _EnterTripDetailsScreenState extends State<EnterTripDetailsScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        title: const Text(
+        title:  Text(
           'Enter trip details',
-          style: TextStyle(
-            color: searchtextGrey,
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
-          ),
+          style: AppTextStyles.mediumAppBarText,
         ),
         iconTheme: const IconThemeData(color: Colors.black),
         leading: IconButton(

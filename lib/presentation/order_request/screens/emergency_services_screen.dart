@@ -9,13 +9,9 @@ class EmergencyServicesScreen extends StatelessWidget {
     return  Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        title: const Text(
+        title:  Text(
           'Emergency Services',
-          style: TextStyle(
-            color: Color(0xFF767676),
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-          ),
+          style: AppTextStyles.largeAppBarText,
         ),
         leading: IconButton(
             onPressed: (){

@@ -52,13 +52,9 @@ class _NameLocationScreenState extends State<NameLocationScreen> {
             color: blackTextColor,
           ),
         ),
-        title: const Text(
+        title: Text(
           'Give the location a name',
-          style: TextStyle(
-            color: Color(0xFF767676),
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-          ),
+          style: AppTextStyles.mediumBoldAppBarText,
         ),
       ),
       body: Padding(

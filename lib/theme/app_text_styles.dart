@@ -4,12 +4,23 @@ import 'package:flutter/material.dart';
 import '../core/app_export.dart';
 
 class AppTextStyles {
-  static get appBarText => theme.textTheme.bodyLarge!.copyWith(
+  //AppBar textstyles
+  static get largeAppBarText => theme.textTheme.bodyLarge!.copyWith(
     fontSize: 16,fontWeight: FontWeight.w600,color: searchtextGrey
   );
+  static get mediumAppBarText => theme.textTheme.bodyLarge!.copyWith(
+      fontSize: 14,fontWeight: FontWeight.w500,color: searchtextGrey
+  );
+  static get mediumBoldAppBarText => theme.textTheme.bodyLarge!.copyWith(
+      fontSize: 14,fontWeight: FontWeight.w600,color: searchtextGrey
+  );
+
   static get onBoardingAppBarText => theme.textTheme.bodyLarge!.copyWith(
       fontSize: 20,fontWeight: FontWeight.w600,color: blackTextColor
   );
+
+  //Textfield textstyles
+
   static get bodyLarge => theme.textTheme.bodyLarge!.copyWith(
         fontSize: 16,
       );

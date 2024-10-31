@@ -82,13 +82,9 @@ class _SearchLocationScreenState extends State<SearchLocationScreen> {
             color: blackTextColor,
           ),
         ),
-        title: const Text(
+        title:  Text(
           'New location',
-          style: TextStyle(
-            color: Color(0xFF767676),
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-          ),
+          style: AppTextStyles.largeAppBarText,
         ),
       ),
       body: Padding(
