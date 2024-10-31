@@ -62,13 +62,9 @@ class _AddCardScreenState extends State<AddCardScreen> {
               color: blackTextColor,
             ),
           ),
-          title: const Text(
+          title:  Text(
             'Add card',
-            style: TextStyle(
-              color: Color(0xFF767676),
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-            ),
+            style: AppTextStyles.largeAppBarText,
           )
       ),
       body: Padding(

@@ -27,13 +27,9 @@ class _AddNewPaymentScreenState extends State<AddNewPaymentScreen> {
               color: blackTextColor,
             ),
           ),
-          title: const Text(
+          title:  Text(
             'Payment methods',
-            style: TextStyle(
-              color: Color(0xFF767676),
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-            ),
+            style: AppTextStyles.largeAppBarText,
           )
       ),
       body: Padding(
