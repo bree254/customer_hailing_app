@@ -26,13 +26,9 @@ class _SuccessScreenState extends State<SuccessScreen> {
               'assets/images/email_sent.png',
             ),
             const SizedBox(height: 55,),
-            const Text(
+             Text(
               "Terms of Use & Privacy Notice",
-              style: TextStyle(
-                color: blackTextColor,
-                fontWeight: FontWeight.w600,
-                fontSize: 20,
-              ),
+              style: AppTextStyles.largeAppBarText,
             ),
             const SizedBox(height: 32,),
 

@@ -56,13 +56,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
         backgroundColor: Colors.white,
         automaticallyImplyLeading:false,
         elevation: 0,
-        title: const Text(
+        title:  Text(
           'Reset your password',
-          style: TextStyle(
-            color: Color(0xFF767676),
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-          ),
+          style: AppTextStyles.largeAppBarText,
         ),
       ),
       body: Padding(
