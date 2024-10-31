@@ -59,14 +59,10 @@ class _EmailSignUpScreenState extends State<EmailSignUpScreen> {
                 const SizedBox(
                   height: 32,
                 ),
-                const Center(
+                 Center(
                   child: Text(
                     "Sign up",
-                    style: TextStyle(
-                      color: blackTextColor,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 20,
-                    ),
+                    style: AppTextStyles.onBoardingAppBarText,
                   ),
                 ),
                 const SizedBox(

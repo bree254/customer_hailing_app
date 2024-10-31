@@ -62,15 +62,11 @@ class _DetailsPhoneNumberScreenState extends State<DetailsPhoneNumberScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 32.v),
-              const Align(
+               Align(
                 alignment: Alignment.center,
                 child: Text(
                   "Enter your details",
-                  style: TextStyle(
-                    color: blackTextColor,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 20,
-                  ),
+                  style: AppTextStyles.onBoardingAppBarText,
                 ),
               ),
               SizedBox(height: 40.v),

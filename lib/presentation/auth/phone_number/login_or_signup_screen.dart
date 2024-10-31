@@ -113,15 +113,11 @@ class _LoginOrSignupScreenState extends State<LoginOrSignupScreen> {
         child: Column(
           children: [
             SizedBox(height: 32.v),
-            const Align(
+             Align(
               alignment: Alignment.center,
               child: Text(
                 "Login",
-                style: TextStyle(
-                  color: blackTextColor,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 20,
-                ),
+                style: AppTextStyles.onBoardingAppBarText,
               ),
             ),
             Padding(

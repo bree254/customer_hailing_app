@@ -55,14 +55,10 @@ class _EmailSignInUpScreenState extends State<EmailSignInUpScreen> {
             const SizedBox(
               height: 32,
             ),
-            const Center(
+             Center(
               child: Text(
                 "Login to your account",
-                style: TextStyle(
-                  color: blackTextColor,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 20,
-                ),
+                style: AppTextStyles.onBoardingAppBarText,
               ),
             ),
             const SizedBox(

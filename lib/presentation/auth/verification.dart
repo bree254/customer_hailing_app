@@ -103,11 +103,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
               alignment: Alignment.center,
               child: Text(
                 "Verify your $verificationType",
-                style: const TextStyle(
-                  color: blackTextColor,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 20,
-                ),
+                style: AppTextStyles.onBoardingAppBarText,
               ),
             ),
             const SizedBox(height: 32),

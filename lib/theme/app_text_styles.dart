@@ -1,7 +1,15 @@
 import 'package:customer_hailing/theme/theme_helper.dart';
 import 'package:flutter/material.dart';
 
+import '../core/app_export.dart';
+
 class AppTextStyles {
+  static get appBarText => theme.textTheme.bodyLarge!.copyWith(
+    fontSize: 16,fontWeight: FontWeight.w600,color: searchtextGrey
+  );
+  static get onBoardingAppBarText => theme.textTheme.bodyLarge!.copyWith(
+      fontSize: 20,fontWeight: FontWeight.w600,color: blackTextColor
+  );
   static get bodyLarge => theme.textTheme.bodyLarge!.copyWith(
         fontSize: 16,
       );
