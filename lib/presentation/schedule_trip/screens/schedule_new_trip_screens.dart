@@ -19,13 +19,9 @@ class _ScheduleNewTripScreenState extends State<ScheduleNewTripScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        title: const Text(
+        title:  Text(
           'Schedule New Trip',
-          style: TextStyle(
-            color: Color(0xFF767676),
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
-          ),
+          style: AppTextStyles.onBoardingAppBarText,
         ),
         automaticallyImplyLeading: false,
       ),
