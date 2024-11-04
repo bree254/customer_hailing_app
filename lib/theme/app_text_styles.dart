@@ -21,7 +21,7 @@ class AppTextStyles {
 
   // Textfield textstyles
   static get titleTextField => theme.textTheme.bodyLarge!.copyWith(
-      fontSize: 14, fontWeight: FontWeight.w400, color: searchtextGrey
+      fontSize: 14, fontWeight: FontWeight.w400, color: formTextLabelColor
   );
   static get resendCodeText => theme.textTheme.bodyMedium!.copyWith(
       color: resendCodeTextColor, fontWeight: FontWeight.w400, fontSize: 14

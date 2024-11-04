@@ -1,7 +1,6 @@
 import 'package:customer_hailing/core/app_export.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
-import '../../../components/phone_field/custom_phone_input.dart';
 import '../../../routes/routes.dart';
 import '../../../widgets/custom_text_form_field.dart';
 class DetailsPhoneNumberScreen extends StatefulWidget {
@@ -70,13 +69,9 @@ class _DetailsPhoneNumberScreenState extends State<DetailsPhoneNumberScreen> {
                 ),
               ),
               SizedBox(height: 40.v),
-              const Text(
+               Text(
                 "First name",
-                style: TextStyle(
-                  color: formTextLabelColor,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 14,
-                ),
+                style:AppTextStyles.titleTextField,
               ),
               SizedBox(height: 10.v),
               CustomTextFormField(
@@ -88,11 +83,7 @@ class _DetailsPhoneNumberScreenState extends State<DetailsPhoneNumberScreen> {
                   borderSide: const BorderSide(color: Colors.transparent, width: 0),
                 ),
                 hintText: "Ariana",
-                hintStyle: const TextStyle(
-                  color: blackTextColor,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 14,
-                ),
+                hintStyle: AppTextStyles.textFieldHint,
                 contentPadding: EdgeInsets.symmetric(vertical: 14.v, horizontal: 10.h),
                 validator: (value) {
                   if (value!.isEmpty) {
@@ -102,13 +93,9 @@ class _DetailsPhoneNumberScreenState extends State<DetailsPhoneNumberScreen> {
                 },
               ),
               SizedBox(height: 20.v),
-              const Text(
+               Text(
                 "Last name",
-                style: TextStyle(
-                  color: formTextLabelColor,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 14,
-                ),
+                style:AppTextStyles.titleTextField,
               ),
               SizedBox(height: 10.v),
               CustomTextFormField(
@@ -120,11 +107,7 @@ class _DetailsPhoneNumberScreenState extends State<DetailsPhoneNumberScreen> {
                   borderSide: const BorderSide(color: Colors.transparent, width: 0),
                 ),
                 hintText: "Grandeur",
-                hintStyle: const TextStyle(
-                  color: blackTextColor,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 14,
-                ),
+                hintStyle: AppTextStyles.textFieldHint,
                 contentPadding: EdgeInsets.symmetric(vertical: 14.v, horizontal: 10.h),
                 validator: (value) {
                   if (value!.isEmpty) {
@@ -134,13 +117,9 @@ class _DetailsPhoneNumberScreenState extends State<DetailsPhoneNumberScreen> {
                 },
               ),
               SizedBox(height: 20.v),
-            const Text(
+             Text(
               "Enter your email",
-              style: TextStyle(
-                color: formTextLabelColor,
-                fontWeight: FontWeight.w400,
-                fontSize: 14,
-              ),
+              style:AppTextStyles.titleTextField,
             ),
             const SizedBox(
               height: 10,
@@ -150,11 +129,7 @@ class _DetailsPhoneNumberScreenState extends State<DetailsPhoneNumberScreen> {
               filled: true,
               fillColor: countryTextFieldColor,
               labelText: "name@email.com",
-              labelStyle: const TextStyle(
-                color: blackTextColor,
-                fontWeight: FontWeight.w400,
-                fontSize: 14,
-              ),
+              labelStyle: AppTextStyles.textFieldLabel,
               autofocus: false,
               // height: 96.h,
               contentPadding: EdgeInsets.symmetric(vertical: 15.v, horizontal: 10.h),
