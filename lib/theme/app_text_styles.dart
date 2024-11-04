@@ -19,7 +19,53 @@ class AppTextStyles {
       fontSize: 20,fontWeight: FontWeight.w600,color: blackTextColor
   );
 
-  //Textfield textstyles
+  // Textfield textstyles
+  static get titleTextField => theme.textTheme.bodyLarge!.copyWith(
+      fontSize: 14, fontWeight: FontWeight.w400, color: searchtextGrey
+  );
+  static get resendCodeText => theme.textTheme.bodyMedium!.copyWith(
+      color: resendCodeTextColor, fontWeight: FontWeight.w400, fontSize: 14
+  );
+  static get invalidOtpText => theme.textTheme.bodySmall!.copyWith(
+      color: textfieldErrorRedColor, fontWeight: FontWeight.w400, fontSize: 12
+  );
+  static get resendCodeLink => theme.textTheme.bodyMedium!.copyWith(
+      color: resendCodeTextColor, decoration: TextDecoration.underline,
+      fontWeight: FontWeight.w400, fontSize: 14
+  );
+  static get textFieldLabel => theme.textTheme.bodyMedium!.copyWith(
+      color: formTextLabelColor, fontWeight: FontWeight.w400, fontSize: 14
+  );
+  static get textFieldHint => theme.textTheme.bodyMedium!.copyWith(
+      color: blackTextColor, fontWeight: FontWeight.w400, fontSize: 14
+  );
+  // list tile text styles
+  static get listTileTitle => theme.textTheme.bodyLarge!.copyWith(
+      fontWeight: FontWeight.w400, fontSize: 14, color: const Color(0xFF555555)
+  );
+
+  static get listTileSubtitle => theme.textTheme.bodyMedium!.copyWith(
+      color: const Color(0xFF9CA3AF), fontSize: 12, fontWeight: FontWeight.w400
+  );
+
+  static get rebookButtonText => theme.textTheme.bodySmall!.copyWith(
+      color: const Color(0xFF1F2A37), fontSize: 10, fontFamily: 'BR Omny',
+      fontWeight: FontWeight.w400, height: 0.20, letterSpacing: 0.25
+  );
+// CustomElevatedButton text styles
+  static get customButtonText => theme.textTheme.headlineSmall!.copyWith(
+      color: appTheme.white, fontSize: 16, fontWeight: FontWeight.w600
+  );
+
+  // Forgot Password text style
+  static get forgotPasswordText => theme.textTheme.bodySmall!.copyWith(
+      color: primaryColor, fontWeight: FontWeight.w600, fontSize: 12
+  );
+
+  // "or" text style
+  static get orText => theme.textTheme.bodySmall!.copyWith(
+      color: formTextLabelColor, fontWeight: FontWeight.w400, fontSize: 12
+  );
 
   static get bodyLarge => theme.textTheme.bodyLarge!.copyWith(
         fontSize: 16,

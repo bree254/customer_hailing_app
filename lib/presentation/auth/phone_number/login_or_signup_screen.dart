@@ -65,23 +65,6 @@ class _LoginOrSignupScreenState extends State<LoginOrSignupScreen> {
     }
   }
 
-  // void navigateToVerificationScreen() {
-  //   // Assuming the correct length is 9
-  //   if (_phoneController.text.length == 9) {
-  //     Get.toNamed(AppRoutes.verification,
-  //         arguments: {"phone_email": _phoneController.text, "verification_type": "mobile number"});
-  //   } else {
-  //     // Update the UI to show an error or change the input border color
-  //     setState(() {
-  //       errorMessage = 'Incomplete number';
-  //       inputBorder = OutlineInputBorder(
-  //         borderRadius: BorderRadius.circular(10.h),
-  //         borderSide: BorderSide(color: appTheme.inputError),
-  //       );
-  //     });
-  //   }
-  // }
-
   Future<void> _handleGoogleSignIn() async {
     try {
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
@@ -128,13 +111,9 @@ class _LoginOrSignupScreenState extends State<LoginOrSignupScreen> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
+                       Text(
                         "Enter your mobile number",
-                        style: TextStyle(
-                          color: blackTextColor,
-                          fontWeight: FontWeight.w400,
-                          fontSize: 14,
-                        ),
+                        style: AppTextStyles.titleTextField,
                       ),
                       SizedBox(
                         height: 20.v,
@@ -189,13 +168,9 @@ class _LoginOrSignupScreenState extends State<LoginOrSignupScreen> {
             SizedBox(
               height: 20.v,
             ),
-            const Text(
+             Text(
               "or",
-              style: TextStyle(
-                color: formTextLabelColor,
-                fontWeight: FontWeight.w400,
-                fontSize: 12,
-              ),
+              style: AppTextStyles.orText,
             ),
             const SizedBox(
               height: 5,
