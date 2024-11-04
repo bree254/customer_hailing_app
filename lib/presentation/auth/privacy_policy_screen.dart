@@ -34,46 +34,25 @@ class PrivacyPolicyScreen extends StatelessWidget {
               alignment: Alignment.center,
               child: RichText(
                 textAlign: TextAlign.center,
-                text: const TextSpan(
+                text:  TextSpan(
                   text: 'By tapping, “I Agree” below, you acknowledge\n having reviewed and agreed to the ',
-                  style: TextStyle(
-                    color: blackTextColor,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14,
-                  ),
+                  style: AppTextStyles.text14Black400,
                   children: [
                     TextSpan(
                       text: 'Terms of Use',
-                      style: TextStyle(
-                        fontFamily: "",
-                        color: primaryColor,
-                        fontWeight: FontWeight.w400,
-                        fontSize: 14,
-                      ),
+                      style: AppTextStyles.text14Black400.copyWith(color: primaryColor),
                     ),
                     TextSpan(
                       text: ' and the ',
-                      style: TextStyle(
-                        color: blackTextColor,
-                        fontWeight: FontWeight.w400,
-                        fontSize: 14,
-                      ),
+                      style: AppTextStyles.text14Black400,
                     ),
                     TextSpan(
                       text: 'Privacy Notice',
-                      style: TextStyle(
-                        color: primaryColor,
-                        fontWeight: FontWeight.w400,
-                        fontSize: 14,
-                      ),
+                      style: AppTextStyles.text14Black400.copyWith(color: primaryColor),
                     ),
                     TextSpan(
                       text: ' of Taxi.',
-                      style: TextStyle(
-                        color: blackTextColor, // Replace with your desired text color
-                        fontWeight: FontWeight.w400,
-                        fontSize: 14,
-                      ),
+                      style: AppTextStyles.text14Black400,
                     ),
                   ],
 
@@ -103,15 +82,11 @@ class PrivacyPolicyScreen extends StatelessWidget {
               onTap: (){
                 Get.back();
               },
-              child: const Center(
+              child:  Center(
                 child: Text(
 
                   "Back",
-                  style: TextStyle(
-                    color: primaryColor,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 12,
-                  ),
+                  style: AppTextStyles.text14Black400.copyWith(color: primaryColor,fontSize: 12.0),
                 ),
               ),
             ),
