@@ -110,21 +110,13 @@ class _VerificationScreenState extends State<VerificationScreen> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const Text(
+                 Text(
                   "Please enter the OTP sent to",
-                  style: TextStyle(
-                    color: blackTextColor,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14,
-                  ),
+                  style: AppTextStyles.text14Black400,
                 ),
                 Text(
                   phoneEmail!,
-                  style: const TextStyle(
-                    color: blackTextColor,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14,
-                  ),
+                  style: AppTextStyles.text14Black600,
                 ),
               ],
             ),
@@ -134,10 +126,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
               length: 4,
               animationType: AnimationType.none,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              textStyle: const TextStyle(
-                fontWeight: FontWeight.w400,
-                fontSize: 14,
-              ),
+              textStyle: AppTextStyles.text14Black400,
               pinTheme: PinTheme(
                 shape: PinCodeFieldShape.box,
                 borderRadius: BorderRadius.circular(10),
@@ -173,35 +162,24 @@ class _VerificationScreenState extends State<VerificationScreen> {
             const SizedBox(height: 8),
             if (_hasStartedInputting && !_showResendCode)
               Text(_resendCodeText,
-                  style: const TextStyle(
-                    color: resendCodeTextColor,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14,
-                  )),
+        style: AppTextStyles.text14Resend400),
             const SizedBox(height: 16),
             if (_isLoading) ...[
               const CircularProgressIndicator(),
             ] else if (_showInvalidCode) ...[
-              const Text(
+               Text(
                 "Invalid OTP",
-                style: TextStyle(
-                  color: textfieldErrorRedColor,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 12,
-                ),
+                style: AppTextStyles.text14Error400.copyWith(fontSize: 12.0),
               ),
               const SizedBox(height: 16),
               GestureDetector(
                 onTap: () {
                   // Handle resend code action
                 },
-                child: const Text(
+                child:  Text(
                   "Resend code",
-                  style: TextStyle(
-                    color: resendCodeTextColor,
+                  style: AppTextStyles.text14Resend400.copyWith(
                     decoration: TextDecoration.underline,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14,
                   ),
                 ),
               ),

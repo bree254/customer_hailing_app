@@ -67,6 +67,28 @@ class AppTextStyles {
       color: formTextLabelColor, fontWeight: FontWeight.w400, fontSize: 12
   );
 
+  // Standardized text styles for font size 14
+  static get text14Black400 => theme.textTheme.bodyMedium!.copyWith(
+      color: blackTextColor, fontWeight: FontWeight.w400, fontSize: 14
+  );
+  static get text14Black500 => theme.textTheme.bodyMedium!.copyWith(
+      color: blackTextColor, fontWeight: FontWeight.w500, fontSize: 14
+  );
+  static get text14Black600 => theme.textTheme.bodyMedium!.copyWith(
+      color: blackTextColor, fontWeight: FontWeight.w600, fontSize: 14
+  );
+  static get text14Resend400 => theme.textTheme.bodyMedium!.copyWith(
+      color: resendCodeTextColor, fontWeight: FontWeight.w400, fontSize: 14
+  );
+  static get text14Error400 => theme.textTheme.bodyMedium!.copyWith(
+      color: textfieldErrorRedColor, fontWeight: FontWeight.w400, fontSize: 14
+  );
+  static get text14FormLabel400 => theme.textTheme.bodyMedium!.copyWith(
+      color: formTextLabelColor, fontWeight: FontWeight.w400, fontSize: 14
+  );
+
+
+
   static get bodyLarge => theme.textTheme.bodyLarge!.copyWith(
         fontSize: 16,
       );
