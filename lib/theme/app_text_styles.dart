@@ -94,15 +94,14 @@ class AppTextStyles {
     fontSize: 12,
   );
 
-
+//Body fontstyles
   static get bodyLarger => theme.textTheme.bodyLarge!.copyWith(
         fontSize: 18,
       );
 
   static get bodyMedium => theme.textTheme.bodyMedium!.copyWith(
         fontSize: 16.0,
-        color: appTheme.black,
-        fontWeight: FontWeight.w500,
+        fontWeight: FontWeight.w400,
       );
 
   static get bodyRegular => theme.textTheme.bodyMedium!.copyWith(
@@ -119,6 +118,11 @@ class AppTextStyles {
     color:disabledButtonGrey,
     fontWeight: FontWeight.w400,
   );
+  static get bodySmallBold => theme.textTheme.bodySmall!.copyWith(
+    fontSize: 12.0,
+    color:formTextLabelColor,
+    fontWeight: FontWeight.w500,
+  );
 
   static get bodySmallPrimary => theme.textTheme.bodySmall!.copyWith(
     fontSize: 12.0,
@@ -131,6 +135,8 @@ class AppTextStyles {
     color: formTextLabelColor,
     fontWeight: FontWeight.w500,
   );
+
+
 
   static get normalStyle => theme.textTheme.bodyMedium!.copyWith(
         color: const Color(0XFF000000),
