@@ -17,13 +17,9 @@ class IncomingCallScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           SizedBox(height: 80.v,),
-          const Text(
+           Text(
             'Incoming call',
-            style: TextStyle(
-              color: Color(0xFF9D9D9D),
-              fontSize: 16,
-              fontWeight: FontWeight.w400,
-            ),
+            style: AppTextStyles.bodyRegular,
           ),
           Positioned(
             top: 100,
@@ -50,7 +46,7 @@ class IncomingCallScreen extends StatelessWidget {
           ),
           Obx(() => Text(
             callController.callerName.value,
-            style: const TextStyle(fontSize: 24),
+            style: AppTextStyles.bodyLarge,
           )),
           const Spacer(),
           Container(
@@ -73,13 +69,9 @@ class IncomingCallScreen extends StatelessWidget {
                       child: const Icon(Icons.call),
                     ),
                     const SizedBox(height: 10,),
-                    const Text(
+                     Text(
                       'Answer',
-                      style: TextStyle(
-                        color: Color(0xFF9D9D9D),
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                      ),
+                      style: AppTextStyles.bodySmall,
                     )
                   ],
                 ),
@@ -97,13 +89,9 @@ class IncomingCallScreen extends StatelessWidget {
                       child: const Icon(Icons.call_end),
                     ),
                     const SizedBox(height: 10,),
-                    const Text(
+                     Text(
                       'Decline',
-                      style: TextStyle(
-                        color: Color(0xFF9D9D9D),
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                      ),
+                      style: AppTextStyles.bodySmall,
                     )
                   ],
                 ),

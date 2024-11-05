@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../theme/app_text_styles.dart';
 import '../controllers/call_controller.dart';
 
 class OngoingCallScreen extends StatelessWidget {
@@ -15,13 +16,9 @@ class OngoingCallScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Text(
+             Text(
               'Ongoing call',
-              style: TextStyle(
-                color: Color(0xFF9D9D9D),
-                fontSize: 14,
-                fontWeight: FontWeight.w400,
-              ),
+              style: AppTextStyles.bodyRegular,
             ),
             const SizedBox(height: 24),
             CircleAvatar(
@@ -32,20 +29,12 @@ class OngoingCallScreen extends StatelessWidget {
             const SizedBox(height: 32),
             Obx(() => Text(
               callController.callerName.value,
-              style: const TextStyle(
-                color: Color(0xFF434343),
-                fontSize: 18,
-                fontWeight: FontWeight.w500,
-              ),
+              style: AppTextStyles.bodyLarge,
             )),
             const SizedBox(height: 8),
             Obx(() => Text(
               callController.callDuration.value,
-              style: const TextStyle(
-                color: Color(0xFF9D9D9D),
-                fontSize: 12,
-                fontWeight: FontWeight.w400,
-              ),
+              style: AppTextStyles.bodySmall,
             )),
             const Spacer(),
             Row(
@@ -61,13 +50,9 @@ class OngoingCallScreen extends StatelessWidget {
                         )
                     ),
                     const SizedBox(height: 10,),
-                    const Text(
+                     Text(
                       'Speaker',
-                      style: TextStyle(
-                        color: Color(0xFF9D9D9D),
-                        fontSize: 10,
-                        fontWeight: FontWeight.w400,
-                      ),
+                      style: AppTextStyles.bodyRegular.copyWith(fontSize: 12.0,),
                     )
                   ],
                 ),
@@ -85,14 +70,10 @@ class OngoingCallScreen extends StatelessWidget {
                       child: const Icon(Icons.call_end),
                     ),
                     const SizedBox(height: 10,),
-                    const Text(
+                     Text(
                       'End',
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Color(0xFF9D9D9D),
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                      ),
+                      style: AppTextStyles.bodySmall,
                     ),
                   ],
                 ),
@@ -106,13 +87,9 @@ class OngoingCallScreen extends StatelessWidget {
                         )
                     ),
                     const SizedBox(height: 10,),
-                    const Text(
+                     Text(
                       'Speaker',
-                      style: TextStyle(
-                        color: Color(0xFF9D9D9D),
-                        fontSize: 10,
-                        fontWeight: FontWeight.w400,
-                      ),
+                      style: AppTextStyles.bodySmall.copyWith(fontSize: 12.0,),
                     )
                   ],
                 ),
