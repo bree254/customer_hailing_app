@@ -111,7 +111,7 @@ class AppTextStyles {
       );
 
   static get bodyMediumPrimary => theme.textTheme.bodyMedium!.copyWith(
-        color: theme.colorScheme.primary,
+        color: primaryColor,
       );
   static get bodySmall => theme.textTheme.bodySmall!.copyWith(
     fontSize: 12.0,
@@ -134,6 +134,10 @@ class AppTextStyles {
     fontSize: 18.0,
     color: formTextLabelColor,
     fontWeight: FontWeight.w500,
+  );
+// headline texts
+  static get headlineSmallSemiBold => theme.textTheme.headlineSmall!.copyWith(
+    fontSize: 24,
   );
 
 
@@ -160,10 +164,7 @@ class AppTextStyles {
         color: Colors.white,
       );
 
-  static get headlineSmallSemiBold => theme.textTheme.headlineSmall!.copyWith(
-        fontSize: 24,
-        fontWeight: FontWeight.w600,
-      );
+
 
   static get headlineSmallwhite => theme.textTheme.headlineSmall!.copyWith(
         color: appTheme.white,

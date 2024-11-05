@@ -96,11 +96,9 @@ class _SearchLocationScreenState extends State<SearchLocationScreen> {
               focusNode: _locationFocusNode,
               decoration: InputDecoration(
                 hintText: 'Search location',
-                hintStyle: const TextStyle(
-                  color: Color(0xFF767676),
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400,
-                ),
+                hintStyle: AppTextStyles.bodySmall.copyWith(
+             color: searchtextGrey,
+              ),
                 fillColor: _locationFocusNode.hasFocus ? Colors.white : searchButtonGrey,
                 filled: true,
                 border: OutlineInputBorder(
@@ -151,10 +149,8 @@ class _SearchLocationScreenState extends State<SearchLocationScreen> {
                       ),
                       title: Text(
                         prediction.description,
-                        style: const TextStyle(
-                          color: Color(0xFF767676),
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
+                        style:AppTextStyles.bodySmall.copyWith(
+                          color: searchtextGrey,
                         ),
                       ),
                       onTap: () {

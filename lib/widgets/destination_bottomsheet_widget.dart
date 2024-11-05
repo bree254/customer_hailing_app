@@ -49,11 +49,9 @@ class DestinationBottomSheet extends StatelessWidget {
                     child: TextField(
                       decoration: InputDecoration(
                         labelText: 'where do you want to go',
-                        labelStyle: const TextStyle(
-                          color: searchtextGrey,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                        ),
+                        labelStyle: AppTextStyles.bodySmallBold.copyWith(
+                        color: searchtextGrey,
+                      ),
                         fillColor: searchButtonGrey,
                         filled: true,
                         border: OutlineInputBorder(
@@ -95,18 +93,15 @@ class DestinationBottomSheet extends StatelessWidget {
                             ),
                             title: Text(
                               destination.address,
-                              style: const TextStyle(
+                              style:AppTextStyles.bodySmallBold.copyWith(
                                 color: searchtextGrey,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500,
                               ),
                             ),
                             subtitle: Text(
                               destination.location,
-                              style: const TextStyle(
+                              style:AppTextStyles.bodySmallBold.copyWith(
                                 color: searchtextGrey,
-                                fontSize: 10,
-                                fontWeight: FontWeight.w400,
+                                fontSize:10.0,
                               ),
                             ),
                           ),

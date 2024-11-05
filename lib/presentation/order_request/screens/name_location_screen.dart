@@ -66,11 +66,9 @@ class _NameLocationScreenState extends State<NameLocationScreen> {
               focusNode: _locationFocusNode,
               decoration: InputDecoration(
                 hintText: 'Enter place name',
-                hintStyle: const TextStyle(
-                  color: Color(0xFF767676),
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400,
-                ),
+                hintStyle:  AppTextStyles.bodySmallBold.copyWith(
+                color: searchtextGrey,
+              ),
                 fillColor: _locationFocusNode.hasFocus ? Colors.white : searchButtonGrey,
                 filled: true,
                 border: OutlineInputBorder(
@@ -97,11 +95,9 @@ class _NameLocationScreenState extends State<NameLocationScreen> {
                 backgroundColor: _hasInput ? primaryColor : disabledButtonGrey, // Change color based on input
                 elevation: 0,
               ),
-              buttonTextStyle: const TextStyle(
-                color: Color(0xFFFFFFFF),
-                fontSize: 12,
-                fontWeight: FontWeight.w400,
-              ),
+              buttonTextStyle:  AppTextStyles.bodySmallBold.copyWith(
+              color: whiteTextColor,
+            ),
               text: 'Next',
             ),
 

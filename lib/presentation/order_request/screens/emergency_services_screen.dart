@@ -44,12 +44,10 @@ class EmergencyServicesScreen extends StatelessWidget {
                       'assets/images/headphones.png'
                   ),
                 const SizedBox(width: 20,),
-                const Text(
+                 Text(
                       'Taxi hotline',
-                      style: TextStyle(
-                        color: Color(0xFF555555),
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
+                      style: AppTextStyles.bodySmall.copyWith(
+                        color: darkerGrey,
                       ),
                     ),
                   const Spacer(),
@@ -82,12 +80,10 @@ class EmergencyServicesScreen extends StatelessWidget {
                         'assets/images/bell.png'
                     ),
                     const SizedBox(width: 20,),
-                    const Text(
+                     Text(
                       'Local Authorities',
-                      style: TextStyle(
-                        color: Color(0xFF555555),
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
+                      style: AppTextStyles.bodySmall.copyWith(
+                        color: darkerGrey,
                       ),
                     ),
                     const Spacer(),

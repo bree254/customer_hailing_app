@@ -66,13 +66,12 @@ class _ChatScreenState extends State<ChatScreen> {
                  Expanded(
                   child: Text(
                     _profiles!,
-                    style: const TextStyle(
-                      color: Color(0xFF1D1B20),
-                      fontSize: 24,
+                    style: AppTextStyles.headlineSmallSemiBold.copyWith(
+                      color: profileText,
                       fontWeight: FontWeight.w400,
-                    ),
                   ),
                 ),
+                 ),
                 const Icon(
                   Icons.more_vert_outlined,
                   color: Colors.black54,
@@ -112,7 +111,7 @@ class _ChatScreenState extends State<ChatScreen> {
         children: [
           Text(
             _formatDateTime(timestamp), // Format the date and time
-            style: const TextStyle(color: Colors.grey, fontSize: 12),
+            style: AppTextStyles.bodySmall,
           ),
           const SizedBox(height: 5),
           Row(
@@ -182,12 +181,10 @@ class _ChatScreenState extends State<ChatScreen> {
                     child: TextField(
                       controller: _controller,
                       textCapitalization: TextCapitalization.sentences,
-                      decoration: const InputDecoration(
+                      decoration:  InputDecoration(
                         hintText: 'Chat message',
-                        hintStyle: TextStyle(
+                        hintStyle: AppTextStyles.bodyMedium.copyWith(
                           color: chatIcons,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
                         ),
                         border: InputBorder.none,
                       ),

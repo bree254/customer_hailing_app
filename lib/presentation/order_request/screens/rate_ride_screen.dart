@@ -28,12 +28,11 @@ class _RateRideScreenState extends State<RateRideScreen> {
                 ),
               ),
               const SizedBox(height: 20),
-              const Text(
+               Text(
                 'Rate your trip with James',
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: AppTextStyles.onBoardingAppBarText.copyWith(
                   color: primaryColor,
-                  fontSize: 20,
                   fontWeight: FontWeight.w700,
                 ),
               ),
@@ -56,12 +55,10 @@ class _RateRideScreenState extends State<RateRideScreen> {
                 },
               ),
               const SizedBox(height: 32),
-              const Text(
+               Text(
                 'No thanks',
-                style: TextStyle(
+                style: AppTextStyles.bodySmallBold.copyWith(
                   color: NoThanksText,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
                 ),
               ),
               const Spacer(),

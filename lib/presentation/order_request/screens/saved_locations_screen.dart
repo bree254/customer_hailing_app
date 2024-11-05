@@ -81,10 +81,8 @@ class _SavedLocationsScreenState extends State<SavedLocationsScreen> {
                             : Icons.location_on), // Default icon for new locations
                         title: Text(
                           location['name']!,
-                          style: const TextStyle(
-                            color: Color(0xFF767676),
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
+                          style: AppTextStyles.bodySmall.copyWith(
+                            color: searchButtonGrey,
                           ),
                         ),
                         subtitle: location['address']!.isNotEmpty
@@ -107,19 +105,15 @@ class _SavedLocationsScreenState extends State<SavedLocationsScreen> {
                       child: Container(
                         margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
                         color: Colors.transparent,
-                        child: const Row(
+                        child:  Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Icon(Icons.add_circle_outlined, color: primaryColor, size: 14),
                             SizedBox(width: 5),
                             Text(
                               'Add stop over',
-                              style: TextStyle(
-                                color: primaryColor,
-                                fontSize: 12,
+                              style: AppTextStyles.bodySmallPrimary.copyWith(
                                 fontWeight: FontWeight.w400,
-                                height: 0.14,
-                                letterSpacing: 0.25,
                               ),
                             ),
                           ],

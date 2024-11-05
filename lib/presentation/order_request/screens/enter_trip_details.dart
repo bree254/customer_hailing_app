@@ -135,6 +135,7 @@ class _EnterTripDetailsScreenState extends State<EnterTripDetailsScreen> {
     });
     debugPrint("TYPING : $_isTyping");
   }
+
   void _onLocationChanged() async {
     if (_locationFocusNode.hasFocus) {
       final locationQuery = _locationController.text;
@@ -359,19 +360,15 @@ class _EnterTripDetailsScreenState extends State<EnterTripDetailsScreen> {
                         child: Container(
                           color: Colors.transparent,
                           margin: const EdgeInsets.symmetric(vertical: 10),
-                          child: const Row(
+                          child:  Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Icon(Icons.add_circle_outlined, color: primaryColor, size: 14),
                               SizedBox(width: 5),
                               Text(
                                 'Add stop over',
-                                style: TextStyle(
-                                  color: primaryColor,
-                                  fontSize: 12,
+                                style: AppTextStyles.bodySmallPrimary.copyWith(
                                   fontWeight: FontWeight.w400,
-                                  height: 0.14,
-                                  letterSpacing: 0.25,
                                 ),
                               ),
                             ],
@@ -442,18 +439,15 @@ class _EnterTripDetailsScreenState extends State<EnterTripDetailsScreen> {
                     ),
                     title: Text(
                       destination.address,
-                      style: const TextStyle(
+                      style:AppTextStyles.bodySmallBold.copyWith(
                         color: searchtextGrey,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
                       ),
                     ),
                     subtitle: Text(
                       destination.location,
-                      style: const TextStyle(
+                      style:AppTextStyles.bodySmallBold.copyWith(
                         color: searchtextGrey,
-                        fontSize: 10,
-                        fontWeight: FontWeight.w400,
+                        fontSize:10.0
                       ),
                     ),
                   ),
@@ -487,10 +481,8 @@ class _EnterTripDetailsScreenState extends State<EnterTripDetailsScreen> {
                     ),
                     title: Text(
                       prediction.description,
-                      style: const TextStyle(
-                        color: Color(0xFF767676),
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
+                      style:AppTextStyles.bodySmallBold.copyWith(
+                        color: searchtextGrey,
                       ),
                     ),
                     onTap: () {

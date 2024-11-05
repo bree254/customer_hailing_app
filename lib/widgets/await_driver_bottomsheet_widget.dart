@@ -32,19 +32,17 @@ class AwaitDriverBottomsheetWidget extends StatelessWidget {
           child: LinearProgressIndicator(minHeight:4,borderRadius: BorderRadius.circular(20),),
         )),
         const SizedBox(height: 14),
-        const Text("Searching for nearby drivers",  style: TextStyle(
-            fontSize: 16,
-            color: primaryColor,
-            fontWeight: FontWeight.w600
-        ),),
+         Text("Searching for nearby drivers",
+            style: AppTextStyles.bodyMediumPrimary.copyWith(
+              fontWeight: FontWeight.w600,
+              fontSize: 16.0,
+            )),
         const SizedBox(height: 14),
-        const Text(
+        Text(
           'Sit tight as we get the nearest available driver for you!',
           textAlign: TextAlign.center,
-          style: TextStyle(
+          style: AppTextStyles.bodySmall.copyWith(
             color: resendCodeTextColor,
-            fontSize: 12,
-            fontWeight: FontWeight.w400,
           ),
         ),
         const SizedBox(height: 22),
@@ -56,11 +54,9 @@ class AwaitDriverBottomsheetWidget extends StatelessWidget {
               backgroundColor: cancelButton,
               elevation: 0,
             ),
-            buttonTextStyle: const TextStyle(
-                color: cancelText,
-                fontSize: 12,
-                fontWeight: FontWeight.w500
-            ),
+          buttonTextStyle: AppTextStyles.bodySmallBold.copyWith(
+            color:cancelText
+          ),
             text: 'Cancel',
           ),
       ],
@@ -71,16 +67,15 @@ class AwaitDriverBottomsheetWidget extends StatelessWidget {
      return Column(
        mainAxisAlignment: MainAxisAlignment.center,
        children: [
-         const Center(
+          Center(
            child: Padding(
              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30.0),
              child: Text(
                "Connecting you to your driver",
-               style: TextStyle(
-                 fontSize: 16,
-                 color: primaryColor,
-                 fontWeight: FontWeight.w600,
-               ),
+                 style: AppTextStyles.bodyMediumPrimary.copyWith(
+                   fontWeight: FontWeight.w600,
+                   fontSize: 16.0,
+                 )
              ),
            ),
          ),
@@ -202,25 +197,22 @@ class AwaitDriverBottomsheetWidget extends StatelessWidget {
           child: LinearProgressIndicator(minHeight:4,borderRadius: BorderRadius.circular(20),),
         )),
         const SizedBox(height: 14),
-        const Text(
+         Text(
           "Looking for another driver",
-          style: TextStyle(
-              fontSize: 16,
-              color: primaryColor,
-              fontWeight: FontWeight.w600
-          ),
+            style: AppTextStyles.bodyMediumPrimary.copyWith(
+              fontWeight: FontWeight.w600,
+              fontSize: 16.0,
+            )
         ),
         const SizedBox(height: 14),
-        const Padding(
+         Padding(
           padding: EdgeInsets.symmetric(vertical: 0,horizontal:0 ),
           child: Center(
             child: Text(
               "Your previous driver did not confirm your request",
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: AppTextStyles.bodySmall.copyWith(
                 color: resendCodeTextColor,
-                fontSize: 12,
-                fontWeight: FontWeight.w400,
               ),
             ),
           ),
@@ -234,10 +226,8 @@ class AwaitDriverBottomsheetWidget extends StatelessWidget {
               backgroundColor: cancelButton,
               elevation: 0,
             ),
-            buttonTextStyle: const TextStyle(
-                color: cancelText,
-                fontSize: 12,
-                fontWeight: FontWeight.w500
+            buttonTextStyle: AppTextStyles.bodySmallBold.copyWith(
+                color:cancelText
             ),
             text: 'Cancel',
           ),

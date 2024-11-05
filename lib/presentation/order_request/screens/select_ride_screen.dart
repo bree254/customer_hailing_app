@@ -7,6 +7,7 @@ import 'package:customer_hailing/widgets/drawer_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:get/get.dart';
+import '../../../theme/app_text_styles.dart';
 import '../controller/map_controller.dart';
 
 class SelectRideScreen extends StatefulWidget {
@@ -97,10 +98,9 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                     contentPadding: const EdgeInsets.symmetric(
                         horizontal: 16, vertical: 20),
                     hintText: _destination ?? (_prediction ?? 'Enter location'),
-                    hintStyle: const TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 14,
-                        backgroundColor: searchButtonGrey),
+                    hintStyle: AppTextStyles.text14Black400.copyWith(
+                      color: searchtextGrey,
+                    ),
                     border: InputBorder.none,
                     prefixIcon: GestureDetector(
                         onTap: () {
@@ -181,18 +181,15 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                                       image: AssetImage(request.imageUrl)),
                                   title: Text(
                                     request.ridetype,
-                                    style: const TextStyle(
+                                    style: AppTextStyles.text14Black600.copyWith(
                                       color: searchtextGrey,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600,
                                     ),
                                   ),
                                   subtitle: Text(
                                     request.timeEstimate,
-                                    style: const TextStyle(
+                                    style: AppTextStyles.text14Black400.copyWith(
                                       color: searchtextGrey,
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.w400,
+                                      fontSize:10.0,
                                     ),
                                   ),
                                   trailing: Column(
@@ -200,20 +197,16 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                                     children: [
                                       Text(
                                         'Ksh ${request.discountedPrice.toString()}',
-                                        style: const TextStyle(
+                                        style: AppTextStyles.text14Black600.copyWith(
                                           color: searchtextGrey,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w600,
                                         ),
                                       ),
                                       Text(
                                         'Ksh ${request.originalprice.toString()}',
-                                        style: const TextStyle(
-                                            color: searchtextGrey,
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.w400,
-                                            decoration:
-                                            TextDecoration.lineThrough),
+                                        style: AppTextStyles.text14Black400.copyWith(
+                                          color: searchtextGrey,
+                                          fontSize:10.0,
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -253,7 +246,7 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                                           : Colors.black.withOpacity(0.05),
                                     ),
                                   ),
-                                  child: const Row(
+                                  child:  Row(
                                     children: [
                                       Image(
                                         width: 13,
@@ -264,10 +257,9 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                                       SizedBox(width: 8),
                                       Text(
                                         'Cash',
-                                        style: TextStyle(
+                                        style: AppTextStyles.text14Black500.copyWith(
                                           color: formTextLabelColor,
-                                          fontSize: 10,
-                                          fontWeight: FontWeight.w500,
+                                          fontSize:10.0,
                                         ),
                                       ),
                                     ],
@@ -298,7 +290,7 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                                           : Colors.black.withOpacity(0.05),
                                     ),
                                   ),
-                                  child: const Row(
+                                  child:  Row(
                                     children: [
                                       Image(
                                         width: 13,
@@ -309,10 +301,9 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                                       SizedBox(width: 8),
                                       Text(
                                         'Card',
-                                        style: TextStyle(
+                                        style: AppTextStyles.text14Black500.copyWith(
                                           color: formTextLabelColor,
-                                          fontSize: 10,
-                                          fontWeight: FontWeight.w500,
+                                          fontSize:10.0,
                                         ),
                                       ),
                                     ],
