@@ -68,13 +68,9 @@ class _EmailSignUpScreenState extends State<EmailSignUpScreen> {
                 const SizedBox(
                   height: 40,
                 ),
-                const Text(
+                 Text(
                   "Enter your email",
-                  style: TextStyle(
-                    color: formTextLabelColor,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14,
-                  ),
+                  style: AppTextStyles.text14FormLabel400,
                 ),
                 const SizedBox(
                   height: 10,
@@ -84,11 +80,7 @@ class _EmailSignUpScreenState extends State<EmailSignUpScreen> {
                   filled: true,
                   fillColor: countryTextFieldColor,
                   labelText: "name@email.com",
-                  labelStyle: const TextStyle(
-                    color: blackTextColor,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14,
-                  ),
+                  labelStyle: AppTextStyles.text14Black400,
                   autofocus: false,
                   // height: 96.h,
                   contentPadding: EdgeInsets.symmetric(vertical: 15.v, horizontal: 10.h),
@@ -104,13 +96,9 @@ class _EmailSignUpScreenState extends State<EmailSignUpScreen> {
                   ),
                 ),
                 SizedBox(height: 20,),
-                const Text(
+                 Text(
                   "Enter your password",
-                  style: TextStyle(
-                    color: formTextLabelColor,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14,
-                  ),
+                  style: AppTextStyles.text14FormLabel400,
                 ),
                 const SizedBox(
                   height: 10,
@@ -120,11 +108,7 @@ class _EmailSignUpScreenState extends State<EmailSignUpScreen> {
                   filled: true,
                   fillColor: countryTextFieldColor,
                   labelText: "Enter your new password",
-                  labelStyle: const TextStyle(
-                    color: blackTextColor,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14,
-                  ),
+                  labelStyle: AppTextStyles.text14Black400,
                   autofocus: false,
                   // height: 96.h,
                   contentPadding: EdgeInsets.symmetric(vertical: 15.v, horizontal: 10.h),
@@ -158,13 +142,9 @@ class _EmailSignUpScreenState extends State<EmailSignUpScreen> {
                   ),
                 ),
                 SizedBox(height: 20,),
-                const Text(
+                 Text(
                   "Confirm your password",
-                  style: TextStyle(
-                    color: formTextLabelColor,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14,
-                  ),
+                  style: AppTextStyles.text14FormLabel400,
                 ),
                 const SizedBox(
                   height: 10,
@@ -174,11 +154,7 @@ class _EmailSignUpScreenState extends State<EmailSignUpScreen> {
                   filled: true,
                   fillColor: countryTextFieldColor,
                   labelText: "Confirm password",
-                  labelStyle: const TextStyle(
-                    color: blackTextColor,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14,
-                  ),
+                  labelStyle:   AppTextStyles.text14Black400,
                   autofocus: false,
                   // height: 96.h,
                   contentPadding: EdgeInsets.symmetric(vertical: 15.v, horizontal: 10.h),
@@ -237,14 +213,10 @@ class _EmailSignUpScreenState extends State<EmailSignUpScreen> {
                   onTap: (){
                     Get.back();
                   },
-                  child: const Center(
+                  child:  Center(
                     child: Text(
                       "Back",
-                      style: TextStyle(
-                        color: primaryColor,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 12,
-                      ),
+                      style: AppTextStyles.backButtonText,
                     ),
                   ),
                 ),

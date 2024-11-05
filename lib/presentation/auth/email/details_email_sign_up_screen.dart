@@ -71,13 +71,9 @@ class _DetailsEmailSignUpScreenState extends State<DetailsEmailSignUpScreen> {
                 ),
               ),
               SizedBox(height: 40.v),
-              const Text(
+               Text(
                 "First name",
-                style: TextStyle(
-                  color: formTextLabelColor,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 14,
-                ),
+                style: AppTextStyles.text14Black400,
               ),
               SizedBox(height: 10.v),
               CustomTextFormField(
@@ -89,11 +85,7 @@ class _DetailsEmailSignUpScreenState extends State<DetailsEmailSignUpScreen> {
                   borderSide: const BorderSide(color: Colors.transparent, width: 0),
                 ),
                 hintText: "Ariana",
-                hintStyle: const TextStyle(
-                  color: blackTextColor,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 14,
-                ),
+                hintStyle:  AppTextStyles.text14Black500,
                 contentPadding: EdgeInsets.symmetric(vertical: 14.v, horizontal: 10.h),
                 validator: (value) {
                   if (value!.isEmpty) {
@@ -103,13 +95,9 @@ class _DetailsEmailSignUpScreenState extends State<DetailsEmailSignUpScreen> {
                 },
               ),
               SizedBox(height: 20.v),
-              const Text(
+               Text(
                 "Last name",
-                style: TextStyle(
-                  color: formTextLabelColor,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 14,
-                ),
+                style: AppTextStyles.text14Black400,
               ),
               SizedBox(height: 10.v),
               CustomTextFormField(
@@ -121,11 +109,7 @@ class _DetailsEmailSignUpScreenState extends State<DetailsEmailSignUpScreen> {
                   borderSide: const BorderSide(color: Colors.transparent, width: 0),
                 ),
                 hintText: "Grandeur",
-                hintStyle: const TextStyle(
-                  color: blackTextColor,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 14,
-                ),
+                hintStyle:  AppTextStyles.text14Black500,
                 contentPadding: EdgeInsets.symmetric(vertical: 14.v, horizontal: 10.h),
                 validator: (value) {
                   if (value!.isEmpty) {
@@ -135,13 +119,9 @@ class _DetailsEmailSignUpScreenState extends State<DetailsEmailSignUpScreen> {
                 },
               ),
               SizedBox(height: 20.v),
-              const Text(
+               Text(
                 "Enter your mobile number",
-                style: TextStyle(
-                  color: formTextLabelColor,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 14,
-                ),
+                style: AppTextStyles.text14Black400,
               ),
               SizedBox(height: 10.v),
               CustomPhoneInput(
@@ -203,14 +183,10 @@ class _DetailsEmailSignUpScreenState extends State<DetailsEmailSignUpScreen> {
                 onTap: (){
                   Get.back();
                 },
-                child: const Center(
+                child: Center(
                   child: Text(
                     "Back",
-                    style: TextStyle(
-                      color: primaryColor,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 12,
-                    ),
+                    style: AppTextStyles.backButtonText,
                   ),
                 ),
               ),

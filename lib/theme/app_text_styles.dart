@@ -88,6 +88,12 @@ class AppTextStyles {
   );
 
 
+  static get backButtonText => theme.textTheme.bodySmall!.copyWith(
+    color: primaryColor,
+    fontWeight: FontWeight.w600,
+    fontSize: 12,
+  );
+
 
   static get bodyLarge => theme.textTheme.bodyLarge!.copyWith(
         fontSize: 16,

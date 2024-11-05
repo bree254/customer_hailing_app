@@ -64,13 +64,9 @@ class _EmailSignInUpScreenState extends State<EmailSignInUpScreen> {
             const SizedBox(
               height: 40,
             ),
-            const Text(
+             Text(
               "Enter your email",
-              style: TextStyle(
-                color: formTextLabelColor,
-                fontWeight: FontWeight.w400,
-                fontSize: 14,
-              ),
+              style: AppTextStyles.text14FormLabel400,
             ),
             const SizedBox(
               height: 10,
@@ -80,11 +76,7 @@ class _EmailSignInUpScreenState extends State<EmailSignInUpScreen> {
               filled: true,
               fillColor: countryTextFieldColor,
               labelText: "name@email.com",
-              labelStyle: const TextStyle(
-                color: blackTextColor,
-                fontWeight: FontWeight.w400,
-                fontSize: 14,
-              ),
+              labelStyle: AppTextStyles.text14Black400,
               autofocus: false,
               // height: 96.h,
               contentPadding: EdgeInsets.symmetric(vertical: 15.v, horizontal: 10.h),
@@ -100,13 +92,9 @@ class _EmailSignInUpScreenState extends State<EmailSignInUpScreen> {
               ),
             ),
             SizedBox(height: 20,),
-            const Text(
+             Text(
               "Enter your password",
-              style: TextStyle(
-                color: formTextLabelColor,
-                fontWeight: FontWeight.w400,
-                fontSize: 14,
-              ),
+              style: AppTextStyles.text14FormLabel400,
             ),
             const SizedBox(
               height: 10,
@@ -116,11 +104,7 @@ class _EmailSignInUpScreenState extends State<EmailSignInUpScreen> {
               filled: true,
               fillColor: countryTextFieldColor,
               labelText: "Enter your new password",
-              labelStyle: const TextStyle(
-                color: blackTextColor,
-                fontWeight: FontWeight.w400,
-                fontSize: 14,
-              ),
+              labelStyle:  AppTextStyles.text14Black400,
               autofocus: false,
               // height: 96.h,
               contentPadding: EdgeInsets.symmetric(vertical: 15.v, horizontal: 10.h),
@@ -160,14 +144,10 @@ class _EmailSignInUpScreenState extends State<EmailSignInUpScreen> {
                 onTap: (){
                   Get.toNamed(AppRoutes.forgotPassword);
                 },
-                child: const Center(
+                child:  Center(
                   child: Text(
                     "Forgot password?",
-                    style: TextStyle(
-                      color: primaryColor,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 12,
-                    ),
+                    style: AppTextStyles.forgotPasswordText,
                   ),
                 ),
               ),
@@ -183,19 +163,11 @@ class _EmailSignInUpScreenState extends State<EmailSignInUpScreen> {
                   child: RichText(
                       text: TextSpan(
                         text:"Don’t have an account?",
-                        style: TextStyle(
-                              color: blackTextColor,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 12,
-                            ),
+                          style: AppTextStyles.forgotPasswordText.copyWith(color: blackTextColor),
                         children: [
                           TextSpan(
                           text:" Sign up ",
-                          style: TextStyle(
-                            color: primaryColor,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 12,
-                          ),)
+                            style: AppTextStyles.forgotPasswordText,)
                         ]
                       ),
                   ),
