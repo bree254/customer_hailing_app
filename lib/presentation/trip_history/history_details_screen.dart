@@ -88,21 +88,20 @@ class _HistoryDetailsScreenState extends State<HistoryDetailsScreen> {
                         backgroundColor: Colors.transparent,
                         child: Image.asset('assets/images/driver.png'),
                       ),
-                      title: const Text(
+                      title:  Text(
                         'Your trip with',
-                        style: TextStyle(
-                          color: Color(0xFF434343),
-                          fontSize: 10,
-                          fontWeight: FontWeight.w400,
+                        style:AppTextStyles.bodySmall.copyWith(
+                          color: formTextLabelColor,
+                          fontSize: 10.0,// Color of the title text
                         ),
                       ),
-                      subtitle:const Text(
+                      subtitle: Text(
                         'James Smith',
-                        style: TextStyle(
-                          color: Color(0xFF434343),
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
+                        style:AppTextStyles.text14Black600.copyWith(
+                          color: formTextLabelColor,
+
                         ),
+
                       ),
                       trailing: RatingBarIndicator(
                         rating: _userRating,
@@ -135,82 +134,68 @@ class _HistoryDetailsScreenState extends State<HistoryDetailsScreen> {
                       color: Colors.grey[300],
                       thickness: 1,
                     ),
-                    const ListTile(
+                     ListTile(
                         title: Text(
                           'Normal fare',
-                          style: TextStyle(
-                            color: Color(0xFF767676),
-                            fontSize: 12,
+                          style: AppTextStyles.bodySmall.copyWith(
+                            color: searchtextGrey,
                             fontWeight: FontWeight.w700,
                           ),
                         ),
                         trailing:Text(
                           'KES 260.00',
                           textAlign: TextAlign.right,
-                          style: TextStyle(
-                            color: Color(0xFF767676),
-                            fontSize: 12,
+                          style: AppTextStyles.bodySmall.copyWith(
+                            color: searchtextGrey,
                             fontWeight: FontWeight.w700,
                           ),
                         )
                     ),
 
-                    const ListTile(
+                     ListTile(
                         title: Text(
                           'Surge ',
-                          style: TextStyle(
-                            color: Color(0xFF767676),
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
+                          style: AppTextStyles.bodySmall.copyWith(
+                            color: searchtextGrey,
                           ),
                         ),
                         trailing:Text(
                           'KES 30.00',
                           textAlign: TextAlign.right,
-                          style: TextStyle(
-                            color: Color(0xFF767676),
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
+                          style: AppTextStyles.bodySmall.copyWith(
+                            color: searchtextGrey,
                           ),
                         ),
                     ),
 
-                    const ListTile(
+                     ListTile(
                         title: Text(
                           'Tip',
-                          style: TextStyle(
-                            color: Color(0xFF767676),
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
+                          style: AppTextStyles.bodySmall.copyWith(
+                            color: searchtextGrey,
                           ),
                         ),
                         trailing: Text(
                           'KES 250.00',
                           textAlign: TextAlign.right,
-                          style: TextStyle(
-                            color: Color(0xFF767676),
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
+                          style: AppTextStyles.bodySmall.copyWith(
+                            color: searchtextGrey,
                           ),
                         )
                     ),
 
-                    const ListTile(
+                     ListTile(
                         title: Text(
                           'Payment method',
-                          style: TextStyle(
-                            color: Color(0xFF767676),
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
+                          style: AppTextStyles.bodySmall.copyWith(
+                            color: searchtextGrey,
                           ),
                         ),
                         trailing: Text(
                           'Cash',
                           textAlign: TextAlign.right,
-                          style: TextStyle(
-                            color: Color(0xFF767676),
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
+                          style: AppTextStyles.bodySmall.copyWith(
+                            color: searchtextGrey,
                           ),
                         )
                     ),
@@ -219,22 +204,20 @@ class _HistoryDetailsScreenState extends State<HistoryDetailsScreen> {
                       color: Colors.grey[300],
                       thickness: 1,
                     ),
-                    const ListTile(
+                     ListTile(
                         title: Text(
                           'Estimated cost',
-                          style: TextStyle(
-                            color: Color(0xFF555555),
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
+                          style: AppTextStyles.text14Black500.copyWith(
+                            color: darkerGrey,
+                            fontSize: 16.0,
                           ),
                         ),
                         trailing: Text(
                           'KES 460',
                           textAlign: TextAlign.right,
-                          style: TextStyle(
-                            color: Color(0xFF555555),
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
+                          style: AppTextStyles.text14Black500.copyWith(
+                            color: darkerGrey,
+                            fontSize: 16.0,
                           ),
                         )
                     ),
@@ -248,10 +231,8 @@ class _HistoryDetailsScreenState extends State<HistoryDetailsScreen> {
                         backgroundColor: primaryColor,
                         elevation: 0,
                       ),
-                      buttonTextStyle: const TextStyle(
+                      buttonTextStyle: AppTextStyles.bodySmallPrimary.copyWith(
                         color: Colors.white,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
                       ),
                     ),
                     const SizedBox(height: 8,),
@@ -267,9 +248,7 @@ class _HistoryDetailsScreenState extends State<HistoryDetailsScreen> {
                           side: const BorderSide(color: primaryColor),
                           elevation: 0,
                         ),
-                        buttonTextStyle: const TextStyle(
-                          color: primaryColor,
-                          fontSize: 12,
+                        buttonTextStyle: AppTextStyles.bodySmallPrimary.copyWith(
                           fontWeight: FontWeight.w500,
                         ),
                       ),

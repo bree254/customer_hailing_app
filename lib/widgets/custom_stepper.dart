@@ -1,3 +1,4 @@
+import 'package:customer_hailing/core/app_export.dart';
 import 'package:flutter/material.dart';
 
 class CustomStepperWidget extends StatelessWidget {
@@ -71,19 +72,17 @@ class CustomStepperWidget extends StatelessWidget {
                   children: [
                     Text(
                       step.title,
-                      style: const TextStyle(
-                        color: Color(0xFF434343),
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
+                      style:AppTextStyles.bodySmall.copyWith(
+                        color: formTextLabelColor,  // Color of the title text
                       ),
                     ),
                     Text(
                       step.subtitle,
-                      style: const TextStyle(
-                        color: Color(0xFF434343),
-                        fontSize: 10,
-                        fontWeight: FontWeight.w400,
-                      ),)
+                      style:AppTextStyles.bodySmall.copyWith(
+                        color: formTextLabelColor,
+                        fontSize: 10.0,// Color of the title text
+                      ),
+)
                   ],
                 ),
               ),

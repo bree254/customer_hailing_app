@@ -61,30 +61,18 @@ class _TripHistoryScreenState extends State<TripHistoryScreen> {
                 ),
                 title: Text(
                   history['destination'] ?? '',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14,
-                    color: Color(0xFF555555),
-                  ),
+                    style:AppTextStyles.listTileTitle
                 ),
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       history['time'] ?? '',
-                      style: const TextStyle(
-                        color: Color(0xFF9CA3AF),
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                      ),
+                        style:AppTextStyles.listTileSubtitle
                     ),
                     Text(
                       history['price'] ?? '',
-                      style: const TextStyle(
-                        color: Color(0xFF9CA3AF),
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                      ),
+                        style:AppTextStyles.listTileSubtitle
                     ),
                   ],
                 ),
@@ -109,16 +97,9 @@ class _TripHistoryScreenState extends State<TripHistoryScreen> {
                         child:Image.asset(height: 10,width:10,'assets/images/rotate.png'),
                       ),
                       const SizedBox(width: 6),
-                      const Text(
+                       Text(
                         'Rebook',
-                        style: TextStyle(
-                          color: Color(0xFF1F2A37),
-                          fontSize: 10,
-                          fontFamily: 'BR Omny',
-                          fontWeight: FontWeight.w400,
-                          height: 0.20,
-                          letterSpacing: 0.25,
-                        ),
+                        style:AppTextStyles.rebookButtonText
                       ),
                     ],
                   ),
