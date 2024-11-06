@@ -65,27 +65,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                   const SizedBox(height: 13,),
-                  const Text(
+                   Text(
                     'John Doe',
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Color(0xFF767676),
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
+                    style: AppTextStyles.text14Black500.copyWith(
+                      color: searchtextGrey,
                     ),
                   ),
                   const SizedBox(height: 8,),
-                  const Row(
+                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(Icons.star,color: primaryColor,size: 10,),
                       SizedBox(width: 5,),
                       Text(
                         '4.5 rating',
-                        style: TextStyle(
-                          color: Color(0xFF434343),
-                          fontSize: 10,
-                          fontWeight: FontWeight.w400,
+                        style: AppTextStyles.text14Black400.copyWith(
+                          color: searchtextGrey,
                         ),
                       ),
                     ],
@@ -111,12 +107,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     height: 24,
                     'assets/images/user-circle-outline.png'
                 ),
-                title: const Text(
+                title:  Text(
                   'Edit Profile',
-                  style: TextStyle(
-                    color: Color(0xFF555555),
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
+                  style: AppTextStyles.bodySmall.copyWith(
+                    color: listileText,
                   ),
                 ),
                 trailing: const Icon(Icons.arrow_forward_ios_outlined,color: searchtextGrey,size: 14,),
@@ -142,12 +136,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     height: 24,
                     'assets/images/shield-outline.png'
                 ),
-                title: const Text(
+                title:  Text(
                   'Password & Security',
-                  style: TextStyle(
-                    color: Color(0xFF555555),
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
+                  style: AppTextStyles.bodySmall.copyWith(
+                    color: listileText,
                   ),
                 ),
                 trailing: const Icon(Icons.arrow_forward_ios_outlined,color: searchtextGrey,size: 14,),
@@ -173,12 +165,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     height: 24,
                     'assets/images/map-pin-alt-outline.png'
                 ),
-                title: const Text(
+                title:  Text(
                   'Saved Locations',
-                  style: TextStyle(
-                    color: Color(0xFF555555),
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
+                  style: AppTextStyles.bodySmall.copyWith(
+                    color: listileText,
                   ),
                 ),
                 trailing: const Icon(Icons.arrow_forward_ios_outlined,color: searchtextGrey,size: 14,),
@@ -197,12 +187,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     height: 24,
                     'assets/images/logout.png'
                 ),
-                title: const Text(
+                title:  Text(
                   'Logout',
-                  style: TextStyle(
+                  style: AppTextStyles.bodySmall.copyWith(
                     color: deleteIcon,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
                   ),
                 ),
                 onTap: () {

@@ -1,10 +1,9 @@
-
+import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/core/utils/colors.dart';
 import 'package:customer_hailing/presentation/order_request/controller/trip_status_controller.dart';
 import 'package:customer_hailing/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import 'custom_elevated_button.dart';
 
 class TripStatusBottomSheet extends StatelessWidget {
@@ -54,7 +53,7 @@ class TripStatusBottomSheet extends StatelessWidget {
                       return const SizedBox();
                   }
                 }),
-                const ListTile(
+                 ListTile(
                     leading: Icon(
                       Icons.circle_outlined,
                       size: 12,
@@ -62,23 +61,25 @@ class TripStatusBottomSheet extends StatelessWidget {
                     ),
                     title: Text(
                       'GPO Stage, Kenyatta Avenue',
-                      style: TextStyle(
+                      style: AppTextStyles.bodySmallPrimary.copyWith(
                         color: formTextLabelColor,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
                       ),
                     )),
-                const ListTile(
-                  leading: Icon(
-                    Icons.add_circle_outlined,
-                    size: 14,
-                    color: primaryColor,
+                 ListTile(
+                  leading: GestureDetector(
+                    onTap: () {
+                      Get.toNamed(AppRoutes.search);
+                    },
+                    child: Icon(
+                      Icons.add_circle_outlined,
+                      size: 14,
+                      color: primaryColor,
+                    ),
                   ),
                   title: Text(
                     'Add stop over',
-                    style: TextStyle(
+                    style: AppTextStyles.bodySmallPrimary.copyWith(
                       color: disabledText,
-                      fontSize: 12,
                       fontWeight: FontWeight.w400,
                     ),
                   ),
@@ -89,20 +90,22 @@ class TripStatusBottomSheet extends StatelessWidget {
                     size: 14,
                     color: primaryColor,
                   ),
-                  title: const Text(
+                  title:  Text(
                     'Mövenpick Residences Nairobi',
-                    style: TextStyle(
+                    style: AppTextStyles.bodySmallPrimary.copyWith(
                       color: formTextLabelColor,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
                     ),
                   ),
-                  trailing: const Text(
-                    'Change ',
-                    style: TextStyle(
-                      color: trailertext,
-                      fontSize: 10,
-                      fontWeight: FontWeight.w400,
+                  trailing:  GestureDetector(
+                    onTap: () {
+                      Get.toNamed(AppRoutes.search);
+                    },
+                    child: Text(
+                      'Change ',
+                      style:AppTextStyles.text14Black400.copyWith(
+                        color: trailertext,
+                        fontSize: 10.0,
+                      ),
                     ),
                   ),
                   onTap: () {
@@ -113,19 +116,18 @@ class TripStatusBottomSheet extends StatelessWidget {
                   leading: Image.asset(
                       width: 21, height: 22, "assets/images/cash.png"),
                   title: const Text(
-                    'Total cost',
+                    'Total Cost',
                     style: TextStyle(
                       color: Color(0xFF434343),
-                      fontSize: 12,
+                      fontSize: 12.0,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  trailing: const Text(
+                  trailing:  Text(
                     'Ksh 450',
                     textAlign: TextAlign.right,
-                    style: TextStyle(
+                    style: AppTextStyles.text14Black600.copyWith(
                       color: formTextLabelColor,
-                      fontSize: 14,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -134,15 +136,16 @@ class TripStatusBottomSheet extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
                   child: CustomElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                    },
                     buttonStyle: ElevatedButton.styleFrom(
                       backgroundColor: cancelButton,
                       elevation: 0,
                     ),
-                    buttonTextStyle: const TextStyle(
-                        color: cancelText,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500),
+                    buttonTextStyle:AppTextStyles.backButtonText.copyWith(
+                      color: cancelText,
+                        fontWeight: FontWeight.w500
+                    ),
                     text: 'Cancel trip',
                   ),
                 ),
@@ -157,13 +160,11 @@ class TripStatusBottomSheet extends StatelessWidget {
   Widget _buildOnTheWayContent() {
     return Column(
       children: [
-        const Center(
+         Center(
           child: Text(
             'Your driver is on the way!',
-            style: TextStyle(
+            style: AppTextStyles.bodyHeading.copyWith(
               color: primaryColor,
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
             ),
           ),
         ),
@@ -176,13 +177,11 @@ class TripStatusBottomSheet extends StatelessWidget {
   Widget _buildArrivedContent() {
     return Column(
       children: [
-        const Center(
+         Center(
           child: Text(
             'Your driver has arrived!',
-            style: TextStyle(
+            style: AppTextStyles.bodyHeading.copyWith(
               color: primaryColor,
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
             ),
           ),
         ),
@@ -195,16 +194,14 @@ class TripStatusBottomSheet extends StatelessWidget {
   Widget _buildHeadingToDestinationContent() {
     return Column(
       children: [
-        const Center(
+         Center(
           child: Text(
             'Heading to your destination!',
-            style: TextStyle(
+            style: AppTextStyles.bodyHeading.copyWith(
               color: primaryColor,
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-            ),
           ),
         ),
+         ),
         const SizedBox(height: 32),
         _buildDriverInfo(),
       ],
@@ -259,13 +256,12 @@ class TripStatusBottomSheet extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const Text(
+                       Text(
                         '4.85',
                         textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Color(0xFF7B7B7B),
-                          fontSize: 6,
-                          fontWeight: FontWeight.w400,
+                        style:AppTextStyles.bodySmall.copyWith(
+                          color:resendCodeTextColor,
+                          fontSize: 6.0,
                         ),
                       )
                     ],
@@ -282,23 +278,20 @@ class TripStatusBottomSheet extends StatelessWidget {
               fontWeight: FontWeight.w600,
             ),
           ),
-          subtitle: const Column(
+          subtitle:  Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 'White, Mazda Demio',
-                style: TextStyle(
-                  color: Color(0xFF434343),
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400,
+                style: AppTextStyles.bodySmall.copyWith(
+                  color:formTextLabelColor,
                 ),
               ),
               Text(
                 'KCZ 123A',
-                style: TextStyle(
-                  color: Color(0xFF7145D6),
-                  fontSize: 10,
-                  fontWeight: FontWeight.w400,
+                style: AppTextStyles.bodySmall.copyWith(
+                  color:primaryColor,
+                  fontSize: 10.0,
                 ),
               )
             ],
@@ -316,12 +309,11 @@ class TripStatusBottomSheet extends StatelessWidget {
                   onTap: () {
                     Get.toNamed(AppRoutes.shareTrip);
                   },
-                  child: const Text(
+                  child:  Text(
                     'Share ride details',
-                    style: TextStyle(
-                      color: Color(0xFF0000F9),
-                      fontSize: 10,
-                      fontWeight: FontWeight.w400,
+                    style: AppTextStyles.bodySmall.copyWith(
+                      color:shareTripColor,
+                      fontSize: 10.0,
                     ),
                   ),
                 ),
@@ -348,7 +340,7 @@ class TripStatusBottomSheet extends StatelessWidget {
             backgroundColor: selectRideColor,
             elevation: 0,
           ),
-          child: const Padding(
+          child:  Padding(
             padding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
             child: Row(
               children: [
@@ -361,10 +353,7 @@ class TripStatusBottomSheet extends StatelessWidget {
                 ),
                 Text(
                   'Message',
-                  style: TextStyle(
-                    color: Color(0xFF7145D6),
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
+                  style: AppTextStyles.bodySmallPrimary.copyWith(
                   ),
                 )
               ],
@@ -405,13 +394,10 @@ class TripStatusBottomSheet extends StatelessWidget {
                             child: const Icon(Icons.close),
                           ),
                         ),
-                        const Text(
+                         Text(
                           'Contact options',
                           textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Color(0xFF7145D6),
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
+                          style: AppTextStyles.bodySmallPrimary.copyWith(
                           ),
                         ),
                         const Text(
@@ -435,10 +421,8 @@ class TripStatusBottomSheet extends StatelessWidget {
                             backgroundColor: primaryColor,
                             elevation: 0,
                           ),
-                          buttonTextStyle: const TextStyle(
+                          buttonTextStyle: AppTextStyles.bodySmallBold.copyWith(
                             color: whiteTextColor,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
                           ),
                         ),
                         const SizedBox(
@@ -452,11 +436,9 @@ class TripStatusBottomSheet extends StatelessWidget {
                             side: const BorderSide(color: primaryColor),
                             elevation: 0,
                           ),
-                          buttonTextStyle: const TextStyle(
-                            color: primaryColor,
-                            fontSize: 12,
+                          buttonTextStyle: AppTextStyles.bodySmallPrimary.copyWith(
                             fontWeight: FontWeight.w500,
-                          ),
+                        ),
                         ),
                       ],
                     ),
@@ -467,7 +449,7 @@ class TripStatusBottomSheet extends StatelessWidget {
             backgroundColor: selectRideColor,
             elevation: 0,
           ),
-          child: const Padding(
+          child:  Padding(
             padding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
             child: Row(
               children: [
@@ -480,10 +462,7 @@ class TripStatusBottomSheet extends StatelessWidget {
                 ),
                 Text(
                   'Call driver',
-                  style: TextStyle(
-                    color: Color(0xFF7145D6),
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
+                  style: AppTextStyles.bodySmallPrimary.copyWith(
                   ),
                 )
               ],

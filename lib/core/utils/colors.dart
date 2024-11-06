@@ -38,3 +38,5 @@ const deleteIcon = Color(0xFFC81E1E);
 const onlineText = Color(0xFF0E9F6E);
 const profileText =  Color(0xFF1D1B20);
 const darkerGrey = Color(0xFF555555);
+const redColor = Color(0xFFE02424);
+const shareTripColor = Color(0xFF0000F9);

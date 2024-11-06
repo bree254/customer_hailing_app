@@ -89,24 +89,20 @@ class _ShareTripDetailsScreenState extends State<ShareTripDetailsScreen> {
                   ListTile(
                     leading: Image.asset(
                         height: 24, width: 24, 'assets/images/share.png'),
-                    title: const Column(
+                    title:  Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Share your ride details',
-                          style: TextStyle(
-                            color: Color(0xFF555555),
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                          ),
+                            'Share your ride details',
+                            style: AppTextStyles.listTileTitle.copyWith(
+                              fontWeight: FontWeight.w600,
+                            )
                         ),
                         Text(
-                          'Let other know where you are',
-                          style: TextStyle(
-                            color: Color(0xFF555555),
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
-                          ),
+                            'Let other know where you are',
+                            style: AppTextStyles.listTileSubtitle.copyWith(
+                              color:darkerGrey,
+                            )
                         )
                       ],
                     ),
@@ -126,24 +122,21 @@ class _ShareTripDetailsScreenState extends State<ShareTripDetailsScreen> {
                     },
                     leading: Image.asset(
                         height: 24, width: 24, 'assets/images/bell.png'),
-                    title: const Column(
+                    title:  Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           'Emergency Assistance',
-                          style: TextStyle(
-                            color: Color(0xFFE02424),
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                          ),
+                            style: AppTextStyles.listTileTitle.copyWith(
+                              fontWeight: FontWeight.w600,
+                              color:redColor
+                            )
                         ),
                         Text(
                           'Call for emergency services',
-                          style: TextStyle(
-                            color: Color(0xFF555555),
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
-                          ),
+                            style: AppTextStyles.listTileSubtitle.copyWith(
+                              color:darkerGrey,
+                            )
                         ),
                       ],
                     ),

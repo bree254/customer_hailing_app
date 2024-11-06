@@ -39,19 +39,19 @@ class MyData {
         discountedPrice: 180,
         originalprice: 220),
     RideRequest(
-        ridetype: 'Taxi Comfort',
+        ridetype: 'Comfort',
         timeEstimate: '5 min away',
         imageUrl: 'assets/images/economy.png',
         discountedPrice: 660,
         originalprice: 720),
     RideRequest(
-        ridetype: 'Taxi Female',
+        ridetype: 'Female',
         timeEstimate: '5 min away',
         imageUrl: 'assets/images/economy.png',
         discountedPrice: 720,
         originalprice: 760),
     RideRequest(
-        ridetype: 'Taxi XL',
+        ridetype: 'XL',
         timeEstimate: '5 min away',
         imageUrl: 'assets/images/economy.png',
         discountedPrice: 720,

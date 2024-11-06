@@ -78,15 +78,11 @@ class _ShareWithScreenState extends State<ShareWithScreen> {
                       const SizedBox(
                         height: 16,
                       ),
-                      const Padding(
+                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 16,vertical: 0),
                         child: Text(
                           'Share with',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          ),
+                          style:AppTextStyles.bodyHeading,
                         ),
                       ),
                       const SizedBox(
@@ -121,11 +117,9 @@ class _ShareWithScreenState extends State<ShareWithScreen> {
                                     const SizedBox(height: 20),
                                      Text(
                                       profile.name,
-                                      style: const TextStyle(
-                                        color: Color(0xFF555555),
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w400,
-                                      ),
+                                       style:AppTextStyles.bodySmall.copyWith(
+                                         color: darkerGrey,
+                                       ),
                                     )
 
                                   ],

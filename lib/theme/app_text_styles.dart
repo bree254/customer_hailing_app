@@ -39,6 +39,7 @@ class AppTextStyles {
   static get textFieldHint => theme.textTheme.bodyMedium!.copyWith(
       color: blackTextColor, fontWeight: FontWeight.w400, fontSize: 14
   );
+
   // list tile text styles
   static get listTileTitle => theme.textTheme.bodyLarge!.copyWith(
       fontWeight: FontWeight.w400, fontSize: 14, color: const Color(0xFF555555)
@@ -52,6 +53,7 @@ class AppTextStyles {
       color: const Color(0xFF1F2A37), fontSize: 10, fontFamily: 'BR Omny',
       fontWeight: FontWeight.w400, height: 0.20, letterSpacing: 0.25
   );
+
 // CustomElevatedButton text styles
   static get customButtonText => theme.textTheme.headlineSmall!.copyWith(
       color: appTheme.white, fontSize: 16, fontWeight: FontWeight.w600
@@ -98,7 +100,10 @@ class AppTextStyles {
   static get bodyLarger => theme.textTheme.bodyLarge!.copyWith(
         fontSize: 18,
       );
-
+  static get bodyHeading => theme.textTheme.bodyLarge!.copyWith(
+    fontSize: 16,
+    fontWeight: FontWeight.w600,
+  );
   static get bodyMedium => theme.textTheme.bodyMedium!.copyWith(
         fontSize: 16.0,
         fontWeight: FontWeight.w400,
