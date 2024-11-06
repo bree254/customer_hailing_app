@@ -54,14 +54,11 @@ class _TripDetailsScreenState extends State<TripDetailsScreen> {
                   ),
                   SizedBox(
                     width: 280.h,
-                    child: const Text(
+                    child:  Text(
                       'Changing of trip details will lead to cost recalculation',
-                      style: TextStyle(
-                        color: Color(0xFF7145D6),
-                        fontSize: 10,
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.w400,
-                        height: 0.15,
+                      style:AppTextStyles.bodySmall.copyWith(
+                        color: primaryColor,
+                        fontSize: 10.0,
                       ),
                     ),
                   ),
@@ -93,89 +90,54 @@ class _TripDetailsScreenState extends State<TripDetailsScreen> {
               color: Colors.grey[300],
               thickness: 1,
             ),
-            const ListTile(
+             ListTile(
               title: Text(
                 'Date of trip',
-                style: TextStyle(
-                  color: Color(0xFF555555),
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                ),
+                style:AppTextStyles.listTileTitle,
               ),
               subtitle:Text(
                 '12 August, 2024',
-                style: TextStyle(
-                  color: Color(0xFF9CA3AF),
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                ),
+                style:AppTextStyles.listTileSubtitle,
               ),
               trailing: Text(
                 'Change',
                 textAlign: TextAlign.right,
-                style: TextStyle(
-                  color: Color(0xFF7145D6),
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400,
-                ),
+                style:AppTextStyles.listTileTrailing,
+
               )
             ),
             const SizedBox(height: 32,),
 
-            const ListTile(
+             ListTile(
                 title: Text(
                   'Request time',
-                  style: TextStyle(
-                    color: Color(0xFF555555),
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                  ),
+                  style:AppTextStyles.listTileTitle,
                 ),
                 subtitle:Text(
                   '08:00 PM',
-                  style: TextStyle(
-                    color: Color(0xFF9CA3AF),
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                  ),
+                  style:AppTextStyles.listTileSubtitle,
                 ),
                 trailing: Text(
                   'Change',
                   textAlign: TextAlign.right,
-                  style: TextStyle(
-                    color: Color(0xFF7145D6),
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
-                  ),
+                  style:AppTextStyles.listTileTrailing,
                 )
             ),
             const SizedBox(height: 32,),
 
-            const ListTile(
+             ListTile(
                 title: Text(
                   'Vehicle type',
-                  style: TextStyle(
-                    color: Color(0xFF555555),
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                  ),
+                  style:AppTextStyles.listTileTitle,
                 ),
                 subtitle:Text(
                   'Economy (3 seats)',
-                  style: TextStyle(
-                    color: Color(0xFF9CA3AF),
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                  ),
+                  style:AppTextStyles.listTileSubtitle,
                 ),
                 trailing: Text(
                   'Change',
                   textAlign: TextAlign.right,
-                  style: TextStyle(
-                    color: Color(0xFF7145D6),
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
-                  ),
+                  style:AppTextStyles.listTileTrailing,
                 )
             ),
             const SizedBox(height: 32,),
@@ -183,22 +145,19 @@ class _TripDetailsScreenState extends State<TripDetailsScreen> {
               color: Colors.grey[300],
               thickness: 1,
             ),
-            const ListTile(
+             ListTile(
                 title: Text(
                   'Estimated cost',
-                  style: TextStyle(
-                    color: Color(0xFF555555),
-                    fontSize: 14,
+                  style:AppTextStyles.listTileTitle.copyWith(
                     fontWeight: FontWeight.w500,
                   ),
                 ),
                 trailing: Text(
                   'KES 460',
                   textAlign: TextAlign.right,
-                  style: TextStyle(
-                    color: Color(0xFF555555),
-                    fontSize: 16,
+                  style:AppTextStyles.listTileTitle.copyWith(
                     fontWeight: FontWeight.w500,
+                    fontSize: 16.0,
                   ),
                 )
             ),
@@ -217,9 +176,7 @@ class _TripDetailsScreenState extends State<TripDetailsScreen> {
                   side: const BorderSide(color: primaryColor),
                   elevation: 0,
                 ),
-                buttonTextStyle: const TextStyle(
-                  color: primaryColor,
-                  fontSize: 12,
+                buttonTextStyle: AppTextStyles.bodySmallPrimary.copyWith(
                   fontWeight: FontWeight.w500,
                 ),
               ),

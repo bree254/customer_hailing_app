@@ -40,21 +40,20 @@ class _ScheduledTripsScreenState extends State<ScheduledTripsScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Text(
+             Text(
               'You have not scheduled any trips',
-              style: TextStyle(
+              style: AppTextStyles.bodyHeading.copyWith(
                 fontWeight: FontWeight.w500,
-                fontSize: 16,
               ),
             ),
             const SizedBox(height: 20.0),
-            const Text(
+             Text(
               'Tap on, “Schedule New Trip,” below to schedule your trip for a later time.',
-              style: TextStyle(
+              style:AppTextStyles.bodyHeading.copyWith(
                 fontWeight: FontWeight.w500,
-                fontSize: 16,
                 color: formTextLabelColor,
               ),
+
             ),
             const SizedBox(height: 40.0),
             CustomElevatedButton(
@@ -67,9 +66,7 @@ class _ScheduledTripsScreenState extends State<ScheduledTripsScreen> {
                 side: const BorderSide(color: primaryColor),
                 elevation: 0,
               ),
-              buttonTextStyle: const TextStyle(
-                color: primaryColor,
-                fontSize: 12,
+              buttonTextStyle:AppTextStyles.bodySmallPrimary.copyWith(
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -105,30 +102,21 @@ class _ScheduledTripsScreenState extends State<ScheduledTripsScreen> {
             ),
             title: Text(
               trip['dateTime'] ?? '',
-              style: const TextStyle(
-                color: Color(0xFF555555),
-                fontSize: 14,
+              style:AppTextStyles.listTileTitle.copyWith(
                 fontWeight: FontWeight.w500,
               ),
+
             ),
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   'From: ${trip['from'] ?? ''}',
-                  style: const TextStyle(
-                    color: Color(0xFF9CA3AF),
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
-                  ),
+                  style:AppTextStyles.listTileSubtitle,
                 ),
                 Text(
                   'To: ${trip['to'] ?? ''}',
-                  style: const TextStyle(
-                    color: Color(0xFF9CA3AF),
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
-                  ),
+                  style:AppTextStyles.listTileSubtitle,
                 ),
               ],
             ),

@@ -30,11 +30,10 @@ class _ScheduleNewTripScreenState extends State<ScheduleNewTripScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+             Text(
               'Select date of trip',
-              style: TextStyle(
-                fontWeight: FontWeight.w400,
-                fontSize: 12,
+              style: AppTextStyles.titleTextField.copyWith(
+                fontSize: 12.0,
               ),
             ),
             SizedBox(height: 10.v,),
@@ -44,11 +43,7 @@ class _ScheduleNewTripScreenState extends State<ScheduleNewTripScreen> {
               fillColor: countryTextFieldColor,
               prefix: const Icon(Icons.calendar_month_outlined),
               hintText: "name@email.com",
-              hintStyle: const TextStyle(
-                color: blackTextColor,
-                fontWeight: FontWeight.w400,
-                fontSize: 14,
-              ),
+              hintStyle: AppTextStyles.textFieldHint,
               autofocus: false,
               height: 96.h,
               contentPadding: EdgeInsets.symmetric(vertical: 15.v, horizontal: 10.h),
@@ -57,11 +52,10 @@ class _ScheduleNewTripScreenState extends State<ScheduleNewTripScreen> {
                 borderSide: const BorderSide(color: Colors.transparent, width: 0),
               ),
             ),
-            const Text(
+             Text(
               'Select request time',
-              style: TextStyle(
-                fontWeight: FontWeight.w400,
-                fontSize: 12,
+              style: AppTextStyles.titleTextField.copyWith(
+                fontSize: 12.0,
               ),
             ),
             SizedBox(height: 10.v,),
@@ -70,11 +64,7 @@ class _ScheduleNewTripScreenState extends State<ScheduleNewTripScreen> {
               filled: true,
               fillColor: countryTextFieldColor,
               prefix: const Icon(Icons.access_time),
-              hintStyle: const TextStyle(
-                color: blackTextColor,
-                fontWeight: FontWeight.w400,
-                fontSize: 14,
-              ),
+              hintStyle: AppTextStyles.textFieldHint,
               autofocus: false,
               height: 96.h,
               contentPadding: EdgeInsets.symmetric(vertical: 15.v, horizontal: 10.h),
@@ -93,10 +83,8 @@ class _ScheduleNewTripScreenState extends State<ScheduleNewTripScreen> {
                 backgroundColor: primaryColor,
                 elevation: 0,
               ),
-              buttonTextStyle: const TextStyle(
+              buttonTextStyle: AppTextStyles.bodySmallBold.copyWith(
                 color: whiteTextColor,
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
               ),
             ),
             SizedBox(height: 20.v,),
@@ -110,11 +98,10 @@ class _ScheduleNewTripScreenState extends State<ScheduleNewTripScreen> {
                 side: const BorderSide(color: primaryColor),
                 elevation: 0,
               ),
-              buttonTextStyle: const TextStyle(
-                color: primaryColor,
-                fontSize: 12,
+              buttonTextStyle: AppTextStyles.bodySmallPrimary.copyWith(
                 fontWeight: FontWeight.w500,
               ),
+
             ),
             SizedBox(height: 20.v,),
           ],

@@ -254,10 +254,8 @@ class _EnterTripDetailsScreenState extends State<EnterTripDetailsScreen> {
                     : isDestination
                     ? 'Enter your destination'
                     : 'Enter stop $index',
-                hintStyle: const TextStyle(
+                hintStyle:AppTextStyles.bodySmallBold.copyWith(
                   color: searchtextGrey,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
                 ),
                 fillColor: focusNode.hasFocus ? Colors.white : searchButtonGrey,
                 filled: true,

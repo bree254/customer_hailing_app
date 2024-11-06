@@ -9,6 +9,10 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 
+import '../../../theme/app_text_styles.dart';
+import '../../order_request/controller/map_controller.dart';
+import '../../order_request/controller/ride_status_controller.dart';
+
 class ScheduleSelectRideScreen extends StatefulWidget {
   const ScheduleSelectRideScreen({super.key});
 
@@ -17,17 +21,14 @@ class ScheduleSelectRideScreen extends StatefulWidget {
 }
 
 class _ScheduleSelectRideScreenState extends State<ScheduleSelectRideScreen> {
-  GoogleMapController? mapController;
-  LatLng? _center;
-  Position? _currentPosition;
   String? _selectedRide;
   String? _selectedPaymentMode;
   String? _destination;
   String? _prediction;
 
-  final Set<Polyline> _polylines = {};
+  final RideStatusController rideStatusController = Get.put(RideStatusController());
+  final MapController mapController = Get.put(MapController());
 
-  //final RideStatusController rideStatusController = Get.put(RideStatusController());
 
   @override
   void initState() {
@@ -38,74 +39,13 @@ class _ScheduleSelectRideScreenState extends State<ScheduleSelectRideScreen> {
     } else if (args['type'] == 'prediction') {
       _prediction = args['value'];
     }
-      _getUserLocation();
   }
 
-  void _onMapCreated(GoogleMapController controller) {
-    mapController = controller;
-  }
 
-  Future<void> _getUserLocation() async {
-    bool serviceEnabled;
-    LocationPermission permission;
-
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      return;
-    }
-
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.deniedForever) {
-      return;
-    }
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission != LocationPermission.whileInUse &&
-          permission != LocationPermission.always) {
-        return;
-      }
-    }
-
-    _currentPosition = await Geolocator.getCurrentPosition();
-    setState(() {
-      _center = LatLng(_currentPosition!.latitude, _currentPosition!.longitude);
-      _updatePolyline();
-    });
-  }
-
-  Future<LatLng?> _getCoordinatesFromAddress(String address) async {
-    try {
-      List<Location> locations = await locationFromAddress(address);
-      if (locations.isNotEmpty) {
-        return LatLng(locations[0].latitude, locations[0].longitude);
-      }
-    } catch (e) {
-      print('Error getting coordinates from address: $e');
-    }
-    return null;
-  }
-
-  void _updatePolyline() async {
-    if (_center != null && (_destination != null || _prediction != null)) {
-      String address = _destination ?? _prediction ?? '';
-      LatLng? destinationCoords = await _getCoordinatesFromAddress(address);
-      if (destinationCoords != null) {
-        setState(() {
-          _polylines.add(Polyline(
-            polylineId: const PolylineId('route'),
-            visible: true,
-            color: primaryColor,
-            width: 5,
-            points: [_center!, destinationCoords],
-          ));
-        });
-      }
-    }
-  }
-
-  void _startRideRequest() {
-    Get.toNamed(AppRoutes.scheduleTrip, arguments: _selectedRide);
-  }
+  // void _startRideRequest() {
+  //   rideStatusController.searchForDriver();
+  //   //Get.toNamed(AppRoutes.awaitDriver, arguments: _selectedRide);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -113,9 +53,9 @@ class _ScheduleSelectRideScreenState extends State<ScheduleSelectRideScreen> {
       drawer: const DrawerWidget(),
       body: Stack(
         children: [
-          _center == null
+          Obx(() => mapController.center.value == null
               ? Image.asset(
-            'assets/images/map.png', // Path to your cached map image
+            'assets/images/map.png',
             fit: BoxFit.cover,
             width: double.infinity,
             height: double.infinity,
@@ -123,21 +63,21 @@ class _ScheduleSelectRideScreenState extends State<ScheduleSelectRideScreen> {
               : SizedBox(
             height: double.infinity,
             child: GoogleMap(
-              onMapCreated: _onMapCreated,
+              onMapCreated: mapController.onMapCreated,
               initialCameraPosition: CameraPosition(
-                target: _center!,
+                target: mapController.center.value!,
                 zoom: 16.0,
               ),
               markers: {
                 Marker(
                   markerId: const MarkerId('user_location'),
-                  position: _center!,
+                  position: mapController.center.value!,
                   infoWindow: const InfoWindow(title: 'Your Location'),
                 ),
               },
-              polylines: _polylines,
+              polylines: mapController.polylines,
             ),
-          ),
+          )),
           Positioned(
             top: 50,
             left: 16,
@@ -161,10 +101,9 @@ class _ScheduleSelectRideScreenState extends State<ScheduleSelectRideScreen> {
                     contentPadding: const EdgeInsets.symmetric(
                         horizontal: 16, vertical: 20),
                     hintText: _destination ?? (_prediction ?? 'Enter location'),
-                    hintStyle: const TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 14,
-                        backgroundColor: searchButtonGrey),
+                    hintStyle: AppTextStyles.text14Black400.copyWith(
+                      color: searchtextGrey,
+                    ),
                     border: InputBorder.none,
                     prefixIcon: GestureDetector(
                         onTap: () {
@@ -172,14 +111,14 @@ class _ScheduleSelectRideScreenState extends State<ScheduleSelectRideScreen> {
                         },
                         child: const Icon(
                           Icons.arrow_back,
-                          size: 17,
+                          size: 24,
                         )),
                     suffixIcon: GestureDetector(
-                      onTap:(){Get.toNamed(AppRoutes.enterScheduleTripDetails);} ,
+                      onTap:(){Get.toNamed(AppRoutes.search);} ,
                       child: const Icon(
                         Icons.add_circle_outlined,
                         color: primaryColor,
-                        size: 17,
+                        size: 24,
                       ),
                     )),
               ),
@@ -224,7 +163,8 @@ class _ScheduleSelectRideScreenState extends State<ScheduleSelectRideScreen> {
                                 });
                               },
                               child: Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16, vertical: 10),
                                 margin: const EdgeInsets.fromLTRB(16, 0, 16, 8),
                                 decoration: BoxDecoration(
                                   color: isSelected
@@ -244,18 +184,15 @@ class _ScheduleSelectRideScreenState extends State<ScheduleSelectRideScreen> {
                                       image: AssetImage(request.imageUrl)),
                                   title: Text(
                                     request.ridetype,
-                                    style: const TextStyle(
+                                    style: AppTextStyles.text14Black600.copyWith(
                                       color: searchtextGrey,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600,
                                     ),
                                   ),
                                   subtitle: Text(
                                     request.timeEstimate,
-                                    style: const TextStyle(
+                                    style: AppTextStyles.text14Black400.copyWith(
                                       color: searchtextGrey,
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.w400,
+                                      fontSize:10.0,
                                     ),
                                   ),
                                   trailing: Column(
@@ -263,20 +200,20 @@ class _ScheduleSelectRideScreenState extends State<ScheduleSelectRideScreen> {
                                     children: [
                                       Text(
                                         'Ksh ${request.discountedPrice.toString()}',
-                                        style: const TextStyle(
+                                        style: AppTextStyles.text14Black600.copyWith(
                                           color: searchtextGrey,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w600,
                                         ),
                                       ),
-                                      Text(
-                                        'Ksh ${request.originalprice.toString()}',
-                                        style: const TextStyle(
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 10.0),
+                                        child: Text(
+                                          'Ksh ${request.originalprice.toString()}',
+                                          style: AppTextStyles.text14Black400.copyWith(
                                             color: searchtextGrey,
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.w400,
-                                            decoration:
-                                            TextDecoration.lineThrough),
+                                            decoration: TextDecoration.lineThrough,
+                                            fontSize:12.0,
+                                          ),
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -288,7 +225,7 @@ class _ScheduleSelectRideScreenState extends State<ScheduleSelectRideScreen> {
 
                     // Fixed part of the bottom sheet
                     Container(
-                      padding: const EdgeInsets.fromLTRB(16,16,16,24),
+                      padding: const EdgeInsets.all(16),
                       color: Colors.white,
                       child: Column(
                         children: [
@@ -316,7 +253,7 @@ class _ScheduleSelectRideScreenState extends State<ScheduleSelectRideScreen> {
                                           : Colors.black.withOpacity(0.05),
                                     ),
                                   ),
-                                  child: const Row(
+                                  child:  Row(
                                     children: [
                                       Image(
                                         width: 13,
@@ -327,10 +264,9 @@ class _ScheduleSelectRideScreenState extends State<ScheduleSelectRideScreen> {
                                       SizedBox(width: 8),
                                       Text(
                                         'Cash',
-                                        style: TextStyle(
+                                        style: AppTextStyles.text14Black500.copyWith(
                                           color: formTextLabelColor,
-                                          fontSize: 10,
-                                          fontWeight: FontWeight.w500,
+                                          fontSize:10.0,
                                         ),
                                       ),
                                     ],
@@ -344,6 +280,7 @@ class _ScheduleSelectRideScreenState extends State<ScheduleSelectRideScreen> {
                                 onTap: () {
                                   setState(() {
                                     _selectedPaymentMode = 'Card';
+                                    Get.toNamed(AppRoutes.paymentMethods);
                                   });
                                 },
                                 child: Container(
@@ -361,7 +298,7 @@ class _ScheduleSelectRideScreenState extends State<ScheduleSelectRideScreen> {
                                           : Colors.black.withOpacity(0.05),
                                     ),
                                   ),
-                                  child: const Row(
+                                  child:  Row(
                                     children: [
                                       Image(
                                         width: 13,
@@ -372,10 +309,9 @@ class _ScheduleSelectRideScreenState extends State<ScheduleSelectRideScreen> {
                                       SizedBox(width: 8),
                                       Text(
                                         'Card',
-                                        style: TextStyle(
+                                        style: AppTextStyles.text14Black500.copyWith(
                                           color: formTextLabelColor,
-                                          fontSize: 10,
-                                          fontWeight: FontWeight.w500,
+                                          fontSize:10.0,
                                         ),
                                       ),
                                     ],
@@ -391,7 +327,7 @@ class _ScheduleSelectRideScreenState extends State<ScheduleSelectRideScreen> {
                             text: 'Schedule',
                             onPressed: () {
                               if (_selectedRide != null) {
-                                _startRideRequest(); // Trigger the ride request
+                               // _startRideRequest(); // Trigger the ride request
                               }
                             },
                           ),
