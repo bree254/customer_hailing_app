@@ -40,3 +40,4 @@ const profileText =  Color(0xFF1D1B20);
 const darkerGrey = Color(0xFF555555);
 const redColor = Color(0xFFE02424);
 const shareTripColor = Color(0xFF0000F9);
+const lighterGrey = Color(0xFFB0B0B0);

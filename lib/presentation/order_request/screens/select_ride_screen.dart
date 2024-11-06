@@ -108,14 +108,14 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                         },
                         child: const Icon(
                           Icons.arrow_back,
-                          size: 17,
+                          size: 24,
                         )),
                     suffixIcon: GestureDetector(
                       onTap:(){Get.toNamed(AppRoutes.search);} ,
                       child: const Icon(
                         Icons.add_circle_outlined,
                         color: primaryColor,
-                        size: 17,
+                        size: 24,
                       ),
                     )),
               ),
@@ -201,11 +201,15 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                                           color: searchtextGrey,
                                         ),
                                       ),
-                                      Text(
-                                        'Ksh ${request.originalprice.toString()}',
-                                        style: AppTextStyles.text14Black400.copyWith(
-                                          color: searchtextGrey,
-                                          fontSize:10.0,
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 10.0),
+                                        child: Text(
+                                          'Ksh ${request.originalprice.toString()}',
+                                          style: AppTextStyles.text14Black400.copyWith(
+                                            color: searchtextGrey,
+                                            decoration: TextDecoration.lineThrough,
+                                            fontSize:12.0,
+                                          ),
                                         ),
                                       ),
                                     ],
@@ -273,6 +277,7 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                                 onTap: () {
                                   setState(() {
                                     _selectedPaymentMode = 'Card';
+                                    Get.toNamed(AppRoutes.paymentMethods);
                                   });
                                 },
                                 child: Container(

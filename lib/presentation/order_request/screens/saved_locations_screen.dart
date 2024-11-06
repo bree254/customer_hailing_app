@@ -82,15 +82,15 @@ class _SavedLocationsScreenState extends State<SavedLocationsScreen> {
                         title: Text(
                           location['name']!,
                           style: AppTextStyles.bodySmall.copyWith(
-                            color: searchButtonGrey,
+                            color: darkerGrey,
                           ),
                         ),
                         subtitle: location['address']!.isNotEmpty
                             ? Text(
                           location['address']!,
-                          style: const TextStyle(
-                            color: Color(0xFFB0B0B0),
-                            fontSize: 10,
+                          style: AppTextStyles.bodySmall.copyWith(
+                            color: lighterGrey,
+                            fontSize: 10.0,
                           ),
                         )
                             : null,

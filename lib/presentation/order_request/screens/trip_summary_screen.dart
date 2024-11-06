@@ -17,56 +17,57 @@ class _TripSummaryScreenState extends State<TripSummaryScreen> {
         padding: const EdgeInsets.fromLTRB(24, 100, 24, 24),
         child: Column(
           children: [
-            const SizedBox(
+             SizedBox(
               width: 255,
               child: Text(
                 '5th, August, 2024',
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Color(0xFF767676),
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400,
+                style: AppTextStyles.bodySmall.copyWith(
+                  color: searchtextGrey,
                 ),
+
+
               ),
             ),
             const SizedBox(
               height: 8,
             ),
-            const SizedBox(
+             SizedBox(
               width: 255,
               child: Text(
                 'Thank you for riding, Ariana',
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Color(0xFF767676),
-                  fontSize: 20,
-                  fontWeight: FontWeight.w500,
+                style: AppTextStyles.bodySmallBold.copyWith(
+                  color: searchtextGrey,
+                  fontSize: 20.0,
                 ),
+
+
               ),
             ),
             const SizedBox(
               height: 74,
             ),
-            const SizedBox(
+             SizedBox(
               width: 124,
               child: Text(
                 'Total',
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Color(0xFF767676),
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
+                style: AppTextStyles.bodySmallBold.copyWith(
+                  color: searchtextGrey,
                 ),
+
               ),
             ),
-            const Text(
+             Text(
               'KES 290',
               textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Color(0xFF7145D6),
-                fontSize: 32,
+              style:AppTextStyles.bodyHeading.copyWith(
+                color:primaryColor,
+                fontSize: 32.0,
                 fontWeight: FontWeight.w700,
               ),
+
             ),
             const SizedBox(
               height: 74,
@@ -74,87 +75,71 @@ class _TripSummaryScreenState extends State<TripSummaryScreen> {
             Divider(
               color: Colors.grey[100],
             ),
-            const ListTile(
+             ListTile(
               leading: Text(
                 'Distance',
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Color(0xFF767676),
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400,
+                style: AppTextStyles.bodySmall.copyWith(
+                  color: searchtextGrey,
                 ),
               ),
               trailing: Text(
                 'KES 150.00',
                 textAlign: TextAlign.right,
-                style: TextStyle(
-                  color: Color(0xFF767676),
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400,
+                style: AppTextStyles.bodySmall.copyWith(
+                  color: searchtextGrey,
                 ),
               ),
             ),
-            const ListTile(
+             ListTile(
               leading: Text(
                 'Time',
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Color(0xFF767676),
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400,
+                style: AppTextStyles.bodySmall.copyWith(
+                  color: searchtextGrey,
                 ),
               ),
               trailing: Text(
                 'KES 150.00',
                 textAlign: TextAlign.right,
-                style: TextStyle(
-                  color: Color(0xFF767676),
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400,
+                style: AppTextStyles.bodySmall.copyWith(
+                  color: searchtextGrey,
                 ),
               ),
             ),
-            const ListTile(
+             ListTile(
               leading: Text(
                 'Base fare',
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Color(0xFF767676),
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400,
+                style: AppTextStyles.bodySmall.copyWith(
+                  color: searchtextGrey,
                 ),
               ),
               trailing: Text(
                 'KES 150.00',
                 textAlign: TextAlign.right,
-                style: TextStyle(
-                  color: Color(0xFF767676),
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400,
+                style: AppTextStyles.bodySmall.copyWith(
+                  color: searchtextGrey,
                 ),
               ),
             ),
             Divider(
               color: Colors.grey[100],
             ),
-            const ListTile(
+             ListTile(
               leading: Text(
                 'Normal fare',
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Color(0xFF767676),
-                  fontSize: 12,
+                style: AppTextStyles.bodySmall.copyWith(
+                  color: searchtextGrey,
                   fontWeight: FontWeight.w700,
-                  height: 0.14,
-                  letterSpacing: 0.25,
                 ),
               ),
               trailing: Text(
                 'KES 150.00',
                 textAlign: TextAlign.right,
-                style: TextStyle(
-                  color: Color(0xFF767676),
-                  fontSize: 12,
+                style: AppTextStyles.bodySmall.copyWith(
+                  color: searchtextGrey,
                   fontWeight: FontWeight.w700,
                 ),
               ),
@@ -163,71 +148,59 @@ class _TripSummaryScreenState extends State<TripSummaryScreen> {
               leading: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Text(
+                   Text(
                     'Surge',
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Color(0xFF767676),
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400,
+                    style: AppTextStyles.bodySmall.copyWith(
+                      color: searchtextGrey,
                     ),
                   ),
                   SizedBox(width: 16,),
                   Image.asset('assets/images/question_mark.png',height: 12,width: 12,color: primaryColor,)
                 ],
               ),
-              trailing: const Text(
+              trailing:  Text(
                 'KES 150.00',
                 textAlign: TextAlign.right,
-                style: TextStyle(
-                  color: Color(0xFF767676),
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400,
+                style: AppTextStyles.bodySmall.copyWith(
+                  color: searchtextGrey,
                 ),
               ),
             ),
             ListTile(
               leading:
-              const Text(
+               Text(
                 'Tip',
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Color(0xFF767676),
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400,
-                ),
+                 style: AppTextStyles.bodySmall.copyWith(
+                   color: searchtextGrey,
+                 ),
               ),
-              trailing: const Text(
+              trailing:  Text(
                 'KES 150.00',
                 textAlign: TextAlign.right,
-                style: TextStyle(
-                  color: Color(0xFF767676),
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400,
+                style: AppTextStyles.bodySmall.copyWith(
+                  color: searchtextGrey,
                 ),
               ),
             ),
             Divider(
               color: Colors.grey[100],
             ),
-            const ListTile(
+             ListTile(
               leading: Text(
                 'Subtotal',
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Color(0xFF767676),
-                  fontSize: 12,
+                style: AppTextStyles.bodySmall.copyWith(
+                  color: searchtextGrey,
                   fontWeight: FontWeight.w700,
-                  height: 0.14,
-                  letterSpacing: 0.25,
                 ),
               ),
               trailing: Text(
                 'KES 150.00',
                 textAlign: TextAlign.right,
-                style: TextStyle(
-                  color: Color(0xFF767676),
-                  fontSize: 12,
+                style: AppTextStyles.bodySmall.copyWith(
+                  color: searchtextGrey,
                   fontWeight: FontWeight.w700,
                 ),
               ),
@@ -265,13 +238,11 @@ class _TripSummaryScreenState extends State<TripSummaryScreen> {
                                 child: const Icon(Icons.close),
                               ),
                             ),
-                            const Text(
+                             Text(
                               'Tip your driver',
                               textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Color(0xFF7145D6),
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
+                              style: AppTextStyles.bodyHeading.copyWith(
+                                color: primaryColor,
                               ),
                             ),
                             const SizedBox(
@@ -300,10 +271,8 @@ class _TripSummaryScreenState extends State<TripSummaryScreen> {
                                 backgroundColor: primaryColor,
                                 elevation: 0,
                               ),
-                              buttonTextStyle: const TextStyle(
+                              buttonTextStyle: AppTextStyles.bodySmallBold.copyWith(
                                 color: whiteTextColor,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500,
                               ),
                             ),
                           ],
@@ -317,10 +286,8 @@ class _TripSummaryScreenState extends State<TripSummaryScreen> {
                 side: const BorderSide(color: primaryColor),
                 elevation: 0,
               ),
-              buttonTextStyle: const TextStyle(
-                color: primaryColor,
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
+              buttonTextStyle: AppTextStyles.bodySmallPrimary.copyWith(
+                fontWeight: FontWeight.w600,
               ),
             ),
           ],
