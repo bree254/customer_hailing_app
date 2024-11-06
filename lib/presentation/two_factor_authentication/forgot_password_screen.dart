@@ -62,13 +62,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                 Text(
                   "Enter your email",
-                  style: TextStyle(
-                    color: formTextLabelColor,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14,
-                  ),
+                  style: AppTextStyles.titleTextField,
                 ),
                 const SizedBox(
                   height: 10,
@@ -78,10 +74,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   filled: true,
                   fillColor: countryTextFieldColor,
                   hintText: "name@email.com",
-                  hintStyle: const TextStyle(
+                  hintStyle: AppTextStyles.titleTextField.copyWith(
                     color: blackTextColor,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14,
                   ),
                   autofocus: false,
                   height: 96.h,
@@ -102,30 +96,20 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   onTap: (){
                     Get.back();
                   },
-                  child:  const Center(
+                  child:   Center(
                     child:Text.rich(
                       TextSpan(
                         children: [
                           TextSpan(
                             text: 'Remembered your password?',
-                            style: TextStyle(
-                              color: Color(0xFF434343),
-                              fontSize: 12,
-                              fontFamily: 'BR Omny',
-                              fontWeight: FontWeight.w400,
-                              height: 0.14,
-                              letterSpacing: 0.25,
+                            style: AppTextStyles.bodySmall.copyWith(
+                              color: formTextLabelColor,
                             ),
                           ),
                           TextSpan(
                             text: ' Login',
-                            style: TextStyle(
-                              color: Color(0xFF7145D6),
-                              fontSize: 12,
-                              fontFamily: 'BR Omny',
+                            style: AppTextStyles.bodySmallPrimary.copyWith(
                               fontWeight: FontWeight.w400,
-                              height: 0.14,
-                              letterSpacing: 0.25,
                             ),
                           ),
                         ],

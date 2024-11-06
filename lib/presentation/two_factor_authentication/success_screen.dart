@@ -32,15 +32,13 @@ class _SuccessScreenState extends State<SuccessScreen> {
             ),
             const SizedBox(height: 32,),
 
-            const Align(
+             Align(
               alignment: Alignment.center,
               child: Text(
                 'Please check your email and click on the link \nto reset your password',
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Color(0xFF434343),
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400,
+                style: AppTextStyles.titleTextField.copyWith(
+                  fontSize: 12.0,
                 ),
               )
             ),
@@ -57,11 +55,10 @@ class _SuccessScreenState extends State<SuccessScreen> {
                   side: const BorderSide(color: primaryColor),
                   elevation: 0,
                 ),
-                buttonTextStyle: const TextStyle(
-                  color: primaryColor,
-                  fontSize: 12,
+                buttonTextStyle:AppTextStyles.bodySmallPrimary.copyWith(
                   fontWeight: FontWeight.w500,
                 ),
+
               ),
             ),
 

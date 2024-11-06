@@ -70,13 +70,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
               children: [
                 // new password
 
-                const Text(
+                 Text(
                   "New Password",
-                  style: TextStyle(
-                    color: formTextLabelColor,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14,
-                  ),
+                  style: AppTextStyles.titleTextField,
                 ),
                 const SizedBox(
                   height: 10,
@@ -86,13 +82,10 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   filled: true,
                   fillColor: countryTextFieldColor,
                   hintText: "Enter your new password",
-                  hintStyle: const TextStyle(
+                  hintStyle: AppTextStyles.titleTextField.copyWith(
                     color: blackTextColor,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14,
                   ),
                   autofocus: false,
-                  height: 96.h,
                   contentPadding: EdgeInsets.symmetric(vertical: 15.v, horizontal: 10.h),
                   obscureText: !isShowNewPassword,
                   suffix: IconButton(
@@ -124,15 +117,13 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   ),
                 ),
 
+                SizedBox(height: 10,),
+
                 // confirm password
 
-                const Text(
+                 Text(
                   "Confirm your Password",
-                  style: TextStyle(
-                    color: formTextLabelColor,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14,
-                  ),
+                  style: AppTextStyles.titleTextField,
                 ),
                 const SizedBox(
                   height: 10,
@@ -142,13 +133,10 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   filled: true,
                   fillColor: countryTextFieldColor,
                   hintText: "Confirm your new password",
-                  hintStyle: const TextStyle(
+                  hintStyle: AppTextStyles.titleTextField.copyWith(
                     color: blackTextColor,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14,
                   ),
                   autofocus: false,
-                  height: 96.h,
                   contentPadding: EdgeInsets.symmetric(vertical: 15.v, horizontal: 10.h),
                   obscureText: !isShowConfirmPassword,
                   suffix: IconButton(

@@ -85,13 +85,9 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // old password
-                const Text(
+                 Text(
                   "Old Password",
-                  style: TextStyle(
-                    color: formTextLabelColor,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14,
-                  ),
+                  style: AppTextStyles.titleTextField,
                 ),
                 const SizedBox(
                   height: 10,
@@ -101,13 +97,10 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   filled: true,
                   fillColor: countryTextFieldColor,
                   hintText: "Enter your old password",
-                  hintStyle: const TextStyle(
+                  hintStyle: AppTextStyles.titleTextField.copyWith(
                     color: blackTextColor,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14,
                   ),
                   autofocus: false,
-                  height: 96.h,
                   contentPadding: EdgeInsets.symmetric(vertical: 15.v, horizontal: 10.h),
                   obscureText: !isShowOldPassword,
                   suffix: IconButton(
@@ -138,16 +131,14 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     borderSide: const BorderSide(color: Colors.transparent, width: 0),
                   ),
                 ),
-
+                const SizedBox(
+                  height: 10,
+                ),
                 // new password
 
-                const Text(
+                 Text(
                   "New Password",
-                  style: TextStyle(
-                    color: formTextLabelColor,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14,
-                  ),
+                  style: AppTextStyles.titleTextField,
                 ),
                 const SizedBox(
                   height: 10,
@@ -157,13 +148,10 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   filled: true,
                   fillColor: countryTextFieldColor,
                   hintText: "Enter your new password",
-                  hintStyle: const TextStyle(
+                  hintStyle: AppTextStyles.titleTextField.copyWith(
                     color: blackTextColor,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14,
                   ),
                   autofocus: false,
-                  height: 96.h,
                   contentPadding: EdgeInsets.symmetric(vertical: 15.v, horizontal: 10.h),
                   obscureText: !isShowNewPassword,
                   suffix: IconButton(
@@ -194,16 +182,14 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     borderSide: const BorderSide(color: Colors.transparent, width: 0),
                   ),
                 ),
-
+                const SizedBox(
+                  height: 10,
+                ),
                 // confirm password
 
-                const Text(
+                 Text(
                   "Confirm Password",
-                  style: TextStyle(
-                    color: formTextLabelColor,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14,
-                  ),
+                  style: AppTextStyles.titleTextField,
                 ),
                 const SizedBox(
                   height: 10,
@@ -213,13 +199,10 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   filled: true,
                   fillColor: countryTextFieldColor,
                   hintText: "Confirm your new password",
-                  hintStyle: const TextStyle(
+                  hintStyle: AppTextStyles.titleTextField.copyWith(
                     color: blackTextColor,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14,
                   ),
                   autofocus: false,
-                  height: 96.h,
                   contentPadding: EdgeInsets.symmetric(vertical: 15.v, horizontal: 10.h),
                   obscureText: !isShowConfirmPassword,
                   suffix: IconButton(
@@ -248,18 +231,17 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     borderSide: const BorderSide(color: Colors.transparent, width: 0),
                   ),
                 ),
+                const SizedBox(
+                  height: 10,
+                ),
                 GestureDetector(
                   onTap: (){
                     Get.toNamed(AppRoutes.forgotPassword);
                   },
-                  child: const Center(
+                  child:  Center(
                     child: Text(
                       "Forgot Password ?",
-                      style: TextStyle(
-                        color: primaryColor,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 12,
-                      ),
+                      style: AppTextStyles.bodySmallPrimary,
                     ),
                   ),
                 ),

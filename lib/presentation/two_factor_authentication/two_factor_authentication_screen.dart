@@ -4,14 +4,17 @@ import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/presentation/two_factor_authentication/password_and_security_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+
 class TwoFactorAuthenticationScreen extends StatefulWidget {
   const TwoFactorAuthenticationScreen({super.key});
 
   @override
-  State<TwoFactorAuthenticationScreen> createState() => _TwoFactorAuthenticationScreenState();
+  State<TwoFactorAuthenticationScreen> createState() =>
+      _TwoFactorAuthenticationScreenState();
 }
 
-class _TwoFactorAuthenticationScreenState extends State<TwoFactorAuthenticationScreen> {
+class _TwoFactorAuthenticationScreenState
+    extends State<TwoFactorAuthenticationScreen> {
   final TextEditingController _pinController = TextEditingController();
 
   String? verificationType;
@@ -76,7 +79,8 @@ class _TwoFactorAuthenticationScreenState extends State<TwoFactorAuthenticationS
           //navigate to the privacy policy screen
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => const PasswordAndSecurityScreen()),
+            MaterialPageRoute(
+                builder: (context) => const PasswordAndSecurityScreen()),
           );
         } else {
           // Code is incorrect
@@ -85,13 +89,14 @@ class _TwoFactorAuthenticationScreenState extends State<TwoFactorAuthenticationS
       });
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        title:  Text(
+        title: Text(
           '2 Factor Authentication',
           style: AppTextStyles.largeAppBarText,
         ),
@@ -112,24 +117,16 @@ class _TwoFactorAuthenticationScreenState extends State<TwoFactorAuthenticationS
         child: Column(
           children: [
             // const SizedBox(height: 32),
-            const Column(
+            Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
                   "Please enter the OTP sent to",
-                  style: TextStyle(
-                    color: blackTextColor,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14,
-                  ),
+                  style: AppTextStyles.text14Black400,
                 ),
                 Text(
                   "0759633729",
-                  style: TextStyle(
-                    color: blackTextColor,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14,
-                  ),
+                  style: AppTextStyles.text14Black600,
                 ),
               ],
             ),
@@ -139,10 +136,7 @@ class _TwoFactorAuthenticationScreenState extends State<TwoFactorAuthenticationS
               length: 4,
               animationType: AnimationType.none,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              textStyle: const TextStyle(
-                fontWeight: FontWeight.w400,
-                fontSize: 14,
-              ),
+              textStyle: AppTextStyles.titleTextField,
               pinTheme: PinTheme(
                 shape: PinCodeFieldShape.box,
                 borderRadius: BorderRadius.circular(10),
@@ -153,7 +147,8 @@ class _TwoFactorAuthenticationScreenState extends State<TwoFactorAuthenticationS
                 inactiveBorderWidth: 1,
                 errorBorderWidth: 1,
                 selectedBorderWidth: 1,
-                activeColor: _showInvalidCode ? textfieldErrorRedColor : primaryColor,
+                activeColor:
+                    _showInvalidCode ? textfieldErrorRedColor : primaryColor,
                 inactiveColor: countryTextFieldColor,
                 activeFillColor: whiteTextColor,
                 inactiveFillColor: countryTextFieldColor,
@@ -178,37 +173,28 @@ class _TwoFactorAuthenticationScreenState extends State<TwoFactorAuthenticationS
             const SizedBox(height: 8),
             if (_hasStartedInputting && !_showResendCode)
               Text(_resendCodeText,
-                  style: const TextStyle(
+                  style: AppTextStyles.text14Black400.copyWith(
                     color: resendCodeTextColor,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14,
                   )),
             const SizedBox(height: 16),
             if (_isLoading) ...[
               const CircularProgressIndicator(),
             ] else if (_showInvalidCode) ...[
-              const Text(
-                "Invalid OTP",
-                style: TextStyle(
-                  color: textfieldErrorRedColor,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 12,
-                ),
-              ),
+              Text("Invalid OTP",
+                  style: AppTextStyles.text14Black400.copyWith(
+                    color: textfieldErrorRedColor,
+                    fontSize: 12,
+                  )),
               const SizedBox(height: 16),
               GestureDetector(
                 onTap: () {
                   // Handle resend code action
                 },
-                child: const Text(
-                  "Resend code",
-                  style: TextStyle(
-                    color: resendCodeTextColor,
-                    decoration: TextDecoration.underline,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14,
-                  ),
-                ),
+                child: Text("Resend code",
+                    style: AppTextStyles.text14Black400.copyWith(
+                      color: resendCodeTextColor,
+                      decoration: TextDecoration.underline,
+                    )),
               ),
             ]
           ],

@@ -39,23 +39,20 @@ class _PasswordAndSecurityScreenState extends State<PasswordAndSecurityScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ListTile(
-              title: const Column(
+              title:  Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     'Change Password',
-                    style: TextStyle(
-                      color: Color(0xFF555555),
-                      fontSize: 14,
+                    style:AppTextStyles.listTileTitle.copyWith(
                       fontWeight: FontWeight.w600,
                     ),
+
                   ),
                   Text(
                     'Last changed on 12/12/2024',
-                    style: TextStyle(
-                      color: Color(0xFF555555),
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400,
+                    style:AppTextStyles.listTileSubtitle.copyWith(
+                      color: darkerGrey,
                     ),
                   )
                 ],
@@ -72,23 +69,19 @@ class _PasswordAndSecurityScreenState extends State<PasswordAndSecurityScreen> {
             ),
             const SizedBox(height: 16,),
             ListTile(
-              title: const Column(
+              title:  Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     '2 Factor Authentication',
-                    style: TextStyle(
-                      color: Color(0xFF555555),
-                      fontSize: 14,
+                    style:AppTextStyles.listTileTitle.copyWith(
                       fontWeight: FontWeight.w600,
                     ),
                   ),
                   Text(
                     'On',
-                    style: TextStyle(
-                      color: Color(0xFF555555),
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400,
+                    style:AppTextStyles.listTileSubtitle.copyWith(
+                      color: darkerGrey,
                     ),
                   ),
                 ],
@@ -97,9 +90,9 @@ class _PasswordAndSecurityScreenState extends State<PasswordAndSecurityScreen> {
                 padding: const EdgeInsets.all(8.0),
                 child: Switch(
                   activeColor: primaryColor,
-                  activeTrackColor: Colors.grey,
+                  activeTrackColor: Colors.grey[300],
                   trackOutlineColor:WidgetStateColor.transparent,
-                  inactiveThumbColor: Colors.grey[200],
+                  inactiveThumbColor: Colors.grey[100],
                   value: notificationsEnabled,
                   onChanged: (value) {
                     setState(() {
