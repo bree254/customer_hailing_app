@@ -70,13 +70,13 @@ class _PromotionsScreenState extends State<PromotionsScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+               Text(
                 "Promo code",
-                style: TextStyle(
+                style: AppTextStyles.text14Black400.copyWith(
                   color: formTextLabelColor,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 14,
                 ),
+
+
               ),
               const SizedBox(height: 10),
               CustomTextFormField(
@@ -84,11 +84,7 @@ class _PromotionsScreenState extends State<PromotionsScreen> {
                 filled: true,
                 fillColor: countryTextFieldColor,
                 hintText: "Enter your promo code",
-                hintStyle: const TextStyle(
-                  color: blackTextColor,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 14,
-                ),
+                hintStyle:AppTextStyles.text14Black400,
                 autofocus: false,
                 height: 96.h,
                 contentPadding: EdgeInsets.symmetric(vertical: 15.v, horizontal: 10.h),
@@ -112,12 +108,10 @@ class _PromotionsScreenState extends State<PromotionsScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                     Text(
                       'Your active promotions',
-                      style: TextStyle(
-                        color: Color(0xFF767676),
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
+                      style: AppTextStyles.text14Black500.copyWith(
+                        color: searchtextGrey,
                       ),
                     ),
                     const SizedBox(height: 10),
