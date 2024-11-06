@@ -74,12 +74,10 @@ class _AddCardScreenState extends State<AddCardScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                 Text(
                   'Card number',
-                  style: TextStyle(
+                  style:AppTextStyles.text14Black400.copyWith(
                     color: formTextLabelColor,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14,
                   ),
                 ),
                 const SizedBox(
@@ -91,13 +89,10 @@ class _AddCardScreenState extends State<AddCardScreen> {
                   fillColor: countryTextFieldColor,
                   prefix: const Icon(Icons.credit_card_outlined),
                   hintText: 'xxxx xxxx xxxx xxxx',
-                  hintStyle: const TextStyle(
-                    color: blackTextColor,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14,
-                  ),
+                  hintStyle:AppTextStyles.text14Black400.copyWith(
+                  color: blackTextColor,
+                ),
                   autofocus: false,
-
                   contentPadding: EdgeInsets.symmetric(vertical: 15.v, horizontal: 10.h),
                   validator: (value) {
                     if (value!.isEmpty) {
@@ -124,12 +119,10 @@ class _AddCardScreenState extends State<AddCardScreen> {
                             Row(
                               //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                const Text(
+                                 Text(
                                   'Expiry date',
-                                  style: TextStyle(
-                                    color: Color(0xFF434343),
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w400,
+                                  style:AppTextStyles.text14Black400.copyWith(
+                                    color: formTextLabelColor,
                                   ),
                                 ),
                                 const SizedBox(width: 50,),
@@ -142,11 +135,9 @@ class _AddCardScreenState extends State<AddCardScreen> {
                               filled: true,
                               fillColor: countryTextFieldColor,
                               hintText: 'mm/yy',
-                              hintStyle: const TextStyle(
-                                color: blackTextColor,
-                                fontWeight: FontWeight.w400,
-                                fontSize: 14,
-                              ),
+                              hintStyle: AppTextStyles.text14Black400.copyWith(
+                              color: blackTextColor,
+                            ),
                               autofocus: false,
                               width: 164,
 
@@ -172,12 +163,10 @@ class _AddCardScreenState extends State<AddCardScreen> {
                             Row(
                              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                const Text(
+                                 Text(
                                   'CVV',
-                                  style: TextStyle(
-                                    color: Color(0xFF434343),
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w400,
+                                  style:AppTextStyles.text14Black400.copyWith(
+                                    color: formTextLabelColor,
                                   ),
                                 ),
                                 const SizedBox(width: 100,),
@@ -190,11 +179,9 @@ class _AddCardScreenState extends State<AddCardScreen> {
                               filled: true,
                               fillColor: countryTextFieldColor,
                               hintText: 'xxx',
-                              hintStyle: const TextStyle(
-                                color: blackTextColor,
-                                fontWeight: FontWeight.w400,
-                                fontSize: 14,
-                              ),
+                              hintStyle: AppTextStyles.text14Black400.copyWith(
+                              color: blackTextColor,
+                            ),
                               autofocus: false,
                               width: 164,
                               contentPadding: EdgeInsets.symmetric(vertical: 15.v, horizontal: 10.h),

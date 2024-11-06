@@ -71,12 +71,10 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
                 children: [
                   Image.asset( height: 24, width: 24,'assets/images/green_cash.png'),
                   const SizedBox(width: 16,),
-                  const Text(
+                   Text(
                     'Cash',
-                    style: TextStyle(
-                      color: Color(0xFF555555),
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400,
+                    style:AppTextStyles.bodySmall.copyWith(
+                      color: darkerGrey,
                     ),
                   ),
                   const Spacer(),
@@ -104,22 +102,21 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
                      Image.asset(height: 8,width: 24,'assets/images/Visa.png'),
                     const SizedBox(width: 16),
                     Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           '**** **** **** ${cardNumber!.substring(cardNumber!.length - 4)}', // Show last 4 digits of card number
-                          style: const TextStyle(
-                            color: Color(0xFF555555),
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
+                          style:AppTextStyles.bodySmall.copyWith(
+                           color: darkerGrey,
                           ),
                         ),
-                        const Text(
+                         Text(
                           'Debit card',
-                          style: TextStyle(
-                            color: Color(0xFF9F9F9F),
-                            fontSize: 10,
-                            fontWeight: FontWeight.w400,
+                          style:AppTextStyles.bodySmall.copyWith(
+                            color: disabledText,
+                            fontSize: 10.0,
                           ),
+
                         )
                       ],
                     ),
@@ -136,17 +133,15 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
               child: Container(
                 margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
                 color: Colors.transparent,
-                child: const Row(
+                child:  Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(Icons.add_circle_outlined, color: primaryColor, size: 14),
                     SizedBox(width: 5),
                     Text(
                       'Add new payment method',
-                      style: TextStyle(
-                        color: Color(0xFF7145D6),
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
+                      style:AppTextStyles.bodySmallPrimary.copyWith(
+                        fontWeight: FontWeight.w600,
                       ),
                     )
                   ],
