@@ -16,23 +16,22 @@ class DrawerWidget extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 0.0,vertical: 50),
               child: ListTile(
                 leading: Image.asset("assets/images/driver.png"),
-                title: const Column(
+                title:  Column(
                   children: [
                   Text(
                         'John Doe',
-                        style: TextStyle(
-                          color: Color(0xFF767676),
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
+                        style: AppTextStyles.bodySmallBold.copyWith(
+                          color: searchtextGrey,
                         ),
+
                       ),
                 Text(
                       '4.5 rating',
-                      style: TextStyle(
-                        color: Color(0xFF434343),
-                        fontSize: 10,
-                        fontWeight: FontWeight.w400,
+                      style: AppTextStyles.bodySmall.copyWith(
+                        color: formTextLabelColor,
+                        fontSize: 10.0,
                       ),
+
                     ),
 
                   ],
@@ -45,12 +44,10 @@ class DrawerWidget extends StatelessWidget {
             ),
             ListTile(
               leading: const Icon(Icons.history,size: 20,),
-              title: const Text(
+              title:  Text(
                 'History',
-                style: TextStyle(
-                  color: Color(0xFF555555),
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400,
+                style: AppTextStyles.listTileTitle.copyWith(
+                  fontSize: 12.0,
                 ),
               ),
               onTap: () {
@@ -59,12 +56,10 @@ class DrawerWidget extends StatelessWidget {
             ),
             ListTile(
               leading: const Icon(Icons.calendar_month_outlined,size: 20,),
-              title: const Text(
+              title:  Text(
                 'Scheduled Trips',
-                style: TextStyle(
-                  color: Color(0xFF555555),
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400,
+                style: AppTextStyles.listTileTitle.copyWith(
+                  fontSize: 12.0,
                 ),
               ),
               onTap: () {
@@ -73,12 +68,10 @@ class DrawerWidget extends StatelessWidget {
             ),
             ListTile(
               leading: const Icon(Icons.settings_outlined,size: 20,),
-              title: const Text(
+              title:  Text(
                 'Settings',
-                style: TextStyle(
-                  color: Color(0xFF555555),
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400,
+                style: AppTextStyles.listTileTitle.copyWith(
+                  fontSize: 12.0,
                 ),
               ),
               onTap: () {
@@ -87,12 +80,10 @@ class DrawerWidget extends StatelessWidget {
             ),
             ListTile(
               leading: const Icon(Icons.local_offer_outlined,size: 20),
-              title: const Text(
+              title:  Text(
                 'Promotions',
-                style: TextStyle(
-                  color: Color(0xFF555555),
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400,
+                style: AppTextStyles.listTileTitle.copyWith(
+                  fontSize: 12.0,
                 ),
               ),
               onTap: () {
@@ -101,12 +92,10 @@ class DrawerWidget extends StatelessWidget {
             ),
             ListTile(
               leading: const Icon(Icons.contact_support_outlined,size: 20),
-              title: const Text(
+              title:  Text(
                 'Support',
-                style: TextStyle(
-                  color: Color(0xFF555555),
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400,
+                style: AppTextStyles.listTileTitle.copyWith(
+                  fontSize: 12.0,
                 ),
               ),
               onTap: () {
@@ -115,12 +104,10 @@ class DrawerWidget extends StatelessWidget {
             ),
             ListTile(
               leading: const Icon(Icons.payment,size: 20),
-              title: const Text(
+              title:  Text(
                 'Payment',
-                style: TextStyle(
-                  color: Color(0xFF555555),
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
+                style: AppTextStyles.listTileTitle.copyWith(
+                  fontSize: 12.0,
                 ),
               ),
               onTap: () {
@@ -130,12 +117,10 @@ class DrawerWidget extends StatelessWidget {
             const Spacer(),
             ListTile(
               leading: const Icon(Icons.logout,size: 20),
-              title: const Text(
+              title:  Text(
                 'Logout',
-                style: TextStyle(
-                  color: Color(0xFF555555),
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
+                style: AppTextStyles.listTileTitle.copyWith(
+                  fontSize: 12.0,
                 ),
               ),
               onTap: () {
