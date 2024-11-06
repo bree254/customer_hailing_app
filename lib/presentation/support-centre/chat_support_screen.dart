@@ -79,7 +79,7 @@ class _ChatSupportScreenState extends State<ChatSupportScreen> {
                 ),
                const Icon(Icons.headset_mic_sharp,color: primaryColor,),
                 const SizedBox(width: 16),
-                const Expanded(
+                 Expanded(
                   child: Padding(
                     padding: EdgeInsets.only(top: 10.0),
                     child: Column(
@@ -87,18 +87,12 @@ class _ChatSupportScreenState extends State<ChatSupportScreen> {
                       children: [
                         Text(
                           'Chat Support',
-                          style: TextStyle(
-                            color: Color(0xFF434343),
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                          ),
+                          style: AppTextStyles.bodySmallBold,
                         ),
                         Text(
                           'Online',
-                          style: TextStyle(
-                            color: Color(0xFF0E9F6E),
-                            fontSize: 10,
-                            fontWeight: FontWeight.w400,
+                          style: AppTextStyles.bodySmall.copyWith(
+                            color: onlineText,
                           ),
                         )
                       ],
@@ -162,7 +156,7 @@ class _ChatSupportScreenState extends State<ChatSupportScreen> {
         children: [
           Text(
             _formatDateTime(timestamp), // Format the date and time
-            style: const TextStyle(color: Colors.grey, fontSize: 12),
+            style: AppTextStyles.bodySmall,
           ),
           const SizedBox(height: 5),
           Row(
@@ -191,10 +185,8 @@ class _ChatSupportScreenState extends State<ChatSupportScreen> {
                 ),
                 child: Text(
                   text,
-                  style: TextStyle(
-                    color: isMe ? const Color(0xFFFAFAFA) :const Color(0xFF313942),
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
+                  style: AppTextStyles.text14Black400.copyWith(
+                    color: isMe ?  whiteTextColor :blackTextColor,
                   ),
                 ),
               ),
@@ -215,8 +207,8 @@ class _ChatSupportScreenState extends State<ChatSupportScreen> {
       child: Row(
         children: [
           Container(
-            width: 330,
-            height: 44,
+            width: 320.h,
+            height: 44.v,
             padding: const EdgeInsets.symmetric(horizontal: 16),
             clipBehavior: Clip.antiAlias,
             decoration: ShapeDecoration(
@@ -228,12 +220,10 @@ class _ChatSupportScreenState extends State<ChatSupportScreen> {
             child: TextField(
               controller: _controller,
               textCapitalization: TextCapitalization.sentences,
-              decoration: const InputDecoration(
+              decoration:  InputDecoration(
                 hintText: 'Type here...',
-                hintStyle: TextStyle(
+                hintStyle: AppTextStyles.bodyMedium.copyWith(
                   color: chatIcons,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
                 ),
                 border: InputBorder.none,
               ),

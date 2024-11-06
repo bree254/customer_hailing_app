@@ -49,6 +49,10 @@ class AppTextStyles {
       color: const Color(0xFF9CA3AF), fontSize: 12, fontWeight: FontWeight.w400
   );
 
+  static get listTileTrailing => theme.textTheme.bodyMedium!.copyWith(
+      color: primaryColor, fontSize: 12, fontWeight: FontWeight.w400
+  );
+
   static get rebookButtonText => theme.textTheme.bodySmall!.copyWith(
       color: const Color(0xFF1F2A37), fontSize: 10, fontFamily: 'BR Omny',
       fontWeight: FontWeight.w400, height: 0.20, letterSpacing: 0.25

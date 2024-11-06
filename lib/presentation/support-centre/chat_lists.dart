@@ -51,22 +51,19 @@ class _ChatListsState extends State<ChatLists> {
         child: Column(
           //crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Text(
+             Text(
               'You have no previous chats with support',
-              style: TextStyle(
+              style:AppTextStyles.bodyHeading.copyWith(
                 fontWeight: FontWeight.w500,
-                fontSize: 16,
               ),
             ),
             const SizedBox(height: 20.0),
-            const Center(
+             Center(
               child: Align(
                 alignment: Alignment.center,
                 child: Text(
                   'Tap on, “Start New Chat” below to get assistance from our support team',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 14,
+                  style:AppTextStyles.text14Black500.copyWith(
                     color: formTextLabelColor,
                   ),
                 ),
@@ -83,10 +80,8 @@ class _ChatListsState extends State<ChatLists> {
                 side: const BorderSide(color: primaryColor),
                 elevation: 0,
               ),
-              buttonTextStyle: const TextStyle(
+              buttonTextStyle: AppTextStyles.bodySmallBold.copyWith(
                 color: primaryColor,
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
               ),
             ),
           ],

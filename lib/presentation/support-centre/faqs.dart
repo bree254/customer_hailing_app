@@ -81,22 +81,20 @@ class _FaqScreenState extends State<FaqScreen> {
               child: ExpansionTile(
                 title: Text(
                   question!,
-                  style: const TextStyle(
-                  color: Color(0xFF555555),
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                ),),
+                  style: AppTextStyles.text14Black600.copyWith(
+                    color: darkerGrey,
+                  ),
+                 ),
                 trailing: const Icon(Icons.arrow_drop_down),
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
                       answer!,
-                      style: const TextStyle(
-                      color: Color(0xFF434343),
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400,
-                    ),),
+                      style: AppTextStyles.bodySmall.copyWith(
+                        color: formTextLabelColor,
+                      ),
+                    ),
                   ),
                 ],
               ),

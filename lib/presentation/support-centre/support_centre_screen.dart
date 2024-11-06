@@ -50,22 +50,19 @@ class _SupportCentreScreenState extends State<SupportCentreScreen> {
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
-                child: const ListTile(
+                child:  ListTile(
                   title: Text(
                     'FAQs',
-                    style: TextStyle(
-                      color: Color(0xFF555555),
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
+                    style: AppTextStyles.text14Black400.copyWith(
+                      color: darkerGrey,
                     ),
                   ),
                   subtitle: Text(
                     'Get answers to frequent questions',
-                    style: TextStyle(
-                      color: Color(0xFF434343),
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400,
+                    style: AppTextStyles.bodySmall.copyWith(
+                      color: formTextLabelColor,
                     ),
+
                   ),
                   trailing: Icon(Icons.arrow_forward_ios,color: formTextLabelColor,size: 14,),
                 ),
@@ -86,21 +83,17 @@ class _SupportCentreScreenState extends State<SupportCentreScreen> {
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
-                child: const ListTile(
+                child:  ListTile(
                   title: Text(
                     'Chat',
-                    style: TextStyle(
-                      color: Color(0xFF555555),
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
+                    style: AppTextStyles.text14Black400.copyWith(
+                      color: darkerGrey,
                     ),
                   ),
                   subtitle: Text(
                     'Start a chat with one of our support staff',
-                    style: TextStyle(
-                      color: Color(0xFF434343),
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400,
+                    style: AppTextStyles.bodySmall.copyWith(
+                      color: formTextLabelColor,
                     ),
                   ),
                   trailing: Icon(Icons.arrow_forward_ios,color: formTextLabelColor,size: 14,),
