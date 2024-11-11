@@ -26,18 +26,18 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
   final RideStatusController rideStatusController = Get.put(RideStatusController());
   final MapController mapController = Get.put(MapController());
 
-
   @override
   void initState() {
     super.initState();
     Map<String, dynamic> args = Get.arguments;
     if (args['type'] == 'destination') {
       _destination = args['value'];
+      mapController.updatePolyline(_destination!);
     } else if (args['type'] == 'prediction') {
       _prediction = args['value'];
+      mapController.updatePolyline(_prediction!);
     }
   }
-
 
   void _startRideRequest() {
     rideStatusController.searchForDriver();
@@ -65,14 +65,8 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                 target: mapController.center.value!,
                 zoom: 16.0,
               ),
-              markers: {
-                Marker(
-                  markerId: const MarkerId('user_location'),
-                  position: mapController.center.value!,
-                  infoWindow: const InfoWindow(title: 'Your Location'),
-                ),
-              },
-              polylines: mapController.polylines,
+              markers: mapController.markers,
+              polylines: Set<Polyline>.of(mapController.polylines),
             ),
           )),
           Positioned(
@@ -111,7 +105,9 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                           size: 24,
                         )),
                     suffixIcon: GestureDetector(
-                      onTap:(){Get.toNamed(AppRoutes.search);} ,
+                      onTap: () {
+                        Get.toNamed(AppRoutes.search);
+                      },
                       child: const Icon(
                         Icons.add_circle_outlined,
                         color: primaryColor,
@@ -189,7 +185,7 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                                     request.timeEstimate,
                                     style: AppTextStyles.text14Black400.copyWith(
                                       color: searchtextGrey,
-                                      fontSize:10.0,
+                                      fontSize: 10.0,
                                     ),
                                   ),
                                   trailing: Column(
@@ -208,7 +204,7 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                                           style: AppTextStyles.text14Black400.copyWith(
                                             color: searchtextGrey,
                                             decoration: TextDecoration.lineThrough,
-                                            fontSize:12.0,
+                                            fontSize: 12.0,
                                           ),
                                         ),
                                       ),
@@ -219,8 +215,6 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                             );
                           }),
                     ),
-
-                    // Fixed part of the bottom sheet
                     Container(
                       padding: const EdgeInsets.all(16),
                       color: Colors.white,
@@ -238,7 +232,7 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                                   width: 72,
                                   height: 28,
                                   padding: const EdgeInsets.only(top: 4, left: 8, right: 0, bottom: 4),
-                                  margin:const EdgeInsets.symmetric(horizontal:10),
+                                  margin: const EdgeInsets.symmetric(horizontal: 10),
                                   decoration: BoxDecoration(
                                     color: _selectedPaymentMode == 'Cash'
                                         ? selectRideColor
@@ -250,7 +244,7 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                                           : Colors.black.withOpacity(0.05),
                                     ),
                                   ),
-                                  child:  Row(
+                                  child: Row(
                                     children: [
                                       Image(
                                         width: 13,
@@ -263,16 +257,13 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                                         'Cash',
                                         style: AppTextStyles.text14Black500.copyWith(
                                           color: formTextLabelColor,
-                                          fontSize:10.0,
+                                          fontSize: 10.0,
                                         ),
                                       ),
                                     ],
                                   ),
                                 ),
                               ),
-                              // const SizedBox(
-                              //   width: 10,
-                              // ),
                               GestureDetector(
                                 onTap: () {
                                   setState(() {
@@ -295,7 +286,7 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                                           : Colors.black.withOpacity(0.05),
                                     ),
                                   ),
-                                  child:  Row(
+                                  child: Row(
                                     children: [
                                       Image(
                                         width: 13,
@@ -308,7 +299,7 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                                         'Card',
                                         style: AppTextStyles.text14Black500.copyWith(
                                           color: formTextLabelColor,
-                                          fontSize:10.0,
+                                          fontSize: 10.0,
                                         ),
                                       ),
                                     ],

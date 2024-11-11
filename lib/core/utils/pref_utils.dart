@@ -39,6 +39,19 @@ class PrefUtils {
   List<String>? getStringList(String key) {
     return _sharedPreferences!.getStringList(key);
   }
+
+  Future<void> addPastDestination(String destination) async {
+    List<String> pastDestinations = getStringList('pastDestinations') ?? [];
+    if (!pastDestinations.contains(destination)) {
+      pastDestinations.add(destination);
+      await setStringList('pastDestinations', pastDestinations);
+    }
+  }
+
+  List<String> getPastDestinations() {
+    return getStringList('pastDestinations') ?? [];
+  }
+
   getFcmToken() async {
     return _sharedPreferences!.getString('fcm_token');
   }

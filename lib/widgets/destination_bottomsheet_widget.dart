@@ -10,6 +10,7 @@ class DestinationBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // final RideRequestController controller = Get.find<RideRequestController>();
+    List<String> pastDestinations = PrefUtils().getPastDestinations();
 
     return DraggableScrollableSheet(
       initialChildSize: 0.3,
@@ -67,9 +68,9 @@ class DestinationBottomSheet extends StatelessWidget {
                   child: ListView.builder(
                       controller: scrollController,
                       scrollDirection: Axis.vertical,
-                      itemCount: MyData.destinations.length,
+                      itemCount: pastDestinations.length,
                       itemBuilder: (context, index) {
-                        var destination = MyData.destinations[index];
+                        var destination = pastDestinations[index];
                         return Container(
                           margin: const EdgeInsets.fromLTRB( 16,0,16 ,8),
                           decoration: ShapeDecoration(
@@ -84,7 +85,7 @@ class DestinationBottomSheet extends StatelessWidget {
                           ),
                           child: ListTile(
                             onTap: () {
-                              Get.toNamed(AppRoutes.selectRide, arguments: {'type': 'destination', 'value': destination.address});
+                              Get.toNamed(AppRoutes.selectRide, arguments: {'type': 'destination', 'value': destination.toString()});
 
                             },
                             leading: const Icon(
@@ -92,16 +93,9 @@ class DestinationBottomSheet extends StatelessWidget {
                               color: historyIcon,
                             ),
                             title: Text(
-                              destination.address,
+                              destination,
                               style:AppTextStyles.bodySmallBold.copyWith(
                                 color: searchtextGrey,
-                              ),
-                            ),
-                            subtitle: Text(
-                              destination.location,
-                              style:AppTextStyles.bodySmallBold.copyWith(
-                                color: searchtextGrey,
-                                fontSize:10.0,
                               ),
                             ),
                           ),

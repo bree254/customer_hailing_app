@@ -201,7 +201,7 @@ class _MessageDriverScreenState extends State<MessageDriverScreen> {
   Widget _buildMessageComposer() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 24),
-      margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+      margin: const EdgeInsets.symmetric(horizontal: 4 ),
       //height: 60.0,
       color: Colors.white,
       child: Row(

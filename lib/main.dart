@@ -8,6 +8,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'firebase_options.dart';
@@ -33,16 +34,18 @@ Future<void> main() async {
     }
   });
 
-  await Future.wait([
+   Future.wait([
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]),
     PrefUtils().init(),
-  ]);
+  ]).then((value) async {
+    await dotenv.load();
+    runApp(const Hailing());
+   }
+  );
 
-  FirebaseMessaging.onBackgroundMessage(NotificationService.firebaseMessagingBackgroundHandler);
 
-  runApp(const Hailing());
 }
 
 class Hailing extends StatelessWidget {

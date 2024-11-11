@@ -39,13 +39,7 @@ class _TripStatusScreenState extends State<TripStatusScreen> {
                 target: mapController.center.value!,
                 zoom: 16.0,
               ),
-              markers: {
-                Marker(
-                  markerId: const MarkerId('user_location'),
-                  position: mapController.center.value!,
-                  infoWindow: const InfoWindow(title: 'Your Location'),
-                ),
-              },
+              markers: mapController.markers,
               polylines: mapController.polylines,
             ),
           )),

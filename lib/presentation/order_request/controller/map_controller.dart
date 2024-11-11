@@ -1,9 +1,13 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
-
+import 'package:flutter_polyline_points/flutter_polyline_points.dart' as polyline;
 import '../../../core/app_export.dart';
+import 'package:google_directions_api/google_directions_api.dart' as directions;
 
 class MapController extends GetxController {
   GoogleMapController? mapController;
@@ -11,41 +15,65 @@ class MapController extends GetxController {
   Rx<Position?> currentPosition = Rx<Position?>(null);
   RxString currentAddress = ''.obs;
 
+  BitmapDescriptor ? customMarker,destinationMarker;
+  var markers = <Marker>{}.obs;
+
+  // Initialize the Directions API
+  final directions.DirectionsService directionsService = directions.DirectionsService();
+
+
   LatLng? _center;
   final Set<Polyline> polylines = <Polyline>{}.obs;
   @override
   void onInit() {
     super.onInit();
-    // checkAndRequestPermission();
+     checkAndRequestPermission();
+    directions.DirectionsService.init(dotenv.env['GOOGLE_API_KEY']!);
     getUserLocation();
+    updatePolyline;
+    _loadCustomMarker();
+
   }
+
+
+  Future<void> _loadCustomMarker() async {
+    customMarker = await BitmapDescriptor.asset(
+      const ImageConfiguration(size: Size(48, 48)),
+      'assets/images/driver_marker.png', // Path to your custom marker image
+    );
+    destinationMarker = await BitmapDescriptor.asset(
+      const ImageConfiguration(size: Size(48, 48)),
+      'assets/images/destination_marker.png', // Path to your custom marker image
+    );
+  }
+
 
   // Initialize Google Map controller
   void onMapCreated(GoogleMapController controller) {
     mapController = controller;
   }
-// // Check and request location permission
-//   Future<void> checkAndRequestPermission() async {
-//     var status = await Permission.location.status;
-//
-//     // If permission is denied, request permission
-//     if (status.isDenied) {
-//       status = await Permission.location.request();
-//       if (status.isGranted) {
-//         // Permission granted, get user location
-//         await getUserLocation();
-//       } else {
-//         print('Location permission denied.');
-//       }
-//     } else if (status.isGranted) {
-//       // Permission already granted, get user location
-//       await getUserLocation();
-//     } else if (status.isPermanentlyDenied) {
-//       // Handle case where permission is permanently denied
-//       print('Location permission is permanently denied. Open settings to enable.');
-//       openAppSettings(); // Optionally prompt the user to open settings
-//     }
-//   }
+// Check and request location permission
+  Future<void> checkAndRequestPermission() async {
+    var status = await Permission.location.status;
+
+    // If permission is denied, request permission
+    if (status.isDenied) {
+      status = await Permission.location.request();
+      if (status.isGranted) {
+        // Permission granted, get user location
+        await getUserLocation();
+      } else {
+        print('Location permission denied.');
+      }
+    } else if (status.isGranted) {
+      // Permission already granted, get user location
+      await getUserLocation();
+    } else if (status.isPermanentlyDenied) {
+      // Handle case where permission is permanently denied
+      print('Location permission is permanently denied. Open settings to enable.');
+      openAppSettings(); // Optionally prompt the user to open settings
+    }
+  }
   // Get the current location of the user
   Future<void> getUserLocation() async {
     try {
@@ -71,6 +99,7 @@ class MapController extends GetxController {
         _center = LatLng(currentPosition.value!.latitude, currentPosition.value!.longitude);
         center.value = _center;
         await _convertToAddress(currentPosition.value!.latitude, currentPosition.value!.longitude);
+        addCenterMarker(_center!);
       }
     } catch (e) {
       print('Error getting user location: $e');
@@ -98,21 +127,65 @@ class MapController extends GetxController {
     return null;
   }
 
+  void addCenterMarker(LatLng position) {
+    markers.add(
+      Marker(
+        markerId: const MarkerId('center'),
+        position: position,
+        icon: customMarker!,
+        infoWindow: const InfoWindow(title: 'Your Location'),
+      ),
+    );
+    update();
+  }
+
+  void addDestinationMarker(LatLng position) {
+    markers.add(
+      Marker(
+        markerId: const MarkerId('destination'),
+        position: position,
+        icon: destinationMarker!,
+        infoWindow: const InfoWindow(title: 'Destination'),
+      ),
+    );
+    update();
+  }
+
   // Update the polyline on the map
   void updatePolyline(String destinationAddress) async {
     LatLng? destinationCoords = await getCoordinatesFromAddress(destinationAddress);
-    if (destinationCoords != null) {
-      polylines.add(
-        Polyline(
-          polylineId: const PolylineId('route'),
-          visible: true,
-          color: primaryColor, // Change the color as needed
-          width: 5,
-          points: [_center!, destinationCoords],
+
+    if (destinationCoords != null && _center != null) {
+      polyline.PolylinePoints polylinePoints = polyline.PolylinePoints();
+      polyline.PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
+        googleApiKey:dotenv.env['GOOGLE_API_KEY']!,
+        request: polyline.PolylineRequest(
+          mode: polyline.TravelMode.driving,
+          origin: polyline.PointLatLng(_center!.latitude, _center!.longitude),
+          destination: polyline.PointLatLng(destinationCoords.latitude, destinationCoords.longitude),
         ),
       );
-      update(); // Update the view
+      print(result);
+
+      if (result.points.isNotEmpty) {
+        List<LatLng> polylineCoordinates = result.points
+            .map((point) => LatLng(point.latitude, point.longitude))
+            .toList();
+
+        polylines.clear();
+        polylines.add(
+          Polyline(
+            polylineId: const PolylineId('route'),
+            visible: true,
+            color: primaryColor,
+            width: 5,
+            points: polylineCoordinates,
+          ),
+        );
+        addDestinationMarker(destinationCoords);
+        update(); // Update the view
+      }
     }
-    }
+  }
 
 }
