@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:customer_hailing/core/utils/colors.dart';
 import 'package:customer_hailing/presentation/order_request/controller/ride_status_controller.dart';
 import 'package:customer_hailing/presentation/order_request/models/data.dart';
@@ -26,6 +28,14 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
   final RideStatusController rideStatusController = Get.put(RideStatusController());
   final MapController mapController = Get.put(MapController());
 
+  List<LatLng> _driverLocations = [
+    LatLng(37.7749, -122.4194),
+    LatLng(37.7849, -122.4094),
+    LatLng(37.7649, -122.4294),
+  ];
+
+  Timer? _timer;
+
   @override
   void initState() {
     super.initState();
@@ -37,6 +47,24 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
       _prediction = args['value'];
       mapController.updatePolyline(_prediction!);
     }
+    _startDriverSimulation();
+  }
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  void _startDriverSimulation() {
+    _timer = Timer.periodic(Duration(seconds: 5), (timer) {
+      setState(() {
+        _driverLocations = _driverLocations.map((location) {
+          double newLat = location.latitude + (0.001 * (0.5 - (0.5 - 0.5)));
+          double newLng = location.longitude + (0.001 * (0.5 - (0.5 - 0.5)));
+          return LatLng(newLat, newLng);
+        }).toList();
+      });
+    });
   }
 
   void _startRideRequest() {
@@ -65,7 +93,14 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                 target: mapController.center.value!,
                 zoom: 16.0,
               ),
-              markers: mapController.markers,
+              markers: {
+                ...mapController.markers,
+                ..._driverLocations.map((location) => Marker(
+                  markerId: MarkerId(location.toString()),
+                  position: location,
+                  icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
+                )),
+              },
               polylines: Set<Polyline>.of(mapController.polylines),
             ),
           )),
@@ -98,7 +133,7 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                     border: InputBorder.none,
                     prefixIcon: GestureDetector(
                         onTap: () {
-                          Get.back();
+                          Navigator.pop(context);
                         },
                         child: const Icon(
                           Icons.arrow_back,
@@ -106,7 +141,7 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                         )),
                     suffixIcon: GestureDetector(
                       onTap: () {
-                        Get.toNamed(AppRoutes.search);
+                        Get.back();
                       },
                       child: const Icon(
                         Icons.add_circle_outlined,

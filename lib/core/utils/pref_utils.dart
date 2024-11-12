@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:get/get.dart';
 
-class PrefUtils {
+class PrefUtils extends GetxController {
   static SharedPreferences? _sharedPreferences;
 
   PrefUtils() {
@@ -18,6 +19,7 @@ class PrefUtils {
   ///will clear all the data stored in preference
   void clearPreferencesData() async {
     _sharedPreferences!.clear();
+    update();
   }
 
   Future<void> setThemeData(String value) {
@@ -45,6 +47,7 @@ class PrefUtils {
     if (!pastDestinations.contains(destination)) {
       pastDestinations.add(destination);
       await setStringList('pastDestinations', pastDestinations);
+      update();
     }
   }
 

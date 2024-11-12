@@ -1,4 +1,5 @@
 import 'package:customer_hailing/core/app_export.dart';
+import 'package:customer_hailing/presentation/order_request/controller/home_controller.dart';
 import 'package:customer_hailing/presentation/order_request/models/data.dart';
 import 'package:customer_hailing/routes/routes.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ class DestinationBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final HomeController homeController = Get.find<HomeController>();
     // final RideRequestController controller = Get.find<RideRequestController>();
     List<String> pastDestinations = PrefUtils().getPastDestinations();
 
@@ -65,60 +67,50 @@ class DestinationBottomSheet extends StatelessWidget {
                 ),
               ),
               Expanded(
-                  child: ListView.builder(
-                      controller: scrollController,
-                      scrollDirection: Axis.vertical,
-                      itemCount: pastDestinations.length,
-                      itemBuilder: (context, index) {
-                        var destination = pastDestinations[index];
-                        return Container(
-                          margin: const EdgeInsets.fromLTRB( 16,0,16 ,8),
-                          decoration: ShapeDecoration(
-                            color: const Color(0x7FFAFAFA),
-                            shape: RoundedRectangleBorder(
-                              side: BorderSide(
-                                width: 1,
-                                color: Colors.black.withOpacity(0.02500000037252903),
-                              ),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                          child: ListTile(
-                            onTap: () {
-                              Get.toNamed(AppRoutes.selectRide, arguments: {'type': 'destination', 'value': destination.toString()});
+                  child: Obx(() => homeController.pastDestinations.isEmpty
+                      ? const Center(
+                    child: Text('No past destinations'),
+                  )
 
-                            },
-                            leading: const Icon(
-                              Icons.history,
-                              color: historyIcon,
-                            ),
-                            title: Text(
-                              destination,
-                              style:AppTextStyles.bodySmallBold.copyWith(
-                                color: searchtextGrey,
+                      : ListView.builder(
+                        controller: scrollController,
+                        scrollDirection: Axis.vertical,
+                        itemCount: homeController.pastDestinations.length,
+                        itemBuilder: (context, index) {
+                          var destination = homeController.pastDestinations[index];
+                          return Container(
+                            margin: const EdgeInsets.fromLTRB( 16,0,16 ,8),
+                            decoration: ShapeDecoration(
+                              color: const Color(0x7FFAFAFA),
+                              shape: RoundedRectangleBorder(
+                                side: BorderSide(
+                                  width: 1,
+                                  color: Colors.black.withOpacity(0.02500000037252903),
+                                ),
+                                borderRadius: BorderRadius.circular(10),
                               ),
                             ),
-                          ),
-                        );
-                      }))
+                            child: ListTile(
+                              onTap: () {
+                                Get.toNamed(AppRoutes.selectRide, arguments: {'type': 'destination', 'value': destination.toString()});
 
-              // Expanded(
-              //   child: Obx(
-              //         () => ListView.builder(
-              //       controller: scrollController,
-              //       itemCount: controller.destinations.length,
-              //       itemBuilder: (context, index) {
-              //         final destination = controller.destinations[index];
-              //         return Card(
-              //           child: ListTile(
-              //             title: Text(destination.name),
-              //             subtitle: Text(destination.address),
-              //           ),
-              //         );
-              //       },
-              //     ),
-              //   ),
-              // ),
+                              },
+                              leading: const Icon(
+                                Icons.history,
+                                color: historyIcon,
+                              ),
+                              title: Text(
+                                destination,
+                                style:AppTextStyles.bodySmallBold.copyWith(
+                                  color: searchtextGrey,
+                                ),
+                              ),
+                            ),
+                          );
+                        }),
+                  )
+        )
+
             ],
           ),
         );
