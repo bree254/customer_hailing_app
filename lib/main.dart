@@ -53,7 +53,7 @@ class Hailing extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    NotificationService.setUpNotificationService(context);
+    //NotificationService.setUpNotificationService(context);
     return Sizer(builder: (context, orientation, deviceType) {
       return GetMaterialApp(
         title: 'Taxi App',
