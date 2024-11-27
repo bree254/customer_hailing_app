@@ -8,7 +8,7 @@ class Endpoints {
   static const String socialAuth = '$baseUrl/auth/api/v1/social/auth';
   static const String resendOtp = '$baseUrl/auth/api/v1/resend/otp';
 
-  static const String getUser = '$baseUrl/auth/api/v1/get/user';
+  static const String getUser = '$baseUrl/auth/api/v1/get/user/';
   //add the pathvariable to the endpoint
 
 }

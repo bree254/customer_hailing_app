@@ -1,4 +1,5 @@
 import 'package:customer_hailing/data/models/auth/auth_response.dart';
+import 'package:customer_hailing/data/models/auth/user_response.dart';
 import 'package:customer_hailing/data/models/auth/validate_otp.dart';
 
 import '../api/api_client.dart';
@@ -25,5 +26,13 @@ class AuthRepository {
   Future<AuthResponse> updateUser(
       {Map<String, String> headers = const {}, Map requestData = const {}}) async {
     return await _apiClient.updateUser(headers: headers, requestData: requestData);
+  }
+
+  Future<UserResponse> getUser(
+      {
+        Map<String, String> headers = const {},
+        required String userName}) async {
+    return _apiClient.getUser(
+         headers: headers, userName: userName,);
   }
 }

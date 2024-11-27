@@ -4,7 +4,10 @@ import 'package:flutter/material.dart';
 
 import '../presentation/auth/controller/auth_controller.dart';
 class DrawerWidget extends StatelessWidget {
-  const DrawerWidget({super.key});
+
+  final AuthController authController = Get.put(AuthController());
+
+   DrawerWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -15,34 +18,42 @@ class DrawerWidget extends StatelessWidget {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 0.0,vertical: 50),
-              child: ListTile(
-                leading: Image.asset("assets/images/driver.png"),
-                title:  Column(
-                  children: [
-                  Text(
-                        'John Doe',
+              padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 50),
+              child: Obx(() {
+                if (authController.user.value.id == null) {
+                  return Center(child: CircularProgressIndicator());
+                }
+
+                return ListTile(
+                  leading: Image.asset("assets/images/driver.png"),
+                  title: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '${authController.user.value.firstName} ${authController.user.value.lastName}',
                         style: AppTextStyles.bodySmallBold.copyWith(
                           color: searchtextGrey,
                         ),
-
                       ),
-                Text(
-                      '4.5 rating',
-                      style: AppTextStyles.bodySmall.copyWith(
-                        color: formTextLabelColor,
-                        fontSize: 10.0,
+                      Text(
+                        '${authController.user.value.ratingAverage} rating',
+                        style: AppTextStyles.bodySmall.copyWith(
+                          color: formTextLabelColor,
+                          fontSize: 10.0,
+                        ),
                       ),
-
-                    ),
-
-                  ],
-                ),
-                trailing: const Icon(Icons.arrow_forward_ios_outlined,color: searchtextGrey,size: 14,),
-                onTap: () {
-                 Get.toNamed(AppRoutes.profile);
-                },
-              ),
+                    ],
+                  ),
+                  trailing: const Icon(
+                    Icons.arrow_forward_ios_outlined,
+                    color: searchtextGrey,
+                    size: 14,
+                  ),
+                  onTap: () {
+                    Get.toNamed(AppRoutes.profile);
+                  },
+                );
+              }),
             ),
             ListTile(
               leading: const Icon(Icons.history,size: 20,),

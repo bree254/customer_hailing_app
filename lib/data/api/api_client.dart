@@ -1,5 +1,6 @@
 import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/data/models/auth/auth_response.dart';
+import 'package:customer_hailing/data/models/auth/user_response.dart';
 import 'package:customer_hailing/data/models/auth/validate_otp.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/material.dart';
@@ -8,6 +9,8 @@ import 'endpoints.dart';
 import 'network_interceptor.dart';
 
 class ApiClient extends GetConnect {
+  var uri = Endpoints.baseUrl;
+
   final _dio = dio.Dio(dio.BaseOptions(connectTimeout: const Duration(seconds: 3), baseUrl: ''));
 
   final Connectivity _connectivity = Connectivity();
@@ -158,7 +161,28 @@ class ApiClient extends GetConnect {
     }
   }
 
+  Future<UserResponse> getUser(
+      {required Map<String, String> headers,required String userName}) async {
+    await isNetworkConnected();
 
+    try {
+      var response = await _dio.get('${Endpoints.getUser}$userName',
+          options: dio.Options(headers: headers));
+      debugPrint('Response status: ${response.statusCode}');
+      debugPrint('Response data: ${response.data}');
+      if (_isSuccessCall(response)) {
+        return UserResponse.fromJson(response.data);
+      } else {
+        return UserResponse.fromJson(response.data);
+      }
+    } catch (error, stackTrace) {
+      Logger.log(
+        error,
+        stackTrace: stackTrace,
+      );
+      rethrow;
+    }
+  }
   Future<Response> postRequest(String url, Map<String, dynamic> body) async {
     return await post(url, body);
   }

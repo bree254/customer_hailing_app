@@ -69,6 +69,15 @@ class PrefUtils extends GetxController {
 
     return _sharedPreferences!.getString(key); // Return empty string if not found
   }
+  Future<void> saveUsername(String userName) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('userName', userName);
+  }
+
+  Future<String?> retrieveUsername() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('userName');
+  }
 
   Future<void> addPastDestination(String destination) async {
     List<String> pastDestinations = getStringList('pastDestinations') ?? [];

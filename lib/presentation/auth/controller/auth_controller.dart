@@ -7,11 +7,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../../data/api/endpoints.dart';
 import '../../../data/models/auth/auth_response.dart';
+import '../../../data/models/auth/user_response.dart';
 import '../../../data/repos/auth_repository.dart';
 
 class AuthController extends GetxController {
   final authRepository = AuthRepository();
+
+  var user = UserResponse().obs;
 
   TextEditingController usernameController = TextEditingController();
   TextEditingController otpController = TextEditingController();
@@ -24,12 +28,22 @@ class AuthController extends GetxController {
   bool get isOtpValid => _isOtpValid;
 
   String? accessToken;
+  //String? userName;
 
   @override
   void onInit() async {
     // TODO: implement onInit
     super.onInit();
     accessToken = await PrefUtils().retrieveToken('access_token');
+
+    // Get the username from SharedPreferences
+    usernameController.text = await PrefUtils().retrieveUsername() ?? '';
+    fetchUser(usernameController.text.trim());
+
+    //userName = await PrefUtils().retrieveUsername() ?? '';
+
+    // fetchUser(usernameController.text.trim());
+    // //fetchUser('userName');
   }
 
   Future<void> signIn() async {
@@ -49,6 +63,10 @@ class AuthController extends GetxController {
 
       // Handle the response as needed
       if (response.message == 'Success') {
+
+        // Save the username in PrefUtils
+        await PrefUtils().saveUsername(usernameController.text.trim());
+
         Get.offAllNamed(AppRoutes.verification, arguments: {
           'phone_email': usernameController.text,
           "verification_type": "email"
@@ -99,8 +117,8 @@ class AuthController extends GetxController {
       } else {
         _isOtpValid = false;
         EasyLoading.dismiss();
-        EasyLoading.showError("validation failed",
-            );
+        Get.snackbar('Error', "validation failed");
+       // EasyLoading.showError("validation failed",);
       }
     } catch (e) {
       if (e is DioException) {
@@ -109,8 +127,8 @@ class AuthController extends GetxController {
       }
       _isOtpValid = false;
       EasyLoading.dismiss();
-      EasyLoading.showError("validation failed",
-         );
+      Get.snackbar('Error', e.toString());
+     // EasyLoading.showError("validation failed",);
     }finally {
       EasyLoading.dismiss();
     }
@@ -201,6 +219,34 @@ Future<void> logout()async {
       Get.snackbar('Error', 'Error during logout: $e');
     }
 }
+  Future<void> fetchUser(String userName) async {
+    try {
+      Map<String, String> headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $accessToken',
+      };
+
+      // Log the request URL and parameters
+      print('Fetching user with username: $userName');
+      print('Request URL: ${Endpoints.getUser}$userName');
+      print('Headers: $headers');
+
+      UserResponse userResponse = await authRepository.getUser(
+        headers: headers,
+        userName: userName,
+      );
+
+      user.value = userResponse;
+
+      // Handle the user response as needed
+      print('User fetched successfully: ${userResponse.toJson()}');
+    } catch (e) {
+      // Handle any errors
+      print('Error fetching user: $e');
+    }
+  }
+
+
   void showToast(String message) {
     Fluttertoast.showToast(
       msg: message,

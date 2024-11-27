@@ -75,7 +75,7 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: const DrawerWidget(),
+      drawer:  DrawerWidget(),
       body: Stack(
         children: [
           Obx(() => mapController.center.value == null

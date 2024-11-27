@@ -14,7 +14,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: const DrawerWidget(),
+      drawer:  DrawerWidget(),
       body: Stack(
         children: [
           Obx(() => _mapController.center.value == null
