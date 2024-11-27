@@ -1,5 +1,4 @@
 import 'package:customer_hailing/core/app_export.dart';
-import 'package:customer_hailing/presentation/auth/email/email_sign_up_screen.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/material.dart';
 

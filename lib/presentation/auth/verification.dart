@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:customer_hailing/core/app_export.dart';
+import 'package:customer_hailing/presentation/auth/email/details_email_sign_up_screen.dart';
 import 'package:customer_hailing/presentation/auth/privacy_policy_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
@@ -79,7 +80,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
           //navigate to the privacy policy screen
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => const PrivacyPolicyScreen()),
+            MaterialPageRoute(builder: (context) => const EnterYourDetailsScreen()),
           );
         } else {
           // Code is incorrect

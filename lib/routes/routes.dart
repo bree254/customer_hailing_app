@@ -1,8 +1,6 @@
 import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/presentation/auth/email/email_sign-in_screen.dart';
-import 'package:customer_hailing/presentation/auth/email/email_sign_up_screen.dart';
-import 'package:customer_hailing/presentation/auth/google/google_sign_in_up_screen.dart';
-import 'package:customer_hailing/presentation/auth/phone_number/details_phone_number_screen.dart';
+import 'package:customer_hailing/presentation/auth/privacy_policy_screen.dart';
 import 'package:customer_hailing/presentation/auth/verification.dart';
 import 'package:customer_hailing/presentation/call-driver/screens/incoming_call_screen.dart';
 import 'package:customer_hailing/presentation/call-driver/screens/ongoing_call_screen.dart';
@@ -43,7 +41,6 @@ import 'package:customer_hailing/presentation/two_factor_authentication/reset_pa
 import 'package:customer_hailing/presentation/two_factor_authentication/success_screen.dart';
 import 'package:customer_hailing/presentation/two_factor_authentication/two_factor_authentication_screen.dart';
 import '../presentation/auth/email/details_email_sign_up_screen.dart';
-import '../presentation/auth/phone_number/login_or_signup_screen.dart';
 import '../presentation/call-driver/screens/outgoing_call_screen.dart';
 import '../presentation/trip_history/history_details_screen.dart';
 import '../presentation/schedule_trip/screens/enter_schedule_trip_details.dart';
@@ -98,6 +95,7 @@ class AppRoutes {
   static const String faq="/faq";
   static const String chatList="/chat_list";
   static const String chatSupportScreen="/chat_support_screen";
+  static const String privacyPolicy="/privacy_policy";
 
   static List<GetPage> pages = [
     GetPage(
@@ -110,32 +108,16 @@ class AppRoutes {
       binding: HomeBinding(),
     ),
     GetPage(
-      name: loginorsignup,
-      page: () => const LoginOrSignupScreen(),
-    ),
-    GetPage(
       name: verification,
       page: () => const VerificationScreen(),
     ),
     GetPage(
-      name: googleSignOn,
-      page: () => const GoogleSignInUpScreen(),
-    ),
-    GetPage(
       name: emailSignOn,
-      page: () => const EmailSignInUpScreen(),
-    ),
-    GetPage(
-      name: emailSignUp,
-      page: () => const EmailSignUpScreen(),
+      page: () => const EmailSignInScreen(),
     ),
     GetPage(
       name: detailsEmailSignUp,
-      page: () => const DetailsEmailSignUpScreen(),
-    ),
-    GetPage(
-      name: detailsPhoneNumber,
-      page: () => const DetailsPhoneNumberScreen(),
+      page: () => const EnterYourDetailsScreen(),
     ),
     GetPage(
         name: search,
@@ -292,6 +274,10 @@ class AppRoutes {
     GetPage(
       name: chatSupportScreen,
       page: () =>   const ChatSupportScreen(),
+    ),
+    GetPage(
+      name: privacyPolicy,
+      page: () =>   const PrivacyPolicyScreen(),
     ),
   ];
 }

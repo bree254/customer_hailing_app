@@ -1,18 +1,18 @@
 import 'package:customer_hailing/core/app_export.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
-
 import '../../../components/phone_field/custom_phone_input.dart';
 import '../../../routes/routes.dart';
 import '../../../widgets/custom_text_form_field.dart';
-class DetailsEmailSignUpScreen extends StatefulWidget {
-  const DetailsEmailSignUpScreen({super.key});
+
+class EnterYourDetailsScreen extends StatefulWidget {
+  const EnterYourDetailsScreen({super.key});
 
   @override
-  State<DetailsEmailSignUpScreen> createState() => _DetailsEmailSignUpScreenState();
+  State<EnterYourDetailsScreen> createState() => _EnterYourDetailsScreenState();
 }
 
-class _DetailsEmailSignUpScreenState extends State<DetailsEmailSignUpScreen> {
+class _EnterYourDetailsScreenState extends State<EnterYourDetailsScreen> {
   final _formKey = GlobalKey<FormState>();
 
   final TextEditingController firstNameController = TextEditingController();
@@ -43,11 +43,12 @@ class _DetailsEmailSignUpScreenState extends State<DetailsEmailSignUpScreen> {
 
   void onSubmit() {
     if (_formKey.currentState!.validate()) {
-      Get.toNamed(AppRoutes.verification,
-          arguments: {
-        'phone_email': Get.arguments['phone_email'],
-         "verification_type": "email"
-      });
+      Get.toNamed(AppRoutes.privacyPolicy,
+      //     arguments: {
+      //   'phone_email': Get.arguments['phone_email'],
+      //    "verification_type": "email"
+      // }
+      );
     }
   }
 
