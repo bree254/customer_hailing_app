@@ -1,4 +1,11 @@
 class Endpoints {
   static const String baseUrl = 'https://yasil-backend.cymelle.com';
-  static const String baseUrlUser = '$baseUrl/auth/api/v1';
+
+  //Onboarding Endpoints
+  static const String loginUser = '$baseUrl/auth/api/v1/onboard';
+  static const String validateOtp = '$baseUrl/auth/api/v1/onboard';
+  static const String updateUser = '$baseUrl/auth/api/v1/update/user';
+  static const String socialAuth = '$baseUrl/auth/api/v1/social/auth';
+  static const String resendOtp = '$baseUrl/auth/api/v1/resend/otp';
+
 }

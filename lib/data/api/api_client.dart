@@ -1,5 +1,4 @@
 import 'package:customer_hailing/core/app_export.dart';
-import 'package:customer_hailing/data/models/auth/email_sign_up_screen.dart';
 import 'package:customer_hailing/presentation/auth/email/email_sign_up_screen.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/material.dart';
@@ -57,26 +56,6 @@ class ApiClient extends GetConnect {
     });
   }
 
-  Future<EmailSignUpResponse>signUp({required Map<String, String> headers, required Map requestData}) async {
-    try {
-      final response = await _dio.post(
-        '${Endpoints.baseUrlUser}signup',
-        data: requestData,
-        options: dio.Options(headers: headers),
-      );
-      if (response.statusCode == 200) {
-        return EmailSignUpResponse.fromJson(response.data);
-      } else {
-        return EmailSignUpResponse.fromJson(response.data);
-      }
-    } catch (error, stackTrace) {
-      Logger.log(
-        error,
-        stackTrace: stackTrace,
-      );
-      rethrow;
-    }
-  }
 
   Future<Response> postRequest(String url, Map<String, dynamic> body) async {
     return await post(url, body);
