@@ -1,6 +1,8 @@
 import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/routes/routes.dart';
 import 'package:flutter/material.dart';
+
+import '../presentation/auth/controller/auth_controller.dart';
 class DrawerWidget extends StatelessWidget {
   const DrawerWidget({super.key});
 
@@ -124,7 +126,7 @@ class DrawerWidget extends StatelessWidget {
                 ),
               ),
               onTap: () {
-                // Handle logout tap
+                Get.find<AuthController>().logout();
               },
             ),
           ],

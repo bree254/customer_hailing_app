@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../data/models/auth/auth_response.dart';
 import '../../../data/repos/auth_repository.dart';
 
@@ -182,7 +183,24 @@ class AuthController extends GetxController {
     }
   }
 
+Future<void> logout()async {
+    try{
+// Access shared preferences
+      SharedPreferences prefs = await SharedPreferences.getInstance();
 
+      // Remove the access and refresh tokens
+      await prefs.remove('access_token');
+      await prefs.remove('refresh_token');
+
+      // Clear other user-related data if necessary
+      await prefs.clear(); // Optional: Clears all data stored in shared preferences
+
+      // Navigate to the login screen
+      Get.offAllNamed(AppRoutes.loginorsignup);
+    }catch(e){
+      Get.snackbar('Error', 'Error during logout: $e');
+    }
+}
   void showToast(String message) {
     Fluttertoast.showToast(
       msg: message,
