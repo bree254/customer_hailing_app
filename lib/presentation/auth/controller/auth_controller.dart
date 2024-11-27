@@ -1,15 +1,199 @@
 import 'package:customer_hailing/core/app_export.dart';
+import 'package:customer_hailing/data/models/auth/validate_otp.dart';
+import 'package:customer_hailing/routes/routes.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import '../../../data/models/auth/auth_response.dart';
 import '../../../data/repos/auth_repository.dart';
 
 class AuthController extends GetxController {
   final authRepository = AuthRepository();
 
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController otpController = TextEditingController();
+  TextEditingController firstNameController = TextEditingController();
+  TextEditingController lastnameController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+
+  bool _isOtpValid = false;
+  bool get isOtpValid => _isOtpValid;
+
+  String? accessToken;
 
   @override
-  void onInit() {
+  void onInit() async {
     // TODO: implement onInit
     super.onInit();
+    accessToken = await PrefUtils().retrieveToken('access_token');
   }
 
+  Future<void> signIn() async {
+    try {
+      EasyLoading.show(status: 'Loading...');
+      Map<String, String> headers = {
+        'Content-Type': 'application/json',
+      };
+      Map<String, dynamic> requestData = {
+        'username': usernameController.text.trim(),
+      };
+
+      AuthResponse response = await authRepository.emailLogin(
+        headers: headers,
+        requestData: requestData,
+      );
+
+      // Handle the response as needed
+      if (response.message == 'Success') {
+        Get.offAllNamed(AppRoutes.verification, arguments: {
+          'phone_email': usernameController.text,
+          "verification_type": "email"
+        });
+      } else {
+        // Show error message
+        Get.snackbar('Error', response.message ?? 'Unknown error');
+      }
+    } catch (e) {
+      // Handle any errors
+      Get.snackbar('Error', e.toString());
+    } finally {
+      EasyLoading.dismiss();
+    }
+  }
+
+
+  Future<void> validateOtp() async {
+    EasyLoading.show(status: 'loading...');
+    var requestData = {
+      'username': usernameController.text.trim(),
+      'otp': otpController.text.trim()
+    };
+
+    try {
+      print('Request data: $requestData');
+      ValidOtpResponse response = await authRepository.validateOtp(
+          requestData: requestData);
+
+      print('Response data: ${response.toJson()}');
+
+      if (response.authenticationResult != null) {
+        final data = response.authenticationResult!;
+        final accessToken = data.accessToken;
+        final refreshToken = data.refreshToken;
+
+        // Store tokens in SharedPreferences
+        await PrefUtils().storeToken('access_token', accessToken!);
+        await PrefUtils().storeToken('refresh_token', refreshToken!);
+
+        _isOtpValid = true;
+        // Navigate to the next screen
+        Get.offAllNamed(AppRoutes.enterYourDetails, arguments: {
+          'phone_email': usernameController.text,
+          "verification_type": "email"
+        });
+        showToast('validation success');
+      } else {
+        _isOtpValid = false;
+        EasyLoading.dismiss();
+        EasyLoading.showError("validation failed",
+            );
+      }
+    } catch (e) {
+      if (e is DioException) {
+        print('Request data: $requestData');
+        print('Response data: ${e.response?.data}');
+      }
+      _isOtpValid = false;
+      EasyLoading.dismiss();
+      EasyLoading.showError("validation failed",
+         );
+    }finally {
+      EasyLoading.dismiss();
+    }
+  }
+
+  Future<void> resendOtp() async {
+    try {
+      EasyLoading.show(status: 'Loading...');
+      Map<String, String> headers = {
+        'Content-Type': 'application/json',
+      };
+      Map<String, dynamic> requestData = {
+        'username': usernameController.text.trim(),
+      };
+
+      AuthResponse response = await authRepository.resendotp(
+        headers: headers,
+        requestData: requestData,
+      );
+
+      // Handle the response as needed
+      if (response.message == 'Success') {
+        Get.snackbar('Success', 'OTP sent successfully');
+      } else {
+        // Show error message
+        Get.snackbar('Error', response.message ?? 'Unknown error');
+      }
+    } catch (e) {
+      // Handle any errors
+      Get.snackbar('Error', e.toString());
+    } finally {
+      EasyLoading.dismiss();
+    }
+  }
+
+  Future<void> updateUser() async {
+    try {
+      EasyLoading.show(status: 'Loading...');
+      Map<String, String> headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $accessToken',
+
+      };
+      Map<String, dynamic> requestData = {
+        'firstName': firstNameController.text.trim(),
+        'lastName': lastnameController.text.trim(),
+        'email': usernameController.text.trim(),
+        'phoneNumber': phoneController.text.trim(),
+      };
+
+      AuthResponse response = await authRepository.updateUser(
+        headers: headers,
+        requestData: requestData,
+      );
+
+      // Handle the response as needed
+      if (response.message == 'User updated successfully.') {
+        print('Navigation to privacy policy screen');
+        Get.offAllNamed(AppRoutes.privacyPolicy);
+        Get.snackbar('Success', 'User updated successfully');
+      } else {
+        // Show error message
+        Get.snackbar('Error', response.message ?? 'Unknown error');
+      }
+    } catch (e) {
+      // Handle any errors
+      Get.snackbar('Error', e.toString());
+    } finally {
+      EasyLoading.dismiss();
+    }
+  }
+
+
+  void showToast(String message) {
+    Fluttertoast.showToast(
+      msg: message,
+      toastLength: Toast.LENGTH_LONG,
+      gravity: ToastGravity.TOP,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.black.withOpacity(0.7),
+      // Semi-transparent background
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
+  }
 
 }

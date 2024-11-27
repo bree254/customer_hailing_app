@@ -1,8 +1,12 @@
 import 'package:customer_hailing/core/app_export.dart';
+import 'package:customer_hailing/presentation/auth/controller/auth_controller.dart';
 import 'package:customer_hailing/routes/routes.dart';
 import 'package:flutter/material.dart';
 class PrivacyPolicyScreen extends StatelessWidget {
-  const PrivacyPolicyScreen({super.key});
+
+ // final AuthController authController = Get.put(AuthController());
+
+   PrivacyPolicyScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

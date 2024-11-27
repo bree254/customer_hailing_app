@@ -1,4 +1,5 @@
 import 'package:customer_hailing/core/app_export.dart';
+import 'package:customer_hailing/presentation/auth/controller/auth_controller.dart';
 import 'package:customer_hailing/routes/routes.dart';
 import 'package:customer_hailing/widgets/custom_text_form_field.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,7 +14,9 @@ class EmailSignInScreen extends StatefulWidget {
 
 class _EmailSignInScreenState extends State<EmailSignInScreen> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController emailController = TextEditingController();
+  
+
+  final AuthController controller = Get.put(AuthController());
 
   bool _isButtonEnabled = false;
   bool isShowPassword = false;
@@ -21,24 +24,25 @@ class _EmailSignInScreenState extends State<EmailSignInScreen> {
   @override
   void initState() {
     super.initState();
-    emailController.addListener(_updateButtonState);
+    controller.usernameController.addListener(_updateButtonState);
 
   }
 
   void _updateButtonState() {
     setState(() {
-      _isButtonEnabled = emailController.text.isNotEmpty;
+      _isButtonEnabled = controller.usernameController.text.isNotEmpty;
 
     });
   }
 
   void onSubmit() {
     if (_formKey.currentState!.validate()) {
-      
-      Get.toNamed(AppRoutes.verification, arguments: {
-        'phone_email': emailController.text,
-        "verification_type": "email"
-      });
+      controller.signIn();
+      // Get.toNamed(AppRoutes.verification, arguments: {
+      //   'phone_email': emailController.text,
+      //   "verification_type": "email"
+      // }
+
     }
   }
 
@@ -74,8 +78,9 @@ class _EmailSignInScreenState extends State<EmailSignInScreen> {
             const SizedBox(
               height: 10,
             ),
+
             CustomTextFormField(
-              controller: emailController,
+              controller: controller.usernameController,
               filled: true,
               fillColor: countryTextFieldColor,
               labelText: "name@email.com",

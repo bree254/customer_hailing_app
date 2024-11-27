@@ -1,7 +1,8 @@
 import 'package:customer_hailing/core/app_export.dart';
+import 'package:customer_hailing/data/models/auth/auth_response.dart';
+import 'package:customer_hailing/data/models/auth/validate_otp.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/material.dart';
-
 import '../../core/utils/logger.dart';
 import 'endpoints.dart';
 import 'network_interceptor.dart';
@@ -53,6 +54,108 @@ class ApiClient extends GetConnect {
         );
       }
     });
+  }
+  Future isNetworkConnected() async {
+    if (!await Get.find<NetworkInfo>().isConnected()) {
+      throw NoInternetException('No Internet Found!');
+    }
+  }
+
+  bool _isSuccessCall(dio.Response response) {
+    if (response.statusCode != null) {
+      return response.statusCode! >= 200 && response.statusCode! <= 299;
+    }
+    return false;
+  }
+  Future<AuthResponse> login(
+      {required Map<String, String> headers, required Map requestData}) async {
+    isNetworkConnected();
+
+    try {
+      var response = await _dio.post(Endpoints.loginUser,
+          data: requestData, options: dio.Options(headers: headers));
+      if (_isSuccessCall(response)) {
+        return AuthResponse.fromJson(response.data);
+      } else {
+        debugPrint('Response :: ${response.statusCode}');
+        return AuthResponse.fromJson(response.data);
+      }
+    } catch (error, stackTrace) {
+      Logger.log(
+        error,
+        stackTrace: stackTrace,
+      );
+      rethrow;
+    }
+  }
+
+  Future<ValidOtpResponse> validateOtp(
+      {required Map<String, String> headers, required Map requestData}) async {
+    await isNetworkConnected();
+
+    try {
+      var response = await _dio.post(Endpoints.validateOtp,
+          data: requestData, options: dio.Options(headers: headers));
+      debugPrint('Response status: ${response.statusCode}');
+      debugPrint('Response data: ${response.data}');
+      if (_isSuccessCall(response)) {
+        return ValidOtpResponse.fromJson(response.data);
+      } else {
+        return ValidOtpResponse.fromJson(response.data);
+      }
+    } catch (error, stackTrace) {
+      Logger.log(
+        error,
+        stackTrace: stackTrace,
+      );
+      rethrow;
+    }
+  }
+
+  Future<AuthResponse> resendOtp(
+      {required Map<String, String> headers, required Map requestData}) async {
+    await isNetworkConnected();
+
+    try {
+      var response = await _dio.post(Endpoints.resendOtp,
+          data: requestData, options: dio.Options(headers: headers));
+      debugPrint('Response status: ${response.statusCode}');
+      debugPrint('Response data: ${response.data}');
+      if (_isSuccessCall(response)) {
+        return AuthResponse.fromJson(response.data);
+      } else {
+        return AuthResponse.fromJson(response.data);
+      }
+    } catch (error, stackTrace) {
+      Logger.log(
+        error,
+        stackTrace: stackTrace,
+      );
+      rethrow;
+    }
+  }
+
+  Future<AuthResponse> updateUser(
+      {required Map<String, String> headers, required Map requestData}) async {
+    await isNetworkConnected();
+
+    try {
+      var response = await _dio.post(Endpoints.updateUser,
+          data: requestData, options: dio.Options(headers: headers));
+      debugPrint('Response status: ${response.statusCode}');
+      debugPrint('Response data: ${response.data}');
+      if (_isSuccessCall(response)) {
+        return AuthResponse.fromJson(response.data);
+      } else {
+        return AuthResponse.fromJson(response.data);
+      }
+    } catch (error, stackTrace) {
+      Logger.log(
+        error,
+        stackTrace: stackTrace,
+      );
+      rethrow;
+    }
   }
 
 

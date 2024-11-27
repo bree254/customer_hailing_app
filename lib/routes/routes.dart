@@ -96,7 +96,7 @@ class AppRoutes {
   static const String chatList="/chat_list";
   static const String chatSupportScreen="/chat_support_screen";
   static const String privacyPolicy="/privacy_policy";
-
+  static const String enterYourDetails="/enter_your_details";
   static List<GetPage> pages = [
     GetPage(
       name: splash,
@@ -277,7 +277,11 @@ class AppRoutes {
     ),
     GetPage(
       name: privacyPolicy,
-      page: () =>   const PrivacyPolicyScreen(),
+      page: () =>    PrivacyPolicyScreen(),
+    ),
+    GetPage(
+      name: enterYourDetails,
+      page: () =>   const EnterYourDetailsScreen(),
     ),
   ];
 }

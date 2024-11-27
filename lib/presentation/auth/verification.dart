@@ -4,6 +4,9 @@ import 'package:customer_hailing/presentation/auth/email/details_email_sign_up_s
 import 'package:customer_hailing/presentation/auth/privacy_policy_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:get/get.dart';
+import 'package:customer_hailing/presentation/auth/controller/auth_controller.dart';
 
 class VerificationScreen extends StatefulWidget {
   const VerificationScreen({super.key});
@@ -14,10 +17,10 @@ class VerificationScreen extends StatefulWidget {
 
 class _VerificationScreenState extends State<VerificationScreen> {
   final TextEditingController _pinController = TextEditingController();
+  final AuthController _authController = Get.put(AuthController());
 
   String? verificationType;
   String? phoneEmail;
-  String? email;
   bool _showResendCode = false;
   bool _showInvalidCode = false;
   bool _isLoading = false;
@@ -30,7 +33,6 @@ class _VerificationScreenState extends State<VerificationScreen> {
   void initState() {
     super.initState();
     phoneEmail = Get.arguments['phone_email'];
-
     verificationType = Get.arguments['verification_type'];
   }
 
@@ -63,30 +65,19 @@ class _VerificationScreenState extends State<VerificationScreen> {
     });
   }
 
-  void _verifyCode(String pin) {
+  void _verifyCode(String pin) async {
     setState(() {
       _isLoading = true;
       _showInvalidCode = false;
     });
 
-    // Simulate a network request for code verification
-    Future.delayed(const Duration(seconds: 2), () {
-      setState(() {
-        _isLoading = false;
-        if (pin == "1234") {
-          // Replace with your actual verification logic
-          // Code is correct
-          _showInvalidCode = false;
-          //navigate to the privacy policy screen
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => const EnterYourDetailsScreen()),
-          );
-        } else {
-          // Code is incorrect
-          _showInvalidCode = true;
-        }
-      });
+    _authController.usernameController.text = phoneEmail!;
+    _authController.otpController.text = pin;
+    await _authController.validateOtp();
+
+    setState(() {
+      _isLoading = false;
+      _showInvalidCode = !_authController.isOtpValid;
     });
   }
 
@@ -111,7 +102,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                 Text(
+                Text(
                   "Please enter the OTP sent to",
                   style: AppTextStyles.text14Black400,
                 ),
@@ -124,7 +115,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
             const SizedBox(height: 32),
             PinCodeTextField(
               appContext: context,
-              length: 4,
+              length: 6,
               animationType: AnimationType.none,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               textStyle: AppTextStyles.text14Black400,
@@ -155,29 +146,31 @@ class _VerificationScreenState extends State<VerificationScreen> {
                   });
                   _startResendTimer();
                 }
-                if (value.length == 4 && !_isLoading) {
+                if (value.length == 6 && !_isLoading) {
                   _verifyCode(value);
                 }
               },
             ),
             const SizedBox(height: 8),
             if (_hasStartedInputting && !_showResendCode)
-              Text(_resendCodeText,
-        style: AppTextStyles.text14Resend400),
+              Text(
+                _resendCodeText,
+                style: AppTextStyles.text14Resend400,
+              ),
             const SizedBox(height: 16),
             if (_isLoading) ...[
               const CircularProgressIndicator(),
             ] else if (_showInvalidCode) ...[
-               Text(
+              Text(
                 "Invalid OTP",
                 style: AppTextStyles.text14Error400.copyWith(fontSize: 12.0),
               ),
               const SizedBox(height: 16),
               GestureDetector(
                 onTap: () {
-                  // Handle resend code action
+                  _authController.resendOtp();
                 },
-                child:  Text(
+                child: Text(
                   "Resend code",
                   style: AppTextStyles.text14Resend400.copyWith(
                     decoration: TextDecoration.underline,
