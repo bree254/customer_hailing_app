@@ -25,14 +25,18 @@ class RideStatusController extends GetxController {
       });
     }
   }
-
   bool _checkForDriver() {
     // Simulate driver check. Replace with actual logic.
-    return DateTime.now().second % 2 == 0;
-    // Randomly returns true or false based on the current second
-
-    // return true; // or false based on actual condition
+    return true;
   }
+
+  // bool _checkForDriver() {
+  //   // Simulate driver check. Replace with actual logic.
+  //   return DateTime.now().second % 2 == 0;
+  //   // Randomly returns true or false based on the current second
+  //
+  //   // return true; // or false based on actual condition
+  // }
 
 
 

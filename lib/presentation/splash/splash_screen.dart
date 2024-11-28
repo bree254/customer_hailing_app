@@ -35,7 +35,7 @@ class _SplashScreenState extends State<SplashScreen> {
       backgroundColor: primaryColor,
       body: Center(
         child: Text(
-          'Taxi App',
+          'Yasil',
           style: TextStyle(color: whiteTextColor, fontWeight: FontWeight.w700, fontSize: 32),
         ),
       ),

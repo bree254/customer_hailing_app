@@ -63,6 +63,10 @@ class MyData {
     ShareProfiles(imageUrl: 'assets/images/ela.png', name: 'Ela'),
     ShareProfiles(imageUrl: 'assets/images/jacinta.png', name: 'Jecinta'),
     ShareProfiles(imageUrl: 'assets/images/steve.png', name: 'Steve'),
+    ShareProfiles(imageUrl: 'assets/images/alejandro.png', name: 'Alejandro'),
+    ShareProfiles(imageUrl: 'assets/images/ela.png', name: 'Ela'),
+    ShareProfiles(imageUrl: 'assets/images/jacinta.png', name: 'Jecinta'),
+    ShareProfiles(imageUrl: 'assets/images/steve.png', name: 'Steve'),
   ];
 
   // Sample list of scheduled trips

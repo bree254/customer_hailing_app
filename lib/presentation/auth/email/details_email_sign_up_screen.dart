@@ -37,7 +37,20 @@ class _EnterYourDetailsScreenState extends State<EnterYourDetailsScreen> {
     authController.emailController.addListener(() => _updateButtonState());
     authController.phoneController.addListener(() => _updateButtonState());
   }
+  @override
+  void dispose() {
+    authController.firstNameController.removeListener(_updateButtonState);
+    authController.lastnameController.removeListener(_updateButtonState);
+    authController.emailController.removeListener(_updateButtonState);
+    authController.phoneController.removeListener(_updateButtonState);
 
+    authController.firstNameController.dispose();
+    authController.lastnameController.dispose();
+    authController.emailController.dispose();
+    authController.phoneController.dispose();
+
+    super.dispose();
+  }
   void _updateButtonState() {
     setState(() {
       _isButtonEnabled = authController.firstNameController.text.isNotEmpty;
