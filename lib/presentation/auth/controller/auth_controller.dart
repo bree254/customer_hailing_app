@@ -201,6 +201,44 @@ class AuthController extends GetxController {
     }
   }
 
+  Future<void> updateUserProfile(String firstName, String lastName, String email, String phoneNumber) async {
+    try {
+      Map<String, String> headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $accessToken',
+      };
+
+      Map<String, dynamic> requestData = {
+        'firstName': firstName,
+        'lastName': lastName,
+        'email': email,
+        'phoneNumber': phoneNumber,
+      };
+
+      // Log the request URL and parameters
+      print('Updating user with details: $requestData');
+      print('Request URL: ${Endpoints.updateUser}');
+      print('Headers: $headers');
+
+      await authRepository.updateUser(
+        headers: headers,
+        requestData: requestData,
+      );
+
+      // Update the local user value
+      user.value.firstName = firstName;
+      user.value.lastName = lastName;
+      user.value.email = email;
+      user.value.phoneNumber = phoneNumber;
+
+      // Handle the user response as needed
+      print('User updated successfully');
+    } catch (e) {
+      // Handle any errors
+      print('Error updating user: $e');
+    }
+  }
+
 Future<void> logout()async {
     try{
 // Access shared preferences
