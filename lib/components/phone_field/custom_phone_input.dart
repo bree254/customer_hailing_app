@@ -12,6 +12,7 @@ class CustomPhoneInput extends StatefulWidget {
   final Function(String)? onInputChanged;
   final InputBorder? inputBorder;
   final String? errorMessage;
+  final bool ? readOnly;
 
   const CustomPhoneInput({
     super.key,
@@ -20,6 +21,7 @@ class CustomPhoneInput extends StatefulWidget {
     this.onInputChanged,
     this.inputBorder,
     this.errorMessage,
+    this.readOnly,
   });
 
   @override
@@ -106,6 +108,7 @@ class _CustomPhoneInputState extends State<CustomPhoneInput> {
                     onChanged: widget.onInputChanged,
                     maxLength: 9,
                     maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                    readOnly: widget.readOnly ?? false,
                   ),
                 ),
               ),

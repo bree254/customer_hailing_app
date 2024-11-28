@@ -43,12 +43,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   void onSubmit() {
     if (_formKey.currentState!.validate()) {
-      authController.updateUserProfile(
-        firstNameController.text,
-        lastNameController.text,
-        emailController.text,
-        phoneController.text,
-      );
+      // authController.updateUserProfile(
+      //   firstNameController.text,
+      //   lastNameController.text,
+      //   emailController.text,
+      //   phoneController.text,
+      // );
     }
   }
 
@@ -153,6 +153,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       SizedBox(height: 10.v),
                       CustomTextFormField(
                         controller: firstNameController,
+                        readOnly: true,
                         filled: true,
                         fillColor: countryTextFieldColor,
                         borderDecoration: OutlineInputBorder(
@@ -181,6 +182,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       SizedBox(height: 10.v),
                       CustomTextFormField(
                         controller: lastNameController,
+                        readOnly: true,
                         filled: true,
                         fillColor: countryTextFieldColor,
                         borderDecoration: OutlineInputBorder(
@@ -239,6 +241,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       SizedBox(height: 10.v),
                       CustomTextFormField(
                         controller: emailController,
+                        readOnly: true,
                         filled: true,
                         fillColor: countryTextFieldColor,
                         borderDecoration: OutlineInputBorder(
@@ -268,6 +271,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       SizedBox(height: 10.v),
                       CustomPhoneInput(
                         controller: phoneController,
+                        readOnly: true,
                         onInputChanged: (value) {
                           String? newErrorMessage;
                           InputBorder newInputBorder;
@@ -300,6 +304,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         },
                       ),
                       const SizedBox(height: 39,),
+
                       CustomElevatedButton(
                         onPressed: () {
                           onSubmit();
