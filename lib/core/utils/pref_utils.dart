@@ -42,6 +42,43 @@ class PrefUtils extends GetxController {
     return _sharedPreferences!.getStringList(key);
   }
 
+  /// Saves the access token or refresh token independently.
+  Future<void> storeToken(String tokenType, String tokenValue) async {
+    String key;
+    if (tokenType == 'access_token') {
+      key = 'access_token';
+    } else if (tokenType == 'refresh_token') {
+      key = 'refresh_token';
+    } else {
+      throw ArgumentError('Invalid token type. Must be \'access_token\' or \'refresh_token\'');
+    }
+
+    await _sharedPreferences!.setString(key, tokenValue);
+  }
+
+  /// Retrieves the access token or refresh token independently.
+  retrieveToken(String tokenType) async {
+    String key;
+    if (tokenType == 'access_token') {
+      key = 'access_token';
+    } else if (tokenType == 'refresh_token') {
+      key = 'refresh_token';
+    } else {
+      throw ArgumentError('Invalid token type. Must be \'access_token\' or \'refresh_token\'');
+    }
+
+    return _sharedPreferences!.getString(key); // Return empty string if not found
+  }
+  Future<void> saveUsername(String userName) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('userName', userName);
+  }
+
+  Future<String?> retrieveUsername() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('userName');
+  }
+
   Future<void> addPastDestination(String destination) async {
     List<String> pastDestinations = getStringList('pastDestinations') ?? [];
     if (!pastDestinations.contains(destination)) {

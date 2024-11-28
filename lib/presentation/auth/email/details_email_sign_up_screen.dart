@@ -1,23 +1,26 @@
 import 'package:customer_hailing/core/app_export.dart';
+import 'package:customer_hailing/presentation/auth/controller/auth_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
-
 import '../../../components/phone_field/custom_phone_input.dart';
 import '../../../routes/routes.dart';
 import '../../../widgets/custom_text_form_field.dart';
-class DetailsEmailSignUpScreen extends StatefulWidget {
-  const DetailsEmailSignUpScreen({super.key});
+
+class EnterYourDetailsScreen extends StatefulWidget {
+  const EnterYourDetailsScreen({super.key});
 
   @override
-  State<DetailsEmailSignUpScreen> createState() => _DetailsEmailSignUpScreenState();
+  State<EnterYourDetailsScreen> createState() => _EnterYourDetailsScreenState();
 }
 
-class _DetailsEmailSignUpScreenState extends State<DetailsEmailSignUpScreen> {
+class _EnterYourDetailsScreenState extends State<EnterYourDetailsScreen> {
+
+  final AuthController authController = Get.put(AuthController());
+
   final _formKey = GlobalKey<FormState>();
 
-  final TextEditingController firstNameController = TextEditingController();
-  final TextEditingController lastNameController = TextEditingController();
-  final TextEditingController phoneController = TextEditingController();
+  String? verificationType;
+  String? phoneEmail;
   String? errorMessage;
   InputBorder? inputBorder;
 
@@ -26,28 +29,43 @@ class _DetailsEmailSignUpScreenState extends State<DetailsEmailSignUpScreen> {
   @override
   void initState() {
     super.initState();
+    phoneEmail = Get.arguments['phone_email'];
+    verificationType = Get.arguments['verification_type'];
 
-    firstNameController.addListener(() => _updateButtonState());
-    lastNameController.addListener(() => _updateButtonState());
-    phoneController.addListener(() => _updateButtonState());
+    authController.firstNameController.addListener(() => _updateButtonState());
+    authController.lastnameController.addListener(() => _updateButtonState());
+    authController.emailController.addListener(() => _updateButtonState());
+    authController.phoneController.addListener(() => _updateButtonState());
   }
+  @override
+  void dispose() {
+    authController.firstNameController.removeListener(_updateButtonState);
+    authController.lastnameController.removeListener(_updateButtonState);
+    authController.emailController.removeListener(_updateButtonState);
+    authController.phoneController.removeListener(_updateButtonState);
 
+    authController.firstNameController.dispose();
+    authController.lastnameController.dispose();
+    authController.emailController.dispose();
+    authController.phoneController.dispose();
+
+    super.dispose();
+  }
   void _updateButtonState() {
     setState(() {
-      _isButtonEnabled = firstNameController.text.isNotEmpty;
-      _isButtonEnabled = lastNameController.text.isNotEmpty;
-      _isButtonEnabled = phoneController.text.isNotEmpty;
+      _isButtonEnabled = authController.firstNameController.text.isNotEmpty;
+      _isButtonEnabled = authController.lastnameController.text.isNotEmpty;
+      _isButtonEnabled = authController.emailController.text.isNotEmpty;
+      _isButtonEnabled = authController.phoneController.text.isNotEmpty;
 
     });
   }
 
   void onSubmit() {
     if (_formKey.currentState!.validate()) {
-      Get.toNamed(AppRoutes.verification,
-          arguments: {
-        'phone_email': Get.arguments['phone_email'],
-         "verification_type": "email"
-      });
+      authController.usernameController.text = phoneEmail!;
+      authController.updateUser();
+
     }
   }
 
@@ -77,7 +95,7 @@ class _DetailsEmailSignUpScreenState extends State<DetailsEmailSignUpScreen> {
               ),
               SizedBox(height: 10.v),
               CustomTextFormField(
-                controller: firstNameController,
+                controller: authController.firstNameController,
                 filled: true,
                 fillColor: countryTextFieldColor,
                 borderDecoration: OutlineInputBorder(
@@ -101,7 +119,7 @@ class _DetailsEmailSignUpScreenState extends State<DetailsEmailSignUpScreen> {
               ),
               SizedBox(height: 10.v),
               CustomTextFormField(
-                controller: lastNameController,
+                controller: authController.lastnameController,
                 filled: true,
                 fillColor: countryTextFieldColor,
                 borderDecoration: OutlineInputBorder(
@@ -125,7 +143,7 @@ class _DetailsEmailSignUpScreenState extends State<DetailsEmailSignUpScreen> {
               ),
               SizedBox(height: 10.v),
               CustomPhoneInput(
-                controller: phoneController,
+                controller: authController.phoneController,
                 onInputChanged: (value) {
                   String? newErrorMessage;
                   InputBorder newInputBorder;

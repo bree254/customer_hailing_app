@@ -9,6 +9,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'firebase_options.dart';
@@ -56,6 +57,7 @@ class Hailing extends StatelessWidget {
     //NotificationService.setUpNotificationService(context);
     return Sizer(builder: (context, orientation, deviceType) {
       return GetMaterialApp(
+        builder: EasyLoading.init(),
         title: 'Taxi App',
         debugShowCheckedModeBanner: false,
         theme: theme,

@@ -11,8 +11,7 @@ class TripStatusBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TripStatusController tripStatusController =
-        Get.find<TripStatusController>();
+    final TripStatusController tripStatusController = Get.find<TripStatusController>();
 
     return DraggableScrollableSheet(
       initialChildSize: 0.4,

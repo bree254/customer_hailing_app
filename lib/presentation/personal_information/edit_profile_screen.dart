@@ -2,6 +2,7 @@ import 'package:customer_hailing/core/app_export.dart';
 import 'package:flutter/material.dart';
 import '../../components/phone_field/custom_phone_input.dart';
 import '../../widgets/custom_text_form_field.dart';
+import '../auth/controller/auth_controller.dart';
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});
 
@@ -12,8 +13,11 @@ class EditProfileScreen extends StatefulWidget {
 class _EditProfileScreenState extends State<EditProfileScreen> {
   final _formKey = GlobalKey<FormState>();
 
+  final AuthController authController = Get.put(AuthController());
+
   final TextEditingController firstNameController = TextEditingController();
   final TextEditingController lastNameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   String? errorMessage;
   InputBorder? inputBorder;
@@ -22,8 +26,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   void initState() {
     super.initState();
 
-    firstNameController.addListener(() => _updateState());
-    lastNameController.addListener(() => _updateState());
+    firstNameController.text = authController.user.value.firstName!;
+    lastNameController.text = authController.user.value.lastName!;
+    emailController.text = authController.user.value.email!;
+    phoneController.text = authController.user.value.phoneNumber!;
+
+    authController.firstNameController.addListener(() => _updateState());
+    authController.lastnameController.addListener(() => _updateState());
+    authController.emailController.addListener(() => _updateState());
+    authController.phoneController.addListener(() => _updateState());
   }
 
   void _updateState() {
@@ -32,14 +43,21 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   void onSubmit() {
     if (_formKey.currentState!.validate()) {
-
+      // authController.updateUserProfile(
+      //   firstNameController.text,
+      //   lastNameController.text,
+      //   emailController.text,
+      //   phoneController.text,
+      // );
     }
   }
 
   @override
   void dispose() {
-    firstNameController.removeListener(() => _updateState());
-    lastNameController.removeListener(() => _updateState());
+    authController.firstNameController.removeListener(() => _updateState());
+    authController.lastnameController.removeListener(() => _updateState());
+    authController.usernameController.removeListener(() => _updateState());
+    authController.phoneController.removeListener(() => _updateState());
     super.dispose();
   }
   @override
@@ -135,6 +153,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       SizedBox(height: 10.v),
                       CustomTextFormField(
                         controller: firstNameController,
+                        readOnly: true,
                         filled: true,
                         fillColor: countryTextFieldColor,
                         borderDecoration: OutlineInputBorder(
@@ -163,6 +182,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       SizedBox(height: 10.v),
                       CustomTextFormField(
                         controller: lastNameController,
+                        readOnly: true,
                         filled: true,
                         fillColor: countryTextFieldColor,
                         borderDecoration: OutlineInputBorder(
@@ -183,34 +203,34 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       ),
                       SizedBox(height: 20.v),
         
-                       Text(
-                        "Gender",
-                        style:AppTextStyles.text14Black400.copyWith(
-                          color: formTextLabelColor,
-                        ),
-                      ),
-                      SizedBox(height: 10.v),
-                      CustomTextFormField(
-                        controller: firstNameController,
-                        filled: true,
-                        fillColor: countryTextFieldColor,
-                        borderDecoration: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: const BorderSide(color: Colors.transparent, width: 0),
-                        ),
-                        hintText: "Female",
-                        hintStyle: AppTextStyles.text14Black500.copyWith(
-                        color: blackTextColor,
-                      ),
-                        contentPadding: EdgeInsets.symmetric(vertical: 14.v, horizontal: 10.h),
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Please enter your gender';
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(height: 20.v),
+                      //  Text(
+                      //   "Gender",
+                      //   style:AppTextStyles.text14Black400.copyWith(
+                      //     color: formTextLabelColor,
+                      //   ),
+                      // ),
+                      // SizedBox(height: 10.v),
+                      // CustomTextFormField(
+                      //   controller: firstNameController,
+                      //   filled: true,
+                      //   fillColor: countryTextFieldColor,
+                      //   borderDecoration: OutlineInputBorder(
+                      //     borderRadius: BorderRadius.circular(10),
+                      //     borderSide: const BorderSide(color: Colors.transparent, width: 0),
+                      //   ),
+                      //   hintText: "Female",
+                      //   hintStyle: AppTextStyles.text14Black500.copyWith(
+                      //   color: blackTextColor,
+                      // ),
+                      //   contentPadding: EdgeInsets.symmetric(vertical: 14.v, horizontal: 10.h),
+                      //   validator: (value) {
+                      //     if (value!.isEmpty) {
+                      //       return 'Please enter your gender';
+                      //     }
+                      //     return null;
+                      //   },
+                      // ),
+                      // SizedBox(height: 20.v),
         
                        Text(
                         "Email",
@@ -220,7 +240,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       ),
                       SizedBox(height: 10.v),
                       CustomTextFormField(
-                        controller: firstNameController,
+                        controller: emailController,
+                        readOnly: true,
                         filled: true,
                         fillColor: countryTextFieldColor,
                         borderDecoration: OutlineInputBorder(
@@ -250,6 +271,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       SizedBox(height: 10.v),
                       CustomPhoneInput(
                         controller: phoneController,
+                        readOnly: true,
                         onInputChanged: (value) {
                           String? newErrorMessage;
                           InputBorder newInputBorder;
@@ -282,6 +304,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         },
                       ),
                       const SizedBox(height: 39,),
+
                       CustomElevatedButton(
                         onPressed: () {
                           onSubmit();

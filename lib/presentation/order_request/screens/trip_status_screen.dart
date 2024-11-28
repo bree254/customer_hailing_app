@@ -21,7 +21,7 @@ class _TripStatusScreenState extends State<TripStatusScreen> {
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
-      drawer: const DrawerWidget(),
+      drawer:  DrawerWidget(),
       body: Stack(
         children: [
           Obx(() => mapController.center.value == null

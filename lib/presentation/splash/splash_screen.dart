@@ -21,10 +21,10 @@ class _SplashScreenState extends State<SplashScreen> {
     await Future.delayed(const Duration(seconds: 3));
 
     if (isLoggedIn) {
-      Get.offNamed(AppRoutes.home);
+      Get.offNamed(AppRoutes.emailSignOn);
 
     } else {
-      Get.offNamed(AppRoutes.loginorsignup);
+      Get.offNamed(AppRoutes.home);
 
     }
   }
@@ -35,7 +35,7 @@ class _SplashScreenState extends State<SplashScreen> {
       backgroundColor: primaryColor,
       body: Center(
         child: Text(
-          'Taxi App',
+          'Yasil',
           style: TextStyle(color: whiteTextColor, fontWeight: FontWeight.w700, fontSize: 32),
         ),
       ),

@@ -1,44 +1,48 @@
 import 'package:customer_hailing/core/app_export.dart';
+import 'package:customer_hailing/presentation/auth/controller/auth_controller.dart';
 import 'package:customer_hailing/routes/routes.dart';
 import 'package:customer_hailing/widgets/custom_text_form_field.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class EmailSignInUpScreen extends StatefulWidget {
-  const EmailSignInUpScreen({super.key});
+class EmailSignInScreen extends StatefulWidget {
+  const EmailSignInScreen({super.key});
 
   @override
-  State<EmailSignInUpScreen> createState() => _EmailSignInUpScreenState();
+  State<EmailSignInScreen> createState() => _EmailSignInScreenState();
 }
 
-class _EmailSignInUpScreenState extends State<EmailSignInUpScreen> {
+class _EmailSignInScreenState extends State<EmailSignInScreen> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  
+
+  final AuthController controller = Get.put(AuthController());
+
   bool _isButtonEnabled = false;
   bool isShowPassword = false;
 
   @override
   void initState() {
     super.initState();
-    emailController.addListener(_updateButtonState);
-    passwordController.addListener(_updateButtonState);
+    controller.usernameController.addListener(_updateButtonState);
+
   }
 
   void _updateButtonState() {
     setState(() {
-      _isButtonEnabled = emailController.text.isNotEmpty;
-      _isButtonEnabled = passwordController.text.isNotEmpty;
+      _isButtonEnabled = controller.usernameController.text.isNotEmpty;
+
     });
   }
 
   void onSubmit() {
     if (_formKey.currentState!.validate()) {
-      
-      Get.toNamed(AppRoutes.verification, arguments: {
-        'phone_email': emailController.text,
-        "verification_type": "email"
-      });
+      controller.signIn();
+      // Get.toNamed(AppRoutes.verification, arguments: {
+      //   'phone_email': emailController.text,
+      //   "verification_type": "email"
+      // }
+
     }
   }
 
@@ -55,9 +59,12 @@ class _EmailSignInUpScreenState extends State<EmailSignInUpScreen> {
             const SizedBox(
               height: 32,
             ),
+            const SizedBox(
+              height: 32,
+            ),
              Center(
               child: Text(
-                "Login to your account",
+                "Sign in to your account",
                 style: AppTextStyles.onBoardingAppBarText,
               ),
             ),
@@ -71,8 +78,9 @@ class _EmailSignInUpScreenState extends State<EmailSignInUpScreen> {
             const SizedBox(
               height: 10,
             ),
+
             CustomTextFormField(
-              controller: emailController,
+              controller: controller.usernameController,
               filled: true,
               fillColor: countryTextFieldColor,
               labelText: "name@email.com",
@@ -91,94 +99,12 @@ class _EmailSignInUpScreenState extends State<EmailSignInUpScreen> {
                 borderSide: const BorderSide(color: Colors.transparent, width: 0),
               ),
             ),
-            SizedBox(height: 20,),
-             Text(
-              "Enter your password",
-              style: AppTextStyles.text14FormLabel400,
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            CustomTextFormField(
-              controller: passwordController,
-              filled: true,
-              fillColor: countryTextFieldColor,
-              labelText: "Enter your new password",
-              labelStyle:  AppTextStyles.text14Black400,
-              autofocus: false,
-              // height: 96.h,
-              contentPadding: EdgeInsets.symmetric(vertical: 15.v, horizontal: 10.h),
-              obscureText: !isShowPassword,
-              suffix: IconButton(
-                icon: Icon(
-                  isShowPassword
-                      ? Icons.visibility_outlined
-                      : Icons.visibility_off_outlined,
-                  size: 24,
-                  color: appTheme.grayBlack,
-                ),
-                onPressed: () {
-                  setState(() {
-                    isShowPassword = !isShowPassword;
-                  });
-                },
-              ),
-              validator: (value) {
-                String? errorMessage = validatePassword(value);
-                return errorMessage;
-              },
-              onChanged: (value) {
-                setState(() {
-                  _formKey.currentState!.validate();
-                });
-              },
-              borderDecoration: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10.h),
-                borderSide: const BorderSide(color: Colors.transparent, width: 0),
-              ),
-            ),
-            SizedBox(height: 20,),
-            Padding(
-              padding: const EdgeInsets.only(left: 180.0),
-              child: GestureDetector(
-                onTap: (){
-                  Get.toNamed(AppRoutes.forgotPassword);
-                },
-                child:  Center(
-                  child: Text(
-                    "Forgot password?",
-                    style: AppTextStyles.forgotPasswordText,
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(height: 32,),
-            Align(
-              alignment: Alignment.bottomRight,
-              child: GestureDetector(
-                onTap: (){
-                  Get.toNamed(AppRoutes.emailSignUp);
-                },
-                child:  Center(
-                  child: RichText(
-                      text: TextSpan(
-                        text:"Don’t have an account?",
-                          style: AppTextStyles.forgotPasswordText.copyWith(color: blackTextColor),
-                        children: [
-                          TextSpan(
-                          text:" Sign up ",
-                            style: AppTextStyles.forgotPasswordText,)
-                        ]
-                      ),
-                  ),
-                ),
-              ) ,
-            ),
+
             const Spacer(),
             Padding(
               padding: EdgeInsets.zero,
               child: CustomElevatedButton(
-                text: 'Log in',
+                text: 'Next',
                 onPressed: _isButtonEnabled
                     ? () {
                         onSubmit();

@@ -2,6 +2,8 @@ import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/routes/routes.dart';
 import 'package:flutter/material.dart';
 
+import '../../auth/controller/auth_controller.dart';
+
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
@@ -10,6 +12,9 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+
+  final AuthController authController = Get.put(AuthController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,9 +70,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                   const SizedBox(height: 13,),
-                   Text(
-                    'John Doe',
-                    textAlign: TextAlign.center,
+                  Text(
+                    '${authController.user.value.firstName} ${authController.user.value.lastName}',
                     style: AppTextStyles.text14Black500.copyWith(
                       color: searchtextGrey,
                     ),
@@ -79,7 +83,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Icon(Icons.star,color: primaryColor,size: 10,),
                       SizedBox(width: 5,),
                       Text(
-                        '4.5 rating',
+                        '${authController.user.value.ratingAverage} rating',
                         style: AppTextStyles.text14Black400.copyWith(
                           color: searchtextGrey,
                         ),
@@ -194,7 +198,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ),
                 onTap: () {
-                  Get.toNamed(AppRoutes.loginorsignup);
+                  authController.logout();
                 },
               ),
             ),
