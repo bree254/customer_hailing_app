@@ -10,18 +10,27 @@ class CustomPhoneInput extends StatefulWidget {
   final TextEditingController controller;
   final String? Function(String?)? customValidator;
   final Function(String)? onInputChanged;
+  final Function(String)? onCountryCodeChanged;
   final InputBorder? inputBorder;
   final String? errorMessage;
   final bool ? readOnly;
+  bool? autofocus;
+  String? labelText;
+  String? outerLabelText;
+  TextStyle? labelStyle;
 
-  const CustomPhoneInput({
+   CustomPhoneInput({
     super.key,
     required this.controller,
     this.customValidator,
+     this.labelStyle,
+    this.autofocus,
     this.onInputChanged,
     this.inputBorder,
     this.errorMessage,
     this.readOnly,
+     this.labelText,
+     this.outerLabelText, this.onCountryCodeChanged,
   });
 
   @override
@@ -77,26 +86,50 @@ class _CustomPhoneInputState extends State<CustomPhoneInput> {
             textBaseline: TextBaseline.alphabetic,
             children: [
               CountrySelector(
-                countries: countries,
+                countries: countries, // Pass your list of countries here
                 onCountryChanged: (Country country) {
                   setState(() {
                     selectedCountry = country;
+                    widget.onCountryCodeChanged?.call(selectedCountry!.dialCode);
+
+                    // Update the controller with the new country code
+                    String currentText = widget.controller.text;
+
+                    // Remove the previous country code if it exists
+                    if (selectedCountry != null) {
+                      for (var country in countries) {
+                        if (currentText.startsWith(country.dialCode)) {
+                          currentText = currentText.substring(country.dialCode.length);
+                          break;
+                        }
+                      }
+                    }
+
+                    widget.controller.text = '${selectedCountry!.dialCode}$currentText';
+                    widget.controller.selection = TextSelection.fromPosition(
+                      TextPosition(offset: widget.controller.text.length),
+                    );
                   });
                 },
-                selectedCountry: selectedCountry!, // Pass selectedCountry
+                selectedCountry: selectedCountry!,
               ),
               Flexible(
                 child: Container(
                   padding: EdgeInsets.only(left: 16.h),
                   child: TextFormField(
                     controller: widget.controller,
+                    autofocus: widget.autofocus ?? false,
                     decoration: InputDecoration(
-                        labelText: 'Phone number ',
-                        prefix: selectedCountry == null
-                            ? null
-                            : Text(
-                          '${selectedCountry!.dialCode} ',
-                        ),
+                        labelText: widget.labelText ?? 'Phone number ',
+                        labelStyle: widget.labelStyle ??
+                            TextStyle(
+                              color: appTheme.disabledColor,
+                            ),
+                        // prefix: selectedCountry == null
+                        //     ? null
+                        //     : Text(
+                        //         '${selectedCountry!.dialCode} ',
+                        //       ),
                         floatingLabelBehavior: FloatingLabelBehavior.never,
                         counterText: '',
                         border: widget.inputBorder ??
@@ -105,10 +138,28 @@ class _CustomPhoneInputState extends State<CustomPhoneInput> {
                             )),
                     keyboardType: TextInputType.phone,
                     validator: widget.customValidator,
-                    onChanged: widget.onInputChanged,
-                    maxLength: 9,
+                    onChanged: (value) {
+                      if (selectedCountry != null && !value.startsWith(selectedCountry!.dialCode)) {
+                        value = '${selectedCountry!.dialCode}$value';
+                        widget.controller.text = value;
+                        widget.controller.selection = TextSelection.fromPosition(
+                          TextPosition(offset: widget.controller.text.length),
+                        );
+                      }
+                      widget.onInputChanged?.call(value);
+                    },
+                    // onSaved: (value) {
+                    //   if (selectedCountry != null && !value!.startsWith(selectedCountry!.dialCode)) {
+                    //     value = '${selectedCountry!.dialCode}$value';
+                    //     widget.controller.text = value;
+                    //     widget.controller.selection = TextSelection.fromPosition(
+                    //       TextPosition(offset: widget.controller.text.length),
+                    //     );
+                    //   }
+                    //   widget.onInputChanged?.call(value!);
+                    // },
+                    maxLength: 13,
                     maxLengthEnforcement: MaxLengthEnforcement.enforced,
-                    readOnly: widget.readOnly ?? false,
                   ),
                 ),
               ),
