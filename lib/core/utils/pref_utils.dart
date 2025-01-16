@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:customer_hailing/data/models/auth/user_response.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:get/get.dart';
@@ -91,6 +94,19 @@ class PrefUtils extends GetxController {
   List<String> getPastDestinations() {
     return getStringList('pastDestinations') ?? [];
   }
+
+  Future<void> setUserData(UserResponse user) {
+    return _sharedPreferences!.setString('userData', json.encode(user));
+  }
+
+  UserResponse? getUserData() {
+    final userDataString = _sharedPreferences!.getString('userData');
+    if (userDataString != null) {
+      return UserResponse.fromJson(jsonDecode(userDataString));
+    }
+    return null;
+  }
+
 
   getFcmToken() async {
     return _sharedPreferences!.getString('fcm_token');
