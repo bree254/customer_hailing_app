@@ -40,10 +40,6 @@ class AuthController extends GetxController {
     usernameController.text = await PrefUtils().retrieveUsername() ?? '';
     fetchUser(usernameController.text.trim());
 
-    //userName = await PrefUtils().retrieveUsername() ?? '';
-
-    // fetchUser(usernameController.text.trim());
-    // //fetchUser('userName');
   }
 
   Future<void> signIn() async {
@@ -82,9 +78,66 @@ class AuthController extends GetxController {
       EasyLoading.dismiss();
     }
   }
+Future<void> validateOtp() async {
+  EasyLoading.show(status: 'loading...');
+  var requestData = {
+    'username': usernameController.text.trim(),
+    'otp': otpController.text.trim()
+  };
 
+  try {
+    print('Request data: $requestData');
+    ValidOtpResponse response = await authRepository.validateOtp(
+        requestData: requestData);
 
-  Future<void> validateOtp() async {
+    print('Response data: ${response.toJson()}');
+
+    if (response.authenticationResult != null) {
+      final data = response.authenticationResult!;
+      final accessToken = data.accessToken;
+      final refreshToken = data.refreshToken;
+
+      // Store tokens in SharedPreferences
+      await PrefUtils().storeToken('access_token', accessToken!);
+      await PrefUtils().storeToken('refresh_token', refreshToken!);
+
+      _isOtpValid = true;
+
+      // Check for user data
+      UserResponse? userData = PrefUtils().getUserData();
+      print(userData);
+
+      if (userData != null) {
+        // Navigate to the home screen
+        Get.offAllNamed(AppRoutes.home);
+      } else {
+        // Navigate to the enter your details screen
+        Get.offAllNamed(AppRoutes.enterYourDetails, arguments: {
+          'phone_email': usernameController.text,
+          "verification_type": "email"
+        });
+      }
+
+      showToast('validation success');
+    } else {
+      _isOtpValid = false;
+      EasyLoading.dismiss();
+      Get.snackbar('Error', "validation failed");
+    }
+  } catch (e) {
+    if (e is DioException) {
+      print('Request data: $requestData');
+      print('Response data: ${e.response?.data}');
+    }
+    _isOtpValid = false;
+    EasyLoading.dismiss();
+    Get.snackbar('Error', e.toString());
+  } finally {
+    EasyLoading.dismiss();
+  }
+}
+
+  Future<void> validateOtps() async {
     EasyLoading.show(status: 'loading...');
     var requestData = {
       'username': usernameController.text.trim(),
@@ -275,6 +328,8 @@ Future<void> logout()async {
       );
 
       user.value = userResponse;
+      // Save the user data to SharedPreferences
+      await PrefUtils().setUserData(userResponse);
 
       // Handle the user response as needed
       print('User fetched successfully: ${userResponse.toJson()}');

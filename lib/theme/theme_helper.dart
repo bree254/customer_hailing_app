@@ -264,6 +264,7 @@ class PrimaryColors {
 
   Color get grayBackground => const Color(0xFFF5F5F5);
   Color get disabledButton => const Color(0xFF9D9D9D);
+  Color get disabledColor => const Color(0xFF9D9D9D);
 
   // Pink
   Color get pink => const Color(0xFF8A413E);
