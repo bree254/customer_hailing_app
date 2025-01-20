@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 
+import '../../data/api/refresh_token_service.dart';
 import '../../data/models/auth/user_response.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -19,29 +22,57 @@ class _SplashScreenState extends State<SplashScreen> {
     initializeData();
   }
 
-  Future<void> initializeData() async {
-    await Future.delayed(const Duration(seconds: 3));
+  // Future<void> initializeData() async {
+  //   await Future.delayed(const Duration(seconds: 3));
+  //
+  //   String? accessToken = await PrefUtils().retrieveToken('access_token');
+  //   bool isLoggedIn = false;
+  //
+  //   if (accessToken != null) {
+  //     isLoggedIn = await _isTokenValid(accessToken);
+  //   }
+  //
+  //   UserResponse? userData = PrefUtils().getUserData();
+  //
+  //   if (isLoggedIn) {
+  //     Get.offNamed(AppRoutes.home);
+  //   } else {
+  //     Get.offNamed(AppRoutes.emailSignOn);
+  //   }
+  //
+  //   // if (isLoggedIn && userData != null) {
+  //   //   Get.offNamed(AppRoutes.home);
+  //   // } else {
+  //   //   Get.offNamed(AppRoutes.emailSignOn);
+  //   // }
+  // }
 
+  Future<void> initializeData() async {
     String? accessToken = await PrefUtils().retrieveToken('access_token');
     bool isLoggedIn = false;
 
     if (accessToken != null) {
       isLoggedIn = await _isTokenValid(accessToken);
+      if (!isLoggedIn) {
+        bool tokensRefreshed = await refreshTokens();
+        if (tokensRefreshed) {
+          accessToken = await PrefUtils().retrieveToken('access_token');
+          isLoggedIn = await _isTokenValid(accessToken!);
+        }
+      }
     }
-
-    UserResponse? userData = PrefUtils().getUserData();
 
     if (isLoggedIn) {
-      Get.offNamed(AppRoutes.home);
+      Timer(const Duration(seconds: 3), () {
+        Get.offAllNamed(AppRoutes.home);
+      }
+      );
     } else {
-      Get.offNamed(AppRoutes.emailSignOn);
-    }
+      Timer(const Duration(seconds: 3), () {
+        Get.offAllNamed(AppRoutes.emailSignOn);
+      });
 
-    // if (isLoggedIn && userData != null) {
-    //   Get.offNamed(AppRoutes.home);
-    // } else {
-    //   Get.offNamed(AppRoutes.emailSignOn);
-    // }
+    }
   }
 
   Future<bool> _isTokenValid(String token) async {
