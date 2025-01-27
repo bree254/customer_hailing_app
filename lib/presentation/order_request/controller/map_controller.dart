@@ -9,6 +9,9 @@ import 'package:flutter_polyline_points/flutter_polyline_points.dart' as polylin
 import '../../../core/app_export.dart';
 import 'package:google_directions_api/google_directions_api.dart' as directions;
 
+import '../../../data/models/ride_requests/driver_locations_response.dart';
+import '../../../data/services/web_sockets/web_socket_service.dart';
+
 class MapController extends GetxController {
   GoogleMapController? mapController;
   Rx<LatLng?> center = Rx<LatLng?>(null);
@@ -24,6 +27,9 @@ class MapController extends GetxController {
 
   LatLng? _center;
   final Set<Polyline> polylines = <Polyline>{}.obs;
+
+  late WebSocketService webSocketService;
+
   @override
   void onInit() {
     super.onInit();
@@ -32,9 +38,56 @@ class MapController extends GetxController {
     getUserLocation();
     updatePolyline;
     _loadCustomMarker();
+    _updateMarkers([]);
+
+    webSocketService = WebSocketService(
+        onDriverLocationsReceived: (driverLocations) {
+          _updateMarkers(driverLocations);
+        });
+    webSocketService.connect();
 
   }
 
+  Future<void> _updateMarkers(List<DriverLocationsResponse> driverLocations) async {
+
+      markers.clear();
+
+      // Add user location marker (if it's set)
+      if (center.value != null) {
+        markers.add(
+          Marker(
+            markerId: const MarkerId('user_location'),
+            position: center.value!,
+            infoWindow: const InfoWindow(title: 'Your Location'),
+          ),
+        );
+      }
+
+      for (var driver in driverLocations) {
+        // Only extract the necessary data (driverId, latitude, longitude)
+        double latitude = driver.latitude!;
+        double longitude = driver.longitude!;
+        String driverId = driver.driverId!;
+
+        // Use your custom car marker image from assets
+        BitmapDescriptor carMarker = await BitmapDescriptor.asset(
+          ImageConfiguration(size: Size(100, 100)), // Optional: Specify the size
+          'assets/images/mazda.png',
+        );
+
+
+        markers.add(
+          Marker(
+            markerId: MarkerId(driverId),
+            position: LatLng(latitude, longitude),
+            //icon: carMarker,
+            icon:BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueYellow),
+            infoWindow: InfoWindow(title: "Driver $driverId"),
+          ),
+        );
+      }
+      update();
+  }
 
   Future<void> _loadCustomMarker() async {
     customMarker = await BitmapDescriptor.asset(

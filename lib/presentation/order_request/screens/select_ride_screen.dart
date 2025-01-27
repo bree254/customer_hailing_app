@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:customer_hailing/core/utils/colors.dart';
+import 'package:customer_hailing/presentation/order_request/controller/ride_service_controller.dart';
 import 'package:customer_hailing/presentation/order_request/controller/ride_status_controller.dart';
 import 'package:customer_hailing/presentation/order_request/models/data.dart';
 import 'package:customer_hailing/routes/routes.dart';
@@ -9,6 +10,7 @@ import 'package:customer_hailing/widgets/drawer_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:get/get.dart';
+import '../../../data/repos/ride_service_repository.dart';
 import '../../../theme/app_text_styles.dart';
 import '../controller/map_controller.dart';
 
@@ -24,21 +26,19 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
   String? _selectedPaymentMode;
   String? _destination;
   String? _prediction;
+  BitmapDescriptor? _customIcon;
+
 
   final RideStatusController rideStatusController = Get.put(RideStatusController());
   final MapController mapController = Get.put(MapController());
-
-  List<LatLng> _driverLocations = [
-    LatLng(37.7749, -122.4194),
-    LatLng(37.7849, -122.4094),
-    LatLng(37.7649, -122.4294),
-  ];
+  final RideServiceController rideServiceController = Get.put(RideServiceController(rideServiceRepository:  RideServiceRepository()));
 
   Timer? _timer;
 
   @override
   void initState() {
     super.initState();
+    _loadCustomIcon();
     Map<String, dynamic> args = Get.arguments;
     if (args['type'] == 'destination') {
       _destination = args['value'];
@@ -47,7 +47,7 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
       _prediction = args['value'];
       mapController.updatePolyline(_prediction!);
     }
-    _startDriverSimulation();
+
   }
   @override
   void dispose() {
@@ -55,21 +55,17 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
     super.dispose();
   }
 
-  void _startDriverSimulation() {
-    _timer = Timer.periodic(Duration(seconds: 5), (timer) {
-      setState(() {
-        _driverLocations = _driverLocations.map((location) {
-          double newLat = location.latitude + (0.001 * (0.5 - (0.5 - 0.5)));
-          double newLng = location.longitude + (0.001 * (0.5 - (0.5 - 0.5)));
-          return LatLng(newLat, newLng);
-        }).toList();
-      });
-    });
-  }
-
   void _startRideRequest() {
     rideStatusController.searchForDriver();
     Get.toNamed(AppRoutes.awaitDriver, arguments: _selectedRide);
+  }
+
+  Future<void> _loadCustomIcon() async {
+    _customIcon = await BitmapDescriptor.fromAssetImage(
+      ImageConfiguration(size: Size(48, 48)),
+      'assets/images/mazda.png',
+    );
+    setState(() {});
   }
 
   @override
@@ -93,12 +89,21 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                 target: mapController.center.value!,
                 zoom: 16.0,
               ),
+              // markers: {
+              //   ...mapController.markers,
+              //   ..._driverLocations.map((location) => Marker(
+              //     markerId: MarkerId(location.toString()),
+              //     position: location,
+              //     icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
+              //   )),
+              // },
               markers: {
                 ...mapController.markers,
-                ..._driverLocations.map((location) => Marker(
-                  markerId: MarkerId(location.toString()),
-                  position: location,
-                  icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
+                ...rideServiceController.availableRides.map((ride) => Marker(
+                  markerId: MarkerId(ride.driverId ?? ''),
+                  position: LatLng(ride.latitude ?? 0, ride.longitude ?? 0),
+                  icon: _customIcon ?? BitmapDescriptor.defaultMarker,
+                 // icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueYellow),
                 )),
               },
               polylines: Set<Polyline>.of(mapController.polylines),
@@ -180,14 +185,14 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                       child: ListView.builder(
                           controller: scrollController,
                           scrollDirection: Axis.vertical,
-                          itemCount: MyData.requests.length,
+                          itemCount: rideServiceController.fareAmounts.length,
                           itemBuilder: (context, index) {
-                            var request = MyData.requests[index];
-                            bool isSelected = _selectedRide == request.ridetype;
+                            var request =rideServiceController.fareAmounts[index];
+                            bool isSelected = _selectedRide == request.rideCategoryName;
                             return GestureDetector(
                               onTap: () {
                                 setState(() {
-                                  _selectedRide = request.ridetype;
+                                  _selectedRide = request.rideCategoryName;
                                 });
                               },
                               child: Container(
@@ -209,15 +214,16 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                                   selectedColor: selectRideColor,
                                   selectedTileColor: selectRideColor,
                                   leading: Image(
-                                      image: AssetImage(request.imageUrl)),
+                                      image: AssetImage(
+                                          'assets/images/mazda.png')),
                                   title: Text(
-                                    request.ridetype,
+                                    request.rideCategoryName.toString(),
                                     style: AppTextStyles.text14Black600.copyWith(
                                       color: searchtextGrey,
                                     ),
                                   ),
                                   subtitle: Text(
-                                    request.timeEstimate,
+                                    '${request.tripDuration.toString()} min',
                                     style: AppTextStyles.text14Black400.copyWith(
                                       color: searchtextGrey,
                                       fontSize: 10.0,
@@ -227,7 +233,7 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
-                                        'Ksh ${request.discountedPrice.toString()}',
+                                        'Ksh ${request.fare.toString()}',
                                         style: AppTextStyles.text14Black600.copyWith(
                                           color: searchtextGrey,
                                         ),
@@ -235,7 +241,7 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                                       Padding(
                                         padding: const EdgeInsets.only(left: 10.0),
                                         child: Text(
-                                          'Ksh ${request.originalprice.toString()}',
+                                          'Ksh ${request.fare.toString()}',
                                           style: AppTextStyles.text14Black400.copyWith(
                                             color: searchtextGrey,
                                             decoration: TextDecoration.lineThrough,

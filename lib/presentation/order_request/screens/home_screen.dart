@@ -32,13 +32,7 @@ class HomeScreen extends StatelessWidget {
                 target: _mapController.center.value!,
                 zoom: 16.0,
               ),
-              markers: {
-                Marker(
-                  markerId: const MarkerId('user_location'),
-                  position: _mapController.center.value!,
-                  infoWindow: const InfoWindow(title: 'Your Location'),
-                ),
-              },
+              markers: _mapController.markers,
             ),
           )),
           Obx(() => DestinationBottomSheet(currentAddress: _mapController.currentAddress.value)),

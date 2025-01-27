@@ -11,4 +11,7 @@ class Endpoints {
   static const String getUser = '$baseUrl/auth/api/v1/get/user/';
   //add the pathvariable to the endpoint
 
+  // RIDE REQUESTS
+  static const String postLocation = '$baseUrl/rides/api/v1/customers/searchRides';
+
 }

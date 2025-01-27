@@ -1,8 +1,11 @@
 import 'dart:convert';
 import 'package:customer_hailing/core/app_export.dart';
+import 'package:customer_hailing/presentation/order_request/controller/ride_service_controller.dart';
 import 'package:customer_hailing/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../../data/repos/ride_service_repository.dart';
+import '../controller/map_controller.dart';
 import '../models/data.dart';
 import 'package:http/http.dart' as http;
 import '../models/predictions.dart';
@@ -17,7 +20,10 @@ class EnterTripDetailsScreen extends StatefulWidget {
 class _EnterTripDetailsScreenState extends State<EnterTripDetailsScreen> {
   final String googleApiKey ="AIzaSyAFFMad-10qvSw8wZl7KgDp0jVafz4La6E";
   final TextEditingController _locationController = TextEditingController();
-  final TextEditingController _destinationController = TextEditingController();
+ // final TextEditingController _destinationController = TextEditingController();
+  final MapController mapController = Get.put(MapController());
+  final RideServiceController rideServiceController = Get.put(RideServiceController(rideServiceRepository: RideServiceRepository()));
+
   List<Prediction> _predictions = [];
   // List _pastDestinations = [];
   List<String> _pastDestinations = [];
@@ -43,13 +49,13 @@ class _EnterTripDetailsScreenState extends State<EnterTripDetailsScreen> {
 
     // Add listeners to detect typing
     _locationController.addListener(_onTextChanged);
-    _destinationController.addListener(_onTextChanged);
+    rideServiceController.destinationController.addListener(_onTextChanged);
 
     _locationFocusNode.addListener(_onFocusChange);
     _destinationFocusNode.addListener(_onFocusChange);
 
     _locationController.addListener(_onLocationChanged);
-    _destinationController.addListener(_onLocationChanged);
+    rideServiceController.destinationController.addListener(_onLocationChanged);
 
     // Add listeners to stopover controllers and focus nodes
     for (var i = 0; i < _stopoverControllers.length; i++) {
@@ -75,7 +81,7 @@ class _EnterTripDetailsScreenState extends State<EnterTripDetailsScreen> {
     _stopoverControllers.add(_locationController);
     _stopoverFocusNodes.add(_locationFocusNode);
 
-    _stopoverControllers.add(_destinationController);
+    _stopoverControllers.add(rideServiceController.destinationController);
     _stopoverFocusNodes.add(_destinationFocusNode);
 
     // Add listeners to detect focus changes and clear predictions
@@ -96,7 +102,7 @@ class _EnterTripDetailsScreenState extends State<EnterTripDetailsScreen> {
     _destinationFocusNode.dispose();
 
     _locationController.dispose();
-    _destinationController.dispose();
+    rideServiceController.destinationController.dispose();
     for (var controller in _stopoverControllers) {
       controller.dispose();
     }
@@ -136,7 +142,7 @@ class _EnterTripDetailsScreenState extends State<EnterTripDetailsScreen> {
   void _onTextChanged() {
     setState(() {
       _isTyping.value = _locationController.text.isNotEmpty ||
-          _destinationController.text.isNotEmpty ||
+          rideServiceController.destinationController.text.isNotEmpty ||
           _stopoverControllers.any((controller) => controller.text.isNotEmpty);
 
     });
@@ -167,7 +173,7 @@ class _EnterTripDetailsScreenState extends State<EnterTripDetailsScreen> {
         });
       }
     } else if (_destinationFocusNode.hasFocus) {
-      final destinationQuery = _destinationController.text;
+      final destinationQuery = rideServiceController.destinationController.text;
       if (destinationQuery.isNotEmpty) {
         final response = await _fetchPredictions(destinationQuery);
         setState(() {
@@ -197,6 +203,9 @@ class _EnterTripDetailsScreenState extends State<EnterTripDetailsScreen> {
         }
       }
     }
+    if(_locationController.text.isNotEmpty && rideServiceController.destinationController.text.isNotEmpty){
+      await rideServiceController.uploadCustomerLocation();
+    }
   }
 
 
@@ -215,8 +224,11 @@ class _EnterTripDetailsScreenState extends State<EnterTripDetailsScreen> {
     return predictions.map((p) => Prediction.fromJson(p)).toList();
   }
 
-  void _onPredictionSelected(Prediction prediction) {
+  Future<void> _onPredictionSelected(Prediction prediction) async {
     PrefUtils().addPastDestination(prediction.description);
+
+    await rideServiceController.uploadCustomerLocation();
+
     Get.toNamed(AppRoutes.selectRide, arguments: {'type': 'prediction', 'value': prediction.description});
   }
 
@@ -226,7 +238,6 @@ class _EnterTripDetailsScreenState extends State<EnterTripDetailsScreen> {
       _pastDestinations = _prefUtils.getPastDestinations();
     });
   }
-
 
   Widget _buildDotIndicator(bool isActive) {
     return Container(
@@ -446,7 +457,7 @@ class _EnterTripDetailsScreenState extends State<EnterTripDetailsScreen> {
                             _locationController.text = selectedPrediction;
                             _locationFocusNode.unfocus();
                           } else if (_destinationFocusNode.hasFocus) {
-                            _destinationController.text = selectedPrediction;
+                            rideServiceController.destinationController.text = selectedPrediction;
                             _destinationFocusNode.unfocus();
                           } else {
                             for (int i = 1; i < _stopoverControllers.length - 1; i++) {
@@ -486,9 +497,9 @@ class _EnterTripDetailsScreenState extends State<EnterTripDetailsScreen> {
                         ),
                       ),
                       child: ListTile(
-                        onTap: () {
+                        onTap: () async {
                           if (_destinationFocusNode.hasFocus) {
-                            _destinationController.text = destination;
+                            rideServiceController.destinationController.text = destination;
                             _destinationFocusNode.requestFocus();
                           } else if (_locationFocusNode.hasFocus) {
                             _locationController.text = destination;
@@ -502,7 +513,10 @@ class _EnterTripDetailsScreenState extends State<EnterTripDetailsScreen> {
                               }
                             }
                           }
-                          _onPredictionSelected(Prediction(description: destination, placeId: ''));
+
+                          await rideServiceController.uploadCustomerLocationWithDestination(destination);
+                          Get.toNamed(AppRoutes.selectRide, arguments: {'type': 'destination', 'value': destination});
+                          //_onPredictionSelected(Prediction(description: destination, placeId: ''));
                         },
                         leading: const Icon(
                           Icons.history,

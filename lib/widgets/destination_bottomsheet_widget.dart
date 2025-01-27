@@ -1,8 +1,11 @@
 import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/presentation/order_request/controller/home_controller.dart';
+import 'package:customer_hailing/presentation/order_request/controller/ride_service_controller.dart';
 import 'package:customer_hailing/presentation/order_request/models/data.dart';
 import 'package:customer_hailing/routes/routes.dart';
 import 'package:flutter/material.dart';
+
+import '../data/repos/ride_service_repository.dart';
 class DestinationBottomSheet extends StatelessWidget {
   final String? currentAddress;
 
@@ -11,7 +14,7 @@ class DestinationBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final HomeController homeController = Get.find<HomeController>();
-    // final RideRequestController controller = Get.find<RideRequestController>();
+    final RideServiceController controller = Get.put(RideServiceController(rideServiceRepository: RideServiceRepository()));
     List<String> pastDestinations = PrefUtils().getPastDestinations();
 
     return DraggableScrollableSheet(
@@ -91,7 +94,8 @@ class DestinationBottomSheet extends StatelessWidget {
                               ),
                             ),
                             child: ListTile(
-                              onTap: () {
+                              onTap: () async {
+                                await controller.uploadCustomerLocationWithDestination(destination);
                                 Get.toNamed(AppRoutes.selectRide, arguments: {'type': 'destination', 'value': destination.toString()});
 
                               },
