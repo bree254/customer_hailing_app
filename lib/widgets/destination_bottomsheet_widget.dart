@@ -1,8 +1,8 @@
 import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/presentation/order_request/controller/home_controller.dart';
-import 'package:customer_hailing/presentation/order_request/models/data.dart';
 import 'package:customer_hailing/routes/routes.dart';
 import 'package:flutter/material.dart';
+
 class DestinationBottomSheet extends StatelessWidget {
   final String? currentAddress;
 
@@ -20,7 +20,7 @@ class DestinationBottomSheet extends StatelessWidget {
       maxChildSize: 0.8,
       builder: (BuildContext context, ScrollController scrollController) {
         return Container(
-          padding: const EdgeInsets.only(top:8),
+          padding: const EdgeInsets.only(top: 8),
           decoration: const BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
@@ -44,56 +44,58 @@ class DestinationBottomSheet extends StatelessWidget {
                 onTap: () {
                   Get.toNamed(AppRoutes.search, arguments: currentAddress);
                 },
-
                 child: Container(
-                  margin:
-                  const EdgeInsets.fromLTRB( 10, 8,10,0),
+                  margin: const EdgeInsets.fromLTRB(10, 8, 10, 0),
                   child: AbsorbPointer(
                     child: TextField(
                       decoration: InputDecoration(
-                        labelText: 'where do you want to go',
+                        labelText: 'Where do you want to go',
                         labelStyle: AppTextStyles.bodySmallBold.copyWith(
-                        color: searchtextGrey,
-                      ),
+                          color: searchtextGrey,
+                        ),
                         fillColor: searchButtonGrey,
                         filled: true,
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                             borderSide: BorderSide.none),
-                        prefixIcon: const Icon(Icons.search, size: 16),
+                        prefixIcon: Icon(Icons.search, size: 20.adaptSize),
                       ),
                     ),
                   ),
                 ),
               ),
               Expanded(
-                  child: Obx(() => homeController.pastDestinations.isEmpty
-                      ? const Center(
-                    child: Text('No past destinations'),
-                  )
-
-                      : ListView.builder(
+                  child: Obx(
+                () => homeController.pastDestinations.isEmpty
+                    ? const Center(
+                        child: Text('No past destinations'),
+                      )
+                    : ListView.builder(
                         controller: scrollController,
                         scrollDirection: Axis.vertical,
                         itemCount: homeController.pastDestinations.length,
                         itemBuilder: (context, index) {
-                          var destination = homeController.pastDestinations[index];
+                          var destination =
+                              homeController.pastDestinations[index];
                           return Container(
-                            margin: const EdgeInsets.fromLTRB( 16,0,16 ,8),
+                            margin: const EdgeInsets.fromLTRB(16, 0, 16, 8),
                             decoration: ShapeDecoration(
                               color: const Color(0x7FFAFAFA),
                               shape: RoundedRectangleBorder(
                                 side: BorderSide(
                                   width: 1,
-                                  color: Colors.black.withOpacity(0.02500000037252903),
+                                  color: Colors.black
+                                      .withOpacity(0.02500000037252903),
                                 ),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                             ),
                             child: ListTile(
                               onTap: () {
-                                Get.toNamed(AppRoutes.selectRide, arguments: {'type': 'destination', 'value': destination.toString()});
-
+                                Get.toNamed(AppRoutes.selectRide, arguments: {
+                                  'type': 'destination',
+                                  'value': destination.toString()
+                                });
                               },
                               leading: const Icon(
                                 Icons.history,
@@ -101,16 +103,14 @@ class DestinationBottomSheet extends StatelessWidget {
                               ),
                               title: Text(
                                 destination,
-                                style:AppTextStyles.bodySmallBold.copyWith(
+                                style: AppTextStyles.bodySmallBold.copyWith(
                                   color: searchtextGrey,
                                 ),
                               ),
                             ),
                           );
                         }),
-                  )
-        )
-
+              ))
             ],
           ),
         );
