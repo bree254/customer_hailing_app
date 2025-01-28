@@ -14,7 +14,7 @@ class NotificationService {
   NotificationService._internal();
 
   static String orderNotificationType = "trip_status";
-  static const String notificationChannelKey = "basic_channel";
+  static const String notificationChannelKey = "yasil_hailing";
 
   static final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
@@ -56,6 +56,57 @@ class NotificationService {
     await flutterLocalNotificationsPlugin.initialize(initializationSettings);
   }
 
+  // static AndroidNotificationChannel channel;
+
+  static bool isFlutterLocalNotificationsInitialized = false;
+
+  /// Initialize the [FlutterLocalNotificationsPlugin] package.
+  // late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
+
+  static Future<void> setupFlutterNotifications() async {
+    if (isFlutterLocalNotificationsInitialized) {
+      return;
+    }
+    const AndroidNotificationChannel channel = AndroidNotificationChannel(
+      notificationChannelKey,
+      'ride_notification',
+      description:
+          'This channel is used for important notifications.', // description
+      importance: Importance.high,
+    );
+
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+    NotificationSettings settings = await messaging.getNotificationSettings();
+    await messaging.getToken().then((value) {
+      if (Platform.isAndroid && value != null) {
+        debugPrint('FCM Token: $value');
+        PrefUtils().setFcmToken(value);
+      }
+    });
+
+    // flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
+    /// Create an Android Notification Channel.
+    ///
+    /// We use this channel in the `AndroidManifest.xml` file to override the
+    /// default FCM channel to enable heads up notifications.
+    await flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.createNotificationChannel(channel);
+
+    /// Update the iOS foreground notification presentation options to allow
+    /// heads up notifications.
+    await FirebaseMessaging.instance
+        .setForegroundNotificationPresentationOptions(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
+    isFlutterLocalNotificationsInitialized = true;
+  }
+
   static void initNotificationListener(BuildContext buildContext) {
     FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
       alert: true, // Required to display a heads up notification
@@ -63,7 +114,7 @@ class NotificationService {
       sound: true,
     );
 
-    FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+    // FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
 
     // Handle incoming messages and display notifications
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
@@ -130,7 +181,7 @@ class NotificationService {
 
     const AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails(
-      'yasil_hailing',
+      notificationChannelKey,
       'ride_notification',
       channelDescription: 'ride_notification',
       importance: Importance.max,
