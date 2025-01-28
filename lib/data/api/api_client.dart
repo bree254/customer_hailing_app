@@ -2,6 +2,7 @@ import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/data/models/auth/auth_response.dart';
 import 'package:customer_hailing/data/models/auth/user_response.dart';
 import 'package:customer_hailing/data/models/auth/validate_otp.dart';
+import 'package:customer_hailing/data/models/ride_requests/confirm_trip_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/search_locations_response.dart';
 import 'package:customer_hailing/presentation/order_request/screens/search_location_screen.dart';
 import 'package:dio/dio.dart' as dio;
@@ -207,6 +208,29 @@ class ApiClient extends GetConnect {
       rethrow;
     }
   }
+
+  Future<ConfirmTripResponse> confirmTrip(
+      {required Map<String, String> headers, required Map requestData}) async {
+    isNetworkConnected();
+
+    try {
+      var response = await _dio.post(Endpoints.confirmTrip,
+          data: requestData, options: dio.Options(headers: headers));
+      if (_isSuccessCall(response)) {
+        return ConfirmTripResponse.fromJson(response.data);
+      } else {
+        debugPrint('Response :: ${response.statusCode}');
+        return ConfirmTripResponse.fromJson(response.data);
+      }
+    } catch (error, stackTrace) {
+      Logger.log(
+        error,
+        stackTrace: stackTrace,
+      );
+      rethrow;
+    }
+  }
+
 
   Future<Response> postRequest(String url, Map<String, dynamic> body) async {
     return await post(url, body);

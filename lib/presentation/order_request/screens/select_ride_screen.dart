@@ -62,10 +62,33 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
 
   Future<void> _loadCustomIcon() async {
     _customIcon = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(size: Size(48, 48)),
+      ImageConfiguration(size: Size(15, 15),
+         // devicePixelRatio: 2.0
+      ),
       'assets/images/mazda.png',
     );
     setState(() {});
+  }
+
+  // Future<void> _confirmTrip() async {
+  //   if (_destination == null || _prediction == null || _selectedRide == null || _selectedPaymentMode == null) {
+  //     Get.snackbar('Error', 'Please select all required fields.');
+  //     return;
+  //   }
+  //
+  //   await rideServiceController.confirmTrip(_destination!, _selectedRide!, _selectedPaymentMode!);
+  //   _startRideRequest();
+  // }
+
+  Future<void> _confirmTrip() async {
+    if ((_destination == null && _prediction == null) || _selectedRide == null || _selectedPaymentMode == null) {
+      Get.snackbar('Error', 'Please select all required fields.');
+      return;
+    }
+
+    String dropOffAddress = _destination ?? _prediction!;
+    await rideServiceController.confirmTrip(dropOffAddress, _selectedRide!, _selectedPaymentMode!);
+    _startRideRequest();
   }
 
   @override
@@ -355,9 +378,10 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                           CustomElevatedButton(
                             text: 'Select ${_selectedRide ?? "your ride"}',
                             onPressed: () {
-                              if (_selectedRide != null) {
-                                _startRideRequest(); // Trigger the ride request
-                              }
+                              _confirmTrip();
+                              // if (_selectedRide != null) {
+                              //   _startRideRequest(); // Trigger the ride request
+                              //}
                             },
                           ),
                         ],

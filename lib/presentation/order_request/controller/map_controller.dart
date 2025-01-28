@@ -168,6 +168,15 @@ class MapController extends GetxController {
     }
   }
 
+  Future<String> convertToAddress(double latitude, double longitude) async {
+    List<Placemark> placemarks = await placemarkFromCoordinates(latitude, longitude);
+    if (placemarks.isNotEmpty) {
+      Placemark place = placemarks[0];
+      return "${place.street}, ${place.locality}, ${place.administrativeArea}, ${place.country}";
+    }
+    return "Unknown location";
+  }
+
   Future<LatLng?> getCoordinatesFromAddress(String address) async {
     try {
       List<Location> locations = await locationFromAddress(address);
