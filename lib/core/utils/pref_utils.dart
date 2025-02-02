@@ -107,6 +107,15 @@ class PrefUtils extends GetxController {
     return null;
   }
 
+  // Method to save the requestId
+  Future<void> setRequestId(String requestId) async {
+    await _sharedPreferences!.setString('requestId', requestId);
+  }
+
+  // Method to retrieve the requestId
+  String? getRequestId() {
+    return _sharedPreferences!.getString('requestId');
+  }
 
   getFcmToken() async {
     return _sharedPreferences!.getString('fcm_token');
@@ -115,4 +124,6 @@ class PrefUtils extends GetxController {
   void setFcmToken(String fcmToken) {
     _sharedPreferences!.setString('fcm_token', fcmToken);
   }
+
+
 }

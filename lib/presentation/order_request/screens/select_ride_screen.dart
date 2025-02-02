@@ -10,6 +10,7 @@ import 'package:customer_hailing/widgets/drawer_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:get/get.dart';
+import '../../../core/utils/pref_utils.dart';
 import '../../../data/repos/ride_service_repository.dart';
 import '../../../theme/app_text_styles.dart';
 import '../controller/map_controller.dart';
@@ -23,10 +24,12 @@ class SelectRideScreen extends StatefulWidget {
 
 class _SelectRideScreenState extends State<SelectRideScreen> {
   String? _selectedRide;
+  double ? _selectedFare;
   String? _selectedPaymentMode;
   String? _destination;
   String? _prediction;
   BitmapDescriptor? _customIcon;
+
 
 
   final RideStatusController rideStatusController = Get.put(RideStatusController());
@@ -55,6 +58,8 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
     super.dispose();
   }
 
+
+
   void _startRideRequest() {
     rideStatusController.searchForDriver();
     Get.toNamed(AppRoutes.awaitDriver, arguments: _selectedRide);
@@ -62,32 +67,22 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
 
   Future<void> _loadCustomIcon() async {
     _customIcon = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(size: Size(15, 15),
-         // devicePixelRatio: 2.0
+      ImageConfiguration(size: Size(48, 48),
       ),
-      'assets/images/mazda.png',
+     // 'assets/images/car_markers.png',
+      'assets/images/small_car_marker.png'
     );
     setState(() {});
   }
 
-  // Future<void> _confirmTrip() async {
-  //   if (_destination == null || _prediction == null || _selectedRide == null || _selectedPaymentMode == null) {
-  //     Get.snackbar('Error', 'Please select all required fields.');
-  //     return;
-  //   }
-  //
-  //   await rideServiceController.confirmTrip(_destination!, _selectedRide!, _selectedPaymentMode!);
-  //   _startRideRequest();
-  // }
-
   Future<void> _confirmTrip() async {
-    if ((_destination == null && _prediction == null) || _selectedRide == null || _selectedPaymentMode == null) {
+    if ((_destination == null && _prediction == null) || _selectedRide == null || _selectedPaymentMode == null || _selectedFare == null) {
       Get.snackbar('Error', 'Please select all required fields.');
       return;
     }
 
     String dropOffAddress = _destination ?? _prediction!;
-    await rideServiceController.confirmTrip(dropOffAddress, _selectedRide!, _selectedPaymentMode!);
+    await rideServiceController.confirmTrip(dropOffAddress, _selectedRide!, _selectedPaymentMode!, _selectedFare!);
     _startRideRequest();
   }
 
@@ -112,14 +107,6 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                 target: mapController.center.value!,
                 zoom: 16.0,
               ),
-              // markers: {
-              //   ...mapController.markers,
-              //   ..._driverLocations.map((location) => Marker(
-              //     markerId: MarkerId(location.toString()),
-              //     position: location,
-              //     icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
-              //   )),
-              // },
               markers: {
                 ...mapController.markers,
                 ...rideServiceController.availableRides.map((ride) => Marker(
@@ -216,6 +203,7 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                               onTap: () {
                                 setState(() {
                                   _selectedRide = request.rideCategoryName;
+                                  _selectedFare = request.fare;
                                 });
                               },
                               child: Container(

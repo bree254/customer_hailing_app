@@ -1,5 +1,6 @@
 import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/data/models/ride_requests/confirm_trip_response.dart';
+import 'package:customer_hailing/data/models/ride_requests/driver_locations_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/search_locations_response.dart';
 import 'package:customer_hailing/presentation/order_request/controller/map_controller.dart';
 import 'package:customer_hailing/presentation/order_request/screens/search_location_screen.dart';
@@ -7,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import '../../../data/api/endpoints.dart';
 import '../../../data/repos/ride_service_repository.dart';
 import '../../auth/controller/auth_controller.dart';
 
@@ -20,11 +22,15 @@ class RideServiceController extends GetxController {
   final TextEditingController destinationController = TextEditingController();
   RxList<FareAmount> fareAmounts = <FareAmount>[].obs;
   RxList<AvailableRide> availableRides = <AvailableRide>[].obs;
+  Rx<Data> data = Data().obs;
+
+  RxList<DriverLocationsResponse> drivers = <DriverLocationsResponse>[].obs;
 
   @override
   void onInit() async {
     super.onInit();
     accessToken = await PrefUtils().retrieveToken('access_token');
+    //getDriverLocations();
   }
 
   Future<void> uploadCustomerLocation() async {
@@ -92,7 +98,8 @@ class RideServiceController extends GetxController {
     }
   }
 
-  Future<void> confirmTrip(String dropOffAdress,String rideCategory,String paymentMethod) async {
+
+  Future<void> confirmTrip(String dropOffAdress,String rideCategory ,String paymentMethod, double fareEstimate) async {
     try {
       final mapController = Get.find<MapController>();
       final authController = Get.find<AuthController>();
@@ -125,6 +132,7 @@ class RideServiceController extends GetxController {
         'pickupAddress': pickupAddress,
         'dropOffAddress': dropOffAdress,
         'rideCategory': rideCategory,
+        "fareEstimate": fareEstimate,
         'paymentMethod': paymentMethod,
         'isImmediate': true,
       };
@@ -141,10 +149,42 @@ class RideServiceController extends GetxController {
       if (response.message == 'Rides Fetched Successfully') {
 
         print(response.message);
+
+
+        // // Save the request id
+        // String? requestId = response.data?.requestId;
+        // if (requestId != null) {
+        //   print('request id : $requestId');
+        //   await PrefUtils().setRequestId(requestId);
+        // } else {
+        //   print('request id is null');
+        // }
       }
 
     } catch (e) {
       Get.snackbar('Error', e.toString());
+    }
+  }
+
+
+  Future<void> _getDriverLocations() async {
+    try {
+      Map<String, String> headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $accessToken',
+      };
+
+      List<DriverLocationsResponse> response = await rideServiceRepository.getDriverLocations(headers: headers);
+
+      //drivers.value = response;
+
+      drivers.assignAll(response);
+
+      // Handle the user response as needed
+      print('driver locations fetched successfully: ${response.map((e) => e.toJson()).toList()}');
+    } catch (e) {
+      // Handle any errors
+      print('Error fetching user: $e');
     }
   }
 }

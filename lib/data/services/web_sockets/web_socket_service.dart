@@ -42,13 +42,26 @@ void connect(){
     );
   }
 
+  // void onDriverLocationsUpdated(StompFrame frame) {
+  //   var data = jsonDecode(frame.body!);
+  //
+  //   if (data is Map<String, dynamic>) {
+  //     print('web data: $data');
+  //     List<dynamic> driverList = data['driverLocations'] ?? [];
+  //     List<DriverLocationsResponse> driverLocations = driverList.map((driver) => DriverLocationsResponse.fromJson(driver)).toList();
+  //     onDriverLocationsReceived(driverLocations);
+  //   } else {
+  //     print('Unexpected data format');
+  //   }
+  // }
+
   void onDriverLocationsUpdated(StompFrame frame) {
     var data = jsonDecode(frame.body!);
 
     if (data is Map<String, dynamic>) {
-      List<dynamic> driverList = data['driverLocations'] ?? [];
-      List<DriverLocationsResponse> driverLocations = driverList.map((driver) => DriverLocationsResponse.fromJson(driver)).toList();
-      onDriverLocationsReceived(driverLocations);
+      print('web data: $data');
+      DriverLocationsResponse driverLocation = DriverLocationsResponse.fromJson(data);
+      onDriverLocationsReceived([driverLocation]);
     } else {
       print('Unexpected data format');
     }

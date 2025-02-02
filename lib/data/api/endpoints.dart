@@ -1,5 +1,6 @@
 class Endpoints {
   static const String baseUrl = 'https://yasil-backend.cymelle.com';
+  static const String ngrokUrl = 'https://driven-credible-panda.ngrok-free.app';
 
   //Onboarding Endpoints
   static const String loginUser = '$baseUrl/auth/api/v1/onboard';
@@ -14,4 +15,5 @@ class Endpoints {
   // RIDE REQUESTS
   static const String postLocation = '$baseUrl/rides/api/v1/customers/searchRides';
   static const String confirmTrip = '$baseUrl/rides/api/v1/customers/confirmTrip';
+  static const String driverLocations = '$baseUrl/rides/api/v1/drivers/locations';
 }

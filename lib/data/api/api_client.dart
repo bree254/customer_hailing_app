@@ -3,6 +3,7 @@ import 'package:customer_hailing/data/models/auth/auth_response.dart';
 import 'package:customer_hailing/data/models/auth/user_response.dart';
 import 'package:customer_hailing/data/models/auth/validate_otp.dart';
 import 'package:customer_hailing/data/models/ride_requests/confirm_trip_response.dart';
+import 'package:customer_hailing/data/models/ride_requests/driver_locations_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/search_locations_response.dart';
 import 'package:customer_hailing/presentation/order_request/screens/search_location_screen.dart';
 import 'package:dio/dio.dart' as dio;
@@ -229,6 +230,44 @@ class ApiClient extends GetConnect {
       );
       rethrow;
     }
+  }
+
+  // Future<DriverLocationsResponse> getDriverLocations(
+  //     {required Map<String, String> headers}) async {
+  //   await isNetworkConnected();
+  //
+  //   try {
+  //     var response = await _dio.get('${Endpoints.driverLocations}',
+  //         options: dio.Options(headers: headers));
+  //     debugPrint('Response status: ${response.statusCode}');
+  //     debugPrint('Response data: ${response.data}');
+  //     if (_isSuccessCall(response)) {
+  //       return DriverLocationsResponse.fromJson(response.data);
+  //     } else {
+  //       return DriverLocationsResponse.fromJson(response.data);
+  //     }
+  //   } catch (error, stackTrace) {
+  //     Logger.log(
+  //       error,
+  //       stackTrace: stackTrace,
+  //     );
+  //     rethrow;
+  //   }
+  // }
+
+
+  Future<List<DriverLocationsResponse>> getDriverLocations({required Map<String, String> headers}) async {
+  final response = await _dio.get(
+  Endpoints.driverLocations,
+  options: dio.Options(headers: headers),
+  );
+
+  if (response.statusCode == 200) {
+  List<dynamic> data = response.data;
+  return data.map((json) => DriverLocationsResponse.fromJson(json)).toList();
+  } else {
+  throw Exception('Failed to load driver locations');
+  }
   }
 
 

@@ -1,3 +1,4 @@
+import 'package:customer_hailing/presentation/order_request/controller/ride_service_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
@@ -9,7 +10,9 @@ import 'package:flutter_polyline_points/flutter_polyline_points.dart' as polylin
 import '../../../core/app_export.dart';
 import 'package:google_directions_api/google_directions_api.dart' as directions;
 
+import '../../../data/api/endpoints.dart';
 import '../../../data/models/ride_requests/driver_locations_response.dart';
+import '../../../data/repos/ride_service_repository.dart';
 import '../../../data/services/web_sockets/web_socket_service.dart';
 
 class MapController extends GetxController {
@@ -24,70 +27,169 @@ class MapController extends GetxController {
   // Initialize the Directions API
   final directions.DirectionsService directionsService = directions.DirectionsService();
 
-
   LatLng? _center;
   final Set<Polyline> polylines = <Polyline>{}.obs;
 
   late WebSocketService webSocketService;
 
+  String ? accessToken;
+  RxList<DriverLocationsResponse> drivers = <DriverLocationsResponse>[].obs;
+  final RideServiceRepository rideServiceRepository = RideServiceRepository();
+
   @override
-  void onInit() {
+  Future<void> onInit() async {
     super.onInit();
+    accessToken = await PrefUtils().retrieveToken('access_token');
+
      checkAndRequestPermission();
     directions.DirectionsService.init(dotenv.env['GOOGLE_API_KEY']!);
+
+    // webSocketService = WebSocketService(
+    //     onDriverLocationsReceived: (List<DriverLocationsResponse> driverLocations) {
+    //       updateMarkers(driverLocations);
+    //     });
+    // webSocketService.connect();
+
     getUserLocation();
     updatePolyline;
     _loadCustomMarker();
-    _updateMarkers([]);
-
-    webSocketService = WebSocketService(
-        onDriverLocationsReceived: (driverLocations) {
-          _updateMarkers(driverLocations);
-        });
-    webSocketService.connect();
+    getDriverLocations();
+    ever(drivers, (_) => updateDriverMarkers()); // Auto-update markers when drivers list changes
 
   }
 
-  Future<void> _updateMarkers(List<DriverLocationsResponse> driverLocations) async {
+  Future<void> getDriverLocations() async {
+    try {
+      Map<String, String> headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $accessToken', // Replace with your token logic
+      };
 
-      markers.clear();
+          print('get driver locations Request URL: ${Endpoints.driverLocations}');
+          print('get driver locations Headers: $headers');
 
-      // Add user location marker (if it's set)
-      if (center.value != null) {
-        markers.add(
-          Marker(
-            markerId: const MarkerId('user_location'),
-            position: center.value!,
-            infoWindow: const InfoWindow(title: 'Your Location'),
-          ),
-        );
-      }
+      List<DriverLocationsResponse> response = await rideServiceRepository.getDriverLocations(headers: headers);
 
-      for (var driver in driverLocations) {
-        // Only extract the necessary data (driverId, latitude, longitude)
-        double latitude = driver.latitude!;
-        double longitude = driver.longitude!;
-        String driverId = driver.driverId!;
+      drivers.assignAll(response);
+      print('driver locations fetched successfully: in map controller  ${response.map((e) => e.toJson()).toList()}');
+      // Add driver markers
+      await updateDriverMarkers();
 
-        // Use your custom car marker image from assets
-        BitmapDescriptor carMarker = await BitmapDescriptor.asset(
-          ImageConfiguration(size: Size(100, 100)), // Optional: Specify the size
-          'assets/images/mazda.png',
-        );
-
-
-        markers.add(
-          Marker(
-            markerId: MarkerId(driverId),
-            position: LatLng(latitude, longitude),
-            //icon: carMarker,
-            icon:BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueYellow),
-            infoWindow: InfoWindow(title: "Driver $driverId"),
-          ),
-        );
-      }
-      update();
+    } catch (e) {
+      print('Error fetching drivers: $e');
+    }
   }
+
+  // Future<void> updateDriverMarkers() async {
+  //   Set<Marker> newMarkers = {};
+  //
+  //   print("Total drivers fetched: ${drivers.length}");
+  //
+  //   for (var driver in drivers) {
+  //
+  //     print("Processing driver: ${driver.toJson()}"); // Log driver data
+  //
+  //     if (driver.latitude != null && driver.longitude != null) {
+  //
+  //       print("Adding marker for driver ${driver.driverId} at (${driver.latitude}, ${driver.longitude})");
+  //
+  //       newMarkers.add(
+  //         Marker(
+  //           markerId: MarkerId(driver.driverId ?? "unknown"),
+  //           position: LatLng(driver.latitude!, driver.longitude!),
+  //           icon: await BitmapDescriptor.fromAssetImage(
+  //             const ImageConfiguration(size: Size(10, 10)), // Set correct size
+  //             'assets/images/small_car_marker.png',
+  //           ),
+  //           infoWindow: InfoWindow(
+  //             title: driver.vehicleDetails?.makeAndModel ?? "Unknown Vehicle",
+  //             snippet: "Rating: ${driver.rating}",
+  //           ),
+  //         ),
+  //       );
+  //     }
+  //   }
+  //
+  //   markers.assignAll(newMarkers);
+  //   print("Updated markers: ${markers.length}");
+  //
+  //   // Force UI update if needed
+  //   markers.refresh();
+  // }
+
+  Future<void> updateDriverMarkers() async {
+    Set<Marker> newMarkers = {};
+
+    // Add driver markers
+    for (var driver in drivers) {
+      if (driver.latitude != null && driver.longitude != null) {
+        newMarkers.add(
+          Marker(
+            markerId: MarkerId(driver.driverId ?? "unknown"),
+            position: LatLng(driver.latitude!, driver.longitude!),
+            icon: await BitmapDescriptor.fromAssetImage(
+              const ImageConfiguration(size: Size(48, 48)), // Set correct size
+              'assets/images/small_car_marker.png',
+            ),
+            infoWindow: InfoWindow(
+              title: driver.vehicleDetails?.makeAndModel ?? "Unknown Vehicle",
+              snippet: "Rating: ${driver.rating}",
+            ),
+          ),
+        );
+
+        print("Adding marker for driver ${driver.driverId} at (${driver.latitude}, ${driver.longitude})");
+      }
+    }
+
+    // Ensure the center marker is not removed
+    if (center.value != null) {
+      newMarkers.add(
+        Marker(
+          markerId: const MarkerId("center"),
+          position: center.value!,
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+          infoWindow: const InfoWindow(title: "You are here"),
+        ),
+      );
+
+      print("Adding center marker at (${center.value!.latitude}, ${center.value!.longitude})");
+    }
+
+    // Assign updated markers
+    markers.assignAll(newMarkers);
+    markers.refresh(); // Force UI update
+
+    print("Updated markers count: ${markers.length}");
+  }
+
+///for driver location using websockets
+  // Future<void> _updateMarkers(List<DriverLocationsResponse> driverLocations) async {
+  //   print('driver locations : $driverLocations');
+  //
+  //   markers.clear();
+  //
+  //   for (var driver in driverLocations) {
+  //     double latitude = driver.latitude!;
+  //     double longitude = driver.longitude!;
+  //     String driverId = driver.driverId!;
+  //
+  //     BitmapDescriptor carMarker = await BitmapDescriptor.fromAssetImage(
+  //       ImageConfiguration(size: Size(10, 10)),
+  //       'assets/images/car_markers.png',
+  //     );
+  //
+  //     markers.add(
+  //       Marker(
+  //         markerId: MarkerId(driverId),
+  //         position: LatLng(latitude, longitude),
+  //         icon: carMarker,
+  //         infoWindow: InfoWindow(title: "Driver $driverId"),
+  //       ),
+  //     );
+  //   }
+  //   update();
+  // }
 
   Future<void> _loadCustomMarker() async {
     customMarker = await BitmapDescriptor.asset(
@@ -104,6 +206,7 @@ class MapController extends GetxController {
   // Initialize Google Map controller
   void onMapCreated(GoogleMapController controller) {
     mapController = controller;
+    //update() ;
   }
 // Check and request location permission
   Future<void> checkAndRequestPermission() async {
@@ -128,36 +231,37 @@ class MapController extends GetxController {
     }
   }
   // Get the current location of the user
-  Future<void> getUserLocation() async {
-    try {
-      bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
-      if (!serviceEnabled) {
-        return;
-      }
-
-      LocationPermission permission = await Geolocator.checkPermission();
-      if (permission == LocationPermission.deniedForever) {
-        return;
-      }
-      if (permission == LocationPermission.denied) {
-        permission = await Geolocator.requestPermission();
-        if (permission != LocationPermission.whileInUse && permission != LocationPermission.always) {
-          return;
-        }
-      }
-
-      currentPosition.value = await Geolocator.getCurrentPosition();
-
-      if (currentPosition.value != null) {
-        _center = LatLng(currentPosition.value!.latitude, currentPosition.value!.longitude);
-        center.value = _center;
-        await _convertToAddress(currentPosition.value!.latitude, currentPosition.value!.longitude);
-        addCenterMarker(_center!);
-      }
-    } catch (e) {
-      print('Error getting user location: $e');
+ Future<void> getUserLocation() async {
+  try {
+    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return;
     }
+
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.deniedForever) {
+      return;
+    }
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission != LocationPermission.whileInUse && permission != LocationPermission.always) {
+        return;
+      }
+    }
+
+    currentPosition.value = await Geolocator.getCurrentPosition();
+
+    if (currentPosition.value != null) {
+      _center = LatLng(currentPosition.value!.latitude, currentPosition.value!.longitude);
+      center.value = _center;
+      addCenterMarker(_center!);
+      await _convertToAddress(currentPosition.value!.latitude, currentPosition.value!.longitude);
+      update();
+    }
+  } catch (e) {
+    print('Error getting user location: $e');
   }
+}
 
   // Convert coordinates to a human-readable address
   Future<void> _convertToAddress(double latitude, double longitude) async {
