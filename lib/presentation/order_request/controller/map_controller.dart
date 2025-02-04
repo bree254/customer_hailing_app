@@ -129,7 +129,7 @@ class MapController extends GetxController {
             position: LatLng(driver.latitude!, driver.longitude!),
             icon: await BitmapDescriptor.fromAssetImage(
               const ImageConfiguration(size: Size(48, 48)), // Set correct size
-              'assets/images/small_car_marker.png',
+              'assets/images/mid_car_marker.png',
             ),
             infoWindow: InfoWindow(
               title: driver.vehicleDetails?.makeAndModel ?? "Unknown Vehicle",

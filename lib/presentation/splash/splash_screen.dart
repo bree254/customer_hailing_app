@@ -92,11 +92,12 @@ class _SplashScreenState extends State<SplashScreen> {
     return const Scaffold(
       backgroundColor: primaryColor,
       body: Center(
-        child: Text(
-          'Yasil',
-          style: TextStyle(color: whiteTextColor, fontWeight: FontWeight.w700, fontSize: 32),
+          child: Image(
+              height: 80,
+              width: 80,
+              image: AssetImage('assets/images/yasil_customer.png'),
+          ),
         ),
-      ),
     );
   }
 }

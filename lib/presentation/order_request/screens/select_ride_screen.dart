@@ -11,9 +11,11 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:get/get.dart';
 import '../../../core/utils/pref_utils.dart';
+import '../../../data/models/ride_requests/search_locations_response.dart';
 import '../../../data/repos/ride_service_repository.dart';
 import '../../../theme/app_text_styles.dart';
 import '../controller/map_controller.dart';
+import '../models/ride.dart';
 
 class SelectRideScreen extends StatefulWidget {
   const SelectRideScreen({super.key});
@@ -37,6 +39,15 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
   final RideServiceController rideServiceController = Get.put(RideServiceController(rideServiceRepository:  RideServiceRepository()));
 
   Timer? _timer;
+
+  // Define a map to associate ride categories with their image assets
+  final Map<String, String> rideCategoryImages = {
+    'Economy': 'assets/images/economy.png',
+    'Boda': 'assets/images/boda.png',
+    'Comfort': 'assets/images/comfort.png',
+    'Female': 'assets/images/female.png',
+    'XL': 'assets/images/xl.png',
+  };
 
   @override
   void initState() {
@@ -70,7 +81,7 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
       ImageConfiguration(size: Size(48, 48),
       ),
      // 'assets/images/car_markers.png',
-      'assets/images/small_car_marker.png'
+      'assets/images/mid_car_marker.png'
     );
     setState(() {});
   }
@@ -191,82 +202,159 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                         color: lightGrey,
                       ),
                     ),
+
                     Expanded(
-                      child: ListView.builder(
-                          controller: scrollController,
-                          scrollDirection: Axis.vertical,
-                          itemCount: rideServiceController.fareAmounts.length,
-                          itemBuilder: (context, index) {
-                            var request =rideServiceController.fareAmounts[index];
-                            bool isSelected = _selectedRide == request.rideCategoryName;
-                            return GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  _selectedRide = request.rideCategoryName;
-                                  _selectedFare = request.fare;
-                                });
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 16, vertical: 10),
-                                margin: const EdgeInsets.fromLTRB(16, 0, 16, 8),
-                                decoration: BoxDecoration(
-                                  color: isSelected
-                                      ? selectRideColor
-                                      : const Color(0x3FFAFAFA),
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(
-                                    color: isSelected
-                                        ? selectRideColor
-                                        : Colors.black.withOpacity(0.05),
-                                  ),
-                                ),
-                                child: ListTile(
-                                  selectedColor: selectRideColor,
-                                  selectedTileColor: selectRideColor,
-                                  leading: Image(
-                                      image: AssetImage(
-                                          'assets/images/mazda.png')),
-                                  title: Text(
-                                    request.rideCategoryName.toString(),
-                                    style: AppTextStyles.text14Black600.copyWith(
-                                      color: searchtextGrey,
-                                    ),
-                                  ),
-                                  subtitle: Text(
-                                    '${request.tripDuration.toString()} min',
-                                    style: AppTextStyles.text14Black400.copyWith(
-                                      color: searchtextGrey,
-                                      fontSize: 10.0,
-                                    ),
-                                  ),
-                                  trailing: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        'Ksh ${request.fare.toString()}',
-                                        style: AppTextStyles.text14Black600.copyWith(
-                                          color: searchtextGrey,
+                      child: Column(
+                        children: [
+                          // Show the ListView for trip requests when available
+                          Visibility(
+                            visible: rideServiceController.fareAmounts.isNotEmpty,
+                            child: Expanded(
+                              child: ListView.builder(
+                                controller: scrollController,
+                                scrollDirection: Axis.vertical,
+                                itemCount: rideServiceController.fareAmounts.length,
+                                itemBuilder: (context, index) {
+                                  var request = rideServiceController.fareAmounts[index];
+                                  bool isSelected = _selectedRide == request.rideCategoryName;
+                                  return GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        _selectedRide = request.rideCategoryName;
+                                        _selectedFare = request.fare;
+                                      });
+                                    },
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                                      margin: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                                      decoration: BoxDecoration(
+                                        color: isSelected ? selectRideColor : const Color(0x3FFAFAFA),
+                                        borderRadius: BorderRadius.circular(10),
+                                        border: Border.all(
+                                          color: isSelected ? selectRideColor : Colors.black.withOpacity(0.05),
                                         ),
                                       ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(left: 10.0),
-                                        child: Text(
-                                          'Ksh ${request.fare.toString()}',
-                                          style: AppTextStyles.text14Black400.copyWith(
-                                            color: searchtextGrey,
-                                            decoration: TextDecoration.lineThrough,
-                                            fontSize: 12.0,
+                                      child: ListTile(
+                                        selectedColor: selectRideColor,
+                                        selectedTileColor: selectRideColor,
+                                        leading: Image(
+                                          image: AssetImage(rideCategoryImages[request.rideCategoryName] ?? 'assets/images/default.png'),
+                                        ),
+                                        title: Text(
+                                          request.rideCategoryName.toString(),
+                                          style: AppTextStyles.text14Black600.copyWith(color: searchtextGrey),
+                                        ),
+                                        subtitle: Text(
+                                          '${request.tripDuration.toString()} min',
+                                          style: AppTextStyles.text14Black400.copyWith(color: searchtextGrey, fontSize: 10.0),
+                                        ),
+                                        trailing: Column(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              'Ksh ${request.fare.toString()}',
+                                              style: AppTextStyles.text14Black600.copyWith(color: searchtextGrey),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(left: 10.0),
+                                              child: Text(
+                                                'Ksh ${request.fare.toString()}',
+                                                style: AppTextStyles.text14Black400.copyWith(
+                                                  color: searchtextGrey,
+                                                  decoration: TextDecoration.lineThrough,
+                                                  fontSize: 12.0,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+
+                          // Show the ListView for dummy data when no trip requests are available
+                          Visibility(
+                            visible: rideServiceController.fareAmounts.isEmpty,
+                            child: Expanded(
+                              child: Opacity(
+                                opacity: 0.5, // Grey out the UI
+                                child: ListView.builder(
+                                  controller: scrollController,
+                                  scrollDirection: Axis.vertical,
+                                  itemCount: MyData.requests.length,
+                                  itemBuilder: (context, index) {
+                                    var request = MyData.requests[index];
+                                    bool isSelected = _selectedRide == request.ridetype;
+                                    return GestureDetector(
+                                      onTap: null, // Disable onTap when no trip requests are available
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                                        margin: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                                        decoration: BoxDecoration(
+                                          color: isSelected ? selectRideColor : const Color(0x3FFAFAFA),
+                                          borderRadius: BorderRadius.circular(10),
+                                          border: Border.all(
+                                            color: isSelected ? selectRideColor : Colors.black.withOpacity(0.05),
+                                          ),
+                                        ),
+                                        child: ListTile(
+                                          selectedColor: selectRideColor,
+                                          selectedTileColor: selectRideColor,
+                                          leading: Image(image: AssetImage(request.imageUrl)),
+                                          title: Text(
+                                            request.ridetype,
+                                            style: const TextStyle(
+                                              color: searchtextGrey,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                          subtitle: Text(
+                                            request.timeEstimate,
+                                            style: const TextStyle(
+                                              color: searchtextGrey,
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                          ),
+                                          trailing: Column(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                'Ksh ${request.discountedPrice.toString()}',
+                                                style: const TextStyle(
+                                                  color: searchtextGrey,
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                              Text(
+                                                'Ksh ${request.originalprice.toString()}',
+                                                style: const TextStyle(
+                                                  color: searchtextGrey,
+                                                  fontSize: 10,
+                                                  fontWeight: FontWeight.w400,
+                                                  decoration: TextDecoration.lineThrough,
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       ),
-                                    ],
-                                  ),
+                                    );
+                                  },
                                 ),
                               ),
-                            );
-                          }),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
+
                     Container(
                       padding: const EdgeInsets.all(16),
                       color: Colors.white,
