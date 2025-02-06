@@ -16,4 +16,5 @@ class Endpoints {
   static const String postLocation = '$baseUrl/rides/api/v1/customers/searchRides';
   static const String confirmTrip = '$baseUrl/rides/api/v1/customers/confirmTrip';
   static const String driverLocations = '$baseUrl/rides/api/v1/drivers/locations';
+  static const String tripDetails = '$baseUrl/rides/api/v1/tripDetails/';
 }

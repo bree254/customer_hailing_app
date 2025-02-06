@@ -34,7 +34,7 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
 
 
 
-  final RideStatusController rideStatusController = Get.put(RideStatusController());
+  //final RideStatusController rideStatusController = Get.put(RideStatusController());
   final MapController mapController = Get.put(MapController());
   final RideServiceController rideServiceController = Get.put(RideServiceController(rideServiceRepository:  RideServiceRepository()));
 
@@ -45,8 +45,9 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
     'Economy': 'assets/images/economy.png',
     'Boda': 'assets/images/boda.png',
     'Comfort': 'assets/images/comfort.png',
-    'Female': 'assets/images/female.png',
-    'XL': 'assets/images/xl.png',
+    'Female': 'assets/images/economy.png',
+    'Luxury': 'assets/images/economy.png',
+    'XL': 'assets/images/xl_vehicle.png',
   };
 
   @override
@@ -71,10 +72,10 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
 
 
 
-  void _startRideRequest() {
-    rideStatusController.searchForDriver();
-    Get.toNamed(AppRoutes.awaitDriver, arguments: _selectedRide);
-  }
+  // void _startRideRequest() {
+  //   rideStatusController.searchForDriver();
+  //   Get.toNamed(AppRoutes.awaitDriver, arguments: _selectedRide);
+  // }
 
   Future<void> _loadCustomIcon() async {
     _customIcon = await BitmapDescriptor.fromAssetImage(
@@ -94,7 +95,7 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
 
     String dropOffAddress = _destination ?? _prediction!;
     await rideServiceController.confirmTrip(dropOffAddress, _selectedRide!, _selectedPaymentMode!, _selectedFare!);
-    _startRideRequest();
+    //_startRideRequest();
   }
 
   @override

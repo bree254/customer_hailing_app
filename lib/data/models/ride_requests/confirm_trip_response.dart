@@ -35,8 +35,8 @@ class Data {
 
   Map<String, dynamic> toJson() => _$DataToJson(this);
 
-  // @override
-  // String toString() {
-  //   return 'Data{requestId: $requestId}';
-  // }
+  @override
+  String toString() {
+    return 'Data{requestId: $requestId}';
+  }
 }

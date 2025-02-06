@@ -93,8 +93,8 @@ class _SplashScreenState extends State<SplashScreen> {
       backgroundColor: primaryColor,
       body: Center(
           child: Image(
-              height: 80,
-              width: 80,
+              height: 100,
+              width: 100,
               image: AssetImage('assets/images/yasil_customer.png'),
           ),
         ),

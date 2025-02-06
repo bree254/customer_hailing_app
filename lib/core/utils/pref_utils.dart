@@ -19,6 +19,13 @@ class PrefUtils extends GetxController {
     }
   }
 
+  // Ensure SharedPreferences is initialized before any operation
+  Future<void> _ensureInitialized() async {
+    if (_sharedPreferences == null) {
+      await init();
+    }
+  }
+
   ///will clear all the data stored in preference
   void clearPreferencesData() async {
     _sharedPreferences!.clear();
@@ -108,14 +115,32 @@ class PrefUtils extends GetxController {
   }
 
   // Method to save the requestId
-  Future<void> setRequestId(String requestId) async {
+  Future<void> _saveRequestId(String requestId) async {
     await _sharedPreferences!.setString('requestId', requestId);
   }
 
   // Method to retrieve the requestId
-  String? getRequestId() {
+  String? _retrieveRequestId() {
     return _sharedPreferences!.getString('requestId');
   }
+
+  // Method to save the requestId
+  Future<void> saveRequestId(String requestId) async {
+    await _ensureInitialized();
+    await _sharedPreferences!.setString('requestId', requestId);
+    debugPrint('RequestId saved: $requestId');
+  }
+
+
+
+  // Method to retrieve the requestId
+  Future<String?> retrieveRequestId() async {
+    await _ensureInitialized();
+    String? requestId = _sharedPreferences!.getString('requestId');
+    debugPrint('RequestId retrieved: $requestId');
+    return requestId;
+  }
+
 
   getFcmToken() async {
     return _sharedPreferences!.getString('fcm_token');

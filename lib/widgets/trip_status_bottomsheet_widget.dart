@@ -4,6 +4,8 @@ import 'package:customer_hailing/presentation/order_request/controller/trip_stat
 import 'package:customer_hailing/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../presentation/order_request/controller/ride_service_controller.dart';
+import '../presentation/order_request/screens/trip_summary_screen.dart';
 import 'custom_elevated_button.dart';
 
 class TripStatusBottomSheet extends StatelessWidget {
@@ -11,7 +13,8 @@ class TripStatusBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TripStatusController tripStatusController = Get.find<TripStatusController>();
+    //final TripStatusController tripStatusController = Get.find<TripStatusController>();
+    final RideServiceController rideServiceController = Get.find<RideServiceController>();
 
     return DraggableScrollableSheet(
       initialChildSize: 0.4,
@@ -40,14 +43,22 @@ class TripStatusBottomSheet extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 32),
+
                 Obx(() {
-                  switch (tripStatusController.tripStatus.value) {
-                    case TripStatus.onTheWay:
+                  final status = rideServiceController.tripDetails.value.tripStatus;
+
+                  switch (status) {
+                    case 'ACCEPTED':
                       return _buildOnTheWayContent();
-                    case TripStatus.arrived:
+                    case 'DRIVER_ARRIVED':
                       return _buildArrivedContent();
-                    case TripStatus.headingToDestination:
+                    case 'IN_PROGRESS':
                       return _buildHeadingToDestinationContent();
+                    case 'COMPLETED':
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        Get.to(() => const TripSummaryScreen());
+                      });
+                      return const SizedBox();
                     default:
                       return const SizedBox();
                   }
@@ -59,7 +70,8 @@ class TripStatusBottomSheet extends StatelessWidget {
                       color: primaryColor,
                     ),
                     title: Text(
-                      'GPO Stage, Kenyatta Avenue',
+                      rideServiceController.tripDetails.value.pickupLocation!.address.toString(),
+                     // 'GPO Stage, Kenyatta Avenue',
                       style: AppTextStyles.bodySmallPrimary.copyWith(
                         color: formTextLabelColor,
                       ),
@@ -90,7 +102,8 @@ class TripStatusBottomSheet extends StatelessWidget {
                     color: primaryColor,
                   ),
                   title:  Text(
-                    'Mövenpick Residences Nairobi',
+                    rideServiceController.tripDetails.value.dropOffLocation!.address.toString(),
+                    //'Mövenpick Residences Nairobi',
                     style: AppTextStyles.bodySmallPrimary.copyWith(
                       color: formTextLabelColor,
                     ),
@@ -114,16 +127,17 @@ class TripStatusBottomSheet extends StatelessWidget {
                 ListTile(
                   leading: Image.asset(
                       width: 21, height: 22, "assets/images/cash.png"),
-                  title: const Text(
+                  title: Text(
                     'Total Cost',
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Color(0xFF434343),
                       fontSize: 12.0,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
                   trailing:  Text(
-                    'Ksh 450',
+                    rideServiceController.tripDetails.value.estimatedFare.toString(),
+                    //'Ksh 450',
                     textAlign: TextAlign.right,
                     style: AppTextStyles.text14Black600.copyWith(
                       color: formTextLabelColor,

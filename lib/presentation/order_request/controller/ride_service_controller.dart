@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/data/models/ride_requests/confirm_trip_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/driver_locations_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/search_locations_response.dart';
+import 'package:customer_hailing/data/models/ride_requests/trip_details_response.dart';
 import 'package:customer_hailing/presentation/order_request/controller/map_controller.dart';
 import 'package:customer_hailing/presentation/order_request/screens/search_location_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,6 +13,7 @@ import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../../data/api/endpoints.dart';
 import '../../../data/repos/ride_service_repository.dart';
+import '../../../routes/routes.dart';
 import '../../auth/controller/auth_controller.dart';
 
 class RideServiceController extends GetxController {
@@ -22,15 +26,31 @@ class RideServiceController extends GetxController {
   final TextEditingController destinationController = TextEditingController();
   RxList<FareAmount> fareAmounts = <FareAmount>[].obs;
   RxList<AvailableRide> availableRides = <AvailableRide>[].obs;
-  Rx<Data> data = Data().obs;
+  //Rx<Data> data = Data().obs;
+
+  late final Rx<Data> data = Data().obs;
 
   RxList<DriverLocationsResponse> drivers = <DriverLocationsResponse>[].obs;
+  var tripDetails = TripDetailsResponse().obs;
 
   @override
   void onInit() async {
     super.onInit();
     accessToken = await PrefUtils().retrieveToken('access_token');
     //getDriverLocations();
+
+    // Retrieve the requestId from shared preferences
+    String? requestId = await PrefUtils().retrieveRequestId();
+
+    // Print the retrieved requestId for debugging
+    print('Retrieved requestId: $requestId');
+
+    if (requestId != null) {
+      // Fetch trip details using the requestId
+      await getTripDetails(requestId);
+    } else {
+      print('RequestId is null. Cannot fetch trip details.');
+    }
   }
 
   Future<void> uploadCustomerLocation() async {
@@ -99,30 +119,30 @@ class RideServiceController extends GetxController {
   }
 
 
-  Future<void> confirmTrip(String dropOffAdress,String rideCategory ,String paymentMethod, double fareEstimate) async {
+  Future<String?> confirmTrip(String dropOffAddress, String rideCategory, String paymentMethod, double fareEstimate) async {
     try {
       final mapController = Get.find<MapController>();
       final authController = Get.find<AuthController>();
 
       // Get the coordinates for the destination address
-      LatLng? destinationCoordinates = await mapController.getCoordinatesFromAddress(dropOffAdress);
+      LatLng? destinationCoordinates = await mapController.getCoordinatesFromAddress(dropOffAddress);
 
       if (destinationCoordinates == null) {
-        //Get.snackbar('Error', 'Failed to get coordinates for the destination address.');
-        return;
+        Get.snackbar('Error', 'Failed to get coordinates for the destination address.');
+        return null;
       }
 
-      //convert current location to address
+      // Convert current location to address
       String pickupAddress = await mapController.convertToAddress(
         mapController.currentPosition.value!.latitude,
         mapController.currentPosition.value!.longitude,
       );
 
-
       Map<String, String> headers = {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $accessToken',
       };
+
       Map<String, dynamic> requestData = {
         'customerId': authController.user.value.id,
         'pickupLatitude': mapController.currentPosition.value!.latitude,
@@ -130,61 +150,98 @@ class RideServiceController extends GetxController {
         'destinationLatitude': destinationCoordinates.latitude,
         'destinationLongitude': destinationCoordinates.longitude,
         'pickupAddress': pickupAddress,
-        'dropOffAddress': dropOffAdress,
+        'dropOffAddress': dropOffAddress,
         'rideCategory': rideCategory,
         "fareEstimate": fareEstimate,
         'paymentMethod': paymentMethod,
         'isImmediate': true,
       };
 
-      print('post customer location : $requestData');
-      print('post customer location : $headers');
+      print('Confirm trip request data: $requestData');
+      print('Confirm trip headers: $headers');
 
       ConfirmTripResponse response = await rideServiceRepository.confirmTrip(
         headers: headers,
         requestData: requestData,
       );
 
-      print(response.toJson());
-      if (response.message == 'Rides Fetched Successfully') {
 
-        print(response.message);
+      if ( response.data != null) {
+        // Save the requestId to shared preferences
+        await PrefUtils().saveRequestId(response.data!.requestId!);
+
+        // Start polling for trip details
+        startPollingTripDetails(response.data!.requestId!);
+
+        // Navigate to the AwaitDriver screen
+        Get.toNamed(AppRoutes.awaitDriver);
+
+        return response.data!.requestId; // Return the requestId
 
 
-        // // Save the request id
-        // String? requestId = response.data?.requestId;
-        // if (requestId != null) {
-        //   print('request id : $requestId');
-        //   await PrefUtils().setRequestId(requestId);
-        // } else {
-        //   print('request id is null');
-        // }
+      } else {
+        print( 'Failed to confirm trip: ${response.message}');
+        return null;
       }
-
     } catch (e) {
-      Get.snackbar('Error', e.toString());
+      print(' Confirm Trip Error: ${ e.toString()}',);
+      return null;
     }
   }
 
 
-  Future<void> _getDriverLocations() async {
+  void checkTripStatus() {
+    final status = tripDetails.value.tripStatus;
+
+    if (status == 'ACCEPTED') {
+      Get.toNamed(AppRoutes.tripStatus);
+    }
+  }
+
+  Future<void> getTripDetails(String requestId) async {
     try {
       Map<String, String> headers = {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $accessToken',
       };
 
-      List<DriverLocationsResponse> response = await rideServiceRepository.getDriverLocations(headers: headers);
+      // Log the request URL and parameters
+      print('Trip details with requestId: $requestId');
+      print('Trip details Request URL: ${Endpoints.tripDetails}$requestId');
+      print('Trip details Headers: $headers');
 
-      //drivers.value = response;
+      TripDetailsResponse response = await rideServiceRepository.getTripDetails(
+        headers: headers,
+        requestId: requestId,
+      );
 
-      drivers.assignAll(response);
+      tripDetails.value = response;
 
+      checkTripStatus();
       // Handle the user response as needed
-      print('driver locations fetched successfully: ${response.map((e) => e.toJson()).toList()}');
+      print('Trip details fetched successfully: ${response.toJson()}');
     } catch (e) {
       // Handle any errors
-      print('Error fetching user: $e');
+      print('Error fetching trip details: $e');
     }
+  }
+
+  Timer? _timer;
+
+  void startPollingTripDetails(String requestId) {
+    // Cancel any existing timer
+    _timer?.cancel();
+
+    // Start a new timer to fetch trip details every 5 seconds
+    _timer = Timer.periodic(Duration(seconds: 5), (timer) async {
+      await getTripDetails(requestId);
+    });
+  }
+
+  @override
+  void onClose() {
+    // Cancel the timer when the controller is closed
+    _timer?.cancel();
+    super.onClose();
   }
 }

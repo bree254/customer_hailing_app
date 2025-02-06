@@ -5,6 +5,7 @@ import 'package:customer_hailing/data/models/auth/validate_otp.dart';
 import 'package:customer_hailing/data/models/ride_requests/confirm_trip_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/driver_locations_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/search_locations_response.dart';
+import 'package:customer_hailing/data/models/ride_requests/trip_details_response.dart';
 import 'package:customer_hailing/presentation/order_request/screens/search_location_screen.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/material.dart';
@@ -15,7 +16,7 @@ import 'network_interceptor.dart';
 class ApiClient extends GetConnect {
   var uri = Endpoints.baseUrl;
 
-  final _dio = dio.Dio(dio.BaseOptions(connectTimeout: const Duration(seconds: 3), baseUrl: ''));
+  final _dio = dio.Dio(dio.BaseOptions(connectTimeout: const Duration(seconds: 3)));
 
   final Connectivity _connectivity = Connectivity();
 
@@ -232,29 +233,28 @@ class ApiClient extends GetConnect {
     }
   }
 
-  // Future<DriverLocationsResponse> getDriverLocations(
-  //     {required Map<String, String> headers}) async {
-  //   await isNetworkConnected();
-  //
-  //   try {
-  //     var response = await _dio.get('${Endpoints.driverLocations}',
-  //         options: dio.Options(headers: headers));
-  //     debugPrint('Response status: ${response.statusCode}');
-  //     debugPrint('Response data: ${response.data}');
-  //     if (_isSuccessCall(response)) {
-  //       return DriverLocationsResponse.fromJson(response.data);
-  //     } else {
-  //       return DriverLocationsResponse.fromJson(response.data);
-  //     }
-  //   } catch (error, stackTrace) {
-  //     Logger.log(
-  //       error,
-  //       stackTrace: stackTrace,
-  //     );
-  //     rethrow;
-  //   }
-  // }
+  Future<TripDetailsResponse> getTripDetails(
+      {required Map<String, String> headers,required String requestId}) async {
+    await isNetworkConnected();
 
+    try {
+      var response = await _dio.get('${Endpoints.tripDetails}$requestId',
+          options: dio.Options(headers: headers));
+      debugPrint('Response status: ${response.statusCode}');
+      debugPrint('Response data: ${response.data}');
+      if (_isSuccessCall(response)) {
+        return TripDetailsResponse.fromJson(response.data);
+      } else {
+        return TripDetailsResponse.fromJson(response.data);
+      }
+    } catch (error, stackTrace) {
+      Logger.log(
+        error,
+        stackTrace: stackTrace,
+      );
+      rethrow;
+    }
+  }
 
   Future<List<DriverLocationsResponse>> getDriverLocations({required Map<String, String> headers}) async {
   final response = await _dio.get(
