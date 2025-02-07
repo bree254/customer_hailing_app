@@ -21,6 +21,7 @@ class RideServiceController extends GetxController {
 
   RideServiceController({required this.rideServiceRepository});
 
+
   String? accessToken;
 
   final TextEditingController destinationController = TextEditingController();
@@ -83,6 +84,7 @@ class RideServiceController extends GetxController {
         'destinationLatitude': destinationCoordinates.latitude,
         'destinationLongitude': destinationCoordinates.longitude,
         'searchRadius': 5000,
+        "rideCategory": " ",
       };
 
       print('post customer location : $requestData');
@@ -237,6 +239,7 @@ class RideServiceController extends GetxController {
       await getTripDetails(requestId);
     });
   }
+
 
   @override
   void onClose() {

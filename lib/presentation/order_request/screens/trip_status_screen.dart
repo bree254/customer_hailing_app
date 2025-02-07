@@ -16,7 +16,7 @@ class TripStatusScreen extends StatefulWidget {
 
 class _TripStatusScreenState extends State<TripStatusScreen> {
 
-  final TripStatusController tripStatusController = Get.put(TripStatusController());
+ // final TripStatusController tripStatusController = Get.put(TripStatusController());
   final MapController mapController = Get.put(MapController());
   @override
   Widget build(BuildContext context) {

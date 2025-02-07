@@ -1,4 +1,6 @@
 import 'package:customer_hailing/core/app_export.dart';
+import 'package:customer_hailing/data/repos/ride_service_repository.dart';
+import 'package:customer_hailing/presentation/order_request/controller/ride_service_controller.dart';
 import 'package:customer_hailing/widgets/custom_text_form_field.dart';
 import 'package:flutter/material.dart';
 
@@ -10,6 +12,7 @@ class TripSummaryScreen extends StatefulWidget {
 }
 
 class _TripSummaryScreenState extends State<TripSummaryScreen> {
+   final RideServiceController rideServiceController = Get.put(RideServiceController(rideServiceRepository: RideServiceRepository()));
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,7 +36,7 @@ class _TripSummaryScreenState extends State<TripSummaryScreen> {
                   height: 8,
                 ),
                  Text(
-                   'Thank you for riding, Ariana',
+                   'Thank you for riding, ${rideServiceController.tripDetails.value.customer!.firstName} ${rideServiceController.tripDetails.value.customer!.lastName}',
                    textAlign: TextAlign.center,
                    style: AppTextStyles.bodySmallBold.copyWith(
                      color: searchtextGrey,
@@ -52,7 +55,8 @@ class _TripSummaryScreenState extends State<TripSummaryScreen> {
 
                  ),
                  Text(
-                  'KES 290',
+                   rideServiceController.tripDetails.value.tripDetails!.estimatedFare.toString(),
+                 // 'KES 290',
                   textAlign: TextAlign.center,
                   style:AppTextStyles.bodyHeading.copyWith(
                     color:primaryColor,
@@ -76,7 +80,8 @@ class _TripSummaryScreenState extends State<TripSummaryScreen> {
                     ),
                   ),
                   trailing: Text(
-                    'KES 150.00',
+                    rideServiceController.tripDetails.value.tripDetails!.estimatedDistance.toString(),
+                   // 'KES 150.00',
                     textAlign: TextAlign.right,
                     style: AppTextStyles.bodySmall.copyWith(
                       color: searchtextGrey,
@@ -92,29 +97,33 @@ class _TripSummaryScreenState extends State<TripSummaryScreen> {
                     ),
                   ),
                   trailing: Text(
-                    'KES 150.00',
+                    rideServiceController.fareAmounts.first.tripDuration.toString(),
+                   // 'KES 150.00',
                     textAlign: TextAlign.right,
                     style: AppTextStyles.bodySmall.copyWith(
                       color: searchtextGrey,
                     ),
                   ),
                 ),
-                 ListTile(
-                  leading: Text(
-                    'Base fare',
-                    textAlign: TextAlign.center,
-                    style: AppTextStyles.bodySmall.copyWith(
-                      color: searchtextGrey,
-                    ),
-                  ),
-                  trailing: Text(
-                    'KES 150.00',
-                    textAlign: TextAlign.right,
-                    style: AppTextStyles.bodySmall.copyWith(
-                      color: searchtextGrey,
-                    ),
-                  ),
-                ),
+
+
+                //  ListTile(
+                //   leading: Text(
+                //     'Base fare',
+                //     textAlign: TextAlign.center,
+                //     style: AppTextStyles.bodySmall.copyWith(
+                //       color: searchtextGrey,
+                //     ),
+                //   ),
+                //   trailing: Text(
+                //     'KES 150.00',
+                //     textAlign: TextAlign.right,
+                //     style: AppTextStyles.bodySmall.copyWith(
+                //       color: searchtextGrey,
+                //     ),
+                //   ),
+                // ),
+
                 Divider(
                   color: Colors.grey[100],
                 ),
@@ -136,67 +145,71 @@ class _TripSummaryScreenState extends State<TripSummaryScreen> {
                     ),
                   ),
                 ),
-                ListTile(
-                  leading: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                       Text(
-                        'Surge',
-                        textAlign: TextAlign.center,
-                        style: AppTextStyles.bodySmall.copyWith(
-                          color: searchtextGrey,
-                        ),
-                      ),
-                      SizedBox(width: 16,),
-                      Image.asset('assets/images/question_mark.png',height: 12,width: 12,color: primaryColor,)
-                    ],
-                  ),
-                  trailing:  Text(
-                    'KES 150.00',
-                    textAlign: TextAlign.right,
-                    style: AppTextStyles.bodySmall.copyWith(
-                      color: searchtextGrey,
-                    ),
-                  ),
-                ),
-                ListTile(
-                  leading:
-                   Text(
-                    'Tip',
-                    textAlign: TextAlign.center,
-                     style: AppTextStyles.bodySmall.copyWith(
-                       color: searchtextGrey,
-                     ),
-                  ),
-                  trailing:  Text(
-                    'KES 150.00',
-                    textAlign: TextAlign.right,
-                    style: AppTextStyles.bodySmall.copyWith(
-                      color: searchtextGrey,
-                    ),
-                  ),
-                ),
-                Divider(
-                  color: Colors.grey[100],
-                ),
-                 ListTile(
-                  leading: Text(
-                    'Subtotal',
-                    textAlign: TextAlign.center,
-                    style: AppTextStyles.bodySmall.copyWith(
-                      color: searchtextGrey,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  trailing: Text(
-                    'KES 150.00',
-                    textAlign: TextAlign.right,
-                    style: AppTextStyles.bodySmall.copyWith(
-                      color: searchtextGrey,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ),
+
+                // ListTile(
+                //   leading: Row(
+                //     mainAxisSize: MainAxisSize.min,
+                //     children: [
+                //        Text(
+                //         'Surge',
+                //         textAlign: TextAlign.center,
+                //         style: AppTextStyles.bodySmall.copyWith(
+                //           color: searchtextGrey,
+                //         ),
+                //       ),
+                //       SizedBox(width: 16,),
+                //       Image.asset('assets/images/question_mark.png',height: 12,width: 12,color: primaryColor,)
+                //     ],
+                //   ),
+                //   trailing:  Text(
+                //     'KES 150.00',
+                //     textAlign: TextAlign.right,
+                //     style: AppTextStyles.bodySmall.copyWith(
+                //       color: searchtextGrey,
+                //     ),
+                //   ),
+                // ),
+
+                // ListTile(
+                //   leading:
+                //    Text(
+                //     'Tip',
+                //     textAlign: TextAlign.center,
+                //      style: AppTextStyles.bodySmall.copyWith(
+                //        color: searchtextGrey,
+                //      ),
+                //   ),
+                //   trailing:  Text(
+                //     'KES 150.00',
+                //     textAlign: TextAlign.right,
+                //     style: AppTextStyles.bodySmall.copyWith(
+                //       color: searchtextGrey,
+                //     ),
+                //   ),
+                // ),
+
+                // Divider(
+                //   color: Colors.grey[100],
+                // ),
+
+                //  ListTile(
+                //   leading: Text(
+                //     'Subtotal',
+                //     textAlign: TextAlign.center,
+                //     style: AppTextStyles.bodySmall.copyWith(
+                //       color: searchtextGrey,
+                //       fontWeight: FontWeight.w700,
+                //     ),
+                //   ),
+                //   trailing: Text(
+                //     'KES 150.00',
+                //     textAlign: TextAlign.right,
+                //     style: AppTextStyles.bodySmall.copyWith(
+                //       color: searchtextGrey,
+                //       fontWeight: FontWeight.w700,
+                //     ),
+                //   ),
+                // ),
                 Spacer(),
                 CustomElevatedButton(
                   onPressed: () {

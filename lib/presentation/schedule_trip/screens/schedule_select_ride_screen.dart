@@ -26,7 +26,7 @@ class _ScheduleSelectRideScreenState extends State<ScheduleSelectRideScreen> {
   String? _destination;
   String? _prediction;
 
-  final RideStatusController rideStatusController = Get.put(RideStatusController());
+  //final RideStatusController rideStatusController = Get.put(RideStatusController());
   final MapController mapController = Get.put(MapController());
 
 
