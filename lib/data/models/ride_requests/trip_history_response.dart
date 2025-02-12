@@ -9,7 +9,7 @@ class TripHistoryResponse {
   @JsonKey(name: "message")
   String? message;
   @JsonKey(name: "data")
-  dynamic data;
+  List<Datum>? data;
 
   TripHistoryResponse({
     this.status,
@@ -21,3 +21,27 @@ class TripHistoryResponse {
 
   Map<String, dynamic> toJson() => _$TripHistoryResponseToJson(this);
 }
+
+@JsonSerializable()
+class Datum {
+  @JsonKey(name: "id")
+  String? id;
+  @JsonKey(name: "destination")
+  String? destination;
+  @JsonKey(name: "date")
+  DateTime? date;
+  @JsonKey(name: "amount")
+  dynamic amount;
+
+  Datum({
+    this.id,
+    this.destination,
+    this.date,
+    this.amount,
+  });
+
+  factory Datum.fromJson(Map<String, dynamic> json) => _$DatumFromJson(json);
+
+  Map<String, dynamic> toJson() => _$DatumToJson(this);
+}
+

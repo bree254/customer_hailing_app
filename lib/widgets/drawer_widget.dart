@@ -11,6 +11,7 @@ class DrawerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String initials = '${authController.user.value.firstName?[0]}${authController.user.value.lastName?[0]}';
     return  Drawer(
       backgroundColor: Colors.white,
       child: Padding(
@@ -25,7 +26,19 @@ class DrawerWidget extends StatelessWidget {
                 }
 
                 return ListTile(
-                  leading: Image.asset("assets/images/driver.png"),
+                  leading: CircleAvatar(
+                    backgroundColor: primaryColor,
+                    radius: 28,
+                    child: Text(
+                      initials,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  //Image.asset("assets/images/driver.png"),
                   title: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

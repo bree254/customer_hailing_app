@@ -15,6 +15,7 @@ class _TripSummaryScreenState extends State<TripSummaryScreen> {
    final RideServiceController rideServiceController = Get.put(RideServiceController(rideServiceRepository: RideServiceRepository()));
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(

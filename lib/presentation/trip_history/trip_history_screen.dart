@@ -1,7 +1,12 @@
 import 'package:customer_hailing/core/app_export.dart';
+import 'package:customer_hailing/presentation/order_request/controller/ride_service_controller.dart';
 import 'package:customer_hailing/presentation/order_request/models/data.dart';
 import 'package:customer_hailing/routes/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
+import '../../data/repos/ride_service_repository.dart';
+
 class TripHistoryScreen extends StatefulWidget {
   const TripHistoryScreen({super.key});
 
@@ -10,6 +15,14 @@ class TripHistoryScreen extends StatefulWidget {
 }
 
 class _TripHistoryScreenState extends State<TripHistoryScreen> {
+  final RideServiceController controller = Get.put(RideServiceController(rideServiceRepository: RideServiceRepository()));
+
+  String formatDateTime(String dateTime) {
+    final DateTime parsedDateTime = DateTime.parse(dateTime);
+    final DateFormat formatter = DateFormat('d MMM yyyy - h:mm a');
+    return formatter.format(parsedDateTime);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,9 +52,11 @@ class _TripHistoryScreenState extends State<TripHistoryScreen> {
               color: Colors.grey[300],
               thickness: 1,
             ),
-            itemCount: MyData.history.length,
+            itemCount: controller.history.value.data!.length,
+            //MyData.history.length,
           itemBuilder: (context ,index){
-            final history = MyData.history[index];
+            final history = controller.history.value.data?[index];
+            //MyData.history[index];
             return Padding(
               padding: const EdgeInsets.symmetric(vertical: 16),
               child: ListTile(
@@ -60,18 +75,22 @@ class _TripHistoryScreenState extends State<TripHistoryScreen> {
                   ),
                 ),
                 title: Text(
-                  history['destination'] ?? '',
+                  history?.destination ?? '',
+                 // history['destination'] ?? '',
                     style:AppTextStyles.listTileTitle
                 ),
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      history['time'] ?? '',
+                        history != null ? formatDateTime(history.date.toString()) : '',
+                     // history?.date.toString() ?? '',
+                     // history['time'] ?? '',
                         style:AppTextStyles.listTileSubtitle
                     ),
                     Text(
-                      history['price'] ?? '',
+                      history?.amount.toString() ?? ' 780',
+                      //history['price'] ?? '',
                         style:AppTextStyles.listTileSubtitle
                     ),
                   ],

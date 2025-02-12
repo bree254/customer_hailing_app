@@ -17,6 +17,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    String initials = '${authController.user.value.firstName?[0]}${authController.user.value.lastName?[0]}';
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -50,12 +51,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       child: Stack(
                         children: [
                           CircleAvatar(
-                              backgroundColor:Colors.transparent,
-                              child: Image.asset(
-                                width: 56,
-                                height: 56,
-                                'assets/images/driver.png',
+                              backgroundColor:primaryColor,
+                              child: Text(
+                                initials,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
+                              // Image.asset(
+                              //   width: 56,
+                              //   height: 56,
+                              //   'assets/images/driver.png',
+                              // ),
                           ),
                           Positioned(
                             left: 28,

@@ -56,7 +56,7 @@ class RideServiceController extends GetxController {
     }
 
     String? customerId = await PrefUtils().getUserData()!.id;
-    print('Retrieved customerId: $requestId');
+    print('Retrieved customerId: $customerId');
     if (customerId != null) {
       await getTripHistory(customerId);
     } else {
