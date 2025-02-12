@@ -23,6 +23,17 @@ class _TripSummaryScreenState extends State<TripSummaryScreen> {
             padding:  EdgeInsets.fromLTRB(24.h, 80.v, 24.h, 24.v),
             child: Column(
               children: [
+
+                Align(
+                  alignment: Alignment.topRight,
+                  child: GestureDetector(
+                    onTap: () {
+                      Get.back();
+                    },
+                    child: const Icon(Icons.close),
+                  ),
+                ),
+
                  Text(
                    '5th, August, 2024',
                    textAlign: TextAlign.center,

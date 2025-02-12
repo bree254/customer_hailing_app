@@ -5,6 +5,7 @@ import 'package:customer_hailing/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../presentation/order_request/controller/ride_service_controller.dart';
+import '../presentation/order_request/screens/rate_ride_screen.dart';
 import '../presentation/order_request/screens/trip_summary_screen.dart';
 import 'custom_elevated_button.dart';
 
@@ -14,6 +15,7 @@ class TripStatusBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final RideServiceController rideServiceController = Get.find<RideServiceController>();
+    final RxBool hasNavigatedToSummary = false.obs;
 
     return DraggableScrollableSheet(
       initialChildSize: 0.4,
@@ -53,10 +55,19 @@ class TripStatusBottomSheet extends StatelessWidget {
                       return _buildArrivedContent(rideServiceController);
                     case 'IN_PROGRESS':
                       return _buildHeadingToDestinationContent(rideServiceController);
+                    // case 'COMPLETED':
+                    //   WidgetsBinding.instance.addPostFrameCallback((_) {
+                    //     Get.to(() => const TripSummaryScreen());
+                    //   });
                     case 'COMPLETED':
-                      WidgetsBinding.instance.addPostFrameCallback((_) {
-                        Get.to(() => const TripSummaryScreen());
-                      });
+                      if (!hasNavigatedToSummary.value) {
+                        hasNavigatedToSummary.value = true;
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          Get.to(() => const TripSummaryScreen())!.then((_) {
+                            Get.to(() => const RateRideScreen());
+                          });
+                        });
+                      }
                       return const SizedBox();
                     default:
                       return const SizedBox();

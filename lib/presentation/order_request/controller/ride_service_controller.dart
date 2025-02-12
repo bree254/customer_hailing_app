@@ -1,10 +1,11 @@
 import 'dart:async';
-
 import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/data/models/ride_requests/confirm_trip_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/driver_locations_response.dart';
+import 'package:customer_hailing/data/models/ride_requests/rate_trip_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/search_locations_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/trip_details_response.dart';
+import 'package:customer_hailing/data/models/ride_requests/trip_history_response.dart';
 import 'package:customer_hailing/presentation/order_request/controller/map_controller.dart';
 import 'package:customer_hailing/presentation/order_request/screens/search_location_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -33,6 +34,7 @@ class RideServiceController extends GetxController {
 
   RxList<DriverLocationsResponse> drivers = <DriverLocationsResponse>[].obs;
   var tripDetails = TripDetailsResponse().obs;
+  var history = TripHistoryResponse().obs;
 
   @override
   void onInit() async {
@@ -51,6 +53,14 @@ class RideServiceController extends GetxController {
       await getTripDetails(requestId);
     } else {
       print('RequestId is null. Cannot fetch trip details.');
+    }
+
+    String? customerId = await PrefUtils().getUserData()!.id;
+    print('Retrieved customerId: $requestId');
+    if (customerId != null) {
+      await getTripHistory(customerId);
+    } else {
+      print('customerId is null. Cannot fetch trip history.');
     }
   }
 
@@ -84,7 +94,7 @@ class RideServiceController extends GetxController {
         'destinationLatitude': destinationCoordinates.latitude,
         'destinationLongitude': destinationCoordinates.longitude,
         'searchRadius': 5000,
-        "rideCategory": " ",
+        "rideCategory": "",
       };
 
       print('post customer location : $requestData');
@@ -140,13 +150,18 @@ class RideServiceController extends GetxController {
         mapController.currentPosition.value!.longitude,
       );
 
+      // Ensure organizationId is a single string
+      String? organizationId = authController.user.value.orgId?.isNotEmpty == true ? authController.user.value.orgId!.first : null;
+
       Map<String, String> headers = {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $accessToken',
       };
 
       Map<String, dynamic> requestData = {
+
         'customerId': authController.user.value.id,
+        'organizationId': organizationId,
         'pickupLatitude': mapController.currentPosition.value!.latitude,
         'pickupLongitude': mapController.currentPosition.value!.longitude,
         'destinationLatitude': destinationCoordinates.latitude,
@@ -240,7 +255,65 @@ class RideServiceController extends GetxController {
     });
   }
 
+  Future<void> getTripHistory(String customerId) async {
+    try {
+      Map<String, String> headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $accessToken',
+      };
 
+      // Log the request URL and parameters
+      print('Trip history with customerId: $customerId');
+      print('Trip history Request URL: ${Endpoints.tripHistory}$customerId/completedTrips');
+      print('Trip history Headers: $headers');
+
+      TripHistoryResponse response = await rideServiceRepository.tripHistory(
+        headers: headers, customerId: customerId,
+
+      );
+      history.value = response;
+      print('Trip history fetched successfully: ${response.toJson()}');
+    } catch (e) {
+      // Handle any errors
+      print('Error fetching Trip history: $e');
+    }
+  }
+
+  Future<void> rateTrip(double rating) async {
+    try {
+
+      Map<String, String> headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $accessToken',
+      };
+
+      Map<String, dynamic> requestData = {
+
+        'tripId': tripDetails.value.tripId,
+        'rating': rating ,
+        'feedback': "great trip",
+        'isCustomerRating': true,
+      };
+
+      print('rate trip request data: $requestData');
+      print('rate trip headers: $headers');
+
+      RateTripResponse response = await rideServiceRepository.rateTrip(
+        headers: headers,
+        requestData: requestData,
+      );
+
+
+      if ( response.status == "200") {
+        print( 'trip rated : ${response.message}');
+        Get.toNamed(AppRoutes.home);
+
+      }
+    } catch (e) {
+      print(' rate Trip Error: ${ e.toString()}',);
+      return null;
+    }
+  }
   @override
   void onClose() {
     // Cancel the timer when the controller is closed

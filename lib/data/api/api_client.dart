@@ -4,8 +4,10 @@ import 'package:customer_hailing/data/models/auth/user_response.dart';
 import 'package:customer_hailing/data/models/auth/validate_otp.dart';
 import 'package:customer_hailing/data/models/ride_requests/confirm_trip_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/driver_locations_response.dart';
+import 'package:customer_hailing/data/models/ride_requests/rate_trip_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/search_locations_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/trip_details_response.dart';
+import 'package:customer_hailing/data/models/ride_requests/trip_history_response.dart';
 import 'package:customer_hailing/presentation/order_request/screens/search_location_screen.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/material.dart';
@@ -255,6 +257,53 @@ class ApiClient extends GetConnect {
       rethrow;
     }
   }
+
+  Future<TripHistoryResponse> tripHistory(
+      {required Map<String, String> headers,required String customerId}) async {
+    await isNetworkConnected();
+
+    try {
+      var response = await _dio.get('${Endpoints.tripHistory}$customerId/completedTrips',
+          options: dio.Options(headers: headers));
+      debugPrint('Response status: ${response.statusCode}');
+      debugPrint('Response data: ${response.data}');
+      if (_isSuccessCall(response)) {
+        return TripHistoryResponse.fromJson(response.data);
+      } else {
+        return TripHistoryResponse.fromJson(response.data);
+      }
+    } catch (error, stackTrace) {
+      Logger.log(
+        error,
+        stackTrace: stackTrace,
+      );
+      rethrow;
+    }
+  }
+
+  Future<RateTripResponse> rateTrip(
+      {required Map<String, String> headers, required Map requestData}) async {
+    isNetworkConnected();
+
+    try {
+      var response = await _dio.post(Endpoints.rateTrip,
+          data: requestData, options: dio.Options(headers: headers));
+      if (_isSuccessCall(response)) {
+        return RateTripResponse.fromJson(response.data);
+      } else {
+        debugPrint('Response :: ${response.statusCode}');
+        return RateTripResponse.fromJson(response.data);
+      }
+    } catch (error, stackTrace) {
+      Logger.log(
+        error,
+        stackTrace: stackTrace,
+      );
+      rethrow;
+    }
+  }
+
+
 
   Future<List<DriverLocationsResponse>> getDriverLocations({required Map<String, String> headers}) async {
   final response = await _dio.get(

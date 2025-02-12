@@ -12,7 +12,13 @@ UserResponse _$UserResponseFromJson(Map<String, dynamic> json) => UserResponse(
       lastName: json['lastName'] as String?,
       phoneNumber: json['phoneNumber'] as String?,
       email: json['email'] as String?,
+      status: json['status'],
       ratingAverage: (json['ratingAverage'] as num?)?.toInt(),
+      departmentId: (json['departmentId'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
+      orgId:
+          (json['orgId'] as List<dynamic>?)?.map((e) => e as String).toList(),
     );
 
 Map<String, dynamic> _$UserResponseToJson(UserResponse instance) =>
@@ -22,5 +28,8 @@ Map<String, dynamic> _$UserResponseToJson(UserResponse instance) =>
       'lastName': instance.lastName,
       'phoneNumber': instance.phoneNumber,
       'email': instance.email,
+      'status': instance.status,
       'ratingAverage': instance.ratingAverage,
+      'departmentId': instance.departmentId,
+      'orgId': instance.orgId,
     };
