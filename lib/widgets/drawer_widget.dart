@@ -49,7 +49,7 @@ class DrawerWidget extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        '${authController.user.value.ratingAverage} rating',
+                        '${authController.user.value.avgRating} rating',
                         style: AppTextStyles.bodySmall.copyWith(
                           color: formTextLabelColor,
                           fontSize: 10.0,

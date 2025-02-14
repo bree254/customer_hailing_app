@@ -19,4 +19,6 @@ class Endpoints {
   static const String tripDetails = '$baseUrl/rides/api/v1/tripDetails/';
   static const String rateTrip = '$baseUrl/rides/api/v1/rateTrip';
   static const String tripHistory = '$baseUrl/rides/api/v1/customers/';
+  static const String historyDetails = '$baseUrl/rides/api/v1/customers/';
+  static const String scheduleTrip = '$baseUrl/rides/api/v1/customers/scheduleTrip';
 }

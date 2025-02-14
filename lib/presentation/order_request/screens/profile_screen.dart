@@ -93,7 +93,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         Icon(Icons.star,color: primaryColor,size: 10,),
                         SizedBox(width: 5,),
                         Text(
-                          '${authController.user.value.ratingAverage} rating',
+                          '${authController.user.value.avgRating} rating',
                           style: AppTextStyles.text14Black400.copyWith(
                             color: searchtextGrey,
                           ),

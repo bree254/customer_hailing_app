@@ -6,6 +6,7 @@ import 'package:customer_hailing/data/models/ride_requests/trip_details_response
 import 'package:customer_hailing/data/models/ride_requests/trip_history_response.dart';
 
 import '../api/api_client.dart';
+import '../models/ride_requests/schedule_trip_response.dart';
 
 class RideServiceRepository {
   final _apiClient = ApiClient();
@@ -55,5 +56,14 @@ class RideServiceRepository {
       }) async {
     return await _apiClient.rateTrip(headers: headers, requestData: requestData);
   }
+
+  Future<ScheduleTripResponse> scheduleTrip({
+    required Map<String, String> headers,
+    required Map<String, dynamic> requestData,
+  }) async {
+    return await _apiClient.scheduleTrip(headers: headers, requestData: requestData);
+  }
+
+
 
 }

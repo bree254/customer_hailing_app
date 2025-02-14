@@ -56,9 +56,9 @@ Driver _$DriverFromJson(Map<String, dynamic> json) => Driver(
       firstName: json['firstName'] as String?,
       lastName: json['lastName'] as String?,
       phoneNumber: json['phoneNumber'] as String?,
-      vehicleCategory: json['vehicleCategory'],
+      rideCategory: json['rideCategory'],
       makeAndModel: json['makeAndModel'] as String?,
-      numberPlate: json['numberPlate'],
+      numberPlate: json['numberPlate'] as String?,
       rating: (json['rating'] as num?)?.toInt(),
     );
 
@@ -67,7 +67,7 @@ Map<String, dynamic> _$DriverToJson(Driver instance) => <String, dynamic>{
       'firstName': instance.firstName,
       'lastName': instance.lastName,
       'phoneNumber': instance.phoneNumber,
-      'vehicleCategory': instance.vehicleCategory,
+      'rideCategory': instance.rideCategory,
       'makeAndModel': instance.makeAndModel,
       'numberPlate': instance.numberPlate,
       'rating': instance.rating,
@@ -82,7 +82,7 @@ TripDetails _$TripDetailsFromJson(Map<String, dynamic> json) => TripDetails(
           : Location.fromJson(json['dropOffLocation'] as Map<String, dynamic>),
       vehicleCategory: json['vehicleCategory'],
       estimatedDistance: (json['estimatedDistance'] as num?)?.toInt(),
-      estimatedFare: (json['estimatedFare'] as num?)?.toDouble(),
+      estimatedFare: (json['estimatedFare'] as num?)?.toInt(),
       discount: json['discount'],
       totalFare: json['totalFare'],
     );
@@ -99,13 +99,13 @@ Map<String, dynamic> _$TripDetailsToJson(TripDetails instance) =>
     };
 
 Location _$LocationFromJson(Map<String, dynamic> json) => Location(
+      latitude: (json['latitude'] as num?)?.toDouble(),
+      longitude: (json['longitude'] as num?)?.toDouble(),
       address: json['address'] as String?,
-      latitude: json['latitude'] as String?,
-      longitude: json['longitude'] as String?,
     );
 
 Map<String, dynamic> _$LocationToJson(Location instance) => <String, dynamic>{
-      'address': instance.address,
       'latitude': instance.latitude,
       'longitude': instance.longitude,
+      'address': instance.address,
     };

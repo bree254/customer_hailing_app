@@ -70,12 +70,12 @@ class Driver {
   String? lastName;
   @JsonKey(name: "phoneNumber")
   String? phoneNumber;
-  @JsonKey(name: "vehicleCategory")
-  dynamic vehicleCategory;
+  @JsonKey(name: "rideCategory")
+  dynamic rideCategory;
   @JsonKey(name: "makeAndModel")
   String? makeAndModel;
   @JsonKey(name: "numberPlate")
-  dynamic numberPlate;
+  String? numberPlate;
   @JsonKey(name: "rating")
   int? rating;
 
@@ -84,7 +84,7 @@ class Driver {
     this.firstName,
     this.lastName,
     this.phoneNumber,
-    this.vehicleCategory,
+    this.rideCategory,
     this.makeAndModel,
     this.numberPlate,
     this.rating,
@@ -106,7 +106,7 @@ class TripDetails {
   @JsonKey(name: "estimatedDistance")
   int? estimatedDistance;
   @JsonKey(name: "estimatedFare")
-  double? estimatedFare;
+  int? estimatedFare;
   @JsonKey(name: "discount")
   dynamic discount;
   @JsonKey(name: "totalFare")
@@ -129,17 +129,17 @@ class TripDetails {
 
 @JsonSerializable()
 class Location {
+  @JsonKey(name: "latitude")
+  double? latitude;
+  @JsonKey(name: "longitude")
+  double? longitude;
   @JsonKey(name: "address")
   String? address;
-  @JsonKey(name: "latitude")
-  String? latitude;
-  @JsonKey(name: "longitude")
-  String? longitude;
 
   Location({
-    this.address,
     this.latitude,
     this.longitude,
+    this.address,
   });
 
   factory Location.fromJson(Map<String, dynamic> json) => _$LocationFromJson(json);

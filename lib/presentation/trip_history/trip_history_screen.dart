@@ -95,34 +95,34 @@ class _TripHistoryScreenState extends State<TripHistoryScreen> {
                     ),
                   ],
                 ),
-                trailing: Container(
-                  width: 69,
-                  height: 28,
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration:  ShapeDecoration(
-                    color: const Color(0xFFF8F2FA),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        width: 10,
-                        height: 10,
-                        child:Image.asset(height: 10,width:10,'assets/images/rotate.png'),
-                      ),
-                      const SizedBox(width: 6),
-                       Text(
-                        'Rebook',
-                        style:AppTextStyles.rebookButtonText
-                      ),
-                    ],
-                  ),
-                ),
+                // trailing: Container(
+                //   width: 69,
+                //   height: 28,
+                //   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                //   decoration:  ShapeDecoration(
+                //     color: const Color(0xFFF8F2FA),
+                //     shape: RoundedRectangleBorder(
+                //       borderRadius: BorderRadius.circular(50),
+                //     ),
+                //   ),
+                //   child: Row(
+                //     mainAxisSize: MainAxisSize.min,
+                //     mainAxisAlignment: MainAxisAlignment.center,
+                //     crossAxisAlignment: CrossAxisAlignment.center,
+                //     children: [
+                //       SizedBox(
+                //         width: 10,
+                //         height: 10,
+                //         child:Image.asset(height: 10,width:10,'assets/images/rotate.png'),
+                //       ),
+                //       const SizedBox(width: 6),
+                //        Text(
+                //         'Rebook',
+                //         style:AppTextStyles.rebookButtonText
+                //       ),
+                //     ],
+                //   ),
+                // ),
                 onTap: () {
                   Get.toNamed(AppRoutes.historyDetails);
                 },

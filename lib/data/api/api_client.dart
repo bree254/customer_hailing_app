@@ -12,6 +12,8 @@ import 'package:customer_hailing/presentation/order_request/screens/search_locat
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/material.dart';
 import '../../core/utils/logger.dart';
+import '../models/ride_requests/schedule_trip_response.dart';
+import '../models/ride_requests/trip_history_details_response.dart';
 import 'endpoints.dart';
 import 'network_interceptor.dart';
 
@@ -281,6 +283,30 @@ class ApiClient extends GetConnect {
     }
   }
 
+  Future<TripHistoryDetailsResponse> tripHistoryDetails(
+      {required Map<String, String> headers,required String driverId}) async {
+    await isNetworkConnected();
+
+    try {
+      var response = await _dio.get('${Endpoints.historyDetails}$driverId/completedTripDetails',
+          options: dio.Options(headers: headers));
+      debugPrint('Response status: ${response.statusCode}');
+      debugPrint('Response data: ${response.data}');
+      if (_isSuccessCall(response)) {
+        return TripHistoryDetailsResponse.fromJson(response.data);
+      } else {
+        return TripHistoryDetailsResponse.fromJson(response.data);
+      }
+    } catch (error, stackTrace) {
+      Logger.log(
+        error,
+        stackTrace: stackTrace,
+      );
+      rethrow;
+    }
+  }
+
+
   Future<RateTripResponse> rateTrip(
       {required Map<String, String> headers, required Map requestData}) async {
     isNetworkConnected();
@@ -303,7 +329,29 @@ class ApiClient extends GetConnect {
     }
   }
 
+  Future<ScheduleTripResponse> scheduleTrip(
+      {required Map<String, String> headers, required Map requestData}) async {
+    isNetworkConnected();
 
+    try {
+      var response = await _dio.post(Endpoints.scheduleTrip,
+          data: requestData, options: dio.Options(headers: headers));
+
+
+      if (_isSuccessCall(response)) {
+        return ScheduleTripResponse.fromJson(response.data);
+      } else {
+        debugPrint('Response :: ${response.statusCode}');
+        return ScheduleTripResponse.fromJson(response.data);
+      }
+    } catch (error, stackTrace) {
+      Logger.log(
+        error,
+        stackTrace: stackTrace,
+      );
+      rethrow;
+    }
+  }
 
   Future<List<DriverLocationsResponse>> getDriverLocations({required Map<String, String> headers}) async {
   final response = await _dio.get(
@@ -318,6 +366,8 @@ class ApiClient extends GetConnect {
   throw Exception('Failed to load driver locations');
   }
   }
+
+
 
 
   Future<Response> postRequest(String url, Map<String, dynamic> body) async {

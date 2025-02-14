@@ -1,0 +1,1 @@
+const String imageBaseUrl = 'https://yasil-bucket.s3.eu-north-1.amazonaws.com/';

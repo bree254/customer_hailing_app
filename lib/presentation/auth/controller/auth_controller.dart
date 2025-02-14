@@ -73,7 +73,8 @@ class AuthController extends GetxController {
       }
     } catch (e) {
       // Handle any errors
-      Get.snackbar('Error', e.toString());
+     // Get.snackbar('Error', e.toString());
+      Get.snackbar('Error', "Invalid email address");
     } finally {
       EasyLoading.dismiss();
     }
@@ -131,7 +132,8 @@ Future<void> validateOtp() async {
     }
     _isOtpValid = false;
     EasyLoading.dismiss();
-    Get.snackbar('Error', e.toString());
+    //Get.snackbar('Error', e.toString());
+    Get.snackbar('Error',"validation failed");
   } finally {
     EasyLoading.dismiss();
   }
@@ -180,7 +182,8 @@ Future<void> validateOtp() async {
       }
       _isOtpValid = false;
       EasyLoading.dismiss();
-      Get.snackbar('Error', e.toString());
+      //Get.snackbar('Error', e.toString());
+      Get.snackbar('Error', "validation failed");
      // EasyLoading.showError("validation failed",);
     }finally {
       EasyLoading.dismiss();

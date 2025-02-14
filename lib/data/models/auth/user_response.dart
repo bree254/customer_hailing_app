@@ -6,18 +6,18 @@ part 'user_response.g.dart';
 class UserResponse {
   @JsonKey(name: "id")
   String? id;
+  @JsonKey(name: "email")
+  String? email;
+  @JsonKey(name: "phoneNumber")
+  String? phoneNumber;
+  @JsonKey(name: "profileUrl")
+  String? profileUrl;
   @JsonKey(name: "firstName")
   String? firstName;
   @JsonKey(name: "lastName")
   String? lastName;
-  @JsonKey(name: "phoneNumber")
-  String? phoneNumber;
-  @JsonKey(name: "email")
-  String? email;
-  @JsonKey(name: "status")
-  dynamic status;
-  @JsonKey(name: "ratingAverage")
-  int? ratingAverage;
+  @JsonKey(name: "avgRating")
+  int? avgRating;
   @JsonKey(name: "departmentId")
   List<String>? departmentId;
   @JsonKey(name: "orgId")
@@ -25,12 +25,12 @@ class UserResponse {
 
   UserResponse({
     this.id,
+    this.email,
+    this.phoneNumber,
+    this.profileUrl,
     this.firstName,
     this.lastName,
-    this.phoneNumber,
-    this.email,
-    this.status,
-    this.ratingAverage,
+    this.avgRating,
     this.departmentId,
     this.orgId,
   });
@@ -39,6 +39,5 @@ class UserResponse {
 
   Map<String, dynamic> toJson() => _$UserResponseToJson(this);
 }
-
 
 

@@ -3,6 +3,7 @@ import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/data/models/ride_requests/confirm_trip_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/driver_locations_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/rate_trip_response.dart';
+import 'package:customer_hailing/data/models/ride_requests/schedule_trip_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/search_locations_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/trip_details_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/trip_history_response.dart';
@@ -126,7 +127,7 @@ class RideServiceController extends GetxController {
       }
 
     } catch (e) {
-      Get.snackbar('Error', e.toString());
+      Get.snackbar('Error', 'Failed to upload customer location');
     }
   }
 
@@ -314,6 +315,73 @@ class RideServiceController extends GetxController {
       return null;
     }
   }
+
+  Future<void> scheduleTrip(String dropOffAddress, String rideCategory, String paymentMethod, double fareEstimate) async {
+    try {
+      final mapController = Get.find<MapController>();
+      final authController = Get.find<AuthController>();
+
+      // Get the coordinates for the destination address
+      LatLng? destinationCoordinates = await mapController.getCoordinatesFromAddress(dropOffAddress);
+
+      if (destinationCoordinates == null) {
+        Get.snackbar('Error', 'Failed to get coordinates for the destination address.');
+        return null;
+      }
+
+      // Convert current location to address
+      String pickupAddress = await mapController.convertToAddress(
+        mapController.currentPosition.value!.latitude,
+        mapController.currentPosition.value!.longitude,
+      );
+
+      // Ensure organizationId is a single string
+      String? organizationId = authController.user.value.orgId?.isNotEmpty == true ? authController.user.value.orgId!.first : null;
+
+      Map<String, String> headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $accessToken',
+      };
+
+      Map<String, dynamic> requestData = {
+
+        'customerId': authController.user.value.id,
+        'organizationId': organizationId,
+        'pickupLatitude': mapController.currentPosition.value!.latitude,
+        'pickupLongitude': mapController.currentPosition.value!.longitude,
+        'destinationLatitude': destinationCoordinates.latitude,
+        'destinationLongitude': destinationCoordinates.longitude,
+        'pickupAddress': pickupAddress,
+        'dropOffAddress': dropOffAddress,
+        'rideCategory': rideCategory,
+        "requestType": "AIRPORT",
+        "paymentMethod": paymentMethod,
+        "pickupTime": "11:00 AM",
+        "pickupDate": "14-02-2025"
+
+      };
+
+      print('schedule trip request data: $requestData');
+      print('schedule trip headers: $headers');
+
+      ScheduleTripResponse response = await rideServiceRepository.scheduleTrip(
+        headers: headers,
+        requestData: requestData,
+      );
+
+      if ( response.status == "201") {
+        print('Trip Scheduled message : ${response.message}' );
+
+      } else {
+        print( 'Failed to schedule trip: ${response.message}');
+        return null;
+      }
+    } catch (e) {
+      print(' schedule Trip Error: ${ e.toString()}',);
+      return null;
+    }
+  }
+
   @override
   void onClose() {
     // Cancel the timer when the controller is closed
