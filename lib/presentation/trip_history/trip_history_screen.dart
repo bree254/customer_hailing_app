@@ -29,7 +29,7 @@ class _TripHistoryScreenState extends State<TripHistoryScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        title:  Text(
+        title: Text(
           'History',
           style: AppTextStyles.largeAppBarText,
         ),
@@ -47,91 +47,66 @@ class _TripHistoryScreenState extends State<TripHistoryScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 36),
-        child: ListView.separated(
-            separatorBuilder: (context, index) => Divider(
-              color: Colors.grey[300],
-              thickness: 1,
-            ),
-            itemCount: controller.history.value.data!.length,
-            //MyData.history.length,
-          itemBuilder: (context ,index){
-            final history = controller.history.value.data?[index];
-            //MyData.history[index];
-            return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              child: ListTile(
-                leading: Container(
-                  height: 40,
-                  width: 40,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: const Color(0xFFD1D5DB),
-                    ),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Image.asset(height: 5,width:5,'assets/images/map_pin_outline.png'),
-                  ),
-                ),
-                title: Text(
-                  history?.destination ?? '',
-                 // history['destination'] ?? '',
-                    style:AppTextStyles.listTileTitle
-                ),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                        history != null ? formatDateTime(history.date.toString()) : '',
-                     // history?.date.toString() ?? '',
-                     // history['time'] ?? '',
-                        style:AppTextStyles.listTileSubtitle
-                    ),
-                    Text(
-                      history?.amount.toString() ?? ' 780',
-                      //history['price'] ?? '',
-                        style:AppTextStyles.listTileSubtitle
-                    ),
-                  ],
-                ),
-                // trailing: Container(
-                //   width: 69,
-                //   height: 28,
-                //   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                //   decoration:  ShapeDecoration(
-                //     color: const Color(0xFFF8F2FA),
-                //     shape: RoundedRectangleBorder(
-                //       borderRadius: BorderRadius.circular(50),
-                //     ),
-                //   ),
-                //   child: Row(
-                //     mainAxisSize: MainAxisSize.min,
-                //     mainAxisAlignment: MainAxisAlignment.center,
-                //     crossAxisAlignment: CrossAxisAlignment.center,
-                //     children: [
-                //       SizedBox(
-                //         width: 10,
-                //         height: 10,
-                //         child:Image.asset(height: 10,width:10,'assets/images/rotate.png'),
-                //       ),
-                //       const SizedBox(width: 6),
-                //        Text(
-                //         'Rebook',
-                //         style:AppTextStyles.rebookButtonText
-                //       ),
-                //     ],
-                //   ),
-                // ),
-                onTap: () {
-                  Get.toNamed(AppRoutes.historyDetails);
-                },
+        child: Obx(() {
+          if (controller.history.value.data == null || controller.history.value.data!.isEmpty) {
+            return Center(
+              child: Text(
+                'No trip history available',
+                style: AppTextStyles.listTileTitle,
               ),
             );
-
-
-      },
-        )
+          } else {
+            return ListView.separated(
+              separatorBuilder: (context, index) => Divider(
+                color: Colors.grey[300],
+                thickness: 1,
+              ),
+              itemCount: controller.history.value.data!.length,
+              itemBuilder: (context, index) {
+                final history = controller.history.value.data?[index];
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  child: ListTile(
+                    leading: Container(
+                      height: 40,
+                      width: 40,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: const Color(0xFFD1D5DB),
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Image.asset(height: 5, width: 5, 'assets/images/map_pin_outline.png'),
+                      ),
+                    ),
+                    title: Text(
+                      history?.destination ?? '',
+                      style: AppTextStyles.listTileTitle,
+                    ),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          history != null ? formatDateTime(history.date.toString()) : '',
+                          style: AppTextStyles.listTileSubtitle,
+                        ),
+                        Text(
+                          history?.amount.toString() ?? '780',
+                          style: AppTextStyles.listTileSubtitle,
+                        ),
+                      ],
+                    ),
+                    onTap: () {
+                      Get.toNamed(AppRoutes.historyDetails);
+                    },
+                  ),
+                );
+              },
+            );
+          }
+        }),
       ),
     );
   }

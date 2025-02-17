@@ -284,7 +284,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       SizedBox(height: 10.v),
                       CustomPhoneInput(
                         controller: phoneController,
-                        readOnly: true,
+                        //readOnly: true,
                         onInputChanged: (value) {
                           String? newErrorMessage;
                           InputBorder newInputBorder;

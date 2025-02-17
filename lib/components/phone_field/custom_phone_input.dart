@@ -11,26 +11,29 @@ class CustomPhoneInput extends StatefulWidget {
   final String? Function(String?)? customValidator;
   final Function(String)? onInputChanged;
   final Function(String)? onCountryCodeChanged;
-  final InputBorder? inputBorder;
-  final String? errorMessage;
-  final bool ? readOnly;
-  bool? autofocus;
+  InputBorder? inputBorder;
+  String? errorMessage;
+  TextStyle? labelStyle;
   String? labelText;
   String? outerLabelText;
-  TextStyle? labelStyle;
+  bool? autofocus;
+  final TextStyle? outerLabelStyle;
+  final FormFieldSetter<String>? onSaved;
 
-   CustomPhoneInput({
+  CustomPhoneInput({
     super.key,
     required this.controller,
-    this.customValidator,
-     this.labelStyle,
+    this.labelText,
+    this.outerLabelText,
+    this.labelStyle,
     this.autofocus,
+    this.customValidator,
     this.onInputChanged,
+    this.onCountryCodeChanged,
     this.inputBorder,
     this.errorMessage,
-    this.readOnly,
-     this.labelText,
-     this.outerLabelText, this.onCountryCodeChanged,
+    this.outerLabelStyle,
+    this.onSaved,
   });
 
   @override
@@ -67,20 +70,39 @@ class _CustomPhoneInputState extends State<CustomPhoneInput> {
     loadCountries();
   }
 
-  // Load countries
+  //load countries
   loadCountries() async {
     List<Country> countries = PhoneController.getCountriesData();
     setState(() {
       this.countries = countries;
       selectedCountry = countries.isNotEmpty ? countries[0] : null;
+      if (selectedCountry != null) {
+        widget.onCountryCodeChanged?.call(selectedCountry!.dialCode);
+      }
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: EdgeInsets.symmetric(horizontal: 16.h),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
+          if (widget.outerLabelText != null)
+            SizedBox(
+              height: 8.v,
+            ),
+          if (widget.outerLabelText != null)
+            Text(
+              widget.outerLabelText!,
+              style: widget.outerLabelStyle ?? AppTextStyles.labelStyle,
+            ),
+          if (widget.outerLabelText != null)
+            SizedBox(
+              height: 8.v,
+            ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             textBaseline: TextBaseline.alphabetic,
@@ -148,6 +170,7 @@ class _CustomPhoneInputState extends State<CustomPhoneInput> {
                       }
                       widget.onInputChanged?.call(value);
                     },
+                    onSaved: widget.onSaved,
                     // onSaved: (value) {
                     //   if (selectedCountry != null && !value!.startsWith(selectedCountry!.dialCode)) {
                     //     value = '${selectedCountry!.dialCode}$value';
