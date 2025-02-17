@@ -8,8 +8,10 @@ class Endpoints {
   static const String updateUser = '$baseUrl/auth/api/v1/update/user';
   static const String socialAuth = '$baseUrl/auth/api/v1/social/auth';
   static const String resendOtp = '$baseUrl/auth/api/v1/resend/otp';
-
+  static const String uploadProfile = '$baseUrl/auth/api/v1/upload/profile/pic';
+  static const String updateProfile = '$baseUrl/auth/api/v1/update/profile';
   static const String getUser = '$baseUrl/auth/api/v1/get/user/';
+
   //add the pathvariable to the endpoint
 
   // RIDE REQUESTS
@@ -21,4 +23,5 @@ class Endpoints {
   static const String tripHistory = '$baseUrl/rides/api/v1/customers/';
   static const String historyDetails = '$baseUrl/rides/api/v1/customers/';
   static const String scheduleTrip = '$baseUrl/rides/api/v1/customers/scheduleTrip';
+
 }

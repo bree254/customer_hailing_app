@@ -2,6 +2,7 @@ import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/routes/routes.dart';
 import 'package:flutter/material.dart';
 
+import '../core/constants/constants.dart';
 import '../presentation/auth/controller/auth_controller.dart';
 class DrawerWidget extends StatelessWidget {
 
@@ -24,21 +25,23 @@ class DrawerWidget extends StatelessWidget {
                 if (authController.user.value.id == null) {
                   return Center(child: CircularProgressIndicator());
                 }
-
                 return ListTile(
                   leading: CircleAvatar(
                     backgroundColor: primaryColor,
-                    radius: 28,
-                    child: Text(
+                    backgroundImage: authController.user.value.profileUrl != null
+                        ? NetworkImage('${authController.user.value.profileUrl}')
+                        : null,
+                    child: authController.user.value.profileUrl == null
+                        ? Text(
                       initials,
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 20,
+                        fontSize: 14,
                         fontWeight: FontWeight.bold,
                       ),
-                    ),
+                    )
+                        : null,
                   ),
-                  //Image.asset("assets/images/driver.png"),
                   title: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

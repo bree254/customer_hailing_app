@@ -1,5 +1,6 @@
 import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/data/models/auth/auth_response.dart';
+import 'package:customer_hailing/data/models/auth/update_profile_response.dart';
 import 'package:customer_hailing/data/models/auth/user_response.dart';
 import 'package:customer_hailing/data/models/auth/validate_otp.dart';
 import 'package:customer_hailing/data/models/ride_requests/confirm_trip_response.dart';
@@ -12,6 +13,7 @@ import 'package:customer_hailing/presentation/order_request/screens/search_locat
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/material.dart';
 import '../../core/utils/logger.dart';
+import '../models/auth/upload_file.dart';
 import '../models/ride_requests/schedule_trip_response.dart';
 import '../models/ride_requests/trip_history_details_response.dart';
 import 'endpoints.dart';
@@ -367,8 +369,61 @@ class ApiClient extends GetConnect {
   }
   }
 
+  Future<UploadFileResponse> uploadProfile({
+    required Map<String, String> headers,
+    required Map<String, dynamic> requestData,
+  }) async {
+    await isNetworkConnected();
 
+    try {
+      var response = await _dio.post(
+        Endpoints.uploadProfile,
+        data: requestData,
+        options: dio.Options(headers: headers),
+        onSendProgress: (int sent, int total) {
+          double progress = sent / total;
+          //debugPrint('Progress: $progress');
+        },
+      );
+      if (_isSuccessCall(response)) {
+        return UploadFileResponse.fromJson(response.data);
+      } else {
+        return UploadFileResponse.fromJson(response.data);
+      }
+    } catch (error, stackTrace) {
+      Logger.log(
+        error,
+        stackTrace: stackTrace,
+      );
+      rethrow;
+    }
+  }
 
+  Future<UpdateProfileResponse> updateProfile({
+    required Map<String, String> headers,
+    required Map<String, dynamic> requestData,
+  }) async {
+    await isNetworkConnected();
+
+    try {
+      var response = await _dio.patch(
+        Endpoints.updateProfile,
+        data: requestData,
+        options: dio.Options(headers: headers),
+      );
+      if (_isSuccessCall(response)) {
+        return UpdateProfileResponse.fromJson(response.data);
+      } else {
+        return UpdateProfileResponse.fromJson(response.data);
+      }
+    } catch (error, stackTrace) {
+      Logger.log(
+        error,
+        stackTrace: stackTrace,
+      );
+      rethrow;
+    }
+  }
 
   Future<Response> postRequest(String url, Map<String, dynamic> body) async {
     return await post(url, body);

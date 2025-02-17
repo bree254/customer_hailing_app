@@ -2,6 +2,7 @@ import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/routes/routes.dart';
 import 'package:flutter/material.dart';
 
+import '../../../core/constants/constants.dart';
 import '../../auth/controller/auth_controller.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -51,20 +52,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       child: Stack(
                         children: [
                           CircleAvatar(
-                              backgroundColor:primaryColor,
-                              child: Text(
-                                initials,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                            backgroundColor: primaryColor,
+                            backgroundImage: authController.user.value.profileUrl != null
+                                ? NetworkImage('${authController.user.value.profileUrl}')
+                                : null,
+                            child: authController.user.value.profileUrl == null
+                                ? Text(
+                              initials,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
                               ),
-                              // Image.asset(
-                              //   width: 56,
-                              //   height: 56,
-                              //   'assets/images/driver.png',
-                              // ),
+                            )
+                                : null,
                           ),
                           Positioned(
                             left: 28,
@@ -80,18 +81,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ),
                     const SizedBox(height: 13,),
-                    Text(
+                    Obx(() => Text(
                       '${authController.user.value.firstName} ${authController.user.value.lastName}',
                       style: AppTextStyles.text14Black500.copyWith(
                         color: searchtextGrey,
                       ),
-                    ),
+                    )),
                     const SizedBox(height: 8,),
-                     Row(
+                    Obx(() => Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.star,color: primaryColor,size: 10,),
-                        SizedBox(width: 5,),
+                        Icon(Icons.star, color: primaryColor, size: 10),
+                        SizedBox(width: 5),
                         Text(
                           '${authController.user.value.avgRating} rating',
                           style: AppTextStyles.text14Black400.copyWith(
@@ -99,7 +100,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                         ),
                       ],
-                    )
+                    )),
                   ],
                 ),
               ),
@@ -128,8 +129,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                   trailing: const Icon(Icons.arrow_forward_ios_outlined,color: searchtextGrey,size: 14,),
-                  onTap: () {
-                    Get.toNamed(AppRoutes.editProfile);
+                  onTap: () async {
+                    final result = await Get.toNamed(AppRoutes.editProfile);
+                    if (result == true) {
+                      setState(() {
+                        // Refresh the values
+                      });
+                    }
                   },
                 ),
               ),

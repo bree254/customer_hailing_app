@@ -1,4 +1,5 @@
 import 'package:customer_hailing/core/app_export.dart';
+import 'package:customer_hailing/data/models/auth/update_profile_response.dart';
 import 'package:customer_hailing/data/models/auth/validate_otp.dart';
 import 'package:customer_hailing/routes/routes.dart';
 import 'package:dio/dio.dart';
@@ -9,6 +10,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../data/api/endpoints.dart';
 import '../../../data/models/auth/auth_response.dart';
+import '../../../data/models/auth/upload_file.dart';
 import '../../../data/models/auth/user_response.dart';
 import '../../../data/repos/auth_repository.dart';
 
@@ -29,6 +31,13 @@ class AuthController extends GetxController {
 
   String? accessToken;
   //String? userName;
+
+  var uploadProgress = 0.0.obs;
+  var uploadStatus = 'Not started'.obs;
+  var uploadUrl = ''.obs;
+  final Map<String ,String> uploadedUrls = {};
+
+ // var url = UploadFileResponse().obs;
 
   @override
   void onInit() async {
@@ -257,7 +266,7 @@ Future<void> validateOtp() async {
     }
   }
 
-  Future<void> updateUserProfile(String firstName, String lastName, String email, String phoneNumber) async {
+  Future<void> updateUserProfile(String firstName, String lastName,String email, String profileUrl, String phoneNumber) async {
     try {
       Map<String, String> headers = {
         'Content-Type': 'application/json',
@@ -265,15 +274,17 @@ Future<void> validateOtp() async {
       };
 
       Map<String, dynamic> requestData = {
+        'id': user.value.id,
         'firstName': firstName,
         'lastName': lastName,
-        'email': email,
+        'email':email,
+        'profileUrl': profileUrl,
         'phoneNumber': phoneNumber,
       };
 
       // Log the request URL and parameters
       print('Updating user with details: $requestData');
-      print('Request URL: ${Endpoints.updateUser}');
+      print('Request URL: ${Endpoints.updateProfile}');
       print('Headers: $headers');
 
       await authRepository.updateUser(
@@ -285,10 +296,21 @@ Future<void> validateOtp() async {
       user.value.firstName = firstName;
       user.value.lastName = lastName;
       user.value.email = email;
+      user.value.profileUrl = profileUrl;
       user.value.phoneNumber = phoneNumber;
 
-      // Handle the user response as needed
-      print('User updated successfully');
+      UpdateProfileResponse response = await authRepository.updateProfile(
+        headers: headers,
+        requestData: requestData,
+      );
+
+      if(response.message == 'User profile updated successfully.') {
+        showToast('User profile updated successfully');
+        await fetchUser(usernameController.text.trim());
+      } else {
+        // Show an error message
+        showToast('Failed to update user profile');
+      }
     } catch (e) {
       // Handle any errors
       print('Error updating user: $e');
@@ -342,6 +364,61 @@ Future<void> logout()async {
     }
   }
 
+  Future<void> getUploadUrl({
+    required String folderName,
+    required String contentType,
+    required String fileExtension,
+    required String fileName,
+    required String fileBase64,
+    bool navigateBack = true, // Add this parameter
+  }) async {
+    try {
+      uploadProgress.value = 0.0;
+      uploadStatus.value = 'Getting upload URL...';
+
+      Map<String, String> headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $accessToken',
+      };
+
+      Map<String, dynamic> requestData = {
+        "folderName": folderName,
+        "contentType": contentType,
+        "fileExtension": fileExtension,
+        "fileName": fileName,
+        "file": fileBase64,
+      };
+      print('request data: $requestData');
+
+      UploadFileResponse response = await authRepository.uploadFile(
+        headers:headers,
+        requestData: requestData,
+      );
+      // Print the response to see if we get a URL
+      print('Response: ${response.toJson()}');
+
+      if (response.url != null) {
+
+        uploadProgress.value = 1.0;
+        uploadUrl.value = response.url!;
+        uploadStatus.value = 'URL obtained';
+
+        // Save the URL to shared preferences
+        await PrefUtils().saveUploadedUrl(response.url!);
+        // Add the URL to the uploadedUrls map
+        uploadedUrls[fileName] = response.url!;
+        // Navigate back to the previous page
+        if(navigateBack){
+          Get.back(result: true);
+        }
+
+      } else {
+        uploadStatus.value = 'Failed to get URL';
+      }
+    } catch (e) {
+      uploadStatus.value = 'Failed to get URL';
+    }
+  }
 
   void showToast(String message) {
     Fluttertoast.showToast(

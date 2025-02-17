@@ -1,6 +1,11 @@
+import 'dart:convert';
+
 import 'package:customer_hailing/core/app_export.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:mime/mime.dart';
 import '../../components/phone_field/custom_phone_input.dart';
+import '../../core/constants/constants.dart';
 import '../../widgets/custom_text_form_field.dart';
 import '../auth/controller/auth_controller.dart';
 class EditProfileScreen extends StatefulWidget {
@@ -22,6 +27,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   String? errorMessage;
   InputBorder? inputBorder;
 
+  final ImagePicker picker = ImagePicker();
+  Map<String, XFile?> images = {};
+  Map<String, double> uploadProgress = {};
+  Map<String, String> uploadStatus = {};
+  String? imageUrl;
+
   @override
   void initState() {
     super.initState();
@@ -30,6 +41,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     lastNameController.text = authController.user.value.lastName!;
     emailController.text = authController.user.value.email!;
     phoneController.text = authController.user.value.phoneNumber!;
+    imageUrl = authController.user.value.profileUrl != null
+        ? '${authController.user.value.profileUrl}'
+        : null;
 
     authController.firstNameController.addListener(() => _updateState());
     authController.lastnameController.addListener(() => _updateState());
@@ -43,12 +57,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   void onSubmit() {
     if (_formKey.currentState!.validate()) {
-      // authController.updateUserProfile(
-      //   firstNameController.text,
-      //   lastNameController.text,
-      //   emailController.text,
-      //   phoneController.text,
-      // );
+      authController.updateUserProfile(
+        firstNameController.text,
+        lastNameController.text,
+        emailController.text,
+        imageUrl ?? '',
+        phoneController.text,
+      );
     }
   }
 
@@ -59,6 +74,134 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     authController.usernameController.removeListener(() => _updateState());
     authController.phoneController.removeListener(() => _updateState());
     super.dispose();
+  }
+
+  Future<void> uploadPhoto(String section) async {
+    try {
+      final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+
+      if (image != null) {
+        setState(() {
+          images[section] = image;
+          uploadProgress[section] = 0.0;
+          uploadStatus[section] = 'Uploading...';
+        });
+
+        String driverName = await PrefUtils().getUserData()?.firstName ?? 'default_folder';
+        String? mimeType = lookupMimeType(image.path);
+        String? fileExtension = image.name.split('.').last;
+        String fileBase64 = base64Encode(await image.readAsBytes());
+
+        await authController.getUploadUrl(
+          folderName: driverName,
+          contentType: mimeType!,
+          fileExtension: fileExtension,
+          fileName: image.name,
+          fileBase64: fileBase64,
+          navigateBack: false,
+        );
+
+        if (authController.uploadUrl.value.isNotEmpty) {
+          setState(() {
+            uploadProgress[section] = 1.0;
+            uploadStatus[section] = 'Upload complete';
+            imageUrl = '$imageBaseUrl${authController.uploadUrl.value}';
+          });
+        } else {
+          setState(() {
+            uploadStatus[section] = 'Failed to get URL';
+          });
+        }
+
+        // setState(() {
+        //   uploadProgress[section] = 1.0;
+        //   uploadStatus[section] = 'Upload complete';
+        //   imageUrl = '$imageBaseUrl${image.name}';
+        //  // _checkAllUploaded();
+        // });
+      }
+    } catch (e) {
+      debugPrint('Error picking image: $e');
+    }
+  }
+
+  Future<void> takePhoto(String section) async {
+    try {
+      final XFile? image = await picker.pickImage(source: ImageSource.camera);
+
+      if (image != null) {
+        setState(() {
+          images[section] = image;
+          uploadProgress[section] = 0.0;
+          uploadStatus[section] = 'Uploading...';
+        });
+
+        String driverName = await PrefUtils().getUserData()?.firstName ?? 'default_folder';
+        String? mimeType = lookupMimeType(image.path);
+        String? fileExtension = image.name.split('.').last;
+        String fileBase64 = base64Encode(await image.readAsBytes());
+
+        await authController.getUploadUrl(
+          folderName: driverName,
+          contentType: mimeType!,
+          fileExtension: fileExtension,
+          fileName: image.name,
+          fileBase64: fileBase64,
+          navigateBack: false,
+        );
+        if (authController.uploadUrl.value.isNotEmpty) {
+          setState(() {
+            uploadProgress[section] = 1.0;
+            uploadStatus[section] = 'Upload complete';
+            imageUrl = '$imageBaseUrl${authController.uploadUrl.value}';
+          });
+        } else {
+          setState(() {
+            uploadStatus[section] = 'Failed to get URL';
+          });
+        }
+        // setState(() {
+        //   uploadProgress[section] = 1.0;
+        //   uploadStatus[section] = 'Upload complete';
+        //   imageUrl = '$imageBaseUrl${image.name}';
+        // //  _checkAllUploaded();
+        // });
+      }
+    } catch (e) {
+      debugPrint('Error taking photo: $e');
+    }
+  }
+
+  void _showPhotoOptions(String section) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Upload Photo'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                leading: Icon(Icons.photo_library),
+                title: Text('Upload from Gallery'),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  uploadPhoto(section);
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.camera_alt),
+                title: Text('Take a Photo'),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  takePhoto(section);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
   @override
   Widget build(BuildContext context) {
@@ -96,10 +239,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       height: 75,
                       clipBehavior: Clip.antiAlias,
                       decoration: ShapeDecoration(
-                        // image: const DecorationImage(
-                        //   image: AssetImage("assets/images/driver.png"),
-                        //   fit: BoxFit.cover,
-                        // ),
                         shape: RoundedRectangleBorder(
                           side: const BorderSide(
                             width: 0,
@@ -111,23 +250,26 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       ),
                       child:  CircleAvatar(
                         backgroundColor: primaryColor,
-                       // radius: 28,
-                        child: Text(
+                        backgroundImage: imageUrl != null ? NetworkImage(imageUrl!) : null,
+                        child: imageUrl == null
+                            ? Text(
                           initials,
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
                           ),
-                        ),
+                        )
+                            : null,
                       ),
-                    ),
+                ),
                     Positioned(
                       top: 44,
                       left: 48,
                       right: 1,
                       child:
                       GestureDetector(
+                          onTap: () => _showPhotoOptions('profile'),
                           child: Container(
                               width: 30,
                               height: 30,
@@ -166,7 +308,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       SizedBox(height: 10.v),
                       CustomTextFormField(
                         controller: firstNameController,
-                        readOnly: true,
+                        readOnly: false,
                         filled: true,
                         fillColor: countryTextFieldColor,
                         borderDecoration: OutlineInputBorder(
@@ -195,7 +337,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       SizedBox(height: 10.v),
                       CustomTextFormField(
                         controller: lastNameController,
-                        readOnly: true,
+                        readOnly: false,
                         filled: true,
                         fillColor: countryTextFieldColor,
                         borderDecoration: OutlineInputBorder(
@@ -254,7 +396,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       SizedBox(height: 10.v),
                       CustomTextFormField(
                         controller: emailController,
-                        readOnly: true,
+                        readOnly: false,
                         filled: true,
                         fillColor: countryTextFieldColor,
                         borderDecoration: OutlineInputBorder(
@@ -320,7 +462,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
                       CustomElevatedButton(
                         onPressed: () {
-                          onSubmit();
+                          authController.updateUserProfile(
+                            firstNameController.text,
+                            lastNameController.text,
+                            emailController.text,
+                            imageUrl ?? '',
+                            phoneController.text,
+                          );
+                          Get.back(result: true);
                         },
                         text: 'Save',
                         buttonTextStyle: AppTextStyles.titleMedium.copyWith(color: whiteTextColor),

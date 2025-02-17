@@ -131,8 +131,6 @@ class PrefUtils extends GetxController {
     debugPrint('RequestId saved: $requestId');
   }
 
-
-
   // Method to retrieve the requestId
   Future<String?> retrieveRequestId() async {
     await _ensureInitialized();
@@ -140,6 +138,18 @@ class PrefUtils extends GetxController {
     debugPrint('RequestId retrieved: $requestId');
     return requestId;
   }
+
+  //File Upload urls
+  Future<void> saveUploadedUrl(String url) async {
+    List<String> urls = _sharedPreferences!.getStringList('uploadedUrls') ?? [];
+    urls.add(url);
+    await _sharedPreferences!.setStringList('uploadedUrls', urls);
+  }
+
+  List<String> getUploadedUrls() {
+    return _sharedPreferences!.getStringList('uploadedUrls') ?? [];
+  }
+
 
 
   getFcmToken() async {

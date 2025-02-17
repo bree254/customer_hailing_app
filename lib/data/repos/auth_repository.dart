@@ -1,8 +1,10 @@
 import 'package:customer_hailing/data/models/auth/auth_response.dart';
+import 'package:customer_hailing/data/models/auth/update_profile_response.dart';
 import 'package:customer_hailing/data/models/auth/user_response.dart';
 import 'package:customer_hailing/data/models/auth/validate_otp.dart';
 
 import '../api/api_client.dart';
+import '../models/auth/upload_file.dart';
 
 class AuthRepository {
   final _apiClient = ApiClient();
@@ -34,5 +36,19 @@ class AuthRepository {
         required String userName}) async {
     return _apiClient.getUser(
          headers: headers, userName: userName,);
+  }
+
+  Future<UploadFileResponse> uploadFile({
+    required Map<String, String> headers,
+    required Map<String, dynamic> requestData,
+  }) async {
+    return await _apiClient.uploadProfile(headers: headers, requestData: requestData);
+  }
+
+  Future<UpdateProfileResponse> updateProfile({
+    required Map<String, String> headers,
+    required Map<String, dynamic> requestData,
+  }) async {
+    return await _apiClient.updateProfile(headers: headers, requestData: requestData);
   }
 }
