@@ -24,8 +24,8 @@ class TripHistoryDetailsResponse {
 
 @JsonSerializable()
 class Datum {
-  @JsonKey(name: "driverId")
-  String? driverId;
+  @JsonKey(name: "driver")
+  Driver? driver;
   @JsonKey(name: "fare")
   String? fare;
   @JsonKey(name: "rideCategory")
@@ -46,7 +46,7 @@ class Datum {
   String? polylinePoints;
 
   Datum({
-    this.driverId,
+    this.driver,
     this.fare,
     this.rideCategory,
     this.origin,
@@ -61,4 +61,39 @@ class Datum {
   factory Datum.fromJson(Map<String, dynamic> json) => _$DatumFromJson(json);
 
   Map<String, dynamic> toJson() => _$DatumToJson(this);
+}
+
+@JsonSerializable()
+class Driver {
+  @JsonKey(name: "id")
+  String? id;
+  @JsonKey(name: "firstName")
+  String? firstName;
+  @JsonKey(name: "lastName")
+  String? lastName;
+  @JsonKey(name: "phoneNumber")
+  String? phoneNumber;
+  @JsonKey(name: "rideCategory")
+  dynamic rideCategory;
+  @JsonKey(name: "makeAndModel")
+  String? makeAndModel;
+  @JsonKey(name: "numberPlate")
+  String? numberPlate;
+  @JsonKey(name: "rating")
+  int? rating;
+
+  Driver({
+    this.id,
+    this.firstName,
+    this.lastName,
+    this.phoneNumber,
+    this.rideCategory,
+    this.makeAndModel,
+    this.numberPlate,
+    this.rating,
+  });
+
+  factory Driver.fromJson(Map<String, dynamic> json) => _$DriverFromJson(json);
+
+  Map<String, dynamic> toJson() => _$DriverToJson(this);
 }

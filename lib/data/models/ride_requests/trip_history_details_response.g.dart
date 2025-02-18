@@ -25,7 +25,9 @@ Map<String, dynamic> _$TripHistoryDetailsResponseToJson(
     };
 
 Datum _$DatumFromJson(Map<String, dynamic> json) => Datum(
-      driverId: json['driverId'] as String?,
+      driver: json['driver'] == null
+          ? null
+          : Driver.fromJson(json['driver'] as Map<String, dynamic>),
       fare: json['fare'] as String?,
       rideCategory: json['rideCategory'] as String?,
       origin: json['origin'] as String?,
@@ -42,7 +44,7 @@ Datum _$DatumFromJson(Map<String, dynamic> json) => Datum(
     );
 
 Map<String, dynamic> _$DatumToJson(Datum instance) => <String, dynamic>{
-      'driverId': instance.driverId,
+      'driver': instance.driver,
       'fare': instance.fare,
       'rideCategory': instance.rideCategory,
       'origin': instance.origin,
@@ -52,4 +54,26 @@ Map<String, dynamic> _$DatumToJson(Datum instance) => <String, dynamic>{
       'paymentMethod': instance.paymentMethod,
       'status': instance.status,
       'polylinePoints': instance.polylinePoints,
+    };
+
+Driver _$DriverFromJson(Map<String, dynamic> json) => Driver(
+      id: json['id'] as String?,
+      firstName: json['firstName'] as String?,
+      lastName: json['lastName'] as String?,
+      phoneNumber: json['phoneNumber'] as String?,
+      rideCategory: json['rideCategory'],
+      makeAndModel: json['makeAndModel'] as String?,
+      numberPlate: json['numberPlate'] as String?,
+      rating: (json['rating'] as num?)?.toInt(),
+    );
+
+Map<String, dynamic> _$DriverToJson(Driver instance) => <String, dynamic>{
+      'id': instance.id,
+      'firstName': instance.firstName,
+      'lastName': instance.lastName,
+      'phoneNumber': instance.phoneNumber,
+      'rideCategory': instance.rideCategory,
+      'makeAndModel': instance.makeAndModel,
+      'numberPlate': instance.numberPlate,
+      'rating': instance.rating,
     };

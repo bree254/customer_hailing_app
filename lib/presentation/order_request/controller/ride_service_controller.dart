@@ -4,6 +4,7 @@ import 'package:customer_hailing/data/models/ride_requests/confirm_trip_response
 import 'package:customer_hailing/data/models/ride_requests/driver_locations_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/rate_trip_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/schedule_trip_response.dart';
+import 'package:customer_hailing/data/models/ride_requests/scheduled_trips_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/search_locations_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/trip_details_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/trip_history_response.dart';
@@ -13,7 +14,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:intl/intl.dart';
 import '../../../data/api/endpoints.dart';
+import '../../../data/models/ride_requests/scheduled_trip_details_response.dart';
+import '../../../data/models/ride_requests/trip_history_details_response.dart';
 import '../../../data/repos/ride_service_repository.dart';
 import '../../../routes/routes.dart';
 import '../../auth/controller/auth_controller.dart';
@@ -23,34 +27,32 @@ class RideServiceController extends GetxController {
 
   RideServiceController({required this.rideServiceRepository});
 
-
+  final TextEditingController destinationController = TextEditingController();
   String? accessToken;
 
-  final TextEditingController destinationController = TextEditingController();
   RxList<FareAmount> fareAmounts = <FareAmount>[].obs;
   RxList<AvailableRide> availableRides = <AvailableRide>[].obs;
-  //Rx<Data> data = Data().obs;
 
   late final Rx<Data> data = Data().obs;
 
   RxList<DriverLocationsResponse> drivers = <DriverLocationsResponse>[].obs;
+
   var tripDetails = TripDetailsResponse().obs;
   var history = TripHistoryResponse().obs;
+  Rx<TripHistoryDetailsResponse> historyDetails = TripHistoryDetailsResponse().obs;
 
+  RxList<ScheduledTripsResponse> scheduledTrips = <ScheduledTripsResponse>[].obs;
+  var scheduledTripDetails = ScheduledTripDetailsResponse().obs;
   @override
   void onInit() async {
     super.onInit();
     accessToken = await PrefUtils().retrieveToken('access_token');
     //getDriverLocations();
 
-    // Retrieve the requestId from shared preferences
     String? requestId = await PrefUtils().retrieveRequestId();
-
-    // Print the retrieved requestId for debugging
     print('Retrieved requestId: $requestId');
 
     if (requestId != null) {
-      // Fetch trip details using the requestId
       await getTripDetails(requestId);
     } else {
       print('RequestId is null. Cannot fetch trip details.');
@@ -60,9 +62,19 @@ class RideServiceController extends GetxController {
     print('Retrieved customerId: $customerId');
     if (customerId != null) {
       await getTripHistory(customerId);
+      await getScheduledTrips(customerId);
     } else {
       print('customerId is null. Cannot fetch trip history.');
     }
+
+    if (scheduledTrips.isNotEmpty) {
+      String tripId = scheduledTrips.first.id!;
+      await getScheduledTripDetails(tripId);
+    } else {
+      print('No scheduled trips available.');
+    }
+
+
   }
 
   Future<void> uploadCustomerLocation() async {
@@ -274,9 +286,43 @@ class RideServiceController extends GetxController {
       );
       history.value = response;
       print('Trip history fetched successfully: ${response.toJson()}');
+      // Iterate over the trip history and fetch details for each trip
+      for (var trip in response.data!) {
+        await getTripHistoryDetails(trip.id!);
+      }
     } catch (e) {
       // Handle any errors
       print('Error fetching Trip history: $e');
+    }
+  }
+
+  Future<void> getTripHistoryDetails(String tripId) async {
+    try {
+      //final authController = Get.find<AuthController>();
+
+      Map<String, String> headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $accessToken',
+      };
+
+      //final driverId = authController.driver.value.id.toString();
+
+      // Log the request URL and parameters
+      print('Trip history details  with tripId: $tripId');
+      print('Trip history details Request URL: ${Endpoints.historyDetails}$tripId/completedTripDetails');
+      print('Trip history details Headers: $headers');
+
+      TripHistoryDetailsResponse response = await rideServiceRepository.tripHistoryDetails(
+        headers: headers,
+        tripId: tripId,
+      );
+
+// Ensure the history variable is of type TripHistoryDetailsResponse
+      historyDetails.value = response;
+      print('Trip history details fetched successfully: ${response.toJson()}');
+    } catch (e) {
+      // Handle any errors
+      print('Error fetching Trip history details: $e');
     }
   }
 
@@ -316,7 +362,7 @@ class RideServiceController extends GetxController {
     }
   }
 
-  Future<void> scheduleTrip(String dropOffAddress, String rideCategory, String paymentMethod, double fareEstimate) async {
+  Future<void> scheduleTrip(String pickupAddress, String dropOffAddress, String rideCategory, double estimatedFare,String paymentMethod, String date, String time) async {
     try {
       final mapController = Get.find<MapController>();
       final authController = Get.find<AuthController>();
@@ -326,7 +372,7 @@ class RideServiceController extends GetxController {
 
       if (destinationCoordinates == null) {
         Get.snackbar('Error', 'Failed to get coordinates for the destination address.');
-        return null;
+        return;
       }
 
       // Convert current location to address
@@ -338,13 +384,16 @@ class RideServiceController extends GetxController {
       // Ensure organizationId is a single string
       String? organizationId = authController.user.value.orgId?.isNotEmpty == true ? authController.user.value.orgId!.first : null;
 
+      // Format date and time
+      final formattedDate = DateFormat('dd-MM-yyyy').format(DateTime.parse(date));
+      final formattedTime = DateFormat('hh:mm a').format(DateFormat('HH:mm').parse(time));
+
       Map<String, String> headers = {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $accessToken',
       };
 
       Map<String, dynamic> requestData = {
-
         'customerId': authController.user.value.id,
         'organizationId': organizationId,
         'pickupLatitude': mapController.currentPosition.value!.latitude,
@@ -354,11 +403,12 @@ class RideServiceController extends GetxController {
         'pickupAddress': pickupAddress,
         'dropOffAddress': dropOffAddress,
         'rideCategory': rideCategory,
-        "requestType": "AIRPORT",
-        "paymentMethod": paymentMethod,
-        "pickupTime": "11:00 AM",
-        "pickupDate": "14-02-2025"
-
+        'isImmediate': false,
+        'estimatedFare': estimatedFare,
+        'requestType': 'AIRPORT',
+        'paymentMethod': paymentMethod,
+        'pickupTime': formattedTime,
+        'pickupDate': formattedDate,
       };
 
       print('schedule trip request data: $requestData');
@@ -369,16 +419,65 @@ class RideServiceController extends GetxController {
         requestData: requestData,
       );
 
-      if ( response.status == "201") {
-        print('Trip Scheduled message : ${response.message}' );
-
+      if (response.status == "201") {
+        print('Trip Scheduled message: ${response.message}');
+        Get.offNamed(AppRoutes.scheduleTrip);
       } else {
-        print( 'Failed to schedule trip: ${response.message}');
-        return null;
+        print('Failed to schedule trip: ${response.message}');
       }
     } catch (e) {
-      print(' schedule Trip Error: ${ e.toString()}',);
-      return null;
+      print('schedule Trip Error: ${e.toString()}');
+    }
+  }
+
+  Future<void> getScheduledTrips(String customerId) async {
+    try {
+      Map<String, String> headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $accessToken',
+      };
+
+      // Log the request URL and parameters
+      print('Scheduled trips with customerId: $customerId');
+      print('Scheduled trips Request URL: ${Endpoints.scheduledTrip}$customerId');
+      print('Scheduled trips Headers: $headers');
+
+
+      List<ScheduledTripsResponse> response = await rideServiceRepository.scheduledTrips(
+        headers: headers, customerId: customerId,
+      );
+
+      scheduledTrips.value = response;
+      print('Scheduled trips fetched successfully: ${response.map((trip) => trip.toJson()).toList()}');
+
+    } catch (e) {
+      // Handle any errors
+      print('Error fetching scheduled trips: $e');
+    }
+  }
+
+
+  Future<void> getScheduledTripDetails(String tripId) async {
+    try {
+      Map<String, String> headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $accessToken',
+      };
+
+      // Log the request URL and parameters
+      print('Scheduled trips details with tripId: $tripId');
+      print('Scheduled trips details Request URL: ${Endpoints.scheduledTrip}$tripId');
+      print('Scheduled trips details  Headers: $headers');
+
+      ScheduledTripDetailsResponse response = await rideServiceRepository.scheduledTripDetails(
+        headers: headers,
+        tripId: tripId,
+      );
+
+      scheduledTripDetails.value = response;
+      print('Scheduled trip details fetched successfully: ${response.toJson()}');
+    } catch (e) {
+      print('Error fetching scheduled trip details: $e');
     }
   }
 

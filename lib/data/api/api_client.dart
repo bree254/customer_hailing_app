@@ -1,4 +1,5 @@
 import 'package:customer_hailing/core/app_export.dart';
+import 'package:customer_hailing/data/models/api_response.dart';
 import 'package:customer_hailing/data/models/auth/auth_response.dart';
 import 'package:customer_hailing/data/models/auth/update_profile_response.dart';
 import 'package:customer_hailing/data/models/auth/user_response.dart';
@@ -6,6 +7,8 @@ import 'package:customer_hailing/data/models/auth/validate_otp.dart';
 import 'package:customer_hailing/data/models/ride_requests/confirm_trip_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/driver_locations_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/rate_trip_response.dart';
+import 'package:customer_hailing/data/models/ride_requests/scheduled_trip_details_response.dart';
+import 'package:customer_hailing/data/models/ride_requests/scheduled_trips_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/search_locations_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/trip_details_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/trip_history_response.dart';
@@ -286,11 +289,11 @@ class ApiClient extends GetConnect {
   }
 
   Future<TripHistoryDetailsResponse> tripHistoryDetails(
-      {required Map<String, String> headers,required String driverId}) async {
+      {required Map<String, String> headers,required String tripId}) async {
     await isNetworkConnected();
 
     try {
-      var response = await _dio.get('${Endpoints.historyDetails}$driverId/completedTripDetails',
+      var response = await _dio.get('${Endpoints.historyDetails}$tripId/completedTripDetails',
           options: dio.Options(headers: headers));
       debugPrint('Response status: ${response.statusCode}');
       debugPrint('Response data: ${response.data}');
@@ -415,6 +418,55 @@ class ApiClient extends GetConnect {
         return UpdateProfileResponse.fromJson(response.data);
       } else {
         return UpdateProfileResponse.fromJson(response.data);
+      }
+    } catch (error, stackTrace) {
+      Logger.log(
+        error,
+        stackTrace: stackTrace,
+      );
+      rethrow;
+    }
+  }
+
+  Future<List<ScheduledTripsResponse>> scheduledTrips({
+    required Map<String, String> headers,
+    required String customerId,
+  }) async {
+    await isNetworkConnected();
+
+    try {
+      var response = await _dio.get('${Endpoints.scheduledTrip}$customerId',
+          options: dio.Options(headers: headers));
+      debugPrint('Response status: ${response.statusCode}');
+      debugPrint('Response data: ${response.data}');
+      if (_isSuccessCall(response)) {
+        List<dynamic> data = response.data;
+        return data.map((json) => ScheduledTripsResponse.fromJson(json)).toList();
+      } else {
+        return [];
+      }
+    } catch (error, stackTrace) {
+      Logger.log(
+        error,
+        stackTrace: stackTrace,
+      );
+      rethrow;
+    }
+  }
+
+  Future<ScheduledTripDetailsResponse> scheduledTripDetails(
+      {required Map<String, String> headers,required String tripId}) async {
+    await isNetworkConnected();
+
+    try {
+      var response = await _dio.get('${Endpoints.scheduledTripDetails}$tripId',
+          options: dio.Options(headers: headers));
+      debugPrint('Response status: ${response.statusCode}');
+      debugPrint('Response data: ${response.data}');
+      if (_isSuccessCall(response)) {
+        return ScheduledTripDetailsResponse.fromJson(response.data);
+      } else {
+        return ScheduledTripDetailsResponse.fromJson(response.data);
       }
     } catch (error, stackTrace) {
       Logger.log(

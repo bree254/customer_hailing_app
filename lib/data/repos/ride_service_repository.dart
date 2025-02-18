@@ -1,12 +1,15 @@
 import 'package:customer_hailing/data/models/ride_requests/confirm_trip_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/driver_locations_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/rate_trip_response.dart';
+import 'package:customer_hailing/data/models/ride_requests/scheduled_trip_details_response.dart';
+import 'package:customer_hailing/data/models/ride_requests/scheduled_trips_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/search_locations_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/trip_details_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/trip_history_response.dart';
 
 import '../api/api_client.dart';
 import '../models/ride_requests/schedule_trip_response.dart';
+import '../models/ride_requests/trip_history_details_response.dart';
 
 class RideServiceRepository {
   final _apiClient = ApiClient();
@@ -49,6 +52,14 @@ class RideServiceRepository {
       headers: headers, customerId: customerId,);
   }
 
+  Future<TripHistoryDetailsResponse> tripHistoryDetails(
+      {
+        Map<String, String> headers = const {},
+        required String tripId}) async {
+    return _apiClient.tripHistoryDetails(
+      headers: headers,tripId: tripId,);
+  }
+
   Future<RateTripResponse> rateTrip(
       {
         required Map<String, String> headers,
@@ -62,6 +73,24 @@ class RideServiceRepository {
     required Map<String, dynamic> requestData,
   }) async {
     return await _apiClient.scheduleTrip(headers: headers, requestData: requestData);
+  }
+
+  Future<List<ScheduledTripsResponse>> scheduledTrips({
+    required Map<String, String> headers,
+    required String customerId,
+  }) async {
+    return _apiClient.scheduledTrips(
+      headers: headers,
+      customerId: customerId,
+    );
+  }
+
+  Future<ScheduledTripDetailsResponse> scheduledTripDetails(
+      {
+        Map<String, String> headers = const {},
+        required String tripId}) async {
+    return _apiClient.scheduledTripDetails(
+      headers: headers,tripId: tripId,);
   }
 
 

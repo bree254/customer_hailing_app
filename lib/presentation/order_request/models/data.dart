@@ -109,16 +109,16 @@ class MyData {
   ];
 
   static final List<Map<String, String>> trips = [
-    {
-      'dateTime': 'Oct 5, 2024 10:00 AM',
-      'from': 'GPO Stage, Kenyatta Avenue',
-      'to': 'Mövenpick Residences Nairobi',
-    },
-    {
-      'dateTime': 'Oct 6, 2024 02:00 PM',
-      'from': '789 Oak St, Metropolis',
-      'to': '101 Maple St, Gotham',
-    },
+    // {
+    //   'dateTime': 'Oct 5, 2024 10:00 AM',
+    //   'from': 'GPO Stage, Kenyatta Avenue',
+    //   'to': 'Mövenpick Residences Nairobi',
+    // },
+    // {
+    //   'dateTime': 'Oct 6, 2024 02:00 PM',
+    //   'from': '789 Oak St, Metropolis',
+    //   'to': '101 Maple St, Gotham',
+    // },
     // Add more trips as needed
   ];
 

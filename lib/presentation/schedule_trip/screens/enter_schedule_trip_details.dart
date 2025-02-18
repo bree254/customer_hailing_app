@@ -14,41 +14,32 @@ class EnterScheduleTripDetailsScreen extends StatefulWidget {
 }
 
 class _EnterScheduleTripDetailsScreenState extends State<EnterScheduleTripDetailsScreen> {
-  final String googleApiKey ="AIzaSyAFFMad-10qvSw8wZl7KgDp0jVafz4La6E";
+  final String googleApiKey = "AIzaSyAFFMad-10qvSw8wZl7KgDp0jVafz4La6E";
   final TextEditingController _locationController = TextEditingController();
   final TextEditingController _destinationController = TextEditingController();
   List<Prediction> _predictions = [];
-  // List _pastDestinations = [];
-
   final FocusNode _locationFocusNode = FocusNode();
   final FocusNode _destinationFocusNode = FocusNode();
-
   final List<TextEditingController> _stopoverControllers = [];
   final List<FocusNode> _stopoverFocusNodes = [];
-
   final RxBool _isTyping = false.obs;
 
   @override
   void initState() {
     super.initState();
-    // _isTyping = false;
 
+    // Retrieve the date and time arguments
+    final arguments = Get.arguments as Map<String, String>;
+    final date = arguments['date'];
+    final time = arguments['time'];
 
     // Add listeners to detect typing
     _locationController.addListener(_onTextChanged);
     _destinationController.addListener(_onTextChanged);
-
     _locationFocusNode.addListener(_onFocusChange);
     _destinationFocusNode.addListener(_onFocusChange);
-
     _locationController.addListener(_onLocationChanged);
     _destinationController.addListener(_onLocationChanged);
-
-    // Retrieve the current location passed from DestinationBottomSheet
-    final currentAddress = Get.arguments as String?;
-    if (currentAddress != null) {
-      _locationController.text = currentAddress;
-    }
 
     _locationFocusNode.addListener(() {
       setState(() {});
@@ -60,7 +51,6 @@ class _EnterScheduleTripDetailsScreenState extends State<EnterScheduleTripDetail
     // Add location controller and focus node
     _stopoverControllers.add(_locationController);
     _stopoverFocusNodes.add(_locationFocusNode);
-
     _stopoverControllers.add(_destinationController);
     _stopoverFocusNodes.add(_destinationFocusNode);
 
@@ -80,7 +70,6 @@ class _EnterScheduleTripDetailsScreenState extends State<EnterScheduleTripDetail
   void dispose() {
     _locationFocusNode.dispose();
     _destinationFocusNode.dispose();
-
     _locationController.dispose();
     _destinationController.dispose();
     for (var controller in _stopoverControllers) {
@@ -110,7 +99,6 @@ class _EnterScheduleTripDetailsScreenState extends State<EnterScheduleTripDetail
     setState(() {
       _stopoverControllers[index].dispose();
       _stopoverFocusNodes[index].dispose();
-
       _stopoverControllers.removeAt(index);
       _stopoverFocusNodes.removeAt(index);
     });
@@ -121,10 +109,7 @@ class _EnterScheduleTripDetailsScreenState extends State<EnterScheduleTripDetail
       _isTyping.value = _locationController.text.isNotEmpty ||
           _destinationController.text.isNotEmpty ||
           _stopoverControllers.any((controller) => controller.text.isNotEmpty);
-
     });
-
-    debugPrint("TYPING : $_isTyping");
   }
 
   void _onFocusChange() {
@@ -133,8 +118,8 @@ class _EnterScheduleTripDetailsScreenState extends State<EnterScheduleTripDetail
           _destinationFocusNode.hasFocus ||
           _stopoverFocusNodes.any((focusNode) => focusNode.hasFocus);
     });
-    debugPrint("TYPING : $_isTyping");
   }
+
   void _onLocationChanged() async {
     if (_locationFocusNode.hasFocus) {
       final locationQuery = _locationController.text;
@@ -161,7 +146,6 @@ class _EnterScheduleTripDetailsScreenState extends State<EnterScheduleTripDetail
         });
       }
     } else {
-      // Handle stopovers
       for (int i = 0; i < _stopoverControllers.length - 1; i++) {
         if (_stopoverFocusNodes[i].hasFocus) {
           final stopoverQuery = _stopoverControllers[i].text;
@@ -181,13 +165,11 @@ class _EnterScheduleTripDetailsScreenState extends State<EnterScheduleTripDetail
     }
   }
 
-
   Future<String> _fetchPredictions(String input) async {
     final url = Uri.parse(
-      'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input&key=AIzaSyAFFMad-10qvSw8wZl7KgDp0jVafz4La6E',
+      'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input&key=$googleApiKey&components=country:ke',
     );
     final response = await http.get(url);
-    // debugPrint(jsonEncode(response.body));
     return response.body;
   }
 
@@ -197,9 +179,34 @@ class _EnterScheduleTripDetailsScreenState extends State<EnterScheduleTripDetail
     return predictions.map((p) => Prediction.fromJson(p)).toList();
   }
 
-  void _onPredictionSelected(Prediction prediction) {
-    Get.toNamed(AppRoutes.scheduleSelectRide, arguments: {'type': 'prediction', 'value': prediction.description});
+  // void _onPredictionSelected(Prediction prediction) {
+  //   Get.toNamed(AppRoutes.scheduleSelectRide, arguments: {
+  //     'type': 'prediction',
+  //     'value': prediction.description,
+  //     'date': Get.arguments['date'],
+  //     'time': Get.arguments['time'],
+  //   });
+  // }
 
+  void _onPredictionSelected(Prediction prediction) {
+    if (_locationController.text.isNotEmpty && _destinationController.text.isNotEmpty) {
+      Get.toNamed(AppRoutes.scheduleSelectRide, arguments: {
+        'location': _locationController.text,
+        'destination': _destinationController.text,
+        'date': Get.arguments['date'],
+        'time': Get.arguments['time'],
+      });
+    } else {
+      setState(() {
+        if (_locationFocusNode.hasFocus) {
+          _locationController.text = prediction.description;
+          _locationFocusNode.unfocus();
+        } else if (_destinationFocusNode.hasFocus) {
+          _destinationController.text = prediction.description;
+          _destinationFocusNode.unfocus();
+        }
+      });
+    }
   }
 
   Widget _buildDotIndicator(bool isActive) {
@@ -231,14 +238,14 @@ class _EnterScheduleTripDetailsScreenState extends State<EnterScheduleTripDetail
                 Container(
                   width: 2,
                   height: 20,
-                  color: dotGrey, // Change color as needed
+                  color: dotGrey,
                 ),
               _buildDotIndicator(focusNode.hasFocus),
               if (index != _stopoverControllers.length - 1)
                 Container(
                   width: 2,
                   height: 20,
-                  color: dotGrey, // Change color as needed
+                  color: dotGrey,
                 ),
             ],
           ),
@@ -253,7 +260,7 @@ class _EnterScheduleTripDetailsScreenState extends State<EnterScheduleTripDetail
                     : isDestination
                     ? 'Enter your destination'
                     : 'Enter stop $index',
-                hintStyle:AppTextStyles.bodySmallBold.copyWith(
+                hintStyle: AppTextStyles.bodySmallBold.copyWith(
                   color: searchtextGrey,
                 ),
                 fillColor: focusNode.hasFocus ? Colors.white : searchButtonGrey,
@@ -302,7 +309,7 @@ class _EnterScheduleTripDetailsScreenState extends State<EnterScheduleTripDetail
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        title:  Text(
+        title: Text(
           'Enter trip details',
           style: AppTextStyles.mediumAppBarText,
         ),
@@ -332,7 +339,6 @@ class _EnterScheduleTripDetailsScreenState extends State<EnterScheduleTripDetail
                       SizedBox(
                         height: 200,
                         child: ReorderableListView(
-                          // physics: const NeverScrollableScrollPhysics(),
                           clipBehavior: Clip.none,
                           onReorder: (oldIndex, newIndex) {
                             setState(() {
@@ -357,7 +363,7 @@ class _EnterScheduleTripDetailsScreenState extends State<EnterScheduleTripDetail
                         child: Container(
                           color: Colors.transparent,
                           margin: const EdgeInsets.symmetric(vertical: 10),
-                          child:  Row(
+                          child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Icon(Icons.add_circle_outlined, color: primaryColor, size: 14),
@@ -385,7 +391,6 @@ class _EnterScheduleTripDetailsScreenState extends State<EnterScheduleTripDetail
               itemCount: MyData.destinations.length,
               itemBuilder: (BuildContext context, int index) {
                 var destination = MyData.destinations[index];
-
                 return Container(
                   margin: const EdgeInsets.fromLTRB(16, 0, 16, 8),
                   decoration: ShapeDecoration(
@@ -401,29 +406,15 @@ class _EnterScheduleTripDetailsScreenState extends State<EnterScheduleTripDetail
                   child: ListTile(
                     onTap: () {
                       if (_destinationFocusNode.hasFocus) {
-                        // Update the destination controller with the selected destination
                         _destinationController.text = destination.address;
-                        // Optionally, move focus to the destination text field
                         _destinationFocusNode.requestFocus();
-
-                        // Get.toNamed(AppRoutes.selectRide, arguments: destination.address);
                       } else if (_locationFocusNode.hasFocus) {
-                        // Update the location controller with the selected location
                         _locationController.text = destination.address;
-                        // Optionally, move focus to the location text field
                         _locationFocusNode.requestFocus();
                       } else {
-                        // Handle stopovers
-                        for (int i = 1;
-                        i < _stopoverControllers.length - 1;
-                        i++) {
+                        for (int i = 1; i < _stopoverControllers.length - 1; i++) {
                           if (_stopoverFocusNodes[i].hasFocus) {
-                            _stopoverControllers[i].text =
-                                destination.address;
-
-                            // Optionally, trigger autocomplete for the stopover
-                            // await _handleAutocomplete(_stopoverControllers[i], _stopoverFocusNodes[i]);
-
+                            _stopoverControllers[i].text = destination.address;
                             _stopoverFocusNodes[i].requestFocus();
                             break;
                           }
@@ -436,15 +427,15 @@ class _EnterScheduleTripDetailsScreenState extends State<EnterScheduleTripDetail
                     ),
                     title: Text(
                       destination.address,
-                      style:AppTextStyles.bodySmallBold.copyWith(
+                      style: AppTextStyles.bodySmallBold.copyWith(
                         color: searchtextGrey,
                       ),
                     ),
                     subtitle: Text(
                       destination.location,
-                      style:AppTextStyles.bodySmallBold.copyWith(
-                          color: searchtextGrey,
-                          fontSize:10.0
+                      style: AppTextStyles.bodySmallBold.copyWith(
+                        color: searchtextGrey,
+                        fontSize: 10.0,
                       ),
                     ),
                   ),
@@ -478,23 +469,19 @@ class _EnterScheduleTripDetailsScreenState extends State<EnterScheduleTripDetail
                     ),
                     title: Text(
                       prediction.description,
-                      style:AppTextStyles.bodySmallBold.copyWith(
+                      style: AppTextStyles.bodySmallBold.copyWith(
                         color: searchtextGrey,
                       ),
                     ),
                     onTap: () {
                       final selectedPrediction = prediction.description;
-
                       if (_locationFocusNode.hasFocus) {
-                        // Populate the location text field
                         _locationController.text = selectedPrediction;
                         _locationFocusNode.unfocus();
                       } else if (_destinationFocusNode.hasFocus) {
-                        // Populate the destination text field
                         _destinationController.text = selectedPrediction;
                         _destinationFocusNode.unfocus();
                       } else {
-                        // Handle stopovers
                         for (int i = 1; i < _stopoverControllers.length - 1; i++) {
                           if (_stopoverFocusNodes[i].hasFocus) {
                             _stopoverControllers[i].text = selectedPrediction;
@@ -503,19 +490,15 @@ class _EnterScheduleTripDetailsScreenState extends State<EnterScheduleTripDetail
                           }
                         }
                       }
-
-                      // Clear predictions after selection
                       setState(() {
                         _predictions = [];
                       });
-                      // Navigate to the next screen after selecting the prediction
                       _onPredictionSelected(prediction);
                     },
-
                   ),
                 );
               },
-            ),)
+            )),
           ),
         ],
       ),
