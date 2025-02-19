@@ -56,6 +56,13 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>LSApplicationQueriesSchemes</key>
+    <array>
+      <string>sms</string>
+      <string>tel</string>
+    </array>
+    <key>NSContactsUsageDescription</key>
+    <string>This app requires contacts access to function properly.</string>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
@@ -69,5 +76,6 @@
         <string>We need access to your camera to allow you to take photos.</string>
         <key>NSMicrophoneUsageDescription</key>
         <string>We need access to your microphone to record videos.</string>
+
 </dict>
 </plist>

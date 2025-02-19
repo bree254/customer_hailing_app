@@ -47,7 +47,7 @@ class _HistoryDetailsScreenState extends State<HistoryDetailsScreen> {
   Widget build(BuildContext context) {
     final historyDetails = controller.historyDetails.value.data!.first;
     final String date = extractDate(historyDetails.startTime!);
-    final num rating = historyDetails.driver!.rating ?? 0.0;
+    final num rating = historyDetails.driver?.rating ?? 0.0;
 
     return Scaffold(
       appBar: AppBar(

@@ -8,6 +8,7 @@ import '../presentation/order_request/controller/ride_service_controller.dart';
 import '../presentation/order_request/screens/rate_ride_screen.dart';
 import '../presentation/order_request/screens/trip_summary_screen.dart';
 import 'custom_elevated_button.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class TripStatusBottomSheet extends StatelessWidget {
   const TripStatusBottomSheet({super.key});
@@ -55,10 +56,6 @@ class TripStatusBottomSheet extends StatelessWidget {
                       return _buildArrivedContent(rideServiceController);
                     case 'IN_PROGRESS':
                       return _buildHeadingToDestinationContent(rideServiceController);
-                    // case 'COMPLETED':
-                    //   WidgetsBinding.instance.addPostFrameCallback((_) {
-                    //     Get.to(() => const TripSummaryScreen());
-                    //   });
                     case 'COMPLETED':
                       if (!hasNavigatedToSummary.value) {
                         hasNavigatedToSummary.value = true;
@@ -276,7 +273,6 @@ class TripStatusBottomSheet extends StatelessWidget {
                       ),
                       Text(
                         rideServiceController.tripDetails.value.driver!.rating.toString(),
-                       // '4.85',
                         textAlign: TextAlign.center,
                         style: AppTextStyles.bodySmall.copyWith(
                           color: resendCodeTextColor,
@@ -341,20 +337,27 @@ class TripStatusBottomSheet extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 32),
-        _buildButtons(),
+        _buildButtons(rideServiceController),
         const SizedBox(height: 24),
       ],
     );
   }
 
-  Widget _buildButtons() {
+  Widget _buildButtons(RideServiceController rideServiceController) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         ElevatedButton(
-          onPressed: () {
-            Get.toNamed(AppRoutes.messageDriver);
+          onPressed: () async {
+           // Get.toNamed(AppRoutes.messageDriver);
+            final phoneNumber = rideServiceController.tripDetails.value.driver!.phoneNumber;
+            final url = 'sms:$phoneNumber';
+            if (await canLaunch(url)) {
+            await launch(url);
+            } else {
+            throw 'Could not launch $url';
+            }
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: selectRideColor,
@@ -449,7 +452,15 @@ class TripStatusBottomSheet extends StatelessWidget {
                         height: 16,
                       ),
                       CustomElevatedButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          final phoneNumber = rideServiceController.tripDetails.value.driver!.phoneNumber;
+                          final url = 'tel:$phoneNumber';
+                          if (await canLaunch(url)) {
+                            await launch(url);
+                          } else {
+                            throw 'Could not launch $url';
+                          }
+                        },
                         text: 'Phone call',
                         buttonStyle: ElevatedButton.styleFrom(
                           backgroundColor: whiteTextColor,
