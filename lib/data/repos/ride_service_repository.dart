@@ -1,9 +1,11 @@
+import 'package:customer_hailing/data/models/api_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/confirm_trip_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/driver_locations_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/rate_trip_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/scheduled_trip_details_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/scheduled_trips_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/search_locations_response.dart';
+import 'package:customer_hailing/data/models/ride_requests/share_trip_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/trip_details_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/trip_history_response.dart';
 
@@ -93,6 +95,19 @@ class RideServiceRepository {
       headers: headers,tripId: tripId,);
   }
 
+  Future<ShareTripResponse> shareTrip({
+    required Map<String, String> headers,
+    required String tripId,
+  }) async {
+    return await _apiClient.shareTrip(headers: headers, tripId: tripId);
+  }
+
+  Future<ApiResponse> raiseSos({
+    required Map<String, String> headers,
+    required Map<String, dynamic> requestData,
+  }) async {
+    return await _apiClient.raiseSos(headers: headers, requestData: requestData);
+  }
 
 
 }

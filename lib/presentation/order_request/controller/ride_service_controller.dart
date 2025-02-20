@@ -1,11 +1,13 @@
 import 'dart:async';
 import 'package:customer_hailing/core/app_export.dart';
+import 'package:customer_hailing/data/models/api_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/confirm_trip_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/driver_locations_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/rate_trip_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/schedule_trip_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/scheduled_trips_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/search_locations_response.dart';
+import 'package:customer_hailing/data/models/ride_requests/share_trip_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/trip_details_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/trip_history_response.dart';
 import 'package:customer_hailing/presentation/order_request/controller/map_controller.dart';
@@ -33,7 +35,7 @@ class RideServiceController extends GetxController {
   RxList<FareAmount> fareAmounts = <FareAmount>[].obs;
   RxList<AvailableRide> availableRides = <AvailableRide>[].obs;
 
-  late final Rx<Data> data = Data().obs;
+ // late final Rx<Data> data = Data().obs;
 
   RxList<DriverLocationsResponse> drivers = <DriverLocationsResponse>[].obs;
 
@@ -481,6 +483,78 @@ class RideServiceController extends GetxController {
     }
   }
 
+  Future<String?> shareTrip() async {
+    final headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $accessToken',
+    };
+
+    final tripId = tripDetails.value.tripId.toString();
+
+    print('Share Trip ID: $tripId');
+    print('Share Trip Headers: $headers');
+    print('Share Trip Request URL: ${Endpoints.shareTrip}');
+
+    try {
+      final ShareTripResponse response = await rideServiceRepository.shareTrip(
+        headers: headers,
+        tripId: tripId,
+      );
+
+      if (response.status == "200") {
+        debugPrint('Trip link generated successfully');
+        print('share trip response: ${response.toJson()}');
+        return response.data?.shareableLink;
+      } else {
+        debugPrint('Failed to generate trip link');
+        return null;
+      }
+    } catch (e) {
+      debugPrint('Error generating trip link: $e');
+      return null;
+    }
+  }
+
+  Future<void> raiseSos() async {
+    try {
+      final mapController = Get.find<MapController>();
+      final authController = Get.find<AuthController>();
+
+      // Format date and time to "dd-MM-yyyy HH:mm"
+      final formattedDateTime = DateFormat('dd-MM-yyyy HH:mm').format(DateTime.now());
+
+      Map<String, String> headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $accessToken',
+      };
+
+      Map<String, dynamic> requestData = {
+        'tripId': tripDetails.value.tripId,
+        'customerId': authController.user.value.id,
+        'driverId': tripDetails.value.driver!.id,
+        'startTime': formattedDateTime,
+        'latitude': mapController.currentPosition.value!.latitude,
+        'longitude': mapController.currentPosition.value!.longitude,
+        'sosType': 'LOCAL_AUTHORITIES',
+      };
+
+      print('raise sos request data: $requestData');
+      print('raise sos headers: $headers');
+
+      ApiResponse response = await rideServiceRepository.raiseSos(
+        headers: headers,
+        requestData: requestData,
+      );
+
+      if (response.status == "201") {
+        print('SOS request logged successfully: ${response.message}');
+      } else {
+        print('Failed to raise sos trip: ${response.message}');
+      }
+    } catch (e) {
+      print('raise sos Error: ${e.toString()}');
+    }
+  }
   @override
   void onClose() {
     // Cancel the timer when the controller is closed

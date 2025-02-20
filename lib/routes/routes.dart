@@ -189,7 +189,7 @@ class AppRoutes {
   ),
     GetPage(
       name: emergency,
-      page: () =>  const EmergencyServicesScreen(),
+      page: () =>   EmergencyServicesScreen(),
     ),
     GetPage(
       name: scheduleTrip,

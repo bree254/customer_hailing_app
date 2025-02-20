@@ -10,6 +10,7 @@ import 'package:customer_hailing/data/models/ride_requests/rate_trip_response.da
 import 'package:customer_hailing/data/models/ride_requests/scheduled_trip_details_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/scheduled_trips_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/search_locations_response.dart';
+import 'package:customer_hailing/data/models/ride_requests/share_trip_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/trip_details_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/trip_history_response.dart';
 import 'package:customer_hailing/presentation/order_request/screens/search_location_screen.dart';
@@ -467,6 +468,64 @@ class ApiClient extends GetConnect {
         return ScheduledTripDetailsResponse.fromJson(response.data);
       } else {
         return ScheduledTripDetailsResponse.fromJson(response.data);
+      }
+    } catch (error, stackTrace) {
+      Logger.log(
+        error,
+        stackTrace: stackTrace,
+      );
+      rethrow;
+    }
+  }
+
+  Future<ShareTripResponse> shareTrip({
+    required Map<String, String> headers,
+    required String tripId,
+  }) async {
+    await isNetworkConnected();
+
+    final url = '${Endpoints.shareTrip}?tripId=$tripId';
+
+    try {
+      var response = await _dio.post(
+        url,
+        options: dio.Options(headers: headers),
+      );
+      debugPrint('Share trip #####Request URL: ${response.requestOptions.uri}');
+      debugPrint('Share trip  #####Response status: ${response.statusCode}');
+      debugPrint('Share trip  #####Response data: ${response.data}');
+      if (_isSuccessCall(response)) {
+        return ShareTripResponse.fromJson(response.data);
+      } else {
+        return ShareTripResponse.fromJson(response.data);
+      }
+    } catch (error, stackTrace) {
+      Logger.log(
+        error,
+        stackTrace: stackTrace,
+      );
+      rethrow;
+    }
+  }
+
+  Future<ApiResponse> raiseSos(
+      {required Map<String, String> headers, required Map requestData}) async {
+    isNetworkConnected();
+
+    try {
+      var response = await _dio.post(Endpoints.raiseSos,
+          data: requestData, options: dio.Options(headers: headers));
+
+      debugPrint('Raise SOS #####Request URL: ${response.requestOptions.uri}');
+      debugPrint('Raise SOS  #####Response status: ${response.statusCode}');
+      debugPrint('Raise SOS  #####Response data: ${response.data}');
+
+
+      if (_isSuccessCall(response)) {
+        return ApiResponse.fromJson(response.data);
+      } else {
+        debugPrint('Response :: ${response.statusCode}');
+        return ApiResponse.fromJson(response.data);
       }
     } catch (error, stackTrace) {
       Logger.log(
