@@ -1,11 +1,9 @@
 import 'dart:io';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:permission_handler/permission_handler.dart';
-
 import '../core/utils/pref_utils.dart';
 
 class NotificationService {
@@ -51,9 +49,15 @@ class NotificationService {
 
     const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('@mipmap/ic_launcher');
+    const DarwinInitializationSettings initializationSettingsDarwin =
+     DarwinInitializationSettings();
     const InitializationSettings initializationSettings =
-        InitializationSettings(android: initializationSettingsAndroid);
-    await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+        InitializationSettings(android: initializationSettingsAndroid,
+        iOS: initializationSettingsDarwin);
+
+
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+        onDidReceiveNotificationResponse: onDidReceiveNotificationResponse);
   }
 
   // static AndroidNotificationChannel channel;
@@ -154,6 +158,14 @@ class NotificationService {
     }
   }
 
+  static Future<void> onDidReceiveNotificationResponse(
+      NotificationResponse notificationResponse) async {
+    final String? payload = notificationResponse.payload;
+    if (payload != null) {
+      _onTapNotificationScreenNavigateCallback(payload, {});
+    }
+  }
+
   static Future<bool> isLocalNotificationAllowed() async {
     const notificationPermission = Permission.notification;
     final status = await notificationPermission.status;
@@ -182,8 +194,8 @@ class NotificationService {
     const AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails(
       notificationChannelKey,
-      'ride_notification',
-      channelDescription: 'ride_notification',
+      'yasil_hailing',
+      channelDescription: 'yasil_hailing',
       importance: Importance.max,
       priority: Priority.high,
       showWhen: false,

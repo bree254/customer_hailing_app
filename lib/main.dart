@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/routes/routes.dart';
 import 'package:customer_hailing/services/notifications_service.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -29,11 +30,11 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
   FlutterError.onError = (errorDetails) {
     FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
   };
@@ -41,6 +42,10 @@ Future<void> main() async {
     FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
     return true;
   };
+
+  FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(true);
+
+
 
   // Request location permissions if needed
   await Permission.locationWhenInUse.isDenied.then((valueOfPermission) {
@@ -56,12 +61,17 @@ Future<void> main() async {
     PrefUtils().init(),
   ]).then((value) async {
     await dotenv.load();
-    runApp(const Hailing());
+    runApp( Hailing());
   });
 }
 
 class Hailing extends StatelessWidget {
-  const Hailing({super.key});
+   Hailing({super.key});
+
+   static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+
+   FirebaseAnalyticsObserver observer =
+  FirebaseAnalyticsObserver(analytics: analytics);
 
   @override
   Widget build(BuildContext context) {
@@ -72,6 +82,7 @@ class Hailing extends StatelessWidget {
         title: 'Taxi App',
         debugShowCheckedModeBanner: false,
         theme: theme,
+        navigatorObservers: [observer],
         initialBinding: InitialBindings(),
         initialRoute: AppRoutes.splash,
         getPages: AppRoutes.pages,

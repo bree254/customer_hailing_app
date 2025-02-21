@@ -66,6 +66,7 @@ dependencies:
   fluttertoast:
   jwt_decoder:
   flutter_local_notifications: ^18.0.1
+  firebase_analytics: ^11.4.3
 #  polyline_do: ^0.1.0
 
 
