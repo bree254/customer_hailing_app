@@ -60,11 +60,14 @@ class AuthController extends GetxController {
       Map<String, dynamic> requestData = {
         'username': usernameController.text.trim(),
       };
+      print('login request data : $requestData');
+      print('login request url : ${Endpoints.loginUser}');
 
       AuthResponse response = await authRepository.emailLogin(
         headers: headers,
         requestData: requestData,
       );
+      print('login request data : $requestData');
 
       // Handle the response as needed
       if (response.message == 'Success') {

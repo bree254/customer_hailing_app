@@ -1,5 +1,6 @@
 class Endpoints {
-  static const String baseUrl = 'https://yasil-backend.cymelle.com';
+  static const String baseUrl = 'https://backend.yasil.co.ke';
+  //static const String baseUrl = 'https://yasil-backend.cymelle.com';
   static const String ngrokUrl = 'https://driven-credible-panda.ngrok-free.app';
 
   //Onboarding Endpoints

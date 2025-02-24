@@ -154,6 +154,34 @@ class TripStatusBottomSheet extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
                   child: CustomElevatedButton(
                     onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text('Cancel ride request'),
+                            content: Text(
+                              'Your ride request is still being processed. Canceling now will stop the search for a driver.',
+                              style: TextStyle(fontSize: 14),
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  // Handle the confirmation of cancellation
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text('Confirm'),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  // Handle the back action
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text('Back'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
                     },
                     buttonStyle: ElevatedButton.styleFrom(
                       backgroundColor: cancelButton,
@@ -165,7 +193,7 @@ class TripStatusBottomSheet extends StatelessWidget {
                     ),
                     text: 'Cancel trip',
                   ),
-                ),
+                )
               ],
             ),
           ),

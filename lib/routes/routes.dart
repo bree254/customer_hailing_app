@@ -42,6 +42,7 @@ import 'package:customer_hailing/presentation/two_factor_authentication/success_
 import 'package:customer_hailing/presentation/two_factor_authentication/two_factor_authentication_screen.dart';
 import '../presentation/auth/email/details_email_sign_up_screen.dart';
 import '../presentation/call-driver/screens/outgoing_call_screen.dart';
+import '../presentation/order_request/screens/cancelation_screen.dart';
 import '../presentation/trip_history/history_details_screen.dart';
 import '../presentation/schedule_trip/screens/enter_schedule_trip_details.dart';
 import '../presentation/schedule_trip/screens/schedule_select_ride_screen.dart';
@@ -97,6 +98,7 @@ class AppRoutes {
   static const String chatSupportScreen="/chat_support_screen";
   static const String privacyPolicy="/privacy_policy";
   static const String enterYourDetails="/enter_your_details";
+  static const String cancelationScreen="/cancelation_screen";
   static List<GetPage> pages = [
     GetPage(
       name: splash,
@@ -282,6 +284,10 @@ class AppRoutes {
     GetPage(
       name: enterYourDetails,
       page: () =>   const EnterYourDetailsScreen(),
+    ),
+    GetPage(
+      name: cancelationScreen,
+      page: () =>    CancelationScreen(),
     ),
   ];
 }

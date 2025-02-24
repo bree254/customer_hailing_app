@@ -11,24 +11,24 @@ class AwaitDriverBottomsheetWidget extends StatelessWidget {
 
   final RideServiceController rideServiceController = Get.find<RideServiceController>();
 
-  Widget _buildStatusContent() {
+  Widget _buildStatusContent(BuildContext context) {
     return Obx(() {
       final status = rideServiceController.tripDetails.value.tripStatus;
 
       switch (status) {
         case 'REQUESTED':
-          return _buildSearchingContent();
+          return _buildSearchingContent(context);
         case 'SCHEDULED':
           return _buildConnectingContent();
         case 'NEEDS_REASSIGNMENT':
           return _buildLookingForAnotherContent();
         default:
-          return _buildSearchingContent();
+          return _buildSearchingContent(context);
       }
     });
   }
 
-  Widget _buildSearchingContent() {
+  Widget _buildSearchingContent(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -58,9 +58,36 @@ class AwaitDriverBottomsheetWidget extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 22),
-        CustomElevatedButton(
+       CustomElevatedButton(
           onPressed: () {
-            Get.back();
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text('Cancel ride request'),
+                  content: Text(
+                    'Your ride request is still being processed. Canceling now will stop the search for a driver.',
+                    style: TextStyle(fontSize: 14),
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        // Handle the confirmation of cancellation
+                        Navigator.of(context).pop();
+                      },
+                      child: Text('Confirm'),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        // Handle the back action
+                        Navigator.of(context).pop();
+                      },
+                      child: Text('Back'),
+                    ),
+                  ],
+                );
+              },
+            );
           },
           buttonStyle: ElevatedButton.styleFrom(
             backgroundColor: cancelButton,
@@ -70,7 +97,7 @@ class AwaitDriverBottomsheetWidget extends StatelessWidget {
             color: cancelText,
           ),
           text: 'Cancel',
-        ),
+        )
       ],
     );
   }
@@ -263,7 +290,7 @@ class AwaitDriverBottomsheetWidget extends StatelessWidget {
           ),
           child: SingleChildScrollView(
             controller: scrollController,
-            child: _buildStatusContent(),
+            child: _buildStatusContent(context),
           ),
         );
       },
