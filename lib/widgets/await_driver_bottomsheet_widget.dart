@@ -21,7 +21,7 @@ class AwaitDriverBottomsheetWidget extends StatelessWidget {
         case 'SCHEDULED':
           return _buildConnectingContent();
         case 'NEEDS_REASSIGNMENT':
-          return _buildLookingForAnotherContent();
+          return _buildLookingForAnotherContent(context);
         default:
           return _buildSearchingContent(context);
       }
@@ -63,28 +63,71 @@ class AwaitDriverBottomsheetWidget extends StatelessWidget {
             showDialog(
               context: context,
               builder: (BuildContext context) {
-                return AlertDialog(
-                  title: Text('Cancel ride request'),
-                  content: Text(
-                    'Your ride request is still being processed. Canceling now will stop the search for a driver.',
-                    style: TextStyle(fontSize: 14),
+                return Dialog(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
                   ),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        // Handle the confirmation of cancellation
-                        Navigator.of(context).pop();
-                      },
-                      child: Text('Confirm'),
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          'Cancel ride request?',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        SizedBox(height: 10),
+                        Text(
+                          'Your ride request is still being processed. Canceling now will stop the search for a driver.',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.black54,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        SizedBox(height: 20),
+                        SizedBox(
+                          width: double.infinity,
+                          child:  CustomElevatedButton(
+                            onPressed: () {
+                              Get.toNamed(AppRoutes.cancelationScreen);
+                            },
+                            buttonStyle: ElevatedButton.styleFrom(
+                              backgroundColor: cancelButton,
+                              elevation: 0,
+                            ),
+                            buttonTextStyle: AppTextStyles.bodySmallBold.copyWith(
+                              color: cancelText,
+                            ),
+                            text: 'Confirm',
+                          ),
+                        ),
+                        SizedBox(height: 10),
+                        SizedBox(
+                          width: double.infinity,
+                          child: CustomElevatedButton(
+                            onPressed: () {
+                              // Get.back();
+                            },
+                            buttonStyle: ElevatedButton.styleFrom(
+                              backgroundColor: countryTextFieldColor,
+                              elevation: 0,
+                            ),
+                            buttonTextStyle: AppTextStyles.bodySmallBold.copyWith(
+                              color: resendCodeTextColor,
+                            ),
+                            text: 'Continue searching',
+                          ),
+
+                        ),
+                      ],
                     ),
-                    TextButton(
-                      onPressed: () {
-                        // Handle the back action
-                        Navigator.of(context).pop();
-                      },
-                      child: Text('Back'),
-                    ),
-                  ],
+                  ),
                 );
               },
             );
@@ -220,7 +263,7 @@ class AwaitDriverBottomsheetWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildLookingForAnotherContent() {
+  Widget _buildLookingForAnotherContent(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -257,7 +300,77 @@ class AwaitDriverBottomsheetWidget extends StatelessWidget {
         const SizedBox(height: 22),
         CustomElevatedButton(
           onPressed: () {
-            Get.back();
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return Dialog(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          'Cancel ride request?',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        SizedBox(height: 10),
+                        Text(
+                          'Your ride request is still being processed. Canceling now will stop the search for a driver.',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.black54,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        SizedBox(height: 20),
+                        SizedBox(
+                          width: double.infinity,
+                          child:  CustomElevatedButton(
+                            onPressed: () {
+                              // Get.back();
+                            },
+                            buttonStyle: ElevatedButton.styleFrom(
+                              backgroundColor: cancelButton,
+                              elevation: 0,
+                            ),
+                            buttonTextStyle: AppTextStyles.bodySmallBold.copyWith(
+                              color: cancelText,
+                            ),
+                            text: 'Confirm',
+                          ),
+                        ),
+                        SizedBox(height: 10),
+                        SizedBox(
+                          width: double.infinity,
+                          child: CustomElevatedButton(
+                            onPressed: () {
+                              // Get.back();
+                            },
+                            buttonStyle: ElevatedButton.styleFrom(
+                              backgroundColor: countryTextFieldColor,
+                              elevation: 0,
+                            ),
+                            buttonTextStyle: AppTextStyles.bodySmallBold.copyWith(
+                              color: resendCodeTextColor,
+                            ),
+                            text: 'Continue searching',
+                          ),
+
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            );
           },
           buttonStyle: ElevatedButton.styleFrom(
             backgroundColor: cancelButton,

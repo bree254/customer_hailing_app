@@ -42,12 +42,12 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
 
   // Define a map to associate ride categories with their image assets
   final Map<String, String> rideCategoryImages = {
-    'Economy': 'assets/images/economy.png',
-    'Boda': 'assets/images/boda.png',
-    'Comfort': 'assets/images/comfort.png',
-    'Female': 'assets/images/economy.png',
-    'Luxury': 'assets/images/economy.png',
-    'XL': 'assets/images/xl_vehicle.png',
+    'Economy': 'assets/images/economy_car.png',
+    'Boda': 'assets/images/normal_boda.png',
+    'Female': 'assets/images/female_car.png',
+    'Luxury': 'assets/images/luxury_car.png',
+    'Standard': 'assets/images/standard_car.png',
+    'XL': 'assets/images/xl_car.png',
   };
 
   @override

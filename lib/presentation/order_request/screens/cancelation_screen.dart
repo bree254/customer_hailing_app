@@ -1,6 +1,9 @@
+import 'package:customer_hailing/core/app_export.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter/material.dart';
+
+import '../../../widgets/custom_elevated_button.dart';
 
 class CancelationScreen extends StatefulWidget {
   @override
@@ -23,9 +26,17 @@ class _CancelationScreenState extends State<CancelationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.white,
         title: Text("Reason for cancellation?"),
         centerTitle: true,
         elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.close, color: Colors.black),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -49,7 +60,7 @@ class _CancelationScreenState extends State<CancelationScreen> {
                       margin: EdgeInsets.symmetric(vertical: 5),
                       decoration: BoxDecoration(
                         border: Border.all(
-                          color: isSelected ? Colors.purple : Colors.grey,
+                          color: isSelected ? primaryColor : Colors.grey,
                         ),
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -57,12 +68,12 @@ class _CancelationScreenState extends State<CancelationScreen> {
                         title: Text(
                           _reasons[index],
                           style: TextStyle(
-                            color: isSelected ? Colors.purple : Colors.black,
+                            color: isSelected ? primaryColor : Colors.black,
                             fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                           ),
                         ),
                         trailing: isSelected
-                            ? Icon(Icons.radio_button_checked, color: Colors.purple)
+                            ? Icon(Icons.radio_button_checked, color: primaryColor)
                             : Icon(Icons.radio_button_unchecked, color: Colors.grey),
                       ),
                     ),
@@ -82,16 +93,23 @@ class _CancelationScreenState extends State<CancelationScreen> {
                 maxLines: 3,
               ),
             SizedBox(height: 20),
-            ElevatedButton(
+
+            CustomElevatedButton(
+              text: 'Done',
               onPressed: () {
-                // Handle cancellation reason submission
+
               },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.purple,
-                minimumSize: Size(double.infinity, 50),
-              ),
-              child: Text("Done", style: TextStyle(color: Colors.white)),
             ),
+            // ElevatedButton(
+            //   onPressed: () {
+            //     // Handle cancellation reason submission
+            //   },
+            //   style: ElevatedButton.styleFrom(
+            //     backgroundColor: Colors.purple,
+            //     minimumSize: Size(double.infinity, 50),
+            //   ),
+            //   child: Text("Done", style: TextStyle(color: Colors.white)),
+            // ),
           ],
         ),
       ),

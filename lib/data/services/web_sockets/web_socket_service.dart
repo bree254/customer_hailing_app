@@ -7,7 +7,8 @@ class WebSocketService{
 late StompClient stompClient;
 // late StompConnectStatus stompConnectStatus;
 late final Function (List<DriverLocationsResponse>) onDriverLocationsReceived;
-final String url = 'wss://yasil-rides.cymelle.com/ws';
+//final String url = 'wss://yasil-rides.cymelle.com/ws';
+final String url = 'wss://rides.yasil.co.ke/ws';
 
 WebSocketService({required this.onDriverLocationsReceived});
 
