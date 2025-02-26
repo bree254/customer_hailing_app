@@ -70,7 +70,8 @@ dependencies:
   image_picker: ^1.1.2
   mime:
   url_launcher: ^6.3.1
-  contacts_service: ^0.6.3
+  #contacts_service:
+  flutter_contacts: ^1.1.9+2
 #  polyline_do: ^0.1.0
 
 

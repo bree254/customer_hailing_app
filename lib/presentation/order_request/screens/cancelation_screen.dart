@@ -1,8 +1,11 @@
 import 'package:customer_hailing/core/app_export.dart';
+import 'package:customer_hailing/presentation/order_request/controller/ride_service_controller.dart';
+import 'package:customer_hailing/routes/routes.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter/material.dart';
 
+import '../../../data/repos/ride_service_repository.dart';
 import '../../../widgets/custom_elevated_button.dart';
 
 class CancelationScreen extends StatefulWidget {
@@ -12,7 +15,9 @@ class CancelationScreen extends StatefulWidget {
 
 class _CancelationScreenState extends State<CancelationScreen> {
   int? _selectedIndex;
-  TextEditingController _reasonController = TextEditingController();
+  TextEditingController reasonController = TextEditingController();
+  final RideServiceController rideServiceController = Get.put(RideServiceController(rideServiceRepository: RideServiceRepository()));
+
   final List<String> _reasons = [
     "Driver asked me to cancel",
     "Driver is not moving",
@@ -52,7 +57,7 @@ class _CancelationScreenState extends State<CancelationScreen> {
                       setState(() {
                         _selectedIndex = index;
                         if (_reasons[index] != "Other") {
-                          _reasonController.clear();
+                          reasonController.clear();
                         }
                       });
                     },
@@ -83,7 +88,7 @@ class _CancelationScreenState extends State<CancelationScreen> {
             ),
             if (_selectedIndex == _reasons.length - 1) // Show textbox only for "Other"
               TextField(
-                controller: _reasonController,
+                controller: reasonController,
                 decoration: InputDecoration(
                   hintText: "Enter your reason",
                   border: OutlineInputBorder(
@@ -97,19 +102,12 @@ class _CancelationScreenState extends State<CancelationScreen> {
             CustomElevatedButton(
               text: 'Done',
               onPressed: () {
+                rideServiceController.cancelOnTrip(reasonController.text);
+                Get.offNamed(AppRoutes.home);
 
               },
             ),
-            // ElevatedButton(
-            //   onPressed: () {
-            //     // Handle cancellation reason submission
-            //   },
-            //   style: ElevatedButton.styleFrom(
-            //     backgroundColor: Colors.purple,
-            //     minimumSize: Size(double.infinity, 50),
-            //   ),
-            //   child: Text("Done", style: TextStyle(color: Colors.white)),
-            // ),
+
           ],
         ),
       ),

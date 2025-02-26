@@ -109,5 +109,13 @@ class RideServiceRepository {
     return await _apiClient.raiseSos(headers: headers, requestData: requestData);
   }
 
+  Future<ApiResponse> cancelTrip(
+      {
+        Map<String, String> headers = const {},
+        required Map<String, dynamic> requestData,
+        required String tripId}) async {
+    return _apiClient.cancelTrip(
+      headers: headers,requestData: requestData,tripId: tripId);
+  }
 
 }

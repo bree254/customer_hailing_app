@@ -555,6 +555,86 @@ class RideServiceController extends GetxController {
       print('raise sos Error: ${e.toString()}');
     }
   }
+
+  Future<void> canceltrip() async {
+    try {
+      final authController = Get.find<AuthController>();
+
+      Map<String, String> headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $accessToken',
+      };
+
+      Map<String, dynamic> requestData = {
+
+        'customerId':  authController.user.value.id,
+        'reason': '' ,
+        'reassignTrip': false,
+      };
+
+      print('cancel trip request data: $requestData');
+      print('cancel trip headers: $headers');
+
+
+    final tripId = tripDetails.value.tripId.toString();
+    print('cancel trip tripId: $tripId');
+
+      ApiResponse response = await rideServiceRepository.cancelTrip(
+        headers: headers,
+        requestData: requestData, tripId: tripId,
+      );
+
+
+      if ( response.status == "200") {
+        print( 'trip cancelled : ${response.message}');
+        Get.toNamed(AppRoutes.home);
+
+      }
+    } catch (e) {
+      print(' cancel Trip Error: ${ e.toString()}',);
+      return null;
+    }
+  }
+
+  Future<void> cancelOnTrip(String reason) async {
+    try {
+      final authController = Get.find<AuthController>();
+
+      Map<String, String> headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $accessToken',
+      };
+
+      Map<String, dynamic> requestData = {
+
+        'customerId':  authController.user.value.id,
+        'reason': reason ,
+        'reassignTrip': false,
+      };
+
+      print('cancel trip request data: $requestData');
+      print('cancel trip headers: $headers');
+
+
+      final tripId = tripDetails.value.tripId.toString();
+      print('cancel trip tripId: $tripId');
+
+      ApiResponse response = await rideServiceRepository.cancelTrip(
+        headers: headers,
+        requestData: requestData, tripId: tripId,
+      );
+
+
+      if ( response.status == "200") {
+        print( 'trip cancelled : ${response.message}');
+        Get.toNamed(AppRoutes.home);
+
+      }
+    } catch (e) {
+      print(' cancel Trip Error: ${ e.toString()}',);
+      return null;
+    }
+  }
   @override
   void onClose() {
     // Cancel the timer when the controller is closed

@@ -536,6 +536,31 @@ class ApiClient extends GetConnect {
     }
   }
 
+  Future<ApiResponse> cancelTrip(
+      {required Map<String, String> headers,
+        required Map requestData,
+        required String tripId}) async {
+    await isNetworkConnected();
+
+    try {
+      var response = await _dio.post('${Endpoints.cancelTrip}$tripId/cancelTrip',
+          options: dio.Options(headers: headers), data: requestData);
+      debugPrint(' cancel trip ##### Response status: ${response.statusCode}');
+      debugPrint(' cancel trip #### Response data: ${response.data}');
+      if (_isSuccessCall(response)) {
+        return ApiResponse.fromJson(response.data);
+      } else {
+        return ApiResponse.fromJson(response.data);
+      }
+    } catch (error, stackTrace) {
+      Logger.log(
+        error,
+        stackTrace: stackTrace,
+      );
+      rethrow;
+    }
+  }
+
   Future<Response> postRequest(String url, Map<String, dynamic> body) async {
     return await post(url, body);
   }

@@ -95,7 +95,8 @@ class AwaitDriverBottomsheetWidget extends StatelessWidget {
                           width: double.infinity,
                           child:  CustomElevatedButton(
                             onPressed: () {
-                              Get.toNamed(AppRoutes.cancelationScreen);
+                              rideServiceController.canceltrip();
+                              Get.toNamed(AppRoutes.home);
                             },
                             buttonStyle: ElevatedButton.styleFrom(
                               backgroundColor: cancelButton,
@@ -112,7 +113,7 @@ class AwaitDriverBottomsheetWidget extends StatelessWidget {
                           width: double.infinity,
                           child: CustomElevatedButton(
                             onPressed: () {
-                              // Get.back();
+                               Get.back();
                             },
                             buttonStyle: ElevatedButton.styleFrom(
                               backgroundColor: countryTextFieldColor,
@@ -120,6 +121,7 @@ class AwaitDriverBottomsheetWidget extends StatelessWidget {
                             ),
                             buttonTextStyle: AppTextStyles.bodySmallBold.copyWith(
                               color: resendCodeTextColor,
+
                             ),
                             text: 'Continue searching',
                           ),
@@ -335,7 +337,8 @@ class AwaitDriverBottomsheetWidget extends StatelessWidget {
                           width: double.infinity,
                           child:  CustomElevatedButton(
                             onPressed: () {
-                              // Get.back();
+                              rideServiceController.canceltrip();
+                              Get.toNamed(AppRoutes.home);
                             },
                             buttonStyle: ElevatedButton.styleFrom(
                               backgroundColor: cancelButton,
@@ -352,7 +355,7 @@ class AwaitDriverBottomsheetWidget extends StatelessWidget {
                           width: double.infinity,
                           child: CustomElevatedButton(
                             onPressed: () {
-                              // Get.back();
+                               Get.back();
                             },
                             buttonStyle: ElevatedButton.styleFrom(
                               backgroundColor: countryTextFieldColor,
