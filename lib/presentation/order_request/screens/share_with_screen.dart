@@ -45,22 +45,25 @@ import 'package:customer_hailing/core/app_export.dart';
 
     Future<void> _fetchContacts() async {
       try {
-        if (await FlutterContacts.requestPermission()) {
+        if (await Permission.contacts.request().isGranted) {
           final List<Contact> contactsList = await FlutterContacts.getContacts(withProperties: true);
           setState(() {
             contacts = contactsList;
             isLoading = false;
           });
+          print('Contacts fetched successfully: ${contactsList.length}');
         } else {
           setState(() {
             isLoading = false;
           });
+          print('Contacts permission denied');
         }
       } catch (e) {
         // Handle error
         setState(() {
           isLoading = false;
         });
+        print('Error fetching contacts: $e');
       }
     }
 

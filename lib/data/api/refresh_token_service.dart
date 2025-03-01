@@ -29,7 +29,7 @@ Future<bool> refreshTokenAPI(String refreshToken) async {
     Dio dio = Dio();
 
     final response = await dio.post(
-      'https://yasil-backend.cymelle.com/auth/api/v1/refresh',
+      'https://backend.yasil.co.ke/auth/api/v1/refresh',
       data: jsonEncode(RefreshTokenRequest(refreshToken: refreshToken)),
     );
 
