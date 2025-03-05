@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:customer_hailing/presentation/order_request/controller/ride_service_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -36,6 +38,11 @@ class MapController extends GetxController {
   RxList<DriverLocationsResponse> drivers = <DriverLocationsResponse>[].obs;
   final RideServiceRepository rideServiceRepository = RideServiceRepository();
 
+
+  final StreamController<List<DriverLocationsResponse>> _driverLocationsController = StreamController<List<DriverLocationsResponse>>.broadcast();
+  Stream<List<DriverLocationsResponse>> get driverLocationsStream => _driverLocationsController.stream;
+
+  Timer? _driverLocationsTimer;
   @override
   Future<void> onInit() async {
     super.onInit();
@@ -53,32 +60,67 @@ class MapController extends GetxController {
     getUserLocation();
     updatePolyline;
     _loadCustomMarker();
-    getDriverLocations();
+    //getDriverLocations();
+
+    // Start the periodic update
+    _startDriverLocationsUpdates();
     ever(drivers, (_) => updateDriverMarkers()); // Auto-update markers when drivers list changes
 
   }
 
-  Future<void> getDriverLocations() async {
+
+  void _startDriverLocationsUpdates() {
+    _driverLocationsTimer = Timer.periodic(Duration(seconds: 5), (timer) async {
+      await _fetchDriverLocations();
+    });
+  }
+
+  Future<void> _fetchDriverLocations() async {
     try {
       Map<String, String> headers = {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $accessToken', // Replace with your token logic
       };
 
-          print('get driver locations Request URL: ${Endpoints.driverLocations}');
-          print('get driver locations Headers: $headers');
+      print('get driver locations Request URL: ${Endpoints.driverLocations}');
+      print('get driver locations Headers: $headers');
 
       List<DriverLocationsResponse> response = await rideServiceRepository.getDriverLocations(headers: headers);
 
       drivers.assignAll(response);
       print('driver locations fetched successfully: in map controller  ${response.map((e) => e.toJson()).toList()}');
+
       // Add driver markers
       await updateDriverMarkers();
 
+      // Add the fetched driver locations to the stream
+      _driverLocationsController.add(response);
     } catch (e) {
       print('Error fetching drivers: $e');
     }
   }
+
+  // Future<void> getDriverLocations() async {
+  //   try {
+  //     Map<String, String> headers = {
+  //       'Content-Type': 'application/json',
+  //       'Authorization': 'Bearer $accessToken', // Replace with your token logic
+  //     };
+  //
+  //         print('get driver locations Request URL: ${Endpoints.driverLocations}');
+  //         print('get driver locations Headers: $headers');
+  //
+  //     List<DriverLocationsResponse> response = await rideServiceRepository.getDriverLocations(headers: headers);
+  //
+  //     drivers.assignAll(response);
+  //     print('driver locations fetched successfully: in map controller  ${response.map((e) => e.toJson()).toList()}');
+  //     // Add driver markers
+  //     await updateDriverMarkers();
+  //
+  //   } catch (e) {
+  //     print('Error fetching drivers: $e');
+  //   }
+  // }
 
   // Future<void> updateDriverMarkers() async {
   //   Set<Marker> newMarkers = {};
@@ -117,51 +159,57 @@ class MapController extends GetxController {
   //   markers.refresh();
   // }
 
-  Future<void> updateDriverMarkers() async {
-    Set<Marker> newMarkers = {};
+Future<void> updateDriverMarkers() async {
+  Set<Marker> newMarkers = {};
+  const double offset = 0.0020; // Offset value to slightly move markers
 
-    // Add driver markers
-    for (var driver in drivers) {
-      if (driver.latitude != null && driver.longitude != null) {
-        newMarkers.add(
-          Marker(
-            markerId: MarkerId(driver.driverId ?? "unknown"),
-            position: LatLng(driver.latitude!, driver.longitude!),
-            icon: await BitmapDescriptor.fromAssetImage(
-              const ImageConfiguration(size: Size(48, 48)), // Set correct size
-              'assets/images/mid_car_marker.png',
-            ),
-            infoWindow: InfoWindow(
-              title: driver.vehicleDetails?.makeAndModel ?? "Unknown Vehicle",
-              snippet: "Rating: ${driver.rating}",
-            ),
-          ),
-        );
+  // Add driver markers
+  for (var i = 0; i < drivers.length; i++) {
+    var driver = drivers[i];
+    if (driver.latitude != null && driver.longitude != null) {
+      // Apply offset to avoid stacking
+      double offsetLatitude = driver.latitude! + (i * offset);
+      double offsetLongitude = driver.longitude! + (i * offset);
 
-        print("Adding marker for driver ${driver.driverId} at (${driver.latitude}, ${driver.longitude})");
-      }
-    }
-
-    // Ensure the center marker is not removed
-    if (center.value != null) {
       newMarkers.add(
         Marker(
-          markerId: const MarkerId("center"),
-          position: center.value!,
-          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
-          infoWindow: const InfoWindow(title: "You are here"),
+          markerId: MarkerId(driver.driverId ?? "unknown"),
+          position: LatLng(offsetLatitude, offsetLongitude),
+          icon: await BitmapDescriptor.fromAssetImage(
+            const ImageConfiguration(size: Size(48, 48)), // Set correct size
+            'assets/images/mid_car_marker.png',
+          ),
+          infoWindow: InfoWindow(
+            title: driver.vehicleDetails?.makeAndModel ?? "Unknown Vehicle",
+            snippet: "Rating: ${driver.rating}",
+          ),
         ),
       );
 
-      print("Adding center marker at (${center.value!.latitude}, ${center.value!.longitude})");
+      print("Adding marker for driver ${driver.driverId} at (${offsetLatitude}, ${offsetLongitude})");
     }
-
-    // Assign updated markers
-    markers.assignAll(newMarkers);
-    markers.refresh(); // Force UI update
-
-    print("Updated markers count: ${markers.length}");
   }
+
+  // Ensure the center marker is not removed
+  if (center.value != null) {
+    newMarkers.add(
+      Marker(
+        markerId: const MarkerId("center"),
+        position: center.value!,
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+        infoWindow: const InfoWindow(title: "You are here"),
+      ),
+    );
+
+    print("Adding center marker at (${center.value!.latitude}, ${center.value!.longitude})");
+  }
+
+  // Assign updated markers
+  markers.assignAll(newMarkers);
+  markers.refresh(); // Force UI update
+
+  print("Updated markers count: ${markers.length}");
+}
 
 ///for driver location using websockets
   // Future<void> _updateMarkers(List<DriverLocationsResponse> driverLocations) async {
@@ -354,4 +402,125 @@ class MapController extends GetxController {
     }
   }
 
+  // void updatePolyline(String originAddress, String destinationAddress) async {
+  //   LatLng? originCoords = await getCoordinatesFromAddress(originAddress);
+  //   LatLng? destinationCoords = await getCoordinatesFromAddress(destinationAddress);
+  //
+  //   if (originCoords != null && destinationCoords != null) {
+  //     polyline.PolylinePoints polylinePoints = polyline.PolylinePoints();
+  //     polyline.PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
+  //       googleApiKey: dotenv.env['GOOGLE_API_KEY']!,
+  //       request: polyline.PolylineRequest(
+  //         mode: polyline.TravelMode.driving,
+  //         origin: polyline.PointLatLng(originCoords.latitude, originCoords.longitude),
+  //         destination: polyline.PointLatLng(destinationCoords.latitude, destinationCoords.longitude),
+  //       ),
+  //     );
+  //     print(' polyline result: $result');
+  //
+  //     if (result.points.isNotEmpty) {
+  //       List<LatLng> polylineCoordinates = result.points
+  //           .map((point) => LatLng(point.latitude, point.longitude))
+  //           .toList();
+  //
+  //       polylines.clear();
+  //       polylines.add(
+  //         Polyline(
+  //           polylineId: const PolylineId('route'),
+  //           visible: true,
+  //           color: primaryColor,
+  //           width: 5,
+  //           points: polylineCoordinates,
+  //         ),
+  //       );
+  //       addDestinationMarker(destinationCoords);
+  //       update(); // Update the view
+  //     }
+  //   }
+  // }
+
+  void updatePolylines(String originAddress, String destinationAddress) async {
+    LatLng? originCoords = await getCoordinatesFromAddress(originAddress);
+    LatLng? destinationCoords = await getCoordinatesFromAddress(destinationAddress);
+
+    if (originCoords != null && destinationCoords != null) {
+      polyline.PolylinePoints polylinePoints = polyline.PolylinePoints();
+      polyline.PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
+        googleApiKey: dotenv.env['GOOGLE_API_KEY']!,
+        request: polyline.PolylineRequest(
+          mode: polyline.TravelMode.driving,
+          origin: polyline.PointLatLng(originCoords.latitude, originCoords.longitude),
+          destination: polyline.PointLatLng(destinationCoords.latitude, destinationCoords.longitude),
+        ),
+      );
+      print(result);
+
+      if (result.points.isNotEmpty) {
+        List<LatLng> polylineCoordinates = result.points
+            .map((point) => LatLng(point.latitude, point.longitude))
+            .toList();
+
+        polylines.clear();
+        polylines.add(
+          Polyline(
+            polylineId: const PolylineId('route'),
+            visible: true,
+            color: primaryColor,
+            width: 5,
+            points: polylineCoordinates,
+          ),
+        );
+        addDestinationMarker(destinationCoords);
+        update(); // Update the view
+      }
+    }
+  }
+  // Future<void> fetchAndDrawRoute(LatLng start, LatLng end) async {
+  //   final request = directions.DirectionsRequest(
+  //     origin: '${start.latitude},${start.longitude}',
+  //     destination: '${end.latitude},${end.longitude}',
+  //     travelMode: directions.TravelMode.driving,
+  //     optimizeWaypoints: true,
+  //   );
+  //   debugPrint('fetch and draw route request: $request');
+  //
+  //   directionsService.route(request, (response, status) {
+  //     if (status == directions.DirectionsStatus.ok) {
+  //       final route = response.routes?.first;
+  //       directionsSteps.value = route?.legs!.first.steps ?? [];
+  //
+  //       final points = polyline.PolylinePoints()
+  //           .decodePolyline(route!.overviewPolyline!.points!);
+  //
+  //       final polylineCoordinates = [
+  //         start, // Add the user's current location as the starting point
+  //         ...points.map((point) => LatLng(point.latitude, point.longitude))
+  //       ];
+  //
+  //       polylines.clear();
+  //       polylines.add(
+  //         Polyline(
+  //           polylineId: const PolylineId('optimized_route'),
+  //           points: polylineCoordinates,
+  //           color: appTheme.colorPrimary,
+  //           width: 5,
+  //         ),
+  //       );
+  //
+  //       // Add destination marker
+  //       markers.add(
+  //         Marker(
+  //           markerId: const MarkerId('destination'),
+  //           position: LatLng(end.latitude, end.longitude),
+  //           icon: destinationMarker!,
+  //         ),
+  //       );
+  //
+  //       update();
+  //     } else {
+  //       // Handle error
+  //       print('Error fetching directions: $status');
+  //     }
+  //   });
+  // }
 }

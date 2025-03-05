@@ -30,7 +30,7 @@ class HomeScreen extends StatelessWidget {
               onMapCreated: _mapController.onMapCreated,
               initialCameraPosition: CameraPosition(
                 target: _mapController.center.value!,
-                zoom: 17.5,
+                zoom: 15.0,
               ),
               //markers: _mapController.markers,
               markers: Set<Marker>.from(_mapController.markers),
