@@ -436,7 +436,7 @@ class ApiClient extends GetConnect {
     await isNetworkConnected();
 
     try {
-      var response = await _dio.get('${Endpoints.scheduledTrip}$customerId',
+      var response = await _dio.get('${Endpoints.scheduledTrip}?customerId=$customerId',
           options: dio.Options(headers: headers));
       debugPrint('Response status: ${response.statusCode}');
       debugPrint('Response data: ${response.data}');

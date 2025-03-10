@@ -20,7 +20,7 @@ class EnterTripDetailsScreen extends StatefulWidget {
 class _EnterTripDetailsScreenState extends State<EnterTripDetailsScreen> {
   final String googleApiKey ="AIzaSyAFFMad-10qvSw8wZl7KgDp0jVafz4La6E";
   final TextEditingController _locationController = TextEditingController();
- // final TextEditingController _destinationController = TextEditingController();
+  // final TextEditingController _destinationController = TextEditingController();
   final MapController mapController = Get.put(MapController());
   final RideServiceController rideServiceController = Get.put(RideServiceController(rideServiceRepository: RideServiceRepository()));
 
@@ -113,21 +113,21 @@ class _EnterTripDetailsScreenState extends State<EnterTripDetailsScreen> {
   }
 
   void _addStopover() {
-  if (_stopoverControllers.length - 2 >= 2) {
-    return; // Maximum of 2 stopovers
+    if (_stopoverControllers.length - 2 >= 2) {
+      return; // Maximum of 2 stopovers
+    }
+    setState(() {
+      final controller = TextEditingController();
+      final focusNode = FocusNode();
+
+      controller.addListener(_onTextChanged);
+      controller.addListener(_onLocationChanged);
+      focusNode.addListener(_onFocusChange);
+
+      _stopoverControllers.insert(_stopoverControllers.length - 1, controller);
+      _stopoverFocusNodes.insert(_stopoverFocusNodes.length - 1, focusNode);
+    });
   }
-  setState(() {
-    final controller = TextEditingController();
-    final focusNode = FocusNode();
-
-    controller.addListener(_onTextChanged);
-    controller.addListener(_onLocationChanged);
-    focusNode.addListener(_onFocusChange);
-
-    _stopoverControllers.insert(_stopoverControllers.length - 1, controller);
-    _stopoverFocusNodes.insert(_stopoverFocusNodes.length - 1, focusNode);
-  });
-}
 
   void _removeStopover(int index) {
     setState(() {

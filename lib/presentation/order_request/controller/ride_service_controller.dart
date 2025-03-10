@@ -441,17 +441,18 @@ class RideServiceController extends GetxController {
 
       // Get the coordinates for the destination address
       LatLng? destinationCoordinates = await mapController.getCoordinatesFromAddress(dropOffAddress);
+      LatLng? locationCoordinates = await mapController.getCoordinatesFromAddress(pickupAddress);
 
-      if (destinationCoordinates == null) {
+      if (destinationCoordinates == null && locationCoordinates == null) {
         Get.snackbar('Error', 'Failed to get coordinates for the destination address.');
         return;
       }
 
-      // Convert current location to address
-      String pickupAddress = await mapController.convertToAddress(
-        mapController.currentPosition.value!.latitude,
-        mapController.currentPosition.value!.longitude,
-      );
+      // // Convert current location to address
+      // String pickupAddress = await mapController.convertToAddress(
+      //   mapController.currentPosition.value!.latitude,
+      //   mapController.currentPosition.value!.longitude,
+      // );
 
       // Ensure organizationId is a single string
       String? organizationId = authController.user.value.orgId?.isNotEmpty == true ? authController.user.value.orgId!.first : null;
@@ -468,9 +469,9 @@ class RideServiceController extends GetxController {
       Map<String, dynamic> requestData = {
         'customerId': authController.user.value.id,
         'organizationId': organizationId,
-        'pickupLatitude': mapController.currentPosition.value!.latitude,
-        'pickupLongitude': mapController.currentPosition.value!.longitude,
-        'destinationLatitude': destinationCoordinates.latitude,
+        'pickupLatitude': locationCoordinates!.latitude,
+        'pickupLongitude': locationCoordinates.longitude,
+        'destinationLatitude': destinationCoordinates!.latitude,
         'destinationLongitude': destinationCoordinates.longitude,
         'pickupAddress': pickupAddress,
         'dropOffAddress': dropOffAddress,
@@ -491,7 +492,7 @@ class RideServiceController extends GetxController {
         requestData: requestData,
       );
 
-      if (response.status == "201") {
+      if (response.status == "201" || response.message == 'Trip Scheduled Successfully' || response.status == "200") {
         print('Trip Scheduled message: ${response.message}');
         Get.offNamed(AppRoutes.scheduleTrip);
       } else {
@@ -511,7 +512,7 @@ class RideServiceController extends GetxController {
 
       // Log the request URL and parameters
       print('Scheduled trips with customerId: $customerId');
-      print('Scheduled trips Request URL: ${Endpoints.scheduledTrip}$customerId');
+      print('Scheduled trips Request URL: ${Endpoints.scheduledTrip}?customerId=$customerId');
       print('Scheduled trips Headers: $headers');
 
 

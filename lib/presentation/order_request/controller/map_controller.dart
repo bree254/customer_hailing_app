@@ -26,9 +26,6 @@ class MapController extends GetxController {
   BitmapDescriptor ? customMarker,destinationMarker;
   var markers = <Marker>{}.obs;
 
-  // Initialize the Directions API
-  final directions.DirectionsService directionsService = directions.DirectionsService();
-
   LatLng? _center;
   final Set<Polyline> polylines = <Polyline>{}.obs;
 
@@ -37,6 +34,10 @@ class MapController extends GetxController {
   String ? accessToken;
   RxList<DriverLocationsResponse> drivers = <DriverLocationsResponse>[].obs;
   final RideServiceRepository rideServiceRepository = RideServiceRepository();
+
+  final directions.DirectionsService directionsService =
+  directions.DirectionsService();
+  var directionsSteps = [].obs;
 
 
   final StreamController<List<DriverLocationsResponse>> _driverLocationsController = StreamController<List<DriverLocationsResponse>>.broadcast();
@@ -441,7 +442,9 @@ Future<void> updateDriverMarkers() async {
 
   void updatePolylines(String originAddress, String destinationAddress) async {
     LatLng? originCoords = await getCoordinatesFromAddress(originAddress);
+    debugPrint('Origin coordinates: $originCoords');
     LatLng? destinationCoords = await getCoordinatesFromAddress(destinationAddress);
+    debugPrint('Destination coordinates: $destinationCoords');
 
     if (originCoords != null && destinationCoords != null) {
       polyline.PolylinePoints polylinePoints = polyline.PolylinePoints();
@@ -453,7 +456,8 @@ Future<void> updateDriverMarkers() async {
           destination: polyline.PointLatLng(destinationCoords.latitude, destinationCoords.longitude),
         ),
       );
-      print(result);
+      print(' polyline result: $result');
+      print('Polyline result: ${result.points.map((point) => '(${point.latitude}, ${point.longitude})').toList()}');
 
       if (result.points.isNotEmpty) {
         List<LatLng> polylineCoordinates = result.points
@@ -475,52 +479,53 @@ Future<void> updateDriverMarkers() async {
       }
     }
   }
-  // Future<void> fetchAndDrawRoute(LatLng start, LatLng end) async {
-  //   final request = directions.DirectionsRequest(
-  //     origin: '${start.latitude},${start.longitude}',
-  //     destination: '${end.latitude},${end.longitude}',
-  //     travelMode: directions.TravelMode.driving,
-  //     optimizeWaypoints: true,
-  //   );
-  //   debugPrint('fetch and draw route request: $request');
-  //
-  //   directionsService.route(request, (response, status) {
-  //     if (status == directions.DirectionsStatus.ok) {
-  //       final route = response.routes?.first;
-  //       directionsSteps.value = route?.legs!.first.steps ?? [];
-  //
-  //       final points = polyline.PolylinePoints()
-  //           .decodePolyline(route!.overviewPolyline!.points!);
-  //
-  //       final polylineCoordinates = [
-  //         start, // Add the user's current location as the starting point
-  //         ...points.map((point) => LatLng(point.latitude, point.longitude))
-  //       ];
-  //
-  //       polylines.clear();
-  //       polylines.add(
-  //         Polyline(
-  //           polylineId: const PolylineId('optimized_route'),
-  //           points: polylineCoordinates,
-  //           color: appTheme.colorPrimary,
-  //           width: 5,
-  //         ),
-  //       );
-  //
-  //       // Add destination marker
-  //       markers.add(
-  //         Marker(
-  //           markerId: const MarkerId('destination'),
-  //           position: LatLng(end.latitude, end.longitude),
-  //           icon: destinationMarker!,
-  //         ),
-  //       );
-  //
-  //       update();
-  //     } else {
-  //       // Handle error
-  //       print('Error fetching directions: $status');
-  //     }
-  //   });
-  // }
+
+  Future<void> fetchAndDrawRoute(LatLng start, LatLng end) async {
+    final request = directions.DirectionsRequest(
+      origin: '${start.latitude},${start.longitude}',
+      destination: '${end.latitude},${end.longitude}',
+      travelMode: directions.TravelMode.driving,
+      optimizeWaypoints: true,
+    );
+    debugPrint('fetch and draw route request: $request');
+
+    directionsService.route(request, (response, status) {
+      if (status == directions.DirectionsStatus.ok) {
+        final route = response.routes?.first;
+        directionsSteps.value = route?.legs!.first.steps ?? [];
+
+        final points = polyline.PolylinePoints()
+            .decodePolyline(route!.overviewPolyline!.points!);
+
+        final polylineCoordinates = [
+          start, // Add the user's current location as the starting point
+          ...points.map((point) => LatLng(point.latitude, point.longitude))
+        ];
+
+        polylines.clear();
+        polylines.add(
+          Polyline(
+            polylineId: const PolylineId('optimized_route'),
+            points: polylineCoordinates,
+            color: appTheme.colorPrimary,
+            width: 5,
+          ),
+        );
+
+        // Add destination marker
+        markers.add(
+          Marker(
+            markerId: const MarkerId('destination'),
+            position: LatLng(end.latitude, end.longitude),
+            icon: destinationMarker!,
+          ),
+        );
+
+        update();
+      } else {
+        // Handle error
+        print('Error fetching directions: $status');
+      }
+    });
+  }
 }

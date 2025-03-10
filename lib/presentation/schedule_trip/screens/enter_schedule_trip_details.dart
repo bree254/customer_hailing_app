@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/routes/routes.dart';
 import 'package:flutter/material.dart';
+import '../../../data/repos/ride_service_repository.dart';
+import '../../order_request/controller/ride_service_controller.dart';
 import '../../order_request/models/data.dart';
 import '../../order_request/models/predictions.dart';
 import 'package:http/http.dart' as http;
@@ -14,10 +16,15 @@ class EnterScheduleTripDetailsScreen extends StatefulWidget {
 }
 
 class _EnterScheduleTripDetailsScreenState extends State<EnterScheduleTripDetailsScreen> {
+  final RideServiceController rideServiceController = Get.put(RideServiceController(rideServiceRepository: RideServiceRepository()));
+
   final String googleApiKey = "AIzaSyAFFMad-10qvSw8wZl7KgDp0jVafz4La6E";
   final TextEditingController _locationController = TextEditingController();
   final TextEditingController _destinationController = TextEditingController();
+
   List<Prediction> _predictions = [];
+
+  List<String> _pastDestinations = [];
   final FocusNode _locationFocusNode = FocusNode();
   final FocusNode _destinationFocusNode = FocusNode();
   final List<TextEditingController> _stopoverControllers = [];
@@ -90,7 +97,8 @@ class _EnterScheduleTripDetailsScreenState extends State<EnterScheduleTripDetail
       focusNode.addListener(() {
         setState(() {});
       });
-      _stopoverControllers.insert(_stopoverControllers.length - 1, TextEditingController());
+      _stopoverControllers.insert(
+          _stopoverControllers.length - 1, TextEditingController());
       _stopoverFocusNodes.insert(_stopoverFocusNodes.length - 1, focusNode);
     });
   }
@@ -189,7 +197,8 @@ class _EnterScheduleTripDetailsScreenState extends State<EnterScheduleTripDetail
   // }
 
   void _onPredictionSelected(Prediction prediction) {
-    if (_locationController.text.isNotEmpty && _destinationController.text.isNotEmpty) {
+    if (_locationController.text.isNotEmpty &&
+        _destinationController.text.isNotEmpty) {
       Get.toNamed(AppRoutes.scheduleSelectRide, arguments: {
         'location': _locationController.text,
         'destination': _destinationController.text,
@@ -258,8 +267,8 @@ class _EnterScheduleTripDetailsScreenState extends State<EnterScheduleTripDetail
                 hintText: isLocation
                     ? 'Enter your location'
                     : isDestination
-                    ? 'Enter your destination'
-                    : 'Enter stop $index',
+                        ? 'Enter your destination'
+                        : 'Enter stop $index',
                 hintStyle: AppTextStyles.bodySmallBold.copyWith(
                   color: searchtextGrey,
                 ),
@@ -332,7 +341,8 @@ class _EnterScheduleTripDetailsScreenState extends State<EnterScheduleTripDetail
             child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(top: 8.0, left: 16, bottom: 8, right: 16),
+                  padding: const EdgeInsets.only(
+                      top: 8.0, left: 16, bottom: 8, right: 16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -345,13 +355,16 @@ class _EnterScheduleTripDetailsScreenState extends State<EnterScheduleTripDetail
                               if (newIndex > oldIndex) {
                                 newIndex -= 1;
                               }
-                              final TextEditingController controller = _stopoverControllers.removeAt(oldIndex);
-                              final FocusNode focusNode = _stopoverFocusNodes.removeAt(oldIndex);
+                              final TextEditingController controller =
+                                  _stopoverControllers.removeAt(oldIndex);
+                              final FocusNode focusNode =
+                                  _stopoverFocusNodes.removeAt(oldIndex);
                               _stopoverControllers.insert(newIndex, controller);
                               _stopoverFocusNodes.insert(newIndex, focusNode);
                             });
                           },
-                          children: _stopoverControllers.asMap().entries.map((entry) {
+                          children:
+                              _stopoverControllers.asMap().entries.map((entry) {
                             int index = entry.key;
                             return _buildTextField(index);
                           }).toList(),
@@ -366,7 +379,8 @@ class _EnterScheduleTripDetailsScreenState extends State<EnterScheduleTripDetail
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(Icons.add_circle_outlined, color: primaryColor, size: 14),
+                              Icon(Icons.add_circle_outlined,
+                                  color: primaryColor, size: 14),
                               SizedBox(width: 5),
                               Text(
                                 'Add stop over',
@@ -388,117 +402,123 @@ class _EnterScheduleTripDetailsScreenState extends State<EnterScheduleTripDetail
           Expanded(
             child: Obx(() => !_isTyping.value
                 ? ListView.builder(
-              itemCount: MyData.destinations.length,
-              itemBuilder: (BuildContext context, int index) {
-                var destination = MyData.destinations[index];
-                return Container(
-                  margin: const EdgeInsets.fromLTRB(16, 0, 16, 8),
-                  decoration: ShapeDecoration(
-                    color: const Color(0x7FFAFAFA),
-                    shape: RoundedRectangleBorder(
-                      side: BorderSide(
-                        width: 1,
-                        color: Colors.black.withOpacity(0.025),
-                      ),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  child: ListTile(
-                    onTap: () {
-                      if (_destinationFocusNode.hasFocus) {
-                        _destinationController.text = destination.address;
-                        _destinationFocusNode.requestFocus();
-                      } else if (_locationFocusNode.hasFocus) {
-                        _locationController.text = destination.address;
-                        _locationFocusNode.requestFocus();
-                      } else {
-                        for (int i = 1; i < _stopoverControllers.length - 1; i++) {
-                          if (_stopoverFocusNodes[i].hasFocus) {
-                            _stopoverControllers[i].text = destination.address;
-                            _stopoverFocusNodes[i].requestFocus();
-                            break;
-                          }
-                        }
-                      }
+                    itemCount: _pastDestinations.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      var destination = _pastDestinations[index];
+                      return Container(
+                        margin: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                        decoration: ShapeDecoration(
+                          color: const Color(0x7FFAFAFA),
+                          shape: RoundedRectangleBorder(
+                            side: BorderSide(
+                              width: 1,
+                              color: Colors.black.withOpacity(0.025),
+                            ),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        child: ListTile(
+                          onTap: () {
+                            if (_destinationFocusNode.hasFocus) {
+                              _destinationController.text = destination;
+                              _destinationFocusNode.requestFocus();
+                            } else if (_locationFocusNode.hasFocus) {
+                              _locationController.text = destination;
+                              _locationFocusNode.requestFocus();
+                            } else {
+                              for (int i = 1;
+                                  i < _stopoverControllers.length - 1;
+                                  i++) {
+                                if (_stopoverFocusNodes[i].hasFocus) {
+                                  _stopoverControllers[i].text = destination;
+                                  _stopoverFocusNodes[i].requestFocus();
+                                  break;
+                                }
+                              }
+                            }
+                          },
+                          leading: const Icon(
+                            Icons.history,
+                            color: historyIcon,
+                          ),
+                          title: Text(
+                            destination,
+                            style: AppTextStyles.bodySmallBold.copyWith(
+                              color: searchtextGrey,
+                            ),
+                          ),
+                          subtitle: Text(
+                            destination,
+                            style: AppTextStyles.bodySmallBold.copyWith(
+                              color: searchtextGrey,
+                              fontSize: 10.0,
+                            ),
+                          ),
+                        ),
+                      );
                     },
-                    leading: const Icon(
-                      Icons.history,
-                      color: historyIcon,
-                    ),
-                    title: Text(
-                      destination.address,
-                      style: AppTextStyles.bodySmallBold.copyWith(
-                        color: searchtextGrey,
-                      ),
-                    ),
-                    subtitle: Text(
-                      destination.location,
-                      style: AppTextStyles.bodySmallBold.copyWith(
-                        color: searchtextGrey,
-                        fontSize: 10.0,
-                      ),
-                    ),
-                  ),
-                );
-              },
-            )
+                  )
                 : ListView.builder(
-              itemCount: _predictions.length,
-              itemBuilder: (BuildContext context, int index) {
-                final prediction = _predictions[index];
-                return Container(
-                  width: 328,
-                  padding: const EdgeInsets.symmetric(vertical: 4),
-                  margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
-                  decoration: ShapeDecoration(
-                    color: const Color(0x7FFAFAFA),
-                    shape: RoundedRectangleBorder(
-                      side: BorderSide(
-                        width: 1,
-                        color: Colors.black.withOpacity(0.025),
-                      ),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  child: ListTile(
-                    leading: Image.asset(
-                      width: 24,
-                      height: 24,
-                      color: searchtextGrey,
-                      'assets/images/map-pin-alt-outline.png',
-                    ),
-                    title: Text(
-                      prediction.description,
-                      style: AppTextStyles.bodySmallBold.copyWith(
-                        color: searchtextGrey,
-                      ),
-                    ),
-                    onTap: () {
-                      final selectedPrediction = prediction.description;
-                      if (_locationFocusNode.hasFocus) {
-                        _locationController.text = selectedPrediction;
-                        _locationFocusNode.unfocus();
-                      } else if (_destinationFocusNode.hasFocus) {
-                        _destinationController.text = selectedPrediction;
-                        _destinationFocusNode.unfocus();
-                      } else {
-                        for (int i = 1; i < _stopoverControllers.length - 1; i++) {
-                          if (_stopoverFocusNodes[i].hasFocus) {
-                            _stopoverControllers[i].text = selectedPrediction;
-                            _stopoverFocusNodes[i].unfocus();
-                            break;
-                          }
-                        }
-                      }
-                      setState(() {
-                        _predictions = [];
-                      });
-                      _onPredictionSelected(prediction);
+                    itemCount: _predictions.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      final prediction = _predictions[index];
+                      return Container(
+                        width: 328,
+                        padding: const EdgeInsets.symmetric(vertical: 4),
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 0, vertical: 5),
+                        decoration: ShapeDecoration(
+                          color: const Color(0x7FFAFAFA),
+                          shape: RoundedRectangleBorder(
+                            side: BorderSide(
+                              width: 1,
+                              color: Colors.black.withOpacity(0.025),
+                            ),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        child: ListTile(
+                          leading: Image.asset(
+                            width: 24,
+                            height: 24,
+                            color: searchtextGrey,
+                            'assets/images/map-pin-alt-outline.png',
+                          ),
+                          title: Text(
+                            prediction.description,
+                            style: AppTextStyles.bodySmallBold.copyWith(
+                              color: searchtextGrey,
+                            ),
+                          ),
+                          onTap: () {
+                            final selectedPrediction = prediction.description;
+                            if (_locationFocusNode.hasFocus) {
+                              _locationController.text = selectedPrediction;
+                              _locationFocusNode.unfocus();
+                            } else if (_destinationFocusNode.hasFocus) {
+                              _destinationController.text = selectedPrediction;
+                              _destinationFocusNode.unfocus();
+                            } else {
+                              for (int i = 1;
+                                  i < _stopoverControllers.length - 1;
+                                  i++) {
+                                if (_stopoverFocusNodes[i].hasFocus) {
+                                  _stopoverControllers[i].text =
+                                      selectedPrediction;
+                                  _stopoverFocusNodes[i].unfocus();
+                                  break;
+                                }
+                              }
+                            }
+                            setState(() {
+                              _predictions = [];
+                            });
+                            _onPredictionSelected(prediction);
+                          },
+                        ),
+                      );
                     },
-                  ),
-                );
-              },
-            )),
+                  )),
           ),
         ],
       ),
