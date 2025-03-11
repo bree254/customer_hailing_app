@@ -29,6 +29,7 @@ class MapController extends GetxController {
   LatLng? _center;
   final Set<Polyline> polylines = <Polyline>{}.obs;
 
+
   late WebSocketService webSocketService;
 
   String ? accessToken;
@@ -403,43 +404,6 @@ Future<void> updateDriverMarkers() async {
     }
   }
 
-  // void updatePolyline(String originAddress, String destinationAddress) async {
-  //   LatLng? originCoords = await getCoordinatesFromAddress(originAddress);
-  //   LatLng? destinationCoords = await getCoordinatesFromAddress(destinationAddress);
-  //
-  //   if (originCoords != null && destinationCoords != null) {
-  //     polyline.PolylinePoints polylinePoints = polyline.PolylinePoints();
-  //     polyline.PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-  //       googleApiKey: dotenv.env['GOOGLE_API_KEY']!,
-  //       request: polyline.PolylineRequest(
-  //         mode: polyline.TravelMode.driving,
-  //         origin: polyline.PointLatLng(originCoords.latitude, originCoords.longitude),
-  //         destination: polyline.PointLatLng(destinationCoords.latitude, destinationCoords.longitude),
-  //       ),
-  //     );
-  //     print(' polyline result: $result');
-  //
-  //     if (result.points.isNotEmpty) {
-  //       List<LatLng> polylineCoordinates = result.points
-  //           .map((point) => LatLng(point.latitude, point.longitude))
-  //           .toList();
-  //
-  //       polylines.clear();
-  //       polylines.add(
-  //         Polyline(
-  //           polylineId: const PolylineId('route'),
-  //           visible: true,
-  //           color: primaryColor,
-  //           width: 5,
-  //           points: polylineCoordinates,
-  //         ),
-  //       );
-  //       addDestinationMarker(destinationCoords);
-  //       update(); // Update the view
-  //     }
-  //   }
-  // }
-
   void updatePolylines(String originAddress, String destinationAddress) async {
     LatLng? originCoords = await getCoordinatesFromAddress(originAddress);
     debugPrint('Origin coordinates: $originCoords');
@@ -480,52 +444,4 @@ Future<void> updateDriverMarkers() async {
     }
   }
 
-  Future<void> fetchAndDrawRoute(LatLng start, LatLng end) async {
-    final request = directions.DirectionsRequest(
-      origin: '${start.latitude},${start.longitude}',
-      destination: '${end.latitude},${end.longitude}',
-      travelMode: directions.TravelMode.driving,
-      optimizeWaypoints: true,
-    );
-    debugPrint('fetch and draw route request: $request');
-
-    directionsService.route(request, (response, status) {
-      if (status == directions.DirectionsStatus.ok) {
-        final route = response.routes?.first;
-        directionsSteps.value = route?.legs!.first.steps ?? [];
-
-        final points = polyline.PolylinePoints()
-            .decodePolyline(route!.overviewPolyline!.points!);
-
-        final polylineCoordinates = [
-          start, // Add the user's current location as the starting point
-          ...points.map((point) => LatLng(point.latitude, point.longitude))
-        ];
-
-        polylines.clear();
-        polylines.add(
-          Polyline(
-            polylineId: const PolylineId('optimized_route'),
-            points: polylineCoordinates,
-            color: appTheme.colorPrimary,
-            width: 5,
-          ),
-        );
-
-        // Add destination marker
-        markers.add(
-          Marker(
-            markerId: const MarkerId('destination'),
-            position: LatLng(end.latitude, end.longitude),
-            icon: destinationMarker!,
-          ),
-        );
-
-        update();
-      } else {
-        // Handle error
-        print('Error fetching directions: $status');
-      }
-    });
-  }
 }

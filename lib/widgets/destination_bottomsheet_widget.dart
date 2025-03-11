@@ -80,7 +80,7 @@ class DestinationBottomSheet extends StatelessWidget {
                         scrollDirection: Axis.vertical,
                         itemCount: homeController.pastDestinations.length,
                         itemBuilder: (context, index) {
-                          var destination = homeController.pastDestinations[index];
+                          var pastDestination = homeController.pastDestinations[index];
                           return Container(
                             margin: const EdgeInsets.fromLTRB( 16,0,16 ,8),
                             decoration: ShapeDecoration(
@@ -95,8 +95,12 @@ class DestinationBottomSheet extends StatelessWidget {
                             ),
                             child: ListTile(
                               onTap: () async {
-                                await controller.uploadCustomerLocationWithDestination(destination);
-                                Get.toNamed(AppRoutes.selectRide, arguments: {'type': 'destination', 'value': destination.toString()});
+                                await controller.uploadCustomerLocationWithDestination(pastDestination, currentAddress!);
+                                Get.toNamed(AppRoutes.selectRide, arguments: {
+                                  'type': 'pastDestination',
+                                  'value': pastDestination.toString(),
+                                  'currentLocation': currentAddress, // Ensure this is passed if needed
+                                });
 
                               },
                               leading: const Icon(
@@ -104,7 +108,7 @@ class DestinationBottomSheet extends StatelessWidget {
                                 color: historyIcon,
                               ),
                               title: Text(
-                                destination,
+                                pastDestination,
                                 style:AppTextStyles.bodySmallBold.copyWith(
                                   color: searchtextGrey,
                                 ),

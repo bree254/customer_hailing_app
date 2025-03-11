@@ -19,7 +19,7 @@ class EnterTripDetailsScreen extends StatefulWidget {
 
 class _EnterTripDetailsScreenState extends State<EnterTripDetailsScreen> {
   final String googleApiKey ="AIzaSyAFFMad-10qvSw8wZl7KgDp0jVafz4La6E";
-  final TextEditingController _locationController = TextEditingController();
+  //final TextEditingController _locationController = TextEditingController();
   // final TextEditingController _destinationController = TextEditingController();
   final MapController mapController = Get.put(MapController());
   final RideServiceController rideServiceController = Get.put(RideServiceController(rideServiceRepository: RideServiceRepository()));
@@ -48,13 +48,15 @@ class _EnterTripDetailsScreenState extends State<EnterTripDetailsScreen> {
 
 
     // Add listeners to detect typing
-    _locationController.addListener(_onTextChanged);
+    //_locationController.addListener(_onTextChanged);
+    rideServiceController.locationController.addListener(_onTextChanged);
     rideServiceController.destinationController.addListener(_onTextChanged);
 
     _locationFocusNode.addListener(_onFocusChange);
     _destinationFocusNode.addListener(_onFocusChange);
 
-    _locationController.addListener(_onLocationChanged);
+    //_locationController.addListener(_onLocationChanged);
+    rideServiceController.locationController.addListener(_onLocationChanged);
     rideServiceController.destinationController.addListener(_onLocationChanged);
 
     // Add listeners to stopover controllers and focus nodes
@@ -67,7 +69,8 @@ class _EnterTripDetailsScreenState extends State<EnterTripDetailsScreen> {
     // Retrieve the current location passed from DestinationBottomSheet
     final currentAddress = Get.arguments as String?;
     if (currentAddress != null) {
-      _locationController.text = currentAddress;
+      // _locationController.text = currentAddress;
+      rideServiceController.locationController.text = currentAddress;
     }
 
     _locationFocusNode.addListener(() {
@@ -78,7 +81,8 @@ class _EnterTripDetailsScreenState extends State<EnterTripDetailsScreen> {
     });
 
     // Add location controller and focus node
-    _stopoverControllers.add(_locationController);
+    // _stopoverControllers.add(_locationController);
+    _stopoverControllers.add(rideServiceController.locationController);
     _stopoverFocusNodes.add(_locationFocusNode);
 
     _stopoverControllers.add(rideServiceController.destinationController);
@@ -141,7 +145,11 @@ class _EnterTripDetailsScreenState extends State<EnterTripDetailsScreen> {
 
   void _onTextChanged() {
     setState(() {
-      _isTyping.value = _locationController.text.isNotEmpty ||
+      // _isTyping.value = _locationController.text.isNotEmpty ||
+      //     rideServiceController.destinationController.text.isNotEmpty ||
+      //     _stopoverControllers.any((controller) => controller.text.isNotEmpty);
+
+      _isTyping.value = rideServiceController.locationController.text.isNotEmpty ||
           rideServiceController.destinationController.text.isNotEmpty ||
           _stopoverControllers.any((controller) => controller.text.isNotEmpty);
 
@@ -161,7 +169,8 @@ class _EnterTripDetailsScreenState extends State<EnterTripDetailsScreen> {
 
   void _onLocationChanged() async {
     if (_locationFocusNode.hasFocus) {
-      final locationQuery = _locationController.text;
+      //final locationQuery = _locationController.text;
+      final locationQuery = rideServiceController.locationController.text;
       if (locationQuery.isNotEmpty) {
         final response = await _fetchPredictions(locationQuery);
         setState(() {
@@ -203,7 +212,10 @@ class _EnterTripDetailsScreenState extends State<EnterTripDetailsScreen> {
         }
       }
     }
-    if(_locationController.text.isNotEmpty && rideServiceController.destinationController.text.isNotEmpty){
+    // if(_locationController.text.isNotEmpty && rideServiceController.destinationController.text.isNotEmpty){
+    //   await rideServiceController.uploadCustomerLocation();
+    // }
+    if(rideServiceController.locationController.text.isNotEmpty && rideServiceController.destinationController.text.isNotEmpty){
       await rideServiceController.uploadCustomerLocation();
     }
   }
@@ -229,7 +241,12 @@ class _EnterTripDetailsScreenState extends State<EnterTripDetailsScreen> {
 
     await rideServiceController.uploadCustomerLocation();
 
-    Get.toNamed(AppRoutes.selectRide, arguments: {'type': 'prediction', 'value': prediction.description});
+    Get.toNamed(AppRoutes.selectRide, arguments: {
+      'type': 'prediction',
+      'value': prediction.description,
+      'location': rideServiceController.locationController.text,
+      'destination': rideServiceController.destinationController.text,
+    });
   }
 
   Future<void> _loadPastDestinations() async {
@@ -454,7 +471,8 @@ class _EnterTripDetailsScreenState extends State<EnterTripDetailsScreen> {
                           final selectedPrediction = prediction.description;
 
                           if (_locationFocusNode.hasFocus) {
-                            _locationController.text = selectedPrediction;
+                            //_locationController.text = selectedPrediction;
+                            rideServiceController.locationController.text = selectedPrediction;
                             _locationFocusNode.unfocus();
                           } else if (_destinationFocusNode.hasFocus) {
                             rideServiceController.destinationController.text = selectedPrediction;
@@ -502,7 +520,8 @@ class _EnterTripDetailsScreenState extends State<EnterTripDetailsScreen> {
                             rideServiceController.destinationController.text = destination;
                             _destinationFocusNode.requestFocus();
                           } else if (_locationFocusNode.hasFocus) {
-                            _locationController.text = destination;
+                            //_locationController.text = destination;
+                            rideServiceController.locationController.text = destination;
                             _locationFocusNode.requestFocus();
                           } else {
                             for (int i = 1; i < _stopoverControllers.length - 1; i++) {
@@ -514,8 +533,17 @@ class _EnterTripDetailsScreenState extends State<EnterTripDetailsScreen> {
                             }
                           }
 
-                          await rideServiceController.uploadCustomerLocationWithDestination(destination);
-                          Get.toNamed(AppRoutes.selectRide, arguments: {'type': 'destination', 'value': destination});
+                          await rideServiceController.uploadCustomerLocationWithDestination(destination, rideServiceController.locationController.text);
+                          debugPrint('past destination Location: ${rideServiceController.locationController.text}');
+                          debugPrint('past destination Destination: ${destination}');
+
+                          //await rideServiceController.uploadCustomerLocation();
+                          Get.toNamed(AppRoutes.selectRide, arguments: {
+                            'type': 'pastDestination',
+                            'value': destination,
+                            'location': rideServiceController.locationController.text,
+                            'destination': rideServiceController.destinationController.text,
+                          });
                           //_onPredictionSelected(Prediction(description: destination, placeId: ''));
                         },
                         leading: const Icon(

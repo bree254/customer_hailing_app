@@ -28,9 +28,12 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
   String? _selectedRide;
   double ? _selectedFare;
   String? _selectedPaymentMode;
-  String? _destination;
+  String? pastDestination;
   String? _prediction;
   BitmapDescriptor? _customIcon;
+
+  String? _dropOffAddress;
+  String? _pickUpAddress;
 
 
 
@@ -53,29 +56,62 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
   @override
   void initState() {
     super.initState();
+
     _loadCustomIcon();
+
     Map<String, dynamic> args = Get.arguments;
-    if (args['type'] == 'destination') {
-      _destination = args['value'];
-      mapController.updatePolyline(_destination!);
+    if (args['type'] == 'pastDestination') {
+      pastDestination = args['value'];
+      mapController.updatePolyline(pastDestination!);
+// arguments from the past destination from the homes screen
+      _pickUpAddress = args['currentLocation'];
+      _dropOffAddress = pastDestination;
+// arguments from the past destination from the enter trip details screen
+      _pickUpAddress = args['location'];
+      _dropOffAddress = args['destination'];
+
     } else if (args['type'] == 'prediction') {
       _prediction = args['value'];
-      mapController.updatePolyline(_prediction!);
+      if(args.containsKey('location') && args.containsKey('destination')){
+        _pickUpAddress = args['location'];
+        debugPrint('select ride trip location: $_pickUpAddress');
+        _dropOffAddress = args['destination'];
+        debugPrint('select ride trip destination: $_dropOffAddress');
+
+       // mapController.updatePolylines(_pickUpAddress!, _dropOffAddress!);
+
+        // Call updatePolylines with both origin and destination addresses
+        if (_pickUpAddress != null && _dropOffAddress != null) {
+          mapController.updatePolylines(_pickUpAddress!, _dropOffAddress!);
+        }
+      }
     }
 
   }
+
+  // void initState() {
+  //   super.initState();
+  //   _loadCustomIcon();
+  //   Map<String, dynamic> args = Get.arguments;
+  //   if (args.containsKey('location') && args.containsKey('destination')) {
+  //     String location = args['location'];
+  //     debugPrint('select ride trip location: $location');
+  //     String destination = args['destination'];
+  //     debugPrint('select ride trip destination: $destination');
+  //
+  //     mapController.updatePolylines(location, destination);
+  //   } else if (args['type'] == 'pastDestination') {
+  //     pastDestination = args['value'];
+  //     mapController.updatePolyline(pastDestination!);
+  //   }
+  // }
+
+
   @override
   void dispose() {
     _timer?.cancel();
     super.dispose();
   }
-
-
-
-  // void _startRideRequest() {
-  //   rideStatusController.searchForDriver();
-  //   Get.toNamed(AppRoutes.awaitDriver, arguments: _selectedRide);
-  // }
 
   Future<void> _loadCustomIcon() async {
     _customIcon = await BitmapDescriptor.fromAssetImage(
@@ -88,13 +124,14 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
   }
 
   Future<void> _confirmTrip() async {
-    if ((_destination == null && _prediction == null) || _selectedRide == null || _selectedPaymentMode == null || _selectedFare == null) {
+    if ((pastDestination == null && _prediction == null) || _selectedRide == null || _selectedPaymentMode == null || _selectedFare == null) {
       Get.snackbar('Error', 'Please select all required fields.');
       return;
     }
 
-    String dropOffAddress = _destination ?? _prediction!;
-    await rideServiceController.confirmTrip(dropOffAddress, _selectedRide!, _selectedPaymentMode!, _selectedFare!);
+   // String dropOffAddress = pastDestination ?? _prediction!;
+    //await rideServiceController.confirmTrip(dropOffAddress, _selectedRide!, _selectedPaymentMode!, _selectedFare!);
+    await rideServiceController.confirmTrip(_dropOffAddress!,_pickUpAddress!, _selectedRide!, _selectedPaymentMode!, _selectedFare!);
     //_startRideRequest();
   }
 
@@ -153,7 +190,7 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                 decoration: InputDecoration(
                     contentPadding: const EdgeInsets.symmetric(
                         horizontal: 16, vertical: 20),
-                    hintText: _destination ?? (_prediction ?? 'Enter location'),
+                    hintText: pastDestination ?? (_prediction ?? 'Enter location'),
                     hintStyle: AppTextStyles.text14Black400.copyWith(
                       color: searchtextGrey,
                     ),

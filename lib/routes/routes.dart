@@ -43,6 +43,7 @@ import 'package:customer_hailing/presentation/two_factor_authentication/two_fact
 import '../presentation/auth/email/details_email_sign_up_screen.dart';
 import '../presentation/call-driver/screens/outgoing_call_screen.dart';
 import '../presentation/order_request/screens/cancelation_screen.dart';
+import '../presentation/order_request/screens/enter_trip_details_copy.dart';
 import '../presentation/trip_history/history_details_screen.dart';
 import '../presentation/schedule_trip/screens/enter_schedule_trip_details.dart';
 import '../presentation/schedule_trip/screens/schedule_select_ride_screen.dart';

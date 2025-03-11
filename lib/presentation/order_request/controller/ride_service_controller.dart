@@ -81,90 +81,22 @@ class RideServiceController extends GetxController {
 
   }
 
-  Future<void> uploadCustomerLocation() async {
-    await _uploadCustomerLocation(destinationController.text);
-  }
-
-  Future<void> uploadCustomerLocationWithDestination(String destination) async {
-    await _uploadCustomerLocation(destination);
-  }
-
-  Future<void> _uploadCustomerLocation(String destination) async {
-    try {
-      final mapController = Get.find<MapController>();
-
-      // Get the coordinates for the destination address
-      LatLng? destinationCoordinates = await mapController.getCoordinatesFromAddress(destination);
-
-      if (destinationCoordinates == null) {
-        //Get.snackbar('Error', 'Failed to get coordinates for the destination address.');
-        return;
-      }
-
-      Map<String, String> headers = {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $accessToken',
-      };
-      Map<String, dynamic> requestData = {
-        'originLatitude': mapController.currentPosition.value!.latitude,
-        'originLongitude': mapController.currentPosition.value!.longitude,
-        'destinationLatitude': destinationCoordinates.latitude,
-        'destinationLongitude': destinationCoordinates.longitude,
-        'searchRadius': 5000,
-        "rideCategory": "",
-      };
-
-      print('post customer location : $requestData');
-      print('post customer location : $headers');
-
-      SearchLocationsResponse response = await rideServiceRepository.uploadCustomerLocation(
-        headers: headers,
-        requestData: requestData,
-      );
-
-      print(response.toJson());
-      if (response.message == 'Rides Fetched Successfully') {
-        fareAmounts.value = response.fareAmounts ?? [];
-        availableRides.value = response.availableRides?.whereType<AvailableRide>().toList() ?? [];
-
-        print(response.message);
-
-              // Print available rides
-              print('Available Rides:');
-              for (var ride in availableRides) {
-                print('Driver ID: ${ride.driverId}, Latitude: ${ride.latitude}, Longitude: ${ride.longitude}, Ride Category: ${ride.rideCategory}');
-              }
-
-              // Print fare amounts
-              print('Fare Amounts:');
-              for (var fare in fareAmounts) {
-                print('Ride Category: ${fare.rideCategoryName}, Fare: ${fare.fare}, Trip Duration: ${fare.tripDuration}, Distance to Drop Off: ${fare.distanceToDropOff}');
-              }
-      }
-
-    } catch (e) {
-      Get.snackbar('Error', 'Failed to upload customer location');
-    }
-  }
-
-  ///with location controller
   // Future<void> uploadCustomerLocation() async {
-  //   await _uploadCustomerLocation(destinationController.text,locationController.text);
+  //   await _uploadCustomerLocation(destinationController.text);
   // }
   //
   // Future<void> uploadCustomerLocationWithDestination(String destination) async {
-  //   await _uploadCustomerLocation(destination,locationController.text);
+  //   await _uploadCustomerLocation(destination);
   // }
   //
-  // Future<void> _uploadCustomerLocation(String destination,String location) async {
+  // Future<void> _uploadCustomerLocation(String destination) async {
   //   try {
   //     final mapController = Get.find<MapController>();
   //
   //     // Get the coordinates for the destination address
   //     LatLng? destinationCoordinates = await mapController.getCoordinatesFromAddress(destination);
-  //     LatLng? locationCoordinates = await mapController.getCoordinatesFromAddress(location);
   //
-  //     if (destinationCoordinates == null || locationCoordinates == null) {
+  //     if (destinationCoordinates == null) {
   //       //Get.snackbar('Error', 'Failed to get coordinates for the destination address.');
   //       return;
   //     }
@@ -174,8 +106,8 @@ class RideServiceController extends GetxController {
   //       'Authorization': 'Bearer $accessToken',
   //     };
   //     Map<String, dynamic> requestData = {
-  //       'originLatitude': locationCoordinates.latitude,
-  //       'originLongitude': locationCoordinates.longitude,
+  //       'originLatitude': mapController.currentPosition.value!.latitude,
+  //       'originLongitude': mapController.currentPosition.value!.longitude,
   //       'destinationLatitude': destinationCoordinates.latitude,
   //       'destinationLongitude': destinationCoordinates.longitude,
   //       'searchRadius': 5000,
@@ -197,17 +129,17 @@ class RideServiceController extends GetxController {
   //
   //       print(response.message);
   //
-  //       // Print available rides
-  //       print('Available Rides:');
-  //       for (var ride in availableRides) {
-  //         print('Driver ID: ${ride.driverId}, Latitude: ${ride.latitude}, Longitude: ${ride.longitude}, Ride Category: ${ride.rideCategory}');
-  //       }
+  //             // Print available rides
+  //             print('Available Rides:');
+  //             for (var ride in availableRides) {
+  //               print('Driver ID: ${ride.driverId}, Latitude: ${ride.latitude}, Longitude: ${ride.longitude}, Ride Category: ${ride.rideCategory}');
+  //             }
   //
-  //       // Print fare amounts
-  //       print('Fare Amounts:');
-  //       for (var fare in fareAmounts) {
-  //         print('Ride Category: ${fare.rideCategoryName}, Fare: ${fare.fare}, Trip Duration: ${fare.tripDuration}, Distance to Drop Off: ${fare.distanceToDropOff}');
-  //       }
+  //             // Print fare amounts
+  //             print('Fare Amounts:');
+  //             for (var fare in fareAmounts) {
+  //               print('Ride Category: ${fare.rideCategoryName}, Fare: ${fare.fare}, Trip Duration: ${fare.tripDuration}, Distance to Drop Off: ${fare.distanceToDropOff}');
+  //             }
   //     }
   //
   //   } catch (e) {
@@ -215,25 +147,97 @@ class RideServiceController extends GetxController {
   //   }
   // }
 
+  ///with location controller
+  Future<void> uploadCustomerLocation() async {
+    await _uploadCustomerLocation(destinationController.text,locationController.text);
+  }
 
-  Future<String?> confirmTrip(String dropOffAddress, String rideCategory, String paymentMethod, double fareEstimate) async {
+  // Future<void> uploadCustomerLocationWithDestination(String destination) async {
+  //   await _uploadCustomerLocation(destination,locationController.text);
+  // }
+
+  Future<void> uploadCustomerLocationWithDestination(String destination,String location) async {
+    await _uploadCustomerLocation(destination,location);
+  }
+
+  Future<void> _uploadCustomerLocation(String destination,String location) async {
+    try {
+      final mapController = Get.find<MapController>();
+
+      // Get the coordinates for the destination address
+      LatLng? destinationCoordinates = await mapController.getCoordinatesFromAddress(destination);
+      LatLng? locationCoordinates = await mapController.getCoordinatesFromAddress(location);
+
+      if (destinationCoordinates == null || locationCoordinates == null) {
+        //Get.snackbar('Error', 'Failed to get coordinates for the destination address.');
+        return;
+      }
+
+      Map<String, String> headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $accessToken',
+      };
+      Map<String, dynamic> requestData = {
+        'originLatitude': locationCoordinates.latitude,
+        'originLongitude': locationCoordinates.longitude,
+        'destinationLatitude': destinationCoordinates.latitude,
+        'destinationLongitude': destinationCoordinates.longitude,
+        'searchRadius': 5000,
+        "rideCategory": "",
+      };
+
+      print('post customer location : $requestData');
+      print('post customer location : $headers');
+
+      SearchLocationsResponse response = await rideServiceRepository.uploadCustomerLocation(
+        headers: headers,
+        requestData: requestData,
+      );
+
+      print(response.toJson());
+      if (response.message == 'Rides Fetched Successfully') {
+        fareAmounts.value = response.fareAmounts ?? [];
+        availableRides.value = response.availableRides?.whereType<AvailableRide>().toList() ?? [];
+
+        print(response.message);
+
+        // Print available rides
+        print('Available Rides:');
+        for (var ride in availableRides) {
+          print('Driver ID: ${ride.driverId}, Latitude: ${ride.latitude}, Longitude: ${ride.longitude}, Ride Category: ${ride.rideCategory}');
+        }
+
+        // Print fare amounts
+        print('Fare Amounts:');
+        for (var fare in fareAmounts) {
+          print('Ride Category: ${fare.rideCategoryName}, Fare: ${fare.fare}, Trip Duration: ${fare.tripDuration}, Distance to Drop Off: ${fare.distanceToDropOff}');
+        }
+      }
+
+    } catch (e) {
+      Get.snackbar('Error', 'Failed to upload customer location');
+    }
+  }
+
+  Future<String?> confirmTrip(String dropOffAddress,String pickUpAddress, String rideCategory, String paymentMethod, double fareEstimate) async {
     try {
       final mapController = Get.find<MapController>();
       final authController = Get.find<AuthController>();
 
       // Get the coordinates for the destination address
       LatLng? destinationCoordinates = await mapController.getCoordinatesFromAddress(dropOffAddress);
+      LatLng? locationCoordinates = await mapController.getCoordinatesFromAddress(pickUpAddress);
 
-      if (destinationCoordinates == null) {
+      if (destinationCoordinates == null && locationCoordinates == null) {
         Get.snackbar('Error', 'Failed to get coordinates for the destination address.');
         return null;
       }
 
-      // Convert current location to address
-      String pickupAddress = await mapController.convertToAddress(
-        mapController.currentPosition.value!.latitude,
-        mapController.currentPosition.value!.longitude,
-      );
+      // // Convert current location to address
+      // String pickupAddress = await mapController.convertToAddress(
+      //   mapController.currentPosition.value!.latitude,
+      //   mapController.currentPosition.value!.longitude,
+      // );
 
       // Ensure organizationId is a single string
       String? organizationId = authController.user.value.orgId?.isNotEmpty == true ? authController.user.value.orgId!.first : null;
@@ -247,11 +251,13 @@ class RideServiceController extends GetxController {
 
         'customerId': authController.user.value.id,
         'organizationId': organizationId,
-        'pickupLatitude': mapController.currentPosition.value!.latitude,
-        'pickupLongitude': mapController.currentPosition.value!.longitude,
-        'destinationLatitude': destinationCoordinates.latitude,
+        'pickupLatitude': locationCoordinates!.latitude,
+        'pickupLongitude': locationCoordinates.longitude,
+        // 'pickupLatitude': mapController.currentPosition.value!.latitude,
+        // 'pickupLongitude': mapController.currentPosition.value!.longitude,
+        'destinationLatitude': destinationCoordinates!.latitude,
         'destinationLongitude': destinationCoordinates.longitude,
-        'pickupAddress': pickupAddress,
+        'pickupAddress': pickUpAddress,
         'dropOffAddress': dropOffAddress,
         'rideCategory': rideCategory,
         "fareEstimate": fareEstimate,
@@ -277,7 +283,7 @@ class RideServiceController extends GetxController {
 
         // Navigate to the AwaitDriver screen
         Get.toNamed(AppRoutes.awaitDriver);
-
+        print( 'trip confirmed: ${response.data}');
         return response.data!.requestId; // Return the requestId
 
 
