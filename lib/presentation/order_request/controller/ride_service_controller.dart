@@ -3,7 +3,9 @@ import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/data/models/api_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/confirm_trip_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/driver_locations_response.dart';
+import 'package:customer_hailing/data/models/ride_requests/frequent_destinations_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/rate_trip_response.dart';
+import 'package:customer_hailing/data/models/ride_requests/save_destination_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/schedule_trip_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/scheduled_trips_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/search_locations_response.dart';
@@ -47,6 +49,8 @@ class RideServiceController extends GetxController {
 
   RxList<ScheduledTripsResponse> scheduledTrips = <ScheduledTripsResponse>[].obs;
   var scheduledTripDetails = ScheduledTripDetailsResponse().obs;
+
+  var frequentDestinations = FrequentDestinationsResponse().obs;
   @override
   void onInit() async {
     super.onInit();
@@ -67,6 +71,7 @@ class RideServiceController extends GetxController {
     if (customerId != null) {
       await getTripHistory(customerId);
       await getScheduledTrips(customerId);
+      await getFrequentDestinations(customerId);
     } else {
       print('customerId is null. Cannot fetch trip history.');
     }
@@ -215,7 +220,7 @@ class RideServiceController extends GetxController {
       }
 
     } catch (e) {
-      Get.snackbar('Error', 'Failed to upload customer location');
+     // Get.snackbar('Error', 'Failed to upload customer location');
     }
   }
 
@@ -241,6 +246,7 @@ class RideServiceController extends GetxController {
 
       // Ensure organizationId is a single string
       String? organizationId = authController.user.value.orgId?.isNotEmpty == true ? authController.user.value.orgId!.first : null;
+      String? deptId = authController.user.value.departmentId?.isNotEmpty == true ? authController.user.value.departmentId!.first : null;
 
       Map<String, String> headers = {
         'Content-Type': 'application/json',
@@ -250,7 +256,8 @@ class RideServiceController extends GetxController {
       Map<String, dynamic> requestData = {
 
         'customerId': authController.user.value.id,
-        'organizationId': organizationId,
+        'departmentId': deptId,
+        "organizationId": organizationId,
         'pickupLatitude': locationCoordinates!.latitude,
         'pickupLongitude': locationCoordinates.longitude,
         // 'pickupLatitude': mapController.currentPosition.value!.latitude,
@@ -710,6 +717,78 @@ class RideServiceController extends GetxController {
     } catch (e) {
       print(' cancel Trip Error: ${ e.toString()}',);
       return null;
+    }
+  }
+
+  Future<void> saveDestination(String destination ,String name) async {
+    try {
+      final mapController = Get.find<MapController>();
+      final authController = Get.find<AuthController>();
+
+      // Get the coordinates for the destination address
+      LatLng? destinationCoordinates = await mapController.getCoordinatesFromAddress(destination);
+
+      if (destinationCoordinates == null) {
+        //Get.snackbar('Error', 'Failed to get coordinates for the destination address.');
+        return;
+      }
+
+      Map<String, String> headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $accessToken',
+      };
+
+      Map<String, dynamic> requestData = {
+        'name': name,
+        'latitude': destinationCoordinates.latitude,
+        'longitude': destinationCoordinates.longitude,
+      };
+      String? customerId = authController.user.value.id?.isNotEmpty == true ? authController.user.value.id! : null;
+
+      print('save destination request data: $requestData');
+      print('save destination trip headers: $headers');
+      print('save destinationRequest URL: ${Endpoints.saveDestination}?userId=$customerId');
+
+
+      SaveDestinationResponse response = await rideServiceRepository.saveDestination(
+        headers: headers,
+        requestData: requestData,
+        customerId: customerId!,
+      );
+
+      if (response != null) {
+        print('Destination  saved  message}');
+        Get.offNamed(AppRoutes.savedLocation);
+      } else {
+        print('Failed to save destination }');
+      }
+    } catch (e) {
+      print('schedule Trip Error: ${e.toString()}');
+    }
+  }
+
+  Future<void> getFrequentDestinations(String customerId) async {
+    try {
+      Map<String, String> headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $accessToken',
+      };
+
+      // Log the request URL and parameters
+      print('Frequent destinations with customerId: $customerId');
+      print('Frequent destinations Request URL: ${Endpoints.tripHistory}?userId=$customerId');
+      print('Frequent destinations Headers: $headers');
+
+      FrequentDestinationsResponse response = await rideServiceRepository.getFrequentDestinations(
+        headers: headers, customerId: customerId,
+
+      );
+      frequentDestinations.value = response;
+      print('Frequent destinations fetched successfully: ${response.toJson()}');
+
+    } catch (e) {
+      // Handle any errors
+      print('Error fetching Frequent destinations: $e');
     }
   }
   @override

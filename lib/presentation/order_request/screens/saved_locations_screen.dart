@@ -3,6 +3,9 @@ import 'package:customer_hailing/routes/routes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../auth/controller/auth_controller.dart';
+import '../controller/ride_service_controller.dart';
+
 class SavedLocationsScreen extends StatefulWidget {
   const SavedLocationsScreen({super.key});
 
@@ -12,9 +15,36 @@ class SavedLocationsScreen extends StatefulWidget {
 
 class _SavedLocationsScreenState extends State<SavedLocationsScreen> {
   final List<Map<String, String>> _locations = [
-    {'name': 'Enter Home Location', 'address': ''},
-    {'name': 'Enter Work Location', 'address': ''},
+    {'address': 'Enter Home Location', 'name': ''},
+    {'address': 'Enter Work Location', 'name': ''},
   ]; // Predefined locations
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchFrequentDestinations();
+  }
+
+  Future<void> _fetchFrequentDestinations() async {
+    try {
+      final customerId = Get.find<AuthController>().user.value.id;
+      if (customerId != null) {
+        await Get.find<RideServiceController>().getFrequentDestinations(customerId);
+        final frequentDestinations = Get.find<RideServiceController>().frequentDestinations.value;
+
+        if (frequentDestinations != null) {
+          setState(() {
+            _locations.addAll(frequentDestinations.data!.map((destination) => {
+              'name': destination.name?.toString() ?? ' ',
+              'address': destination.addressName!,
+            }).toList());
+          });
+        }
+      }
+    } catch (e) {
+      print('Error fetching Frequent destinations: $e');
+    }
+  }
 
   @override
   void didChangeDependencies() {
@@ -22,7 +52,13 @@ class _SavedLocationsScreenState extends State<SavedLocationsScreen> {
     final Map<String, String>? newLocation = Get.arguments as Map<String, String>?; // Retrieve the passed argument
     if (newLocation != null) {
       setState(() {
-        _locations.add(newLocation); // Append the new location to the list
+        if (newLocation['address'] == 'Home') {
+          _locations[0] = newLocation;
+        } else if (newLocation['address'] == 'Work') {
+          _locations[1] = newLocation;
+        } else {
+          _locations.add(newLocation); // Append the new location to the list
+        }
       });
     }
   }
@@ -33,7 +69,7 @@ class _SavedLocationsScreenState extends State<SavedLocationsScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        title:  Text(
+        title: Text(
           'Saved Locations',
           style: AppTextStyles.largeAppBarText,
         ),
@@ -74,26 +110,35 @@ class _SavedLocationsScreenState extends State<SavedLocationsScreen> {
                         ),
                       ),
                       child: ListTile(
-                        leading: Icon(location['name'] == 'Enter Home Location'
-                            ? Icons.home_outlined
-                            : location['name'] == 'Enter Work Location'
-                            ? CupertinoIcons.briefcase
-                            : Icons.location_on), // Default icon for new locations
-                        title: Text(
-                          location['name']!,
+                        onTap: () {
+                          if (location['address'] == 'Enter Home Location' || location['address'] == 'Enter Work Location') {
+                            Get.toNamed(AppRoutes.searchLocation);
+                          }
+                        },
+                        leading: Image.asset(
+                          location['address'] == 'Enter Home Location'
+                              ? 'assets/images/home-outline.png'
+                              : location['address'] == 'Enter Work Location'
+                              ? 'assets/images/briefcase-outline.png'
+                              : 'assets/images/map-pin-alt-outline.png',
+                          width: 24,
+                          height: 24,
+                        ), // Default icon for new locations
+                        title: location['address']!.isNotEmpty
+                            ? Text(
+                          location['address']!,
                           style: AppTextStyles.bodySmall.copyWith(
                             color: darkerGrey,
                           ),
-                        ),
-                        subtitle: location['address']!.isNotEmpty
-                            ? Text(
-                          location['address']!,
+                        )
+                            : null,
+                        subtitle: Text(
+                          location['name']!,
                           style: AppTextStyles.bodySmall.copyWith(
                             color: lighterGrey,
                             fontSize: 10.0,
                           ),
-                        )
-                            : null,
+                        ),
                       ),
                     );
                   } else {
@@ -105,13 +150,13 @@ class _SavedLocationsScreenState extends State<SavedLocationsScreen> {
                       child: Container(
                         margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
                         color: Colors.transparent,
-                        child:  Row(
+                        child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Icon(Icons.add_circle_outlined, color: primaryColor, size: 14),
                             SizedBox(width: 5),
                             Text(
-                              'Add stop over',
+                              'Add a new location',
                               style: AppTextStyles.bodySmallPrimary.copyWith(
                                 fontWeight: FontWeight.w400,
                               ),

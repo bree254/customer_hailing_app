@@ -1,6 +1,7 @@
 import 'package:customer_hailing/data/models/api_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/confirm_trip_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/driver_locations_response.dart';
+import 'package:customer_hailing/data/models/ride_requests/frequent_destinations_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/rate_trip_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/scheduled_trip_details_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/scheduled_trips_response.dart';
@@ -10,6 +11,7 @@ import 'package:customer_hailing/data/models/ride_requests/trip_details_response
 import 'package:customer_hailing/data/models/ride_requests/trip_history_response.dart';
 
 import '../api/api_client.dart';
+import '../models/ride_requests/save_destination_response.dart';
 import '../models/ride_requests/schedule_trip_response.dart';
 import '../models/ride_requests/trip_history_details_response.dart';
 
@@ -116,6 +118,22 @@ class RideServiceRepository {
         required String tripId}) async {
     return _apiClient.cancelTrip(
       headers: headers,requestData: requestData,tripId: tripId);
+  }
+
+  Future<SaveDestinationResponse> saveDestination({
+    required Map<String, String> headers,
+    required Map<String, dynamic> requestData,
+    required String customerId,
+  }) async {
+    return await _apiClient.saveDestination(headers: headers, requestData: requestData, customerId: customerId);
+  }
+
+  Future<FrequentDestinationsResponse> getFrequentDestinations(
+      {
+        Map<String, String> headers = const {},
+        required String customerId}) async {
+    return _apiClient.getFrequentDestinations(
+      headers: headers, customerId: customerId,);
   }
 
 }

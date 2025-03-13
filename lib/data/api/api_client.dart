@@ -6,6 +6,7 @@ import 'package:customer_hailing/data/models/auth/user_response.dart';
 import 'package:customer_hailing/data/models/auth/validate_otp.dart';
 import 'package:customer_hailing/data/models/ride_requests/confirm_trip_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/driver_locations_response.dart';
+import 'package:customer_hailing/data/models/ride_requests/frequent_destinations_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/rate_trip_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/scheduled_trip_details_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/scheduled_trips_response.dart';
@@ -18,6 +19,7 @@ import 'package:dio/dio.dart' as dio;
 import 'package:flutter/material.dart';
 import '../../core/utils/logger.dart';
 import '../models/auth/upload_file.dart';
+import '../models/ride_requests/save_destination_response.dart';
 import '../models/ride_requests/schedule_trip_response.dart';
 import '../models/ride_requests/trip_history_details_response.dart';
 import 'endpoints.dart';
@@ -560,6 +562,61 @@ class ApiClient extends GetConnect {
       rethrow;
     }
   }
+
+  Future<SaveDestinationResponse> saveDestination({
+    required Map<String, String> headers,
+    required Map requestData,
+    required String customerId,
+  }) async {
+    await isNetworkConnected();
+
+    final url = '${Endpoints.saveDestination}?userId=$customerId';
+
+    try {
+      var response = await _dio.post(
+        url,
+        options: dio.Options(headers: headers),data: requestData
+      );
+      debugPrint('Save destination #####Request URL: ${response.requestOptions.uri}');
+      debugPrint('Save destination  #####Response status: ${response.statusCode}');
+      debugPrint('Save destination #####Response data: ${response.data}');
+      if (_isSuccessCall(response)) {
+        return SaveDestinationResponse.fromJson(response.data);
+      } else {
+        return SaveDestinationResponse.fromJson(response.data);
+      }
+    } catch (error, stackTrace) {
+      Logger.log(
+        error,
+        stackTrace: stackTrace,
+      );
+      rethrow;
+    }
+  }
+
+  Future<FrequentDestinationsResponse> getFrequentDestinations(
+      {required Map<String, String> headers,required String customerId}) async {
+    await isNetworkConnected();
+
+    try {
+      var response = await _dio.get('${Endpoints.frequentDestinations}?userId=$customerId',
+          options: dio.Options(headers: headers));
+      debugPrint('Response status: ${response.statusCode}');
+      debugPrint('Response data: ${response.data}');
+      if (_isSuccessCall(response)) {
+        return FrequentDestinationsResponse.fromJson(response.data);
+      } else {
+        return FrequentDestinationsResponse.fromJson(response.data);
+      }
+    } catch (error, stackTrace) {
+      Logger.log(
+        error,
+        stackTrace: stackTrace,
+      );
+      rethrow;
+    }
+  }
+
 
   Future<Response> postRequest(String url, Map<String, dynamic> body) async {
     return await post(url, body);

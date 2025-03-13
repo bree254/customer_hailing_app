@@ -10,9 +10,7 @@ SearchLocationsResponse _$SearchLocationsResponseFromJson(
         Map<String, dynamic> json) =>
     SearchLocationsResponse(
       availableRides: (json['availableRides'] as List<dynamic>?)
-          ?.map((e) => e == null
-              ? null
-              : AvailableRide.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => AvailableRide.fromJson(e as Map<String, dynamic>))
           .toList(),
       fareAmounts: (json['fareAmounts'] as List<dynamic>?)
           ?.map((e) => FareAmount.fromJson(e as Map<String, dynamic>))
@@ -30,11 +28,9 @@ Map<String, dynamic> _$SearchLocationsResponseToJson(
 
 AvailableRide _$AvailableRideFromJson(Map<String, dynamic> json) =>
     AvailableRide(
-      id: json['id'],
       driverId: json['driverId'] as String?,
       latitude: (json['latitude'] as num?)?.toDouble(),
       longitude: (json['longitude'] as num?)?.toDouble(),
-      status: json['status'] as String?,
       vehicleDetails: json['vehicleDetails'] == null
           ? null
           : VehicleDetails.fromJson(
@@ -45,11 +41,9 @@ AvailableRide _$AvailableRideFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$AvailableRideToJson(AvailableRide instance) =>
     <String, dynamic>{
-      'id': instance.id,
       'driverId': instance.driverId,
       'latitude': instance.latitude,
       'longitude': instance.longitude,
-      'status': instance.status,
       'vehicleDetails': instance.vehicleDetails,
       'rating': instance.rating,
       'rideCategory': instance.rideCategory,
@@ -60,6 +54,7 @@ VehicleDetails _$VehicleDetailsFromJson(Map<String, dynamic> json) =>
       makeAndModel: json['makeAndModel'] as String?,
       color: json['color'] as String?,
       engineCapacity: (json['engineCapacity'] as num?)?.toInt(),
+      numberPlate: json['numberPlate'],
     );
 
 Map<String, dynamic> _$VehicleDetailsToJson(VehicleDetails instance) =>
@@ -67,6 +62,7 @@ Map<String, dynamic> _$VehicleDetailsToJson(VehicleDetails instance) =>
       'makeAndModel': instance.makeAndModel,
       'color': instance.color,
       'engineCapacity': instance.engineCapacity,
+      'numberPlate': instance.numberPlate,
     };
 
 FareAmount _$FareAmountFromJson(Map<String, dynamic> json) => FareAmount(
@@ -74,6 +70,7 @@ FareAmount _$FareAmountFromJson(Map<String, dynamic> json) => FareAmount(
       fare: (json['fare'] as num?)?.toDouble(),
       tripDuration: (json['tripDuration'] as num?)?.toInt(),
       distanceToDropOff: (json['distanceToDropOff'] as num?)?.toDouble(),
+      carIllustration: json['carIllustration'] as String?,
     );
 
 Map<String, dynamic> _$FareAmountToJson(FareAmount instance) =>
@@ -82,4 +79,5 @@ Map<String, dynamic> _$FareAmountToJson(FareAmount instance) =>
       'fare': instance.fare,
       'tripDuration': instance.tripDuration,
       'distanceToDropOff': instance.distanceToDropOff,
+      'carIllustration': instance.carIllustration,
     };

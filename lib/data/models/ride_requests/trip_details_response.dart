@@ -16,8 +16,8 @@ class TripDetailsResponse {
   TripDetails? tripDetails;
   @JsonKey(name: "paymentDetails")
   dynamic paymentDetails;
-  @JsonKey(name: "route")
-  List<dynamic>? route;
+  @JsonKey(name: "polylineRoute")
+  String? polylineRoute;
 
   TripDetailsResponse({
     this.tripId,
@@ -26,7 +26,7 @@ class TripDetailsResponse {
     this.tripStatus,
     this.tripDetails,
     this.paymentDetails,
-    this.route,
+    this.polylineRoute,
   });
 
   factory TripDetailsResponse.fromJson(Map<String, dynamic> json) => _$TripDetailsResponseFromJson(json);
@@ -46,6 +46,14 @@ class Customer {
   String? email;
   @JsonKey(name: "phoneNumber")
   String? phoneNumber;
+  @JsonKey(name: "profileUrl")
+  String? profileUrl;
+  @JsonKey(name: "avgRating")
+  int? avgRating;
+  @JsonKey(name: "departmentId")
+  List<String>? departmentId;
+  @JsonKey(name: "orgId")
+  List<String>? orgId;
 
   Customer({
     this.id,
@@ -53,6 +61,10 @@ class Customer {
     this.lastName,
     this.email,
     this.phoneNumber,
+    this.profileUrl,
+    this.avgRating,
+    this.departmentId,
+    this.orgId,
   });
 
   factory Customer.fromJson(Map<String, dynamic> json) => _$CustomerFromJson(json);
@@ -68,6 +80,8 @@ class Driver {
   String? firstName;
   @JsonKey(name: "lastName")
   String? lastName;
+  @JsonKey(name: "profileUrl")
+  dynamic profileUrl;
   @JsonKey(name: "phoneNumber")
   String? phoneNumber;
   @JsonKey(name: "rideCategory")
@@ -76,6 +90,8 @@ class Driver {
   String? makeAndModel;
   @JsonKey(name: "numberPlate")
   String? numberPlate;
+  @JsonKey(name: "fleetId")
+  dynamic fleetId;
   @JsonKey(name: "rating")
   int? rating;
 
@@ -83,10 +99,12 @@ class Driver {
     this.id,
     this.firstName,
     this.lastName,
+    this.profileUrl,
     this.phoneNumber,
     this.rideCategory,
     this.makeAndModel,
     this.numberPlate,
+    this.fleetId,
     this.rating,
   });
 
@@ -104,22 +122,40 @@ class TripDetails {
   @JsonKey(name: "vehicleCategory")
   dynamic vehicleCategory;
   @JsonKey(name: "estimatedDistance")
-  int? estimatedDistance;
+  double? estimatedDistance;
+  @JsonKey(name: "estimatedDuration")
+  int? estimatedDuration;
   @JsonKey(name: "estimatedFare")
-  int? estimatedFare;
+  double? estimatedFare;
   @JsonKey(name: "discount")
   dynamic discount;
   @JsonKey(name: "totalFare")
   dynamic totalFare;
+  @JsonKey(name: "status")
+  dynamic status;
+  @JsonKey(name: "tripType")
+  dynamic tripType;
+  @JsonKey(name: "tripDate")
+  dynamic tripDate;
+  @JsonKey(name: "tripTime")
+  dynamic tripTime;
+  @JsonKey(name: "dropOffTime")
+  dynamic dropOffTime;
 
   TripDetails({
     this.pickupLocation,
     this.dropOffLocation,
     this.vehicleCategory,
     this.estimatedDistance,
+    this.estimatedDuration,
     this.estimatedFare,
     this.discount,
     this.totalFare,
+    this.status,
+    this.tripType,
+    this.tripDate,
+    this.tripTime,
+    this.dropOffTime,
   });
 
   factory TripDetails.fromJson(Map<String, dynamic> json) => _$TripDetailsFromJson(json);

@@ -4,6 +4,7 @@ import 'package:customer_hailing/presentation/order_request/controller/trip_stat
 import 'package:customer_hailing/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../presentation/auth/controller/auth_controller.dart';
 import '../presentation/order_request/controller/ride_service_controller.dart';
 import '../presentation/order_request/screens/rate_ride_screen.dart';
 import '../presentation/order_request/screens/trip_summary_screen.dart';
@@ -11,11 +12,12 @@ import 'custom_elevated_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class TripStatusBottomSheet extends StatelessWidget {
-  const TripStatusBottomSheet({super.key});
-
+   TripStatusBottomSheet({super.key});
+  final AuthController authController = Get.put(AuthController());
   @override
   Widget build(BuildContext context) {
     final RideServiceController rideServiceController = Get.find<RideServiceController>();
+
     final RxBool hasNavigatedToSummary = false.obs;
 
     return DraggableScrollableSheet(
@@ -305,10 +307,10 @@ class TripStatusBottomSheet extends StatelessWidget {
         ListTile(
           leading: Stack(
             children: [
-              const CircleAvatar(
+              CircleAvatar(
                 backgroundColor: Colors.transparent,
                 child: Image(
-                  image: AssetImage("assets/images/driver.png"),
+                  image: NetworkImage(rideServiceController.tripDetails.value.driver?.profileUrl ?? ''),
                   fit: BoxFit.cover,
                   width: 45,
                   height: 45,

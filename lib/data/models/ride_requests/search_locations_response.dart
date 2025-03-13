@@ -5,7 +5,7 @@ part 'search_locations_response.g.dart';
 @JsonSerializable()
 class SearchLocationsResponse {
   @JsonKey(name: "availableRides")
-  List<AvailableRide?>? availableRides;
+  List<AvailableRide>? availableRides;
   @JsonKey(name: "fareAmounts")
   List<FareAmount>? fareAmounts;
   @JsonKey(name: "message")
@@ -24,16 +24,12 @@ class SearchLocationsResponse {
 
 @JsonSerializable()
 class AvailableRide {
-  @JsonKey(name: "id")
-  dynamic id;
   @JsonKey(name: "driverId")
   String? driverId;
   @JsonKey(name: "latitude")
   double? latitude;
   @JsonKey(name: "longitude")
   double? longitude;
-  @JsonKey(name: "status")
-  String? status;
   @JsonKey(name: "vehicleDetails")
   VehicleDetails? vehicleDetails;
   @JsonKey(name: "rating")
@@ -42,11 +38,9 @@ class AvailableRide {
   String? rideCategory;
 
   AvailableRide({
-    this.id,
     this.driverId,
     this.latitude,
     this.longitude,
-    this.status,
     this.vehicleDetails,
     this.rating,
     this.rideCategory,
@@ -65,11 +59,14 @@ class VehicleDetails {
   String? color;
   @JsonKey(name: "engineCapacity")
   int? engineCapacity;
+  @JsonKey(name: "numberPlate")
+  dynamic numberPlate;
 
   VehicleDetails({
     this.makeAndModel,
     this.color,
     this.engineCapacity,
+    this.numberPlate,
   });
 
   factory VehicleDetails.fromJson(Map<String, dynamic> json) => _$VehicleDetailsFromJson(json);
@@ -87,15 +84,19 @@ class FareAmount {
   int? tripDuration;
   @JsonKey(name: "distanceToDropOff")
   double? distanceToDropOff;
+  @JsonKey(name: "carIllustration")
+  String? carIllustration;
 
   FareAmount({
     this.rideCategoryName,
     this.fare,
     this.tripDuration,
     this.distanceToDropOff,
+    this.carIllustration,
   });
 
   factory FareAmount.fromJson(Map<String, dynamic> json) => _$FareAmountFromJson(json);
 
   Map<String, dynamic> toJson() => _$FareAmountToJson(this);
 }
+

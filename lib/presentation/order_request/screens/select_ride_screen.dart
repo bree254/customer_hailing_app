@@ -10,6 +10,7 @@ import 'package:customer_hailing/widgets/drawer_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:get/get.dart';
+import '../../../core/constants/constants.dart';
 import '../../../core/utils/pref_utils.dart';
 import '../../../data/models/ride_requests/search_locations_response.dart';
 import '../../../data/repos/ride_service_repository.dart';
@@ -35,7 +36,7 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
   String? _dropOffAddress;
   String? _pickUpAddress;
 
-
+  String? imageUrl;
 
   //final RideStatusController rideStatusController = Get.put(RideStatusController());
   final MapController mapController = Get.put(MapController());
@@ -59,13 +60,16 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
 
     _loadCustomIcon();
 
+
     Map<String, dynamic> args = Get.arguments;
     if (args['type'] == 'pastDestination') {
       pastDestination = args['value'];
       mapController.updatePolyline(pastDestination!);
 // arguments from the past destination from the homes screen
       _pickUpAddress = args['currentLocation'];
+      debugPrint('select ride current location from homescreen: $_pickUpAddress');
       _dropOffAddress = pastDestination;
+      debugPrint('select ride past destination from homescreen: $_pickUpAddress');
 // arguments from the past destination from the enter trip details screen
       _pickUpAddress = args['location'];
       _dropOffAddress = args['destination'];
@@ -276,7 +280,10 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                                         selectedColor: selectRideColor,
                                         selectedTileColor: selectRideColor,
                                         leading: Image(
-                                          image: AssetImage(rideCategoryImages[request.rideCategoryName] ?? 'assets/images/default.png'),
+                                          image:
+                                          //AssetImage(rideCategoryImages[request.rideCategoryName] ?? 'assets/images/default.png'),
+                                         // image:
+                                            NetworkImage('$imageBaseUrl${request.carIllustration}'),
                                         ),
                                         title: Text(
                                           request.rideCategoryName.toString(),
