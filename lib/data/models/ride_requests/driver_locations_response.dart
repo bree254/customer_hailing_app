@@ -4,30 +4,27 @@ part 'driver_locations_response.g.dart';
 
 @JsonSerializable()
 class DriverLocationsResponse {
-  @JsonKey(name: "id")
-  dynamic id;
   @JsonKey(name: "driverId")
   String? driverId;
   @JsonKey(name: "latitude")
   double? latitude;
   @JsonKey(name: "longitude")
   double? longitude;
-  @JsonKey(name: "status")
-  String? status;
   @JsonKey(name: "vehicleDetails")
   VehicleDetails? vehicleDetails;
+  @JsonKey(name: "carIcon")
+  String? carIcon;
   @JsonKey(name: "rating")
   int? rating;
   @JsonKey(name: "rideCategory")
   String? rideCategory;
 
   DriverLocationsResponse({
-    this.id,
     this.driverId,
     this.latitude,
     this.longitude,
-    this.status,
     this.vehicleDetails,
+    this.carIcon,
     this.rating,
     this.rideCategory,
   });
@@ -45,11 +42,14 @@ class VehicleDetails {
   String? color;
   @JsonKey(name: "engineCapacity")
   int? engineCapacity;
+  @JsonKey(name: "numberPlate")
+  String? numberPlate;
 
   VehicleDetails({
     this.makeAndModel,
     this.color,
     this.engineCapacity,
+    this.numberPlate,
   });
 
   factory VehicleDetails.fromJson(Map<String, dynamic> json) => _$VehicleDetailsFromJson(json);

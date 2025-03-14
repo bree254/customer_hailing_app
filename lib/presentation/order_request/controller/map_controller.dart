@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'package:customer_hailing/presentation/order_request/controller/ride_service_controller.dart';
 import 'package:flutter/cupertino.dart';
@@ -6,12 +7,15 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+
+import 'package:get/get_connect/http/src/response/response.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart' as polyline;
 import '../../../core/app_export.dart';
 import 'package:google_directions_api/google_directions_api.dart' as directions;
-
+import 'package:http/http.dart' as http;
+import '../../../core/constants/constants.dart';
 import '../../../data/api/endpoints.dart';
 import '../../../data/models/ride_requests/driver_locations_response.dart';
 import '../../../data/repos/ride_service_repository.dart';
@@ -45,6 +49,7 @@ class MapController extends GetxController {
   Stream<List<DriverLocationsResponse>> get driverLocationsStream => _driverLocationsController.stream;
 
   Timer? _driverLocationsTimer;
+
   @override
   Future<void> onInit() async {
     super.onInit();
@@ -124,94 +129,76 @@ class MapController extends GetxController {
   //   }
   // }
 
-  // Future<void> updateDriverMarkers() async {
-  //   Set<Marker> newMarkers = {};
-  //
-  //   print("Total drivers fetched: ${drivers.length}");
-  //
-  //   for (var driver in drivers) {
-  //
-  //     print("Processing driver: ${driver.toJson()}"); // Log driver data
-  //
-  //     if (driver.latitude != null && driver.longitude != null) {
-  //
-  //       print("Adding marker for driver ${driver.driverId} at (${driver.latitude}, ${driver.longitude})");
-  //
-  //       newMarkers.add(
-  //         Marker(
-  //           markerId: MarkerId(driver.driverId ?? "unknown"),
-  //           position: LatLng(driver.latitude!, driver.longitude!),
-  //           icon: await BitmapDescriptor.fromAssetImage(
-  //             const ImageConfiguration(size: Size(10, 10)), // Set correct size
-  //             'assets/images/small_car_marker.png',
-  //           ),
-  //           infoWindow: InfoWindow(
-  //             title: driver.vehicleDetails?.makeAndModel ?? "Unknown Vehicle",
-  //             snippet: "Rating: ${driver.rating}",
-  //           ),
-  //         ),
-  //       );
-  //     }
-  //   }
-  //
-  //   markers.assignAll(newMarkers);
-  //   print("Updated markers: ${markers.length}");
-  //
-  //   // Force UI update if needed
-  //   markers.refresh();
-  // }
 
-Future<void> updateDriverMarkers() async {
-  Set<Marker> newMarkers = {};
-  const double offset = 0.0020; // Offset value to slightly move markers
 
-  // Add driver markers
-  for (var i = 0; i < drivers.length; i++) {
-    var driver = drivers[i];
-    if (driver.latitude != null && driver.longitude != null) {
-      // Apply offset to avoid stacking
-      double offsetLatitude = driver.latitude! + (i * offset);
-      double offsetLongitude = driver.longitude! + (i * offset);
-
-      newMarkers.add(
-        Marker(
-          markerId: MarkerId(driver.driverId ?? "unknown"),
-          position: LatLng(offsetLatitude, offsetLongitude),
-          icon: await BitmapDescriptor.fromAssetImage(
-            const ImageConfiguration(size: Size(48, 48)), // Set correct size
-            'assets/images/mid_car_marker.png',
-          ),
-          infoWindow: InfoWindow(
-            title: driver.vehicleDetails?.makeAndModel ?? "Unknown Vehicle",
-            snippet: "Rating: ${driver.rating}",
-          ),
-        ),
-      );
-
-      print("Adding marker for driver ${driver.driverId} at (${offsetLatitude}, ${offsetLongitude})");
+  Future<BitmapDescriptor> _getNetworkImageMarker(String url) async {
+    final http.Response response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      final Uint8List bytes = response.bodyBytes;
+      return BitmapDescriptor.fromBytes(bytes);
+    } else {
+      // Fallback to a default icon if the network image fails to load
+      return BitmapDescriptor.defaultMarker;
     }
   }
 
-  // Ensure the center marker is not removed
-  if (center.value != null) {
-    newMarkers.add(
-      Marker(
-        markerId: const MarkerId("center"),
-        position: center.value!,
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
-        infoWindow: const InfoWindow(title: "You are here"),
-      ),
-    );
+  Future<void> updateDriverMarkers() async {
+    Set<Marker> newMarkers = {};
+    const double offset = 0.0020; // Offset value to slightly move markers
 
-    print("Adding center marker at (${center.value!.latitude}, ${center.value!.longitude})");
+    // Add driver markers
+    for (var i = 0; i < drivers.length; i++) {
+      var driver = drivers[i];
+      if (driver.latitude != null && driver.longitude != null) {
+        // Apply offset to avoid stacking
+        double offsetLatitude = driver.latitude! + (i * offset);
+        double offsetLongitude = driver.longitude! + (i * offset);
+
+        // Construct the full URL for the car icon
+        String carIconUrl = imageBaseUrl + (driver.carIcon ?? 'assets/images/default_car_marker.png');
+        print(' car icon url : $carIconUrl');
+
+        // Load the car icon from the URL
+        BitmapDescriptor carIcon = await _getNetworkImageMarker(carIconUrl);
+
+        newMarkers.add(
+          Marker(
+            markerId: MarkerId(driver.driverId ?? "unknown"),
+            position: LatLng(offsetLatitude, offsetLongitude),
+            icon: carIcon,
+            infoWindow: InfoWindow(
+              title: driver.vehicleDetails?.makeAndModel ?? "Unknown Vehicle",
+              snippet: "Rating: ${driver.rating}",
+            ),
+          ),
+        );
+
+        print("Adding marker for driver ${driver.driverId} at (${offsetLatitude}, ${offsetLongitude})");
+        print("Adding car marker for driver ${driver.carIcon} at (${offsetLatitude}, ${offsetLongitude})");
+      }
+    }
+
+    // Ensure the center marker is not removed
+    if (center.value != null) {
+      newMarkers.add(
+        Marker(
+          markerId: const MarkerId("center"),
+          position: center.value!,
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+          infoWindow: const InfoWindow(title: "You are here"),
+        ),
+      );
+
+      print("Adding center marker at (${center.value!.latitude}, ${center.value!.longitude})");
+    }
+
+    // Assign updated markers
+    markers.assignAll(newMarkers);
+    markers.refresh(); // Force UI update
+
+    print("Updated markers count: ${markers.length}");
   }
 
-  // Assign updated markers
-  markers.assignAll(newMarkers);
-  markers.refresh(); // Force UI update
-
-  print("Updated markers count: ${markers.length}");
-}
 
 ///for driver location using websockets
   // Future<void> _updateMarkers(List<DriverLocationsResponse> driverLocations) async {

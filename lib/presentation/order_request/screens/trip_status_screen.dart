@@ -43,7 +43,7 @@ class _TripStatusScreenState extends State<TripStatusScreen> {
               polylines: mapController.polylines,
             ),
           )),
-          const TripStatusBottomSheet(),
+           TripStatusBottomSheet(),
            Positioned(
             top: 40,
             left: 20,

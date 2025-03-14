@@ -308,13 +308,20 @@ class TripStatusBottomSheet extends StatelessWidget {
           leading: Stack(
             children: [
               CircleAvatar(
-                backgroundColor: Colors.transparent,
-                child: Image(
-                  image: NetworkImage(rideServiceController.tripDetails.value.driver?.profileUrl ?? ''),
-                  fit: BoxFit.cover,
-                  width: 45,
-                  height: 45,
-                ),
+                backgroundColor: primaryColor,
+                backgroundImage: rideServiceController.tripDetails.value.driver?.profileUrl != null
+                    ? NetworkImage(rideServiceController.tripDetails.value.driver!.profileUrl)
+                    : null,
+                child: rideServiceController.tripDetails.value.driver?.profileUrl == null
+                    ? Text(
+                  '${rideServiceController.tripDetails.value.driver?.firstName?[0]}${rideServiceController.tripDetails.value.driver?.lastName?[0]}',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                )
+                    : null,
               ),
               Positioned(
                 top: 29,
