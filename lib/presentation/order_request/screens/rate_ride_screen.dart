@@ -23,12 +23,31 @@ class _RateRideScreenState extends State<RateRideScreen> {
           child: Column(
             children: [
               const SizedBox(height: 40,),
-              const Center(
-                child: CircleAvatar(
-                  backgroundColor: Colors.transparent,
+               Center(
+                child:
+                CircleAvatar(
+                  backgroundColor: primaryColor,
                   radius: 40,
-                  backgroundImage: AssetImage('assets/images/driver.png'),
+                  backgroundImage: controller.tripDetails.value.driver?.profileUrl != null
+                      ? NetworkImage(controller.tripDetails.value.driver!.profileUrl)
+                      : null,
+                  child: controller.tripDetails.value.driver?.profileUrl == null
+                      ? Text(
+                    '${controller.tripDetails.value.driver?.firstName?[0]}${controller.tripDetails.value.driver?.lastName?[0]}',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  )
+                      : null,
                 ),
+                // CircleAvatar(
+                //   backgroundColor: Colors.transparent,
+                //   radius: 40,
+                //   backgroundImage: AssetImage('assets/images/driver.png'),
+                // ),
+
               ),
               const SizedBox(height: 20),
                Text(

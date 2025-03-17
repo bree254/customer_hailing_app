@@ -7,6 +7,7 @@ import 'package:customer_hailing/data/models/auth/validate_otp.dart';
 import 'package:customer_hailing/data/models/ride_requests/confirm_trip_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/driver_locations_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/frequent_destinations_response.dart';
+import 'package:customer_hailing/data/models/ride_requests/locations_update_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/rate_trip_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/scheduled_trip_details_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/scheduled_trips_response.dart';
@@ -607,6 +608,29 @@ class ApiClient extends GetConnect {
         return FrequentDestinationsResponse.fromJson(response.data);
       } else {
         return FrequentDestinationsResponse.fromJson(response.data);
+      }
+    } catch (error, stackTrace) {
+      Logger.log(
+        error,
+        stackTrace: stackTrace,
+      );
+      rethrow;
+    }
+  }
+
+  Future<LocationsUpdatesResponse> locationUpdates (
+      {required Map<String, String> headers,required String tripId}) async {
+    await isNetworkConnected();
+
+    try {
+      var response = await _dio.get('${Endpoints.locationUpdates}$tripId',
+          options: dio.Options(headers: headers));
+      debugPrint('Response status: ${response.statusCode}');
+      debugPrint('Response data: ${response.data}');
+      if (_isSuccessCall(response)) {
+        return LocationsUpdatesResponse.fromJson(response.data);
+      } else {
+        return LocationsUpdatesResponse.fromJson(response.data);
       }
     } catch (error, stackTrace) {
       Logger.log(

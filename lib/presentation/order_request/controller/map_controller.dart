@@ -18,6 +18,7 @@ import 'package:http/http.dart' as http;
 import '../../../core/constants/constants.dart';
 import '../../../data/api/endpoints.dart';
 import '../../../data/models/ride_requests/driver_locations_response.dart';
+import '../../../data/models/ride_requests/locations_update_response.dart';
 import '../../../data/repos/ride_service_repository.dart';
 import '../../../data/services/web_sockets/web_socket_service.dart';
 
@@ -47,9 +48,11 @@ class MapController extends GetxController {
 
   final StreamController<List<DriverLocationsResponse>> _driverLocationsController = StreamController<List<DriverLocationsResponse>>.broadcast();
   Stream<List<DriverLocationsResponse>> get driverLocationsStream => _driverLocationsController.stream;
+  Timer? _locationUpdateTimer;
 
   Timer? _driverLocationsTimer;
 
+  var locationUpdates = LocationsUpdatesResponse().obs;
   @override
   Future<void> onInit() async {
     super.onInit();
@@ -106,30 +109,6 @@ class MapController extends GetxController {
       print('Error fetching drivers: $e');
     }
   }
-
-  // Future<void> getDriverLocations() async {
-  //   try {
-  //     Map<String, String> headers = {
-  //       'Content-Type': 'application/json',
-  //       'Authorization': 'Bearer $accessToken', // Replace with your token logic
-  //     };
-  //
-  //         print('get driver locations Request URL: ${Endpoints.driverLocations}');
-  //         print('get driver locations Headers: $headers');
-  //
-  //     List<DriverLocationsResponse> response = await rideServiceRepository.getDriverLocations(headers: headers);
-  //
-  //     drivers.assignAll(response);
-  //     print('driver locations fetched successfully: in map controller  ${response.map((e) => e.toJson()).toList()}');
-  //     // Add driver markers
-  //     await updateDriverMarkers();
-  //
-  //   } catch (e) {
-  //     print('Error fetching drivers: $e');
-  //   }
-  // }
-
-
 
   Future<BitmapDescriptor> _getNetworkImageMarker(String url) async {
     final http.Response response = await http.get(Uri.parse(url));
@@ -200,33 +179,41 @@ class MapController extends GetxController {
   }
 
 
-///for driver location using websockets
-  // Future<void> _updateMarkers(List<DriverLocationsResponse> driverLocations) async {
-  //   print('driver locations : $driverLocations');
-  //
-  //   markers.clear();
-  //
-  //   for (var driver in driverLocations) {
-  //     double latitude = driver.latitude!;
-  //     double longitude = driver.longitude!;
-  //     String driverId = driver.driverId!;
-  //
-  //     BitmapDescriptor carMarker = await BitmapDescriptor.fromAssetImage(
-  //       ImageConfiguration(size: Size(10, 10)),
-  //       'assets/images/car_markers.png',
-  //     );
-  //
-  //     markers.add(
-  //       Marker(
-  //         markerId: MarkerId(driverId),
-  //         position: LatLng(latitude, longitude),
-  //         icon: carMarker,
-  //         infoWindow: InfoWindow(title: "Driver $driverId"),
-  //       ),
-  //     );
-  //   }
-  //   update();
-  // }
+  void startLocationUpdates(String tripId) {
+    _locationUpdateTimer = Timer.periodic(Duration(seconds: 5), (timer) {
+      getLocationUpdates(tripId);
+    });
+  }
+  Future<void> getLocationUpdates(String tripId) async {
+    try {
+      Map<String, String> headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $accessToken',
+      };
+
+      // Log the request URL and parameters
+      print('Get location updates with tripId: $tripId');
+      print('Get location updates Request URL: ${Endpoints.locationUpdates}$tripId');
+      print('Get location updates Headers: $headers');
+
+      LocationsUpdatesResponse response = await rideServiceRepository.locationUpdates(
+        headers: headers,
+        tripId: tripId,
+      );
+
+      locationUpdates.value = response;
+      print('location updates fetched successfully: ${response.toJson()}');
+    } catch (e) {
+      print('Error fetching location updates : $e');
+    }
+  }
+
+  void stopLocationUpdates() {
+    _locationUpdateTimer?.cancel();
+  }
+
+
+
 
   Future<void> _loadCustomMarker() async {
     customMarker = await BitmapDescriptor.asset(
@@ -431,4 +418,57 @@ class MapController extends GetxController {
     }
   }
 
+}
+
+///for driver location using websockets
+// Future<void> _updateMarkers(List<DriverLocationsResponse> driverLocations) async {
+//   print('driver locations : $driverLocations');
+//
+//   markers.clear();
+//
+//   for (var driver in driverLocations) {
+//     double latitude = driver.latitude!;
+//     double longitude = driver.longitude!;
+//     String driverId = driver.driverId!;
+//
+//     BitmapDescriptor carMarker = await BitmapDescriptor.fromAssetImage(
+//       ImageConfiguration(size: Size(10, 10)),
+//       'assets/images/car_markers.png',
+//     );
+//
+//     markers.add(
+//       Marker(
+//         markerId: MarkerId(driverId),
+//         position: LatLng(latitude, longitude),
+//         icon: carMarker,
+//         infoWindow: InfoWindow(title: "Driver $driverId"),
+//       ),
+//     );
+//   }
+//   update();
+// }
+
+// Future<void> getDriverLocations() async {
+//   try {
+//     Map<String, String> headers = {
+//       'Content-Type': 'application/json',
+//       'Authorization': 'Bearer $accessToken', // Replace with your token logic
+//     };
+//
+//         print('get driver locations Request URL: ${Endpoints.driverLocations}');
+//         print('get driver locations Headers: $headers');
+//
+//     List<DriverLocationsResponse> response = await rideServiceRepository.getDriverLocations(headers: headers);
+//
+//     drivers.assignAll(response);
+//     print('driver locations fetched successfully: in map controller  ${response.map((e) => e.toJson()).toList()}');
+//     // Add driver markers
+//     await updateDriverMarkers();
+//
+//   } catch (e) {
+//     print('Error fetching drivers: $e');
+//   }
+// }
+
+void _startDriverLocationsUpdates() {
 }

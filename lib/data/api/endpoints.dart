@@ -30,5 +30,6 @@ class Endpoints {
   static const String shareTrip = '$baseUrl/rides/api/v1/shareTrip';
   static const String raiseSos = '$baseUrl/rides/api/v1/sos/raise';
   static const String cancelTrip = '$baseUrl/rides/api/v1/customers/';
+  static const String locationUpdates = '$baseUrl/rides/api/v1/drivers/location/trip/';
 
 }

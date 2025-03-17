@@ -2,6 +2,7 @@ import 'package:customer_hailing/data/models/api_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/confirm_trip_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/driver_locations_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/frequent_destinations_response.dart';
+import 'package:customer_hailing/data/models/ride_requests/locations_update_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/rate_trip_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/scheduled_trip_details_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/scheduled_trips_response.dart';
@@ -136,4 +137,11 @@ class RideServiceRepository {
       headers: headers, customerId: customerId,);
   }
 
+  Future<LocationsUpdatesResponse> locationUpdates(
+      {
+        Map<String, String> headers = const {},
+        required String tripId}) async {
+    return _apiClient.locationUpdates(
+      headers: headers,tripId: tripId,);
+  }
 }

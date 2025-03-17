@@ -4,6 +4,7 @@ import 'package:customer_hailing/data/models/api_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/confirm_trip_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/driver_locations_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/frequent_destinations_response.dart';
+import 'package:customer_hailing/data/models/ride_requests/locations_update_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/rate_trip_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/save_destination_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/schedule_trip_response.dart';
@@ -51,6 +52,8 @@ class RideServiceController extends GetxController {
   var scheduledTripDetails = ScheduledTripDetailsResponse().obs;
 
   var frequentDestinations = FrequentDestinationsResponse().obs;
+
+  var locationUpdates = LocationsUpdatesResponse().obs;
   @override
   void onInit() async {
     super.onInit();
@@ -79,6 +82,7 @@ class RideServiceController extends GetxController {
     if (scheduledTrips.isNotEmpty) {
       String tripId = scheduledTrips.first.id!;
       await getScheduledTripDetails(tripId);
+      await getLocationUpdates(tripId);
     } else {
       print('No scheduled trips available.');
     }
@@ -789,6 +793,30 @@ class RideServiceController extends GetxController {
     } catch (e) {
       // Handle any errors
       print('Error fetching Frequent destinations: $e');
+    }
+  }
+
+  Future<void> getLocationUpdates(String tripId) async {
+    try {
+      Map<String, String> headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $accessToken',
+      };
+
+      // Log the request URL and parameters
+      print('Scheduled trips details with tripId: $tripId');
+      print('Scheduled trips details Request URL: ${Endpoints.locationUpdates}$tripId');
+      print('Scheduled trips details  Headers: $headers');
+
+      LocationsUpdatesResponse response = await rideServiceRepository.locationUpdates(
+        headers: headers,
+        tripId: tripId,
+      );
+
+      locationUpdates.value = response;
+      print('location updates fetched successfully: ${response.toJson()}');
+    } catch (e) {
+      print('Error fetching location updates : $e');
     }
   }
   @override
