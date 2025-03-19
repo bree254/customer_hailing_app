@@ -99,6 +99,7 @@ class DestinationBottomSheet extends StatelessWidget {
                                 Get.toNamed(AppRoutes.selectRide, arguments: {
                                   'type': 'pastDestination',
                                   'value': pastDestination.toString(),
+                                  'pastHistory': pastDestination,
                                   'currentLocation': currentAddress, // Ensure this is passed if needed
                                 });
 

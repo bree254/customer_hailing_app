@@ -1,4 +1,5 @@
 import 'package:customer_hailing/core/app_export.dart';
+import 'package:customer_hailing/core/constants/constants.dart';
 import 'package:customer_hailing/core/utils/colors.dart';
 import 'package:customer_hailing/presentation/order_request/controller/trip_status_controller.dart';
 import 'package:customer_hailing/routes/routes.dart';
@@ -17,6 +18,7 @@ class TripStatusBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final RideServiceController rideServiceController = Get.find<RideServiceController>();
+
 
     final RxBool hasNavigatedToSummary = false.obs;
 
@@ -395,11 +397,10 @@ class TripStatusBottomSheet extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Image(
+               Image(
                 width: 60,
                 height: 30,
-                image: AssetImage("assets/images/mazda.png"),
-              ),
+                image:NetworkImage('$imageBaseUrl${rideServiceController.tripDetails.value.driver!.rideCategoryIcon.toString()}'), ),
               if (isHeadingToDestination)
                 GestureDetector(
                   onTap: () {

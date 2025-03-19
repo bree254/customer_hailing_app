@@ -54,44 +54,44 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
     'XL': 'assets/images/xl_car.png',
   };
 
-  @override
-  void initState() {
-    super.initState();
+ @override
+ void initState() {
+   super.initState();
 
-    _loadCustomIcon();
+   _loadCustomIcon();
 
+   Map<String, dynamic> args = Get.arguments;
+   if (args['type'] == 'pastDestination') {
+     pastDestination = args['value'];
+     mapController.updatePolyline(pastDestination!);
 
-    Map<String, dynamic> args = Get.arguments;
-    if (args['type'] == 'pastDestination') {
-      pastDestination = args['value'];
-      mapController.updatePolyline(pastDestination!);
-// arguments from the past destination from the homes screen
-      _pickUpAddress = args['currentLocation'];
-      debugPrint('select ride current location from homescreen: $_pickUpAddress');
-      _dropOffAddress = pastDestination;
-      debugPrint('select ride past destination from homescreen: $_pickUpAddress');
-// arguments from the past destination from the enter trip details screen
-      _pickUpAddress = args['location'];
-      _dropOffAddress = args['destination'];
+     // arguments from the past destination from the homes screen
+     _pickUpAddress = args['currentLocation'];
+     debugPrint('select ride current location from homescreen: $_pickUpAddress');
+     _dropOffAddress = args['pastHistory'];
+     debugPrint('select ride past destination from homescreen: $_dropOffAddress');
 
-    } else if (args['type'] == 'prediction') {
-      _prediction = args['value'];
-      if(args.containsKey('location') && args.containsKey('destination')){
-        _pickUpAddress = args['location'];
-        debugPrint('select ride trip location: $_pickUpAddress');
-        _dropOffAddress = args['destination'];
-        debugPrint('select ride trip destination: $_dropOffAddress');
+     // arguments from the past destination from the enter trip details screen
+     if (args.containsKey('location') && args.containsKey('destination')) {
+       _pickUpAddress = args['location'];
+       _dropOffAddress = args['destination'];
+     }
 
-       // mapController.updatePolylines(_pickUpAddress!, _dropOffAddress!);
+   } else if (args['type'] == 'prediction') {
+     _prediction = args['value'];
+     if (args.containsKey('location') && args.containsKey('destination')) {
+       _pickUpAddress = args['location'];
+       debugPrint('select ride trip location: $_pickUpAddress');
+       _dropOffAddress = args['destination'];
+       debugPrint('select ride trip destination: $_dropOffAddress');
 
-        // Call updatePolylines with both origin and destination addresses
-        if (_pickUpAddress != null && _dropOffAddress != null) {
-          mapController.updatePolylines(_pickUpAddress!, _dropOffAddress!);
-        }
-      }
-    }
-
-  }
+       // Call updatePolylines with both origin and destination addresses
+       if (_pickUpAddress != null && _dropOffAddress != null) {
+         mapController.updatePolylines(_pickUpAddress!, _dropOffAddress!);
+       }
+     }
+   }
+ }
 
   // void initState() {
   //   super.initState();
@@ -128,15 +128,20 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
   }
 
   Future<void> _confirmTrip() async {
-    if ((pastDestination == null && _prediction == null) || _selectedRide == null || _selectedPaymentMode == null || _selectedFare == null) {
+    print('pastDestination: $pastDestination');
+    print('_prediction: $_prediction');
+    print('_selectedRide: $_selectedRide');
+    print('_selectedPaymentMode: $_selectedPaymentMode');
+    print('_selectedFare: $_selectedFare');
+    print('_dropOffAddress: $_dropOffAddress');
+    print('_pickUpAddress: $_pickUpAddress');
+
+    if ((pastDestination == null && _prediction == null) || _selectedRide == null || _selectedPaymentMode == null || _selectedFare == null ) {
       Get.snackbar('Error', 'Please select all required fields.');
       return;
     }
-
-   // String dropOffAddress = pastDestination ?? _prediction!;
-    //await rideServiceController.confirmTrip(dropOffAddress, _selectedRide!, _selectedPaymentMode!, _selectedFare!);
-    await rideServiceController.confirmTrip(_dropOffAddress!,_pickUpAddress!, _selectedRide!, _selectedPaymentMode!, _selectedFare!);
-    //_startRideRequest();
+    await rideServiceController.confirmTrip(_dropOffAddress!, _pickUpAddress!, _selectedRide!, _selectedPaymentMode!, _selectedFare!);
+    print('dropOffAddress: $_dropOffAddress');
   }
 
   @override

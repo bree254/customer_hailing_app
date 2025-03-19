@@ -1,13 +1,12 @@
 import 'dart:async';
+import 'dart:math';
 import 'dart:typed_data';
-
 import 'package:customer_hailing/presentation/order_request/controller/ride_service_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
-
 import 'package:get/get_connect/http/src/response/response.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -53,6 +52,11 @@ class MapController extends GetxController {
   Timer? _driverLocationsTimer;
 
   var locationUpdates = LocationsUpdatesResponse().obs;
+
+  Timer? _animationTimer;
+  int _currentIndex = 0;
+  List<LatLng> _interpolatedPoints = [];
+
   @override
   Future<void> onInit() async {
     super.onInit();
@@ -73,13 +77,14 @@ class MapController extends GetxController {
     //getDriverLocations();
 
     // Start the periodic update
-    _startDriverLocationsUpdates();
-    ever(drivers, (_) => updateDriverMarkers()); // Auto-update markers when drivers list changes
+    _startDriverLocations();
+    ever(drivers, (_) => updateDriverMarkers());// Auto-update markers when drivers list changes
 
+    //startLocationUpdates();
   }
 
 
-  void _startDriverLocationsUpdates() {
+  void _startDriverLocations() {
     _driverLocationsTimer = Timer.periodic(Duration(seconds: 5), (timer) async {
       await _fetchDriverLocations();
     });
@@ -121,8 +126,10 @@ class MapController extends GetxController {
     }
   }
 
+
   Future<void> updateDriverMarkers() async {
     Set<Marker> newMarkers = {};
+
     const double offset = 0.0020; // Offset value to slightly move markers
 
     // Add driver markers
@@ -134,7 +141,7 @@ class MapController extends GetxController {
         double offsetLongitude = driver.longitude! + (i * offset);
 
         // Construct the full URL for the car icon
-        String carIconUrl = imageBaseUrl + (driver.carIcon ?? 'assets/images/default_car_marker.png');
+        String carIconUrl = imageBaseUrl + (driver.carIcon ?? 'assets/images/mid_car_marker.png');
         print(' car icon url : $carIconUrl');
 
         // Load the car icon from the URL
@@ -163,7 +170,7 @@ class MapController extends GetxController {
         Marker(
           markerId: const MarkerId("center"),
           position: center.value!,
-          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet),
           infoWindow: const InfoWindow(title: "You are here"),
         ),
       );
@@ -179,12 +186,26 @@ class MapController extends GetxController {
   }
 
 
-  void startLocationUpdates(String tripId) {
+
+  void startLocationUpdates() {
     _locationUpdateTimer = Timer.periodic(Duration(seconds: 5), (timer) {
-      getLocationUpdates(tripId);
+      final RideServiceController rideServiceController = Get.find<RideServiceController>();
+      final tripId = rideServiceController.tripDetails.value.tripId; // Assuming you have a tripId in your MapController
+      debugPrint('Getting location updates for tripId: $tripId');
+      if (tripId != null) {
+        getLocationUpdates(tripId);
+      }
     });
   }
+
   Future<void> getLocationUpdates(String tripId) async {
+    final RideServiceController rideServiceController = Get.put(RideServiceController(rideServiceRepository: RideServiceRepository()));
+    final status = rideServiceController.tripDetails.value.tripStatus;
+    debugPrint('trip status in get location updates : $status');
+    if (status == 'COMPLETED') {
+      _locationUpdateTimer?.cancel();
+      return;
+    }
     try {
       Map<String, String> headers = {
         'Content-Type': 'application/json',
@@ -201,6 +222,10 @@ class MapController extends GetxController {
         tripId: tripId,
       );
 
+      // Update the map with new location data
+
+      updateMapWithLocation(response);
+
       locationUpdates.value = response;
       print('location updates fetched successfully: ${response.toJson()}');
     } catch (e) {
@@ -208,11 +233,67 @@ class MapController extends GetxController {
     }
   }
 
-  void stopLocationUpdates() {
-    _locationUpdateTimer?.cancel();
+
+  Future<void> updateMapWithLocation(LocationsUpdatesResponse response) async {
+    // Assuming response contains the new location data
+    final newLocation = LatLng(response.latitude ?? 0.0, response.longitude ?? 0.0);
+
+    debugPrint(newLocation.toString());
+    debugPrint('new location for location updates : $newLocation');
+
+    // Construct the full URL for the car icon
+    String carIconUrl = imageBaseUrl + (response.carIcon ?? 'assets/images/mid_car_marker.png');
+    print(' car icon url for updates  : $carIconUrl');
+
+    // Load the car icon from the URL
+    BitmapDescriptor carIcon = await _getNetworkImageMarker(carIconUrl);
+
+    //
+    // // Update the center of the map
+    // center.value = newLocation;
+
+    // Update the marker
+    markers.removeWhere((marker) => marker.markerId.value == 'driverLocation');
+    markers.add(Marker(
+      markerId: MarkerId('driverLocation'),
+      position: newLocation,
+      infoWindow: InfoWindow(
+        title: response.vehicleDetails?.numberPlate ?? 'Unknown Vehicle',
+        snippet: 'Rating: ${response.rating}',
+      ),
+      icon: carIcon,
+    ));
+
+    final RideServiceController rideServiceController = Get.find<RideServiceController>();
+    // Get the trip status and locations
+    final tripStatus = rideServiceController.tripDetails.value.tripStatus;
+    debugPrint('trip status in update map with location : $tripStatus');
+
+    final pickupLocation = rideServiceController.tripDetails.value.tripDetails!.pickupLocation!.address.toString();
+    debugPrint('pickup location in update map with location : $pickupLocation');
+
+    final destinationLocation = rideServiceController.tripDetails.value.tripDetails!.dropOffLocation!.address.toString();
+    debugPrint('destination location in update map with location : $destinationLocation');
+
+    String driverAddress = await convertToAddress(newLocation.latitude, newLocation.longitude);
+    debugPrint('driver address in update map with driver location : $driverAddress');
+
+    // Update polylines based on trip status
+    if (tripStatus == 'ACCEPTED' || tripStatus == 'DRIVER_ARRIVED') {
+      updatePolylines(pickupLocation, driverAddress);
+    } else if (tripStatus == 'IN_PROGRESS') {
+      updatePolylines(pickupLocation, destinationLocation);
+    }else if(tripStatus == 'COMPLETED'){
+      _locationUpdateTimer?.cancel();
+    }else{
+      stopLocationUpdates();
+    }
   }
 
 
+  void stopLocationUpdates() {
+    _locationUpdateTimer?.cancel();
+  }
 
 
   Future<void> _loadCustomMarker() async {
@@ -278,7 +359,7 @@ class MapController extends GetxController {
     if (currentPosition.value != null) {
       _center = LatLng(currentPosition.value!.latitude, currentPosition.value!.longitude);
       center.value = _center;
-      addCenterMarker(_center!);
+      //addCenterMarker(_center!);
       await _convertToAddress(currentPosition.value!.latitude, currentPosition.value!.longitude);
       update();
     }
@@ -372,8 +453,10 @@ class MapController extends GetxController {
             points: polylineCoordinates,
           ),
         );
-        addDestinationMarker(destinationCoords);
-        update(); // Update the view
+
+        // Start the animation
+        startPolylineAnimation(polylineCoordinates);
+
       }
     }
   }
@@ -412,63 +495,188 @@ class MapController extends GetxController {
             points: polylineCoordinates,
           ),
         );
+
+        // Start the animation
+        startPolylineAnimation(polylineCoordinates);
+
         addDestinationMarker(destinationCoords);
         update(); // Update the view
       }
     }
   }
 
-}
+  List<LatLng> _interpolatePolyline(List<LatLng> polylineCoordinates, double stepDistance) {
+    List<LatLng> interpolatedPoints = [];
 
-///for driver location using websockets
-// Future<void> _updateMarkers(List<DriverLocationsResponse> driverLocations) async {
-//   print('driver locations : $driverLocations');
-//
+    for (int i = 0; i < polylineCoordinates.length - 1; i++) {
+      LatLng start = polylineCoordinates[i];
+      LatLng end = polylineCoordinates[i + 1];
+
+      double distance = _calculateDistance(start, end);
+      int steps = (distance / stepDistance).floor();
+
+      for (int j = 0; j < steps; j++) {
+        double fraction = j / steps;
+        double lat = start.latitude + (end.latitude - start.latitude) * fraction;
+        double lng = start.longitude + (end.longitude - start.longitude) * fraction;
+        interpolatedPoints.add(LatLng(lat, lng));
+      }
+    }
+
+    return interpolatedPoints;
+  }
+
+  double _calculateDistance(LatLng start, LatLng end) {
+    const double earthRadius = 6371000; // in meters
+    double dLat = _toRadians(end.latitude - start.latitude);
+    double dLng = _toRadians(end.longitude - start.longitude);
+    double a = sin(dLat / 2) * sin(dLat / 2) +
+        cos(_toRadians(start.latitude)) *
+            cos(_toRadians(end.latitude)) *
+            sin(dLng / 2) *
+            sin(dLng / 2);
+    double c = 2 * atan2(sqrt(a), sqrt(1 - a));
+    return earthRadius * c;
+  }
+
+  double _toRadians(double degrees) {
+    return degrees * (pi / 180);
+  }
+
+
+
+  void startPolylineAnimation(List<LatLng> polylineCoordinates) {
+    // Interpolate the polyline points
+    _interpolatedPoints = _interpolatePolyline(polylineCoordinates, 10); // 10 meters between steps
+
+    // Start the animation timer
+    _currentIndex = 0;
+    _animationTimer?.cancel();
+    _animationTimer = Timer.periodic(const Duration(milliseconds: 1000), (timer) {
+      if (_currentIndex < _interpolatedPoints.length) {
+        // Update the marker's position
+        updateMapWithLocation(LocationsUpdatesResponse(
+          latitude: _interpolatedPoints[_currentIndex].latitude,
+          longitude: _interpolatedPoints[_currentIndex].longitude,
+        ));
+        _currentIndex++;
+      } else {
+        // Stop the timer when the animation is complete
+        timer.cancel();
+      }
+    });
+  }
+
+// Future<void> updateDriverMarkers() async {
 //   markers.clear();
 //
-//   for (var driver in driverLocations) {
-//     double latitude = driver.latitude!;
-//     double longitude = driver.longitude!;
-//     String driverId = driver.driverId!;
+//   Set<Marker> newMarkers = {};
+//   const double offset = 0.0020; // Offset value to slightly move markers
 //
-//     BitmapDescriptor carMarker = await BitmapDescriptor.fromAssetImage(
-//       ImageConfiguration(size: Size(10, 10)),
-//       'assets/images/car_markers.png',
-//     );
+//   // Add driver markers
+//   for (var i = 0; i < drivers.length; i++) {
+//     var driver = drivers[i];
+//     if (driver.latitude != null && driver.longitude != null) {
+//       // Apply offset to avoid stacking
+//       double offsetLatitude = driver.latitude! + (i * offset);
+//       double offsetLongitude = driver.longitude! + (i * offset);
 //
-//     markers.add(
+//       // Construct the full URL for the car icon
+//       String carIconUrl = imageBaseUrl + (driver.carIcon ?? 'assets/images/mid_car_marker.png');
+//       print(' car icon url : $carIconUrl');
+//
+//       // Load the car icon from the URL
+//       BitmapDescriptor carIcon = await _getNetworkImageMarker(carIconUrl);
+//
+//       newMarkers.add(
+//         Marker(
+//           markerId: MarkerId(driver.driverId ?? "unknown"),
+//           position: LatLng(offsetLatitude, offsetLongitude),
+//           icon: carIcon,
+//           infoWindow: InfoWindow(
+//             title: driver.vehicleDetails?.makeAndModel ?? "Unknown Vehicle",
+//             snippet: "Rating: ${driver.rating}",
+//           ),
+//         ),
+//       );
+//
+//       print("Adding marker for driver ${driver.driverId} at (${offsetLatitude}, ${offsetLongitude})");
+//       print("Adding car marker for driver ${driver.carIcon} at (${offsetLatitude}, ${offsetLongitude})");
+//     }
+//   }
+//
+//   // Ensure the center marker is not removed
+//   if (center.value != null) {
+//     markers.clear();
+//     newMarkers.add(
 //       Marker(
-//         markerId: MarkerId(driverId),
-//         position: LatLng(latitude, longitude),
-//         icon: carMarker,
-//         infoWindow: InfoWindow(title: "Driver $driverId"),
+//         markerId: const MarkerId("center"),
+//         position: center.value!,
+//         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+//         infoWindow: const InfoWindow(title: "You are here"),
 //       ),
 //     );
+//
+//     print("Adding center marker at (${center.value!.latitude}, ${center.value!.longitude})");
 //   }
-//   update();
+//
+//   // Assign updated markers
+//   markers.assignAll(newMarkers);
+//   markers.refresh(); // Force UI update
+//
+//   print("Updated markers count: ${markers.length}");
 // }
 
-// Future<void> getDriverLocations() async {
-//   try {
-//     Map<String, String> headers = {
-//       'Content-Type': 'application/json',
-//       'Authorization': 'Bearer $accessToken', // Replace with your token logic
-//     };
+// Future<void> updateMapWithLocation(LocationsUpdatesResponse response) async {
+//   // Assuming response contains the new location data
+//   final newLocation = LatLng(response.latitude ?? 0.0, response.longitude ?? 0.0);
 //
-//         print('get driver locations Request URL: ${Endpoints.driverLocations}');
-//         print('get driver locations Headers: $headers');
+//   debugPrint( newLocation.toString());
+//   debugPrint('new location for location updates : $newLocation');
 //
-//     List<DriverLocationsResponse> response = await rideServiceRepository.getDriverLocations(headers: headers);
+//   // Construct the full URL for the car icon
+//   String carIconUrl = imageBaseUrl + (response.carIcon ?? 'assets/images/mid_car_marker.pngy');
+//   print(' car icon url for updates  : $carIconUrl');
 //
-//     drivers.assignAll(response);
-//     print('driver locations fetched successfully: in map controller  ${response.map((e) => e.toJson()).toList()}');
-//     // Add driver markers
-//     await updateDriverMarkers();
+//   // Load the car icon from the URL
+//   BitmapDescriptor carIcon = await _getNetworkImageMarker(carIconUrl);
 //
-//   } catch (e) {
-//     print('Error fetching drivers: $e');
+//   // Update the center of the map
+//   center.value = newLocation;
+//
+//   // Update the marker
+//   markers.clear();
+//   markers.add(Marker(
+//     markerId: MarkerId('driverLocation'),
+//     position: newLocation,
+//     icon: carIcon,
+//   ));
+//
+//  // final RideServiceController rideServiceController = Get.put(RideServiceController(rideServiceRepository: RideServiceRepository()));
+//   final RideServiceController rideServiceController = Get.find<RideServiceController>();
+//   // Get the trip status and locations
+//   final tripStatus = rideServiceController.tripDetails.value.tripStatus;
+//   debugPrint('trip status in update map with location : $tripStatus');
+//
+//   final pickupLocation = rideServiceController.tripDetails.value.tripDetails!.pickupLocation!.address.toString();
+//   debugPrint('pickup location in update map with location : $pickupLocation');
+//
+//   final destinationLocation = rideServiceController.tripDetails.value.tripDetails!.dropOffLocation!.address.toString();
+//   debugPrint('destination location in update map with location : $destinationLocation');
+//
+//   String driverAddress = await convertToAddress(newLocation.latitude, newLocation.longitude);
+//   debugPrint('pickup address in update map with driver location : $driverAddress');
+//
+//   // Update polylines based on trip status
+//   if (tripStatus == 'ACCEPTED' || tripStatus == 'DRIVER_ARRIVED') {
+//    // drawPolylineToPickup(newLocation, pickupLocation);
+//     updatePolylines(pickupLocation,driverAddress);
+//   } else if (tripStatus == 'IN_PROGRESS') {
+//    // drawPolylineToDestination(pickupLocation, destinationLocation);
+//     updatePolylines(pickupLocation, destinationLocation);
 //   }
+//
 // }
 
-void _startDriverLocationsUpdates() {
 }
+

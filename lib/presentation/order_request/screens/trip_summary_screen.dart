@@ -139,24 +139,24 @@ class _TripSummaryScreenState extends State<TripSummaryScreen> {
                 Divider(
                   color: Colors.grey[100],
                 ),
-                 ListTile(
-                  leading: Text(
-                    'Normal fare',
-                    textAlign: TextAlign.center,
-                    style: AppTextStyles.bodySmall.copyWith(
-                      color: searchtextGrey,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  trailing: Text(
-                    'KES 150.00',
-                    textAlign: TextAlign.right,
-                    style: AppTextStyles.bodySmall.copyWith(
-                      color: searchtextGrey,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ),
+                //  ListTile(
+                //   leading: Text(
+                //     'Normal fare',
+                //     textAlign: TextAlign.center,
+                //     style: AppTextStyles.bodySmall.copyWith(
+                //       color: searchtextGrey,
+                //       fontWeight: FontWeight.w700,
+                //     ),
+                //   ),
+                //   trailing: Text(
+                //     'KES 150.00',
+                //     textAlign: TextAlign.right,
+                //     style: AppTextStyles.bodySmall.copyWith(
+                //       color: searchtextGrey,
+                //       fontWeight: FontWeight.w700,
+                //     ),
+                //   ),
+                // ),
 
                 // ListTile(
                 //   leading: Row(

@@ -85,7 +85,9 @@ class Driver {
   @JsonKey(name: "phoneNumber")
   String? phoneNumber;
   @JsonKey(name: "rideCategory")
-  dynamic rideCategory;
+  String? rideCategory;
+  @JsonKey(name: "rideCategoryIcon")
+  String? rideCategoryIcon;
   @JsonKey(name: "makeAndModel")
   String? makeAndModel;
   @JsonKey(name: "numberPlate")
@@ -102,6 +104,7 @@ class Driver {
     this.profileUrl,
     this.phoneNumber,
     this.rideCategory,
+    this.rideCategoryIcon,
     this.makeAndModel,
     this.numberPlate,
     this.fleetId,
@@ -182,3 +185,4 @@ class Location {
 
   Map<String, dynamic> toJson() => _$LocationToJson(this);
 }
+

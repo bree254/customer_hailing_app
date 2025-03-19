@@ -82,11 +82,10 @@ class RideServiceController extends GetxController {
     if (scheduledTrips.isNotEmpty) {
       String tripId = scheduledTrips.first.id!;
       await getScheduledTripDetails(tripId);
-      await getLocationUpdates(tripId);
+     // await getLocationUpdates(tripId);
     } else {
       print('No scheduled trips available.');
     }
-
 
   }
 
