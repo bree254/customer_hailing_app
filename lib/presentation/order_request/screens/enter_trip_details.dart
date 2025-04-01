@@ -266,89 +266,97 @@ class _EnterTripDetailsScreenState extends State<EnterTripDetailsScreen> {
       ),
     );
   }
+Widget _buildTextField(int index) {
+  TextEditingController controller = _stopoverControllers[index];
+  FocusNode focusNode = _stopoverFocusNodes[index];
+  bool isLocation = index == 0;
+  bool isDestination = index == _stopoverControllers.length - 1;
+  bool isStopover = !isLocation && !isDestination;
 
-  Widget _buildTextField(int index) {
-    TextEditingController controller = _stopoverControllers[index];
-    FocusNode focusNode = _stopoverFocusNodes[index];
-    bool isLocation = index == 0;
-    bool isDestination = index == _stopoverControllers.length - 1;
-    bool isStopover = !isLocation && !isDestination;
-
-    return Padding(
-      key: ValueKey('stopover_$index'),
-      padding: const EdgeInsets.only(bottom: 10),
-      child: Row(
-        children: [
-          Column(
-            children: [
-              if (index != 0)
-                Container(
-                  width: 2,
-                  height: 20,
-                  color: dotGrey, // Change color as needed
-                ),
-              _buildDotIndicator(focusNode.hasFocus),
-              if (index != _stopoverControllers.length - 1)
-                Container(
-                  width: 2,
-                  height: 20,
-                  color: dotGrey, // Change color as needed
-                ),
-            ],
-          ),
-          const SizedBox(width: 8),
-          Expanded(
-            child: TextField(
-              controller: controller,
-              focusNode: focusNode,
-              decoration: InputDecoration(
-                hintText: isLocation
-                    ? 'Enter your location'
-                    : isDestination
-                    ? 'Enter your destination'
-                    : 'Enter stop $index',
-                hintStyle:AppTextStyles.bodySmallBold.copyWith(
-                  color: searchtextGrey,
-                ),
-                fillColor: focusNode.hasFocus ? Colors.white : searchButtonGrey,
-                filled: true,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide.none,
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(color: primaryColor),
-                ),
-                suffixIcon: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    if (focusNode.hasFocus)
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Image.asset(
-                          "assets/images/location.png",
-                          width: 24,
-                          height: 24,
-                        ),
+  return Padding(
+    key: ValueKey('stopover_$index'),
+    padding: const EdgeInsets.only(bottom: 10),
+    child: Row(
+      children: [
+        Column(
+          children: [
+            if (index != 0)
+              Container(
+                width: 2,
+                height: 20,
+                color: dotGrey, // Change color as needed
+              ),
+            _buildDotIndicator(focusNode.hasFocus),
+            if (index != _stopoverControllers.length - 1)
+              Container(
+                width: 2,
+                height: 20,
+                color: dotGrey, // Change color as needed
+              ),
+          ],
+        ),
+        const SizedBox(width: 8),
+        Expanded(
+          child: TextField(
+            controller: controller,
+            focusNode: focusNode,
+            decoration: InputDecoration(
+              hintText: isLocation
+                  ? 'Enter your location'
+                  : isDestination
+                  ? 'Enter your destination'
+                  : 'Enter stop $index',
+              hintStyle: AppTextStyles.bodySmallBold.copyWith(
+                color: searchtextGrey,
+              ),
+              fillColor: focusNode.hasFocus ? Colors.white : searchButtonGrey,
+              filled: true,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide.none,
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: const BorderSide(color: primaryColor),
+              ),
+              suffixIcon: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (focusNode.hasFocus)
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Image.asset(
+                        "assets/images/location.png",
+                        width: 24,
+                        height: 24,
                       ),
-                    if (isStopover)
-                      IconButton(
-                        icon: const Icon(Icons.cancel, color: Colors.grey),
-                        onPressed: () => _removeStopover(index),
-                      ),
-                  ],
-                ),
+                    ),
+                  if (controller.text.isNotEmpty)
+                    IconButton(
+                      icon: const Icon(Icons.clear, color: Colors.grey),
+                      onPressed: () {
+                        setState(() {
+                          controller.clear();
+                        });
+                      },
+                    ),
+                  if (isStopover)
+                    IconButton(
+                      icon: const Icon(Icons.cancel, color: Colors.grey),
+                      onPressed: () => _removeStopover(index),
+                    ),
+                ],
               ),
             ),
           ),
-          const SizedBox(width: 8),
-          if (isStopover || (_stopoverControllers.length > 2 && isDestination))
-            const Icon(Icons.drag_handle),
-        ],
-      ),
-    );
-  }
+        ),
+        const SizedBox(width: 8),
+        if (isStopover || (_stopoverControllers.length > 2 && isDestination))
+          const Icon(Icons.drag_handle),
+      ],
+    ),
+  );
+}
 
   @override
   Widget build(BuildContext context) {

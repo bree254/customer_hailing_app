@@ -165,15 +165,16 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                 target: mapController.center.value!,
                 zoom: 16.0,
               ),
-              markers: {
-                ...mapController.markers,
-                ...rideServiceController.availableRides.map((ride) => Marker(
-                  markerId: MarkerId(ride.driverId ?? ''),
-                  position: LatLng(ride.latitude ?? 0, ride.longitude ?? 0),
-                  icon: _customIcon ?? BitmapDescriptor.defaultMarker,
-                 // icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueYellow),
-                )),
-              },
+              markers: mapController.markers,
+              // markers: {
+              //   ...mapController.markers,
+              //   ...rideServiceController.availableRides.map((ride) => Marker(
+              //     markerId: MarkerId(ride.driverId ?? ''),
+              //     position: LatLng(ride.latitude ?? 0, ride.longitude ?? 0),
+              //     icon: _customIcon ?? BitmapDescriptor.defaultMarker,
+              //    // icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueYellow),
+              //   )),
+              // },
               polylines: Set<Polyline>.of(mapController.polylines),
             ),
           )),

@@ -1,7 +1,7 @@
 import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/core/constants/constants.dart';
 import 'package:customer_hailing/core/utils/colors.dart';
-import 'package:customer_hailing/presentation/order_request/controller/trip_status_controller.dart';
+import 'package:customer_hailing/presentation/order_request/controller/map_controller.dart';
 import 'package:customer_hailing/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -15,6 +15,7 @@ import 'package:url_launcher/url_launcher.dart';
 class TripStatusBottomSheet extends StatelessWidget {
    TripStatusBottomSheet({super.key});
   final AuthController authController = Get.put(AuthController());
+  final MapController mapController = Get.put(MapController());
   @override
   Widget build(BuildContext context) {
     final RideServiceController rideServiceController = Get.find<RideServiceController>();

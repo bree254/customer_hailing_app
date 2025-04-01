@@ -29,7 +29,7 @@ import 'network_interceptor.dart';
 class ApiClient extends GetConnect {
   var uri = Endpoints.baseUrl;
 
-  final _dio = dio.Dio(dio.BaseOptions(connectTimeout: const Duration(seconds: 3)));
+  final _dio = dio.Dio(dio.BaseOptions(connectTimeout: const Duration(seconds: 10)));
 
   final Connectivity _connectivity = Connectivity();
 
