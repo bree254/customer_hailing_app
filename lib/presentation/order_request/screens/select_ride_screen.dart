@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:customer_hailing/core/utils/colors.dart';
+import 'package:customer_hailing/presentation/order_request/controller/ride_service_controller.dart';
 import 'package:customer_hailing/presentation/order_request/controller/ride_status_controller.dart';
 import 'package:customer_hailing/presentation/order_request/models/data.dart';
 import 'package:customer_hailing/routes/routes.dart';
@@ -9,8 +10,13 @@ import 'package:customer_hailing/widgets/drawer_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:get/get.dart';
+import '../../../core/constants/constants.dart';
+import '../../../core/utils/pref_utils.dart';
+import '../../../data/models/ride_requests/search_locations_response.dart';
+import '../../../data/repos/ride_service_repository.dart';
 import '../../../theme/app_text_styles.dart';
 import '../controller/map_controller.dart';
+import '../models/ride.dart';
 
 class SelectRideScreen extends StatefulWidget {
   const SelectRideScreen({super.key});
@@ -21,55 +27,121 @@ class SelectRideScreen extends StatefulWidget {
 
 class _SelectRideScreenState extends State<SelectRideScreen> {
   String? _selectedRide;
+  double ? _selectedFare;
   String? _selectedPaymentMode;
-  String? _destination;
+  String? pastDestination;
   String? _prediction;
+  BitmapDescriptor? _customIcon;
 
-  final RideStatusController rideStatusController = Get.put(RideStatusController());
+  String? _dropOffAddress;
+  String? _pickUpAddress;
+
+  String? imageUrl;
+
+  //final RideStatusController rideStatusController = Get.put(RideStatusController());
   final MapController mapController = Get.put(MapController());
-
-  List<LatLng> _driverLocations = [
-    LatLng(37.7749, -122.4194),
-    LatLng(37.7849, -122.4094),
-    LatLng(37.7649, -122.4294),
-  ];
+  final RideServiceController rideServiceController = Get.put(RideServiceController(rideServiceRepository:  RideServiceRepository()));
 
   Timer? _timer;
 
-  @override
-  void initState() {
-    super.initState();
-    Map<String, dynamic> args = Get.arguments;
-    if (args['type'] == 'destination') {
-      _destination = args['value'];
-      mapController.updatePolyline(_destination!);
-    } else if (args['type'] == 'prediction') {
-      _prediction = args['value'];
-      mapController.updatePolyline(_prediction!);
-    }
-    _startDriverSimulation();
-  }
+  // Define a map to associate ride categories with their image assets
+  final Map<String, String> rideCategoryImages = {
+    'Economy': 'assets/images/economy_car.png',
+    'Boda': 'assets/images/normal_boda.png',
+    'Female': 'assets/images/female_car.png',
+    'Luxury': 'assets/images/luxury_car.png',
+    'Standard': 'assets/images/standard_car.png',
+    'XL': 'assets/images/xl_car.png',
+  };
+
+ @override
+ void initState() {
+   super.initState();
+
+   _loadCustomIcon();
+
+   Map<String, dynamic> args = Get.arguments;
+   if (args['type'] == 'pastDestination') {
+     pastDestination = args['value'];
+     mapController.updatePolyline(pastDestination!);
+
+     // arguments from the past destination from the homes screen
+     _pickUpAddress = args['currentLocation'];
+     debugPrint('select ride current location from homescreen: $_pickUpAddress');
+     _dropOffAddress = args['pastHistory'];
+     debugPrint('select ride past destination from homescreen: $_dropOffAddress');
+
+     // arguments from the past destination from the enter trip details screen
+     if (args.containsKey('location') && args.containsKey('destination')) {
+       _pickUpAddress = args['location'];
+       _dropOffAddress = args['destination'];
+     }
+
+   } else if (args['type'] == 'prediction') {
+     _prediction = args['value'];
+     if (args.containsKey('location') && args.containsKey('destination')) {
+       _pickUpAddress = args['location'];
+       debugPrint('select ride trip location: $_pickUpAddress');
+       _dropOffAddress = args['destination'];
+       debugPrint('select ride trip destination: $_dropOffAddress');
+
+       // Call updatePolylines with both origin and destination addresses
+       if (_pickUpAddress != null && _dropOffAddress != null) {
+         mapController.updatePolylines(_pickUpAddress!, _dropOffAddress!);
+       }
+     }
+   }
+ }
+
+  // void initState() {
+  //   super.initState();
+  //   _loadCustomIcon();
+  //   Map<String, dynamic> args = Get.arguments;
+  //   if (args.containsKey('location') && args.containsKey('destination')) {
+  //     String location = args['location'];
+  //     debugPrint('select ride trip location: $location');
+  //     String destination = args['destination'];
+  //     debugPrint('select ride trip destination: $destination');
+  //
+  //     mapController.updatePolylines(location, destination);
+  //   } else if (args['type'] == 'pastDestination') {
+  //     pastDestination = args['value'];
+  //     mapController.updatePolyline(pastDestination!);
+  //   }
+  // }
+
+
   @override
   void dispose() {
     _timer?.cancel();
     super.dispose();
   }
 
-  void _startDriverSimulation() {
-    _timer = Timer.periodic(Duration(seconds: 5), (timer) {
-      setState(() {
-        _driverLocations = _driverLocations.map((location) {
-          double newLat = location.latitude + (0.001 * (0.5 - (0.5 - 0.5)));
-          double newLng = location.longitude + (0.001 * (0.5 - (0.5 - 0.5)));
-          return LatLng(newLat, newLng);
-        }).toList();
-      });
-    });
+  Future<void> _loadCustomIcon() async {
+    _customIcon = await BitmapDescriptor.fromAssetImage(
+      ImageConfiguration(size: Size(48, 48),
+      ),
+     // 'assets/images/car_markers.png',
+      'assets/images/mid_car_marker.png'
+    );
+    setState(() {});
   }
 
-  void _startRideRequest() {
-    rideStatusController.searchForDriver();
-    Get.toNamed(AppRoutes.awaitDriver, arguments: _selectedRide);
+  Future<void> _confirmTrip() async {
+    print('pastDestination: $pastDestination');
+    print('_prediction: $_prediction');
+    print('_selectedRide: $_selectedRide');
+    print('_selectedPaymentMode: $_selectedPaymentMode');
+    print('_selectedFare: $_selectedFare');
+    print('_dropOffAddress: $_dropOffAddress');
+    print('_pickUpAddress: $_pickUpAddress');
+
+    if ((pastDestination == null && _prediction == null) || _selectedRide == null || _selectedPaymentMode == null || _selectedFare == null ) {
+      Get.snackbar('Error', 'Please select all required fields.');
+      return;
+    }
+    await rideServiceController.confirmTrip(_dropOffAddress!, _pickUpAddress!, _selectedRide!, _selectedPaymentMode!, _selectedFare!);
+    print('dropOffAddress: $_dropOffAddress');
   }
 
   @override
@@ -93,14 +165,16 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                 target: mapController.center.value!,
                 zoom: 16.0,
               ),
-              markers: {
-                ...mapController.markers,
-                ..._driverLocations.map((location) => Marker(
-                  markerId: MarkerId(location.toString()),
-                  position: location,
-                  icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
-                )),
-              },
+              markers: mapController.markers,
+              // markers: {
+              //   ...mapController.markers,
+              //   ...rideServiceController.availableRides.map((ride) => Marker(
+              //     markerId: MarkerId(ride.driverId ?? ''),
+              //     position: LatLng(ride.latitude ?? 0, ride.longitude ?? 0),
+              //     icon: _customIcon ?? BitmapDescriptor.defaultMarker,
+              //    // icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueYellow),
+              //   )),
+              // },
               polylines: Set<Polyline>.of(mapController.polylines),
             ),
           )),
@@ -126,7 +200,7 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                 decoration: InputDecoration(
                     contentPadding: const EdgeInsets.symmetric(
                         horizontal: 16, vertical: 20),
-                    hintText: _destination ?? (_prediction ?? 'Enter location'),
+                    hintText: pastDestination ?? (_prediction ?? 'Enter location'),
                     hintStyle: AppTextStyles.text14Black400.copyWith(
                       color: searchtextGrey,
                     ),
@@ -176,80 +250,162 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                         color: lightGrey,
                       ),
                     ),
+
                     Expanded(
-                      child: ListView.builder(
-                          controller: scrollController,
-                          scrollDirection: Axis.vertical,
-                          itemCount: MyData.requests.length,
-                          itemBuilder: (context, index) {
-                            var request = MyData.requests[index];
-                            bool isSelected = _selectedRide == request.ridetype;
-                            return GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  _selectedRide = request.ridetype;
-                                });
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 16, vertical: 10),
-                                margin: const EdgeInsets.fromLTRB(16, 0, 16, 8),
-                                decoration: BoxDecoration(
-                                  color: isSelected
-                                      ? selectRideColor
-                                      : const Color(0x3FFAFAFA),
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(
-                                    color: isSelected
-                                        ? selectRideColor
-                                        : Colors.black.withOpacity(0.05),
-                                  ),
-                                ),
-                                child: ListTile(
-                                  selectedColor: selectRideColor,
-                                  selectedTileColor: selectRideColor,
-                                  leading: Image(
-                                      image: AssetImage(request.imageUrl)),
-                                  title: Text(
-                                    request.ridetype,
-                                    style: AppTextStyles.text14Black600.copyWith(
-                                      color: searchtextGrey,
-                                    ),
-                                  ),
-                                  subtitle: Text(
-                                    request.timeEstimate,
-                                    style: AppTextStyles.text14Black400.copyWith(
-                                      color: searchtextGrey,
-                                      fontSize: 10.0,
-                                    ),
-                                  ),
-                                  trailing: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        'Ksh ${request.discountedPrice.toString()}',
-                                        style: AppTextStyles.text14Black600.copyWith(
-                                          color: searchtextGrey,
+                      child: Column(
+                        children: [
+                          // Show the ListView for trip requests when available
+                          Visibility(
+                            visible: rideServiceController.fareAmounts.isNotEmpty,
+                            child: Expanded(
+                              child: ListView.builder(
+                                controller: scrollController,
+                                scrollDirection: Axis.vertical,
+                                itemCount: rideServiceController.fareAmounts.length,
+                                itemBuilder: (context, index) {
+                                  var request = rideServiceController.fareAmounts[index];
+                                  bool isSelected = _selectedRide == request.rideCategoryName;
+                                  return GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        _selectedRide = request.rideCategoryName;
+                                        _selectedFare = request.fare;
+                                      });
+                                    },
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                                      margin: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                                      decoration: BoxDecoration(
+                                        color: isSelected ? selectRideColor : const Color(0x3FFAFAFA),
+                                        borderRadius: BorderRadius.circular(10),
+                                        border: Border.all(
+                                          color: isSelected ? selectRideColor : Colors.black.withOpacity(0.05),
                                         ),
                                       ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(left: 10.0),
-                                        child: Text(
-                                          'Ksh ${request.originalprice.toString()}',
-                                          style: AppTextStyles.text14Black400.copyWith(
-                                            color: searchtextGrey,
-                                            decoration: TextDecoration.lineThrough,
-                                            fontSize: 12.0,
+                                      child: ListTile(
+                                        selectedColor: selectRideColor,
+                                        selectedTileColor: selectRideColor,
+                                        leading: Image(
+                                          image:
+                                          //AssetImage(rideCategoryImages[request.rideCategoryName] ?? 'assets/images/default.png'),
+                                         // image:
+                                            NetworkImage('$imageBaseUrl${request.carIllustration}'),
+                                        ),
+                                        title: Text(
+                                          request.rideCategoryName.toString(),
+                                          style: AppTextStyles.text14Black600.copyWith(color: searchtextGrey),
+                                        ),
+                                        subtitle: Text(
+                                          '${request.tripDuration.toString()} min',
+                                          style: AppTextStyles.text14Black400.copyWith(color: searchtextGrey, fontSize: 10.0),
+                                        ),
+                                        trailing: Column(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              'Ksh ${request.fare.toString()}',
+                                              style: AppTextStyles.text14Black600.copyWith(color: searchtextGrey),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(left: 10.0),
+                                              child: Text(
+                                                'Ksh ${request.fare.toString()}',
+                                                style: AppTextStyles.text14Black400.copyWith(
+                                                  color: searchtextGrey,
+                                                  decoration: TextDecoration.lineThrough,
+                                                  fontSize: 12.0,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+
+                          // Show the ListView for dummy data when no trip requests are available
+                          Visibility(
+                            visible: rideServiceController.fareAmounts.isEmpty,
+                            child: Expanded(
+                              child: Opacity(
+                                opacity: 0.5, // Grey out the UI
+                                child: ListView.builder(
+                                  controller: scrollController,
+                                  scrollDirection: Axis.vertical,
+                                  itemCount: MyData.requests.length,
+                                  itemBuilder: (context, index) {
+                                    var request = MyData.requests[index];
+                                    bool isSelected = _selectedRide == request.ridetype;
+                                    return GestureDetector(
+                                      onTap: null, // Disable onTap when no trip requests are available
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                                        margin: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                                        decoration: BoxDecoration(
+                                          color: isSelected ? selectRideColor : const Color(0x3FFAFAFA),
+                                          borderRadius: BorderRadius.circular(10),
+                                          border: Border.all(
+                                            color: isSelected ? selectRideColor : Colors.black.withOpacity(0.05),
+                                          ),
+                                        ),
+                                        child: ListTile(
+                                          selectedColor: selectRideColor,
+                                          selectedTileColor: selectRideColor,
+                                          leading: Image(image: AssetImage(request.imageUrl)),
+                                          title: Text(
+                                            request.ridetype,
+                                            style: const TextStyle(
+                                              color: searchtextGrey,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                          subtitle: Text(
+                                            request.timeEstimate,
+                                            style: const TextStyle(
+                                              color: searchtextGrey,
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                          ),
+                                          trailing: Column(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                'Ksh ${request.discountedPrice.toString()}',
+                                                style: const TextStyle(
+                                                  color: searchtextGrey,
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                              Text(
+                                                'Ksh ${request.originalprice.toString()}',
+                                                style: const TextStyle(
+                                                  color: searchtextGrey,
+                                                  fontSize: 10,
+                                                  fontWeight: FontWeight.w400,
+                                                  decoration: TextDecoration.lineThrough,
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       ),
-                                    ],
-                                  ),
+                                    );
+                                  },
                                 ),
                               ),
-                            );
-                          }),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
+
                     Container(
                       padding: const EdgeInsets.all(16),
                       color: Colors.white,
@@ -349,9 +505,10 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                           CustomElevatedButton(
                             text: 'Select ${_selectedRide ?? "your ride"}',
                             onPressed: () {
-                              if (_selectedRide != null) {
-                                _startRideRequest(); // Trigger the ride request
-                              }
+                              _confirmTrip();
+                              // if (_selectedRide != null) {
+                              //   _startRideRequest(); // Trigger the ride request
+                              //}
                             },
                           ),
                         ],

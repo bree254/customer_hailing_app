@@ -142,13 +142,13 @@ class _EnterYourDetailsScreenState extends State<EnterYourDetailsScreen> {
                 style: AppTextStyles.text14Black400,
               ),
               SizedBox(height: 10.v),
+
               CustomPhoneInput(
                 controller: authController.phoneController,
                 onInputChanged: (value) {
                   String? newErrorMessage;
                   InputBorder newInputBorder;
-
-                  if (value.length == 9) {
+                  if (value.length == 13) {
                     newErrorMessage = null;
                     newInputBorder = OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.h),
@@ -161,6 +161,7 @@ class _EnterYourDetailsScreenState extends State<EnterYourDetailsScreen> {
                       borderSide: BorderSide(color: appTheme.inputError),
                     );
                   }
+
                   setState(() {
                     errorMessage = newErrorMessage;
                     inputBorder = newInputBorder;
@@ -175,6 +176,41 @@ class _EnterYourDetailsScreenState extends State<EnterYourDetailsScreen> {
                   return null;
                 },
               ),
+
+              // CustomPhoneInput(
+              //   controller: authController.phoneController,
+              //   onInputChanged: (value) {
+              //     String? newErrorMessage;
+              //     InputBorder newInputBorder;
+              //
+              //     if (value.length == 9) {
+              //       newErrorMessage = null;
+              //       newInputBorder = OutlineInputBorder(
+              //         borderRadius: BorderRadius.circular(10.h),
+              //         borderSide: BorderSide(color: appTheme.colorPrimary),
+              //       );
+              //     } else {
+              //       newErrorMessage = 'Incomplete number';
+              //       newInputBorder = OutlineInputBorder(
+              //         borderRadius: BorderRadius.circular(10.h),
+              //         borderSide: BorderSide(color: appTheme.inputError),
+              //       );
+              //     }
+              //     setState(() {
+              //       errorMessage = newErrorMessage;
+              //       inputBorder = newInputBorder;
+              //     });
+              //   },
+              //   inputBorder: inputBorder,
+              //   errorMessage: errorMessage,
+              //   customValidator: (value) {
+              //     if (value!.isEmpty) {
+              //       return 'Phone number is required';
+              //     }
+              //     return null;
+              //   },
+              // ),
+
               const Spacer(),
               Padding(
                 padding: EdgeInsets.zero,

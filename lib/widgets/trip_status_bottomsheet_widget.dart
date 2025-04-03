@@ -1,17 +1,27 @@
 import 'package:customer_hailing/core/app_export.dart';
+import 'package:customer_hailing/core/constants/constants.dart';
 import 'package:customer_hailing/core/utils/colors.dart';
-import 'package:customer_hailing/presentation/order_request/controller/trip_status_controller.dart';
+import 'package:customer_hailing/presentation/order_request/controller/map_controller.dart';
 import 'package:customer_hailing/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../presentation/auth/controller/auth_controller.dart';
+import '../presentation/order_request/controller/ride_service_controller.dart';
+import '../presentation/order_request/screens/rate_ride_screen.dart';
+import '../presentation/order_request/screens/trip_summary_screen.dart';
 import 'custom_elevated_button.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class TripStatusBottomSheet extends StatelessWidget {
-  const TripStatusBottomSheet({super.key});
-
+   TripStatusBottomSheet({super.key});
+  final AuthController authController = Get.put(AuthController());
+  final MapController mapController = Get.put(MapController());
   @override
   Widget build(BuildContext context) {
-    final TripStatusController tripStatusController = Get.find<TripStatusController>();
+    final RideServiceController rideServiceController = Get.find<RideServiceController>();
+
+
+    final RxBool hasNavigatedToSummary = false.obs;
 
     return DraggableScrollableSheet(
       initialChildSize: 0.4,
@@ -40,31 +50,45 @@ class TripStatusBottomSheet extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 32),
+
                 Obx(() {
-                  switch (tripStatusController.tripStatus.value) {
-                    case TripStatus.onTheWay:
-                      return _buildOnTheWayContent();
-                    case TripStatus.arrived:
-                      return _buildArrivedContent();
-                    case TripStatus.headingToDestination:
-                      return _buildHeadingToDestinationContent();
+                  final status = rideServiceController.tripDetails.value.tripStatus;
+
+                  switch (status) {
+                    case 'ACCEPTED':
+                      return _buildOnTheWayContent(rideServiceController);
+                    case 'DRIVER_ARRIVED':
+                      return _buildArrivedContent(rideServiceController);
+                    case 'IN_PROGRESS':
+                      return _buildHeadingToDestinationContent(rideServiceController);
+                    case 'COMPLETED':
+                      if (!hasNavigatedToSummary.value) {
+                        hasNavigatedToSummary.value = true;
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          Get.to(() => const TripSummaryScreen())!.then((_) {
+                            Get.to(() => const RateRideScreen());
+                          });
+                        });
+                      }
+                      return const SizedBox();
                     default:
                       return const SizedBox();
                   }
                 }),
-                 ListTile(
-                    leading: Icon(
-                      Icons.circle_outlined,
-                      size: 12,
-                      color: primaryColor,
+                ListTile(
+                  leading: Icon(
+                    Icons.circle_outlined,
+                    size: 12,
+                    color: primaryColor,
+                  ),
+                  title: Text(
+                    rideServiceController.tripDetails.value.tripDetails!.pickupLocation!.address.toString(),
+                    style: AppTextStyles.bodySmallPrimary.copyWith(
+                      color: formTextLabelColor,
                     ),
-                    title: Text(
-                      'GPO Stage, Kenyatta Avenue',
-                      style: AppTextStyles.bodySmallPrimary.copyWith(
-                        color: formTextLabelColor,
-                      ),
-                    )),
-                 ListTile(
+                  ),
+                ),
+                ListTile(
                   leading: GestureDetector(
                     onTap: () {
                       Get.toNamed(AppRoutes.search);
@@ -89,19 +113,19 @@ class TripStatusBottomSheet extends StatelessWidget {
                     size: 14,
                     color: primaryColor,
                   ),
-                  title:  Text(
-                    'Mövenpick Residences Nairobi',
+                  title: Text(
+                    rideServiceController.tripDetails.value.tripDetails!.dropOffLocation!.address.toString(),
                     style: AppTextStyles.bodySmallPrimary.copyWith(
                       color: formTextLabelColor,
                     ),
                   ),
-                  trailing:  GestureDetector(
+                  trailing: GestureDetector(
                     onTap: () {
                       Get.toNamed(AppRoutes.search);
                     },
                     child: Text(
                       'Change ',
-                      style:AppTextStyles.text14Black400.copyWith(
+                      style: AppTextStyles.text14Black400.copyWith(
                         color: trailertext,
                         fontSize: 10.0,
                       ),
@@ -114,16 +138,16 @@ class TripStatusBottomSheet extends StatelessWidget {
                 ListTile(
                   leading: Image.asset(
                       width: 21, height: 22, "assets/images/cash.png"),
-                  title: const Text(
+                  title: Text(
                     'Total Cost',
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Color(0xFF434343),
                       fontSize: 12.0,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  trailing:  Text(
-                    'Ksh 450',
+                  trailing: Text(
+                    rideServiceController.tripDetails.value.tripDetails!.estimatedFare.toString(),
                     textAlign: TextAlign.right,
                     style: AppTextStyles.text14Black600.copyWith(
                       color: formTextLabelColor,
@@ -132,22 +156,92 @@ class TripStatusBottomSheet extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
                   child: CustomElevatedButton(
                     onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return Dialog(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    'Cancel ride request?',
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  SizedBox(height: 10),
+                                  Text(
+                                    'Your ride request is still being processed. Canceling now will stop the search for a driver.',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.black54,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  SizedBox(height: 20),
+                                  SizedBox(
+                                    width: double.infinity,
+                                    child:  CustomElevatedButton(
+                                      onPressed: () {
+                                       Get.toNamed(AppRoutes.cancelationScreen);
+                                      },
+                                      buttonStyle: ElevatedButton.styleFrom(
+                                        backgroundColor: cancelButton,
+                                        elevation: 0,
+                                      ),
+                                      buttonTextStyle: AppTextStyles.bodySmallBold.copyWith(
+                                        color: cancelText,
+                                      ),
+                                      text: 'Confirm',
+                                    ),
+                                  ),
+                                  SizedBox(height: 10),
+                                  SizedBox(
+                                    width: double.infinity,
+                                    child: CustomElevatedButton(
+                                      onPressed: () {
+                                        // Get.back();
+                                      },
+                                      buttonStyle: ElevatedButton.styleFrom(
+                                        backgroundColor: countryTextFieldColor,
+                                        elevation: 0,
+                                      ),
+                                      buttonTextStyle: AppTextStyles.bodySmallBold.copyWith(
+                                        color: resendCodeTextColor,
+                                      ),
+                                      text: 'Back',
+                                    ),
+
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      );
                     },
                     buttonStyle: ElevatedButton.styleFrom(
                       backgroundColor: cancelButton,
                       elevation: 0,
                     ),
-                    buttonTextStyle:AppTextStyles.backButtonText.copyWith(
+                    buttonTextStyle: AppTextStyles.backButtonText.copyWith(
                       color: cancelText,
-                        fontWeight: FontWeight.w500
+                      fontWeight: FontWeight.w500,
                     ),
                     text: 'Cancel trip',
                   ),
-                ),
+                )
               ],
             ),
           ),
@@ -156,10 +250,10 @@ class TripStatusBottomSheet extends StatelessWidget {
     );
   }
 
-  Widget _buildOnTheWayContent() {
+  Widget _buildOnTheWayContent(RideServiceController rideServiceController) {
     return Column(
       children: [
-         Center(
+        Center(
           child: Text(
             'Your driver is on the way!',
             style: AppTextStyles.bodyHeading.copyWith(
@@ -168,15 +262,15 @@ class TripStatusBottomSheet extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 32),
-        _buildDriverInfo(),
+        _buildDriverInfo(rideServiceController),
       ],
     );
   }
 
-  Widget _buildArrivedContent() {
+  Widget _buildArrivedContent(RideServiceController rideServiceController) {
     return Column(
       children: [
-         Center(
+        Center(
           child: Text(
             'Your driver has arrived!',
             style: AppTextStyles.bodyHeading.copyWith(
@@ -185,32 +279,30 @@ class TripStatusBottomSheet extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 32),
-        _buildDriverInfo(),
+        _buildDriverInfo(rideServiceController),
       ],
     );
   }
 
-  Widget _buildHeadingToDestinationContent() {
+  Widget _buildHeadingToDestinationContent(RideServiceController rideServiceController) {
     return Column(
       children: [
-         Center(
+        Center(
           child: Text(
             'Heading to your destination!',
             style: AppTextStyles.bodyHeading.copyWith(
               color: primaryColor,
+            ),
           ),
         ),
-         ),
         const SizedBox(height: 32),
-        _buildDriverInfo(),
+        _buildDriverInfo(rideServiceController),
       ],
     );
   }
 
-  Widget _buildDriverInfo() {
-    final bool isHeadingToDestination =
-        Get.find<TripStatusController>().tripStatus.value ==
-            TripStatus.headingToDestination;
+  Widget _buildDriverInfo(RideServiceController rideServiceController) {
+    final bool isHeadingToDestination = rideServiceController.tripDetails.value.tripStatus == 'IN_PROGRESS';
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -218,14 +310,21 @@ class TripStatusBottomSheet extends StatelessWidget {
         ListTile(
           leading: Stack(
             children: [
-              const CircleAvatar(
-                backgroundColor: Colors.transparent,
-                child: Image(
-                  image: AssetImage("assets/images/driver.png"),
-                  fit: BoxFit.cover,
-                  width: 45,
-                  height: 45,
-                ),
+              CircleAvatar(
+                backgroundColor: primaryColor,
+                backgroundImage: rideServiceController.tripDetails.value.driver?.profileUrl != null
+                    ? NetworkImage(rideServiceController.tripDetails.value.driver!.profileUrl)
+                    : null,
+                child: rideServiceController.tripDetails.value.driver?.profileUrl == null
+                    ? Text(
+                  '${rideServiceController.tripDetails.value.driver?.firstName?[0]}${rideServiceController.tripDetails.value.driver?.lastName?[0]}',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                )
+                    : null,
               ),
               Positioned(
                 top: 29,
@@ -255,11 +354,11 @@ class TripStatusBottomSheet extends StatelessWidget {
                           ),
                         ),
                       ),
-                       Text(
-                        '4.85',
+                      Text(
+                        rideServiceController.tripDetails.value.driver!.rating.toString(),
                         textAlign: TextAlign.center,
-                        style:AppTextStyles.bodySmall.copyWith(
-                          color:resendCodeTextColor,
+                        style: AppTextStyles.bodySmall.copyWith(
+                          color: resendCodeTextColor,
                           fontSize: 6.0,
                         ),
                       )
@@ -269,27 +368,27 @@ class TripStatusBottomSheet extends StatelessWidget {
               )
             ],
           ),
-          title: const Text(
-            'James Smith',
+          title: Text(
+            '${ rideServiceController.tripDetails.value.driver!.firstName.toString()} ${ rideServiceController.tripDetails.value.driver!.lastName.toString()}',
             style: TextStyle(
               color: Color(0xFF434343),
               fontSize: 14,
               fontWeight: FontWeight.w600,
             ),
           ),
-          subtitle:  Column(
+          subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'White, Mazda Demio',
+                rideServiceController.tripDetails.value.driver!.makeAndModel.toString(),
                 style: AppTextStyles.bodySmall.copyWith(
-                  color:formTextLabelColor,
+                  color: formTextLabelColor,
                 ),
               ),
               Text(
-                'KCZ 123A',
+                rideServiceController.tripDetails.value.driver?.numberPlate ?? 'KCZ 123A' ,
                 style: AppTextStyles.bodySmall.copyWith(
-                  color:primaryColor,
+                  color: primaryColor,
                   fontSize: 10.0,
                 ),
               )
@@ -299,19 +398,19 @@ class TripStatusBottomSheet extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Image(
-                  width: 60,
-                  height: 30,
-                  image: AssetImage("assets/images/mazda.png")),
+               Image(
+                width: 60,
+                height: 30,
+                image:NetworkImage('$imageBaseUrl${rideServiceController.tripDetails.value.driver!.rideCategoryIcon.toString()}'), ),
               if (isHeadingToDestination)
                 GestureDetector(
                   onTap: () {
                     Get.toNamed(AppRoutes.shareTrip);
                   },
-                  child:  Text(
+                  child: Text(
                     'Share ride details',
                     style: AppTextStyles.bodySmall.copyWith(
-                      color:shareTripColor,
+                      color: shareTripColor,
                       fontSize: 10.0,
                     ),
                   ),
@@ -320,26 +419,33 @@ class TripStatusBottomSheet extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 32),
-        _buildButtons(),
+        _buildButtons(rideServiceController),
         const SizedBox(height: 24),
       ],
     );
   }
 
-  Widget _buildButtons() {
+  Widget _buildButtons(RideServiceController rideServiceController) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         ElevatedButton(
-          onPressed: () {
-            Get.toNamed(AppRoutes.messageDriver);
+          onPressed: () async {
+           // Get.toNamed(AppRoutes.messageDriver);
+            final phoneNumber = rideServiceController.tripDetails.value.driver!.phoneNumber;
+            final url = 'sms:$phoneNumber';
+            if (await canLaunch(url)) {
+            await launch(url);
+            } else {
+            throw 'Could not launch $url';
+            }
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: selectRideColor,
             elevation: 0,
           ),
-          child:  Padding(
+          child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
             child: Row(
               children: [
@@ -365,90 +471,99 @@ class TripStatusBottomSheet extends StatelessWidget {
         ElevatedButton(
           onPressed: () {
             showModalBottomSheet(
-                backgroundColor: Colors.white,
-                context: Get.context!,
-                builder: (BuildContext context) {
-                  return Container(
-                    padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 32),
-                    width: double.infinity,
-                    height: 280,
-                    clipBehavior: Clip.antiAlias,
-                    decoration: const ShapeDecoration(
-                      color: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(15),
-                          topRight: Radius.circular(15),
-                        ),
+              backgroundColor: Colors.white,
+              context: Get.context!,
+              builder: (BuildContext context) {
+                return Container(
+                  padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 32),
+                  width: double.infinity,
+                  height: 280,
+                  clipBehavior: Clip.antiAlias,
+                  decoration: const ShapeDecoration(
+                    color: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(15),
+                        topRight: Radius.circular(15),
                       ),
                     ),
-                    child: Column(
-                      children: [
-                        Align(
-                          alignment:Alignment.topRight,
-                          child: GestureDetector(
-                            onTap:(){
-                              Get.back();
-                            },
-                            child: const Icon(Icons.close),
-                          ),
-                        ),
-                         Text(
-                          'Contact options',
-                          textAlign: TextAlign.center,
-                          style: AppTextStyles.bodySmallPrimary.copyWith(
-                          ),
-                        ),
-                        const Text(
-                          'Carrier rates may apply',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Color(0xFF9D9D9D),
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 32,
-                        ),
-                        CustomElevatedButton(
-                          onPressed: () {
-                            Get.toNamed(AppRoutes.outgoingCalls);
+                  ),
+                  child: Column(
+                    children: [
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: GestureDetector(
+                          onTap: () {
+                            Get.back();
                           },
-                          text: 'In-app call',
-                          buttonStyle: ElevatedButton.styleFrom(
-                            backgroundColor: primaryColor,
-                            elevation: 0,
-                          ),
-                          buttonTextStyle: AppTextStyles.bodySmallBold.copyWith(
-                            color: whiteTextColor,
-                          ),
+                          child: const Icon(Icons.close),
                         ),
-                        const SizedBox(
-                          height: 16,
+                      ),
+                      Text(
+                        'Contact options',
+                        textAlign: TextAlign.center,
+                        style: AppTextStyles.bodySmallPrimary.copyWith(
                         ),
-                        CustomElevatedButton(
-                          onPressed: () {},
-                          text: 'Phone call',
-                          buttonStyle: ElevatedButton.styleFrom(
-                            backgroundColor: whiteTextColor,
-                            side: const BorderSide(color: primaryColor),
-                            elevation: 0,
-                          ),
-                          buttonTextStyle: AppTextStyles.bodySmallPrimary.copyWith(
-                            fontWeight: FontWeight.w500,
+                      ),
+                      const Text(
+                        'Carrier rates may apply',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Color(0xFF9D9D9D),
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
                         ),
+                      ),
+                      const SizedBox(
+                        height: 32,
+                      ),
+                      CustomElevatedButton(
+                        onPressed: () {
+                          Get.toNamed(AppRoutes.outgoingCalls);
+                        },
+                        text: 'In-app call',
+                        buttonStyle: ElevatedButton.styleFrom(
+                          backgroundColor: primaryColor,
+                          elevation: 0,
                         ),
-                      ],
-                    ),
-                  );
-                });
+                        buttonTextStyle: AppTextStyles.bodySmallBold.copyWith(
+                          color: whiteTextColor,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      CustomElevatedButton(
+                        onPressed: () async {
+                          final phoneNumber = rideServiceController.tripDetails.value.driver!.phoneNumber;
+                          final url = 'tel:$phoneNumber';
+                          if (await canLaunch(url)) {
+                            await launch(url);
+                          } else {
+                            throw 'Could not launch $url';
+                          }
+                        },
+                        text: 'Phone call',
+                        buttonStyle: ElevatedButton.styleFrom(
+                          backgroundColor: whiteTextColor,
+                          side: const BorderSide(color: primaryColor),
+                          elevation: 0,
+                        ),
+                        buttonTextStyle: AppTextStyles.bodySmallPrimary.copyWith(
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            );
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: selectRideColor,
             elevation: 0,
           ),
-          child:  Padding(
+          child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
             child: Row(
               children: [

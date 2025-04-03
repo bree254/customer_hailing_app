@@ -19,6 +19,13 @@ class PrefUtils extends GetxController {
     }
   }
 
+  // Ensure SharedPreferences is initialized before any operation
+  Future<void> _ensureInitialized() async {
+    if (_sharedPreferences == null) {
+      await init();
+    }
+  }
+
   ///will clear all the data stored in preference
   void clearPreferencesData() async {
     _sharedPreferences!.clear();
@@ -107,6 +114,43 @@ class PrefUtils extends GetxController {
     return null;
   }
 
+  // Method to save the requestId
+  Future<void> _saveRequestId(String requestId) async {
+    await _sharedPreferences!.setString('requestId', requestId);
+  }
+
+  // Method to retrieve the requestId
+  String? _retrieveRequestId() {
+    return _sharedPreferences!.getString('requestId');
+  }
+
+  // Method to save the requestId
+  Future<void> saveRequestId(String requestId) async {
+    await _ensureInitialized();
+    await _sharedPreferences!.setString('requestId', requestId);
+    debugPrint('RequestId saved: $requestId');
+  }
+
+  // Method to retrieve the requestId
+  Future<String?> retrieveRequestId() async {
+    await _ensureInitialized();
+    String? requestId = _sharedPreferences!.getString('requestId');
+    debugPrint('RequestId retrieved: $requestId');
+    return requestId;
+  }
+
+  //File Upload urls
+  Future<void> saveUploadedUrl(String url) async {
+    List<String> urls = _sharedPreferences!.getStringList('uploadedUrls') ?? [];
+    urls.add(url);
+    await _sharedPreferences!.setStringList('uploadedUrls', urls);
+  }
+
+  List<String> getUploadedUrls() {
+    return _sharedPreferences!.getStringList('uploadedUrls') ?? [];
+  }
+
+
 
   getFcmToken() async {
     return _sharedPreferences!.getString('fcm_token');
@@ -115,4 +159,6 @@ class PrefUtils extends GetxController {
   void setFcmToken(String fcmToken) {
     _sharedPreferences!.setString('fcm_token', fcmToken);
   }
+
+
 }

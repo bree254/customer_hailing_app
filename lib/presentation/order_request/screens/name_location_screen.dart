@@ -1,4 +1,6 @@
 import 'package:customer_hailing/core/app_export.dart';
+import 'package:customer_hailing/data/repos/ride_service_repository.dart';
+import 'package:customer_hailing/presentation/order_request/controller/ride_service_controller.dart';
 import 'package:customer_hailing/routes/routes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +13,7 @@ class NameLocationScreen extends StatefulWidget {
 }
 
 class _NameLocationScreenState extends State<NameLocationScreen> {
+  final RideServiceController rideServiceController = Get.put(RideServiceController(rideServiceRepository: RideServiceRepository()));
   final TextEditingController _locationController = TextEditingController();
   final FocusNode _locationFocusNode = FocusNode();
   bool _hasInput = false;
@@ -87,8 +90,7 @@ class _NameLocationScreenState extends State<NameLocationScreen> {
                   ? () {
                 final name = _locationController.text;
                 final address = Get.arguments as String; // Get the passed address
-                Get.toNamed(AppRoutes.savedLocation,
-                    arguments: {'name': name, 'address': address});
+                rideServiceController.saveDestination(address, name);
               }
                   : null, // Disable button if no input
               buttonStyle: ElevatedButton.styleFrom(

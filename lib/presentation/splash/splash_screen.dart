@@ -75,6 +75,26 @@ class _SplashScreenState extends State<SplashScreen> {
     }
   }
 
+
+//   Future<void> initializeData() async {
+//   String? accessToken = await PrefUtils().retrieveToken('access_token');
+//   bool isLoggedIn = false;
+//
+//   if (accessToken != null) {
+//     isLoggedIn = await _isTokenValid(accessToken);
+//   }
+//
+//   if (isLoggedIn) {
+//     Timer(const Duration(seconds: 3), () {
+//       Get.offAllNamed(AppRoutes.home);
+//     });
+//   } else {
+//     Timer(const Duration(seconds: 3), () {
+//       Get.offAllNamed(AppRoutes.emailSignOn);
+//     });
+//   }
+// }
+
   Future<bool> _isTokenValid(String token) async {
     if (token.isNotEmpty) {
       Map<String, dynamic> decodedToken = Jwt.parseJwt(token);
@@ -92,11 +112,12 @@ class _SplashScreenState extends State<SplashScreen> {
     return const Scaffold(
       backgroundColor: primaryColor,
       body: Center(
-        child: Text(
-          'Yasil',
-          style: TextStyle(color: whiteTextColor, fontWeight: FontWeight.w700, fontSize: 32),
+          child: Image(
+              height: 100,
+              width: 100,
+              image: AssetImage('assets/images/yasil_customer.png'),
+          ),
         ),
-      ),
     );
   }
 }

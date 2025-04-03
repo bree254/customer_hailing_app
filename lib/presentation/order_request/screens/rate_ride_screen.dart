@@ -1,4 +1,6 @@
 import 'package:customer_hailing/core/app_export.dart';
+import 'package:customer_hailing/data/repos/ride_service_repository.dart';
+import 'package:customer_hailing/presentation/order_request/controller/ride_service_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
@@ -10,6 +12,7 @@ class RateRideScreen extends StatefulWidget {
 }
 
 class _RateRideScreenState extends State<RateRideScreen> {
+  final RideServiceController controller = Get.put(RideServiceController(rideServiceRepository: RideServiceRepository()));
   double _rating = 0.0;
 
   @override
@@ -20,16 +23,35 @@ class _RateRideScreenState extends State<RateRideScreen> {
           child: Column(
             children: [
               const SizedBox(height: 40,),
-              const Center(
-                child: CircleAvatar(
-                  backgroundColor: Colors.transparent,
+               Center(
+                child:
+                CircleAvatar(
+                  backgroundColor: primaryColor,
                   radius: 40,
-                  backgroundImage: AssetImage('assets/images/driver.png'),
+                  backgroundImage: controller.tripDetails.value.driver?.profileUrl != null
+                      ? NetworkImage(controller.tripDetails.value.driver!.profileUrl)
+                      : null,
+                  child: controller.tripDetails.value.driver?.profileUrl == null
+                      ? Text(
+                    '${controller.tripDetails.value.driver?.firstName?[0]}${controller.tripDetails.value.driver?.lastName?[0]}',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  )
+                      : null,
                 ),
+                // CircleAvatar(
+                //   backgroundColor: Colors.transparent,
+                //   radius: 40,
+                //   backgroundImage: AssetImage('assets/images/driver.png'),
+                // ),
+
               ),
               const SizedBox(height: 20),
                Text(
-                'Rate your trip with James',
+                'Rate your trip with ${ controller.tripDetails.value.driver!.firstName.toString()}',
                 textAlign: TextAlign.center,
                 style: AppTextStyles.onBoardingAppBarText.copyWith(
                   color: primaryColor,
@@ -68,6 +90,7 @@ class _RateRideScreenState extends State<RateRideScreen> {
                   ? null
                   : () {
                       // Handle button press
+                  controller.rateTrip(_rating);
                     },
                 buttonStyle: ElevatedButton.styleFrom(
                   backgroundColor: _rating == 0.0 ? disabledButtonGrey : primaryColor,

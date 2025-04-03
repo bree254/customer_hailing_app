@@ -1,8 +1,11 @@
 import 'dart:convert';
 import 'package:customer_hailing/core/app_export.dart';
+import 'package:customer_hailing/presentation/order_request/controller/ride_service_controller.dart';
 import 'package:customer_hailing/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../../data/repos/ride_service_repository.dart';
+import '../controller/map_controller.dart';
 import '../models/data.dart';
 import 'package:http/http.dart' as http;
 import '../models/predictions.dart';
@@ -16,8 +19,11 @@ class EnterTripDetailsScreen extends StatefulWidget {
 
 class _EnterTripDetailsScreenState extends State<EnterTripDetailsScreen> {
   final String googleApiKey ="AIzaSyAFFMad-10qvSw8wZl7KgDp0jVafz4La6E";
-  final TextEditingController _locationController = TextEditingController();
-  final TextEditingController _destinationController = TextEditingController();
+  //final TextEditingController _locationController = TextEditingController();
+  // final TextEditingController _destinationController = TextEditingController();
+  final MapController mapController = Get.put(MapController());
+  final RideServiceController rideServiceController = Get.put(RideServiceController(rideServiceRepository: RideServiceRepository()));
+
   List<Prediction> _predictions = [];
   // List _pastDestinations = [];
   List<String> _pastDestinations = [];
@@ -42,14 +48,16 @@ class _EnterTripDetailsScreenState extends State<EnterTripDetailsScreen> {
 
 
     // Add listeners to detect typing
-    _locationController.addListener(_onTextChanged);
-    _destinationController.addListener(_onTextChanged);
+    //_locationController.addListener(_onTextChanged);
+    rideServiceController.locationController.addListener(_onTextChanged);
+    rideServiceController.destinationController.addListener(_onTextChanged);
 
     _locationFocusNode.addListener(_onFocusChange);
     _destinationFocusNode.addListener(_onFocusChange);
 
-    _locationController.addListener(_onLocationChanged);
-    _destinationController.addListener(_onLocationChanged);
+    //_locationController.addListener(_onLocationChanged);
+    rideServiceController.locationController.addListener(_onLocationChanged);
+    rideServiceController.destinationController.addListener(_onLocationChanged);
 
     // Add listeners to stopover controllers and focus nodes
     for (var i = 0; i < _stopoverControllers.length; i++) {
@@ -61,7 +69,8 @@ class _EnterTripDetailsScreenState extends State<EnterTripDetailsScreen> {
     // Retrieve the current location passed from DestinationBottomSheet
     final currentAddress = Get.arguments as String?;
     if (currentAddress != null) {
-      _locationController.text = currentAddress;
+      // _locationController.text = currentAddress;
+      rideServiceController.locationController.text = currentAddress;
     }
 
     _locationFocusNode.addListener(() {
@@ -72,10 +81,11 @@ class _EnterTripDetailsScreenState extends State<EnterTripDetailsScreen> {
     });
 
     // Add location controller and focus node
-    _stopoverControllers.add(_locationController);
+    // _stopoverControllers.add(_locationController);
+    _stopoverControllers.add(rideServiceController.locationController);
     _stopoverFocusNodes.add(_locationFocusNode);
 
-    _stopoverControllers.add(_destinationController);
+    _stopoverControllers.add(rideServiceController.destinationController);
     _stopoverFocusNodes.add(_destinationFocusNode);
 
     // Add listeners to detect focus changes and clear predictions
@@ -92,36 +102,36 @@ class _EnterTripDetailsScreenState extends State<EnterTripDetailsScreen> {
 
   @override
   void dispose() {
-    _locationFocusNode.dispose();
-    _destinationFocusNode.dispose();
-
-    _locationController.dispose();
-    _destinationController.dispose();
-    for (var controller in _stopoverControllers) {
-      controller.dispose();
-    }
-    for (var focusNode in _stopoverFocusNodes) {
-      focusNode.dispose();
-    }
+    // _locationFocusNode.dispose();
+    // _destinationFocusNode.dispose();
+    //
+    // _locationController.dispose();
+    // rideServiceController.destinationController.dispose();
+    // for (var controller in _stopoverControllers) {
+    //   controller.dispose();
+    // }
+    // for (var focusNode in _stopoverFocusNodes) {
+    //   focusNode.dispose();
+    // }
     super.dispose();
   }
 
   void _addStopover() {
-  if (_stopoverControllers.length - 2 >= 2) {
-    return; // Maximum of 2 stopovers
+    if (_stopoverControllers.length - 2 >= 2) {
+      return; // Maximum of 2 stopovers
+    }
+    setState(() {
+      final controller = TextEditingController();
+      final focusNode = FocusNode();
+
+      controller.addListener(_onTextChanged);
+      controller.addListener(_onLocationChanged);
+      focusNode.addListener(_onFocusChange);
+
+      _stopoverControllers.insert(_stopoverControllers.length - 1, controller);
+      _stopoverFocusNodes.insert(_stopoverFocusNodes.length - 1, focusNode);
+    });
   }
-  setState(() {
-    final controller = TextEditingController();
-    final focusNode = FocusNode();
-
-    controller.addListener(_onTextChanged);
-    controller.addListener(_onLocationChanged);
-    focusNode.addListener(_onFocusChange);
-
-    _stopoverControllers.insert(_stopoverControllers.length - 1, controller);
-    _stopoverFocusNodes.insert(_stopoverFocusNodes.length - 1, focusNode);
-  });
-}
 
   void _removeStopover(int index) {
     setState(() {
@@ -135,8 +145,12 @@ class _EnterTripDetailsScreenState extends State<EnterTripDetailsScreen> {
 
   void _onTextChanged() {
     setState(() {
-      _isTyping.value = _locationController.text.isNotEmpty ||
-          _destinationController.text.isNotEmpty ||
+      // _isTyping.value = _locationController.text.isNotEmpty ||
+      //     rideServiceController.destinationController.text.isNotEmpty ||
+      //     _stopoverControllers.any((controller) => controller.text.isNotEmpty);
+
+      _isTyping.value = rideServiceController.locationController.text.isNotEmpty ||
+          rideServiceController.destinationController.text.isNotEmpty ||
           _stopoverControllers.any((controller) => controller.text.isNotEmpty);
 
     });
@@ -155,7 +169,8 @@ class _EnterTripDetailsScreenState extends State<EnterTripDetailsScreen> {
 
   void _onLocationChanged() async {
     if (_locationFocusNode.hasFocus) {
-      final locationQuery = _locationController.text;
+      //final locationQuery = _locationController.text;
+      final locationQuery = rideServiceController.locationController.text;
       if (locationQuery.isNotEmpty) {
         final response = await _fetchPredictions(locationQuery);
         setState(() {
@@ -167,7 +182,7 @@ class _EnterTripDetailsScreenState extends State<EnterTripDetailsScreen> {
         });
       }
     } else if (_destinationFocusNode.hasFocus) {
-      final destinationQuery = _destinationController.text;
+      final destinationQuery = rideServiceController.destinationController.text;
       if (destinationQuery.isNotEmpty) {
         final response = await _fetchPredictions(destinationQuery);
         setState(() {
@@ -197,12 +212,18 @@ class _EnterTripDetailsScreenState extends State<EnterTripDetailsScreen> {
         }
       }
     }
+    // if(_locationController.text.isNotEmpty && rideServiceController.destinationController.text.isNotEmpty){
+    //   await rideServiceController.uploadCustomerLocation();
+    // }
+    if(rideServiceController.locationController.text.isNotEmpty && rideServiceController.destinationController.text.isNotEmpty){
+      await rideServiceController.uploadCustomerLocation();
+    }
   }
 
 
   Future<String> _fetchPredictions(String input) async {
     final url = Uri.parse(
-      'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input&key=AIzaSyAFFMad-10qvSw8wZl7KgDp0jVafz4La6E',
+      'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input&key=AIzaSyAFFMad-10qvSw8wZl7KgDp0jVafz4La6E&components=country:ke',
     );
     final response = await http.get(url);
     // debugPrint(jsonEncode(response.body));
@@ -215,9 +236,17 @@ class _EnterTripDetailsScreenState extends State<EnterTripDetailsScreen> {
     return predictions.map((p) => Prediction.fromJson(p)).toList();
   }
 
-  void _onPredictionSelected(Prediction prediction) {
+  Future<void> _onPredictionSelected(Prediction prediction) async {
     PrefUtils().addPastDestination(prediction.description);
-    Get.toNamed(AppRoutes.selectRide, arguments: {'type': 'prediction', 'value': prediction.description});
+
+    await rideServiceController.uploadCustomerLocation();
+
+    Get.toNamed(AppRoutes.selectRide, arguments: {
+      'type': 'prediction',
+      'value': prediction.description,
+      'location': rideServiceController.locationController.text,
+      'destination': rideServiceController.destinationController.text,
+    });
   }
 
   Future<void> _loadPastDestinations() async {
@@ -226,7 +255,6 @@ class _EnterTripDetailsScreenState extends State<EnterTripDetailsScreen> {
       _pastDestinations = _prefUtils.getPastDestinations();
     });
   }
-
 
   Widget _buildDotIndicator(bool isActive) {
     return Container(
@@ -238,89 +266,97 @@ class _EnterTripDetailsScreenState extends State<EnterTripDetailsScreen> {
       ),
     );
   }
+Widget _buildTextField(int index) {
+  TextEditingController controller = _stopoverControllers[index];
+  FocusNode focusNode = _stopoverFocusNodes[index];
+  bool isLocation = index == 0;
+  bool isDestination = index == _stopoverControllers.length - 1;
+  bool isStopover = !isLocation && !isDestination;
 
-  Widget _buildTextField(int index) {
-    TextEditingController controller = _stopoverControllers[index];
-    FocusNode focusNode = _stopoverFocusNodes[index];
-    bool isLocation = index == 0;
-    bool isDestination = index == _stopoverControllers.length - 1;
-    bool isStopover = !isLocation && !isDestination;
-
-    return Padding(
-      key: ValueKey('stopover_$index'),
-      padding: const EdgeInsets.only(bottom: 10),
-      child: Row(
-        children: [
-          Column(
-            children: [
-              if (index != 0)
-                Container(
-                  width: 2,
-                  height: 20,
-                  color: dotGrey, // Change color as needed
-                ),
-              _buildDotIndicator(focusNode.hasFocus),
-              if (index != _stopoverControllers.length - 1)
-                Container(
-                  width: 2,
-                  height: 20,
-                  color: dotGrey, // Change color as needed
-                ),
-            ],
-          ),
-          const SizedBox(width: 8),
-          Expanded(
-            child: TextField(
-              controller: controller,
-              focusNode: focusNode,
-              decoration: InputDecoration(
-                hintText: isLocation
-                    ? 'Enter your location'
-                    : isDestination
-                    ? 'Enter your destination'
-                    : 'Enter stop $index',
-                hintStyle:AppTextStyles.bodySmallBold.copyWith(
-                  color: searchtextGrey,
-                ),
-                fillColor: focusNode.hasFocus ? Colors.white : searchButtonGrey,
-                filled: true,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide.none,
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(color: primaryColor),
-                ),
-                suffixIcon: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    if (focusNode.hasFocus)
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Image.asset(
-                          "assets/images/location.png",
-                          width: 24,
-                          height: 24,
-                        ),
+  return Padding(
+    key: ValueKey('stopover_$index'),
+    padding: const EdgeInsets.only(bottom: 10),
+    child: Row(
+      children: [
+        Column(
+          children: [
+            if (index != 0)
+              Container(
+                width: 2,
+                height: 20,
+                color: dotGrey, // Change color as needed
+              ),
+            _buildDotIndicator(focusNode.hasFocus),
+            if (index != _stopoverControllers.length - 1)
+              Container(
+                width: 2,
+                height: 20,
+                color: dotGrey, // Change color as needed
+              ),
+          ],
+        ),
+        const SizedBox(width: 8),
+        Expanded(
+          child: TextField(
+            controller: controller,
+            focusNode: focusNode,
+            decoration: InputDecoration(
+              hintText: isLocation
+                  ? 'Enter your location'
+                  : isDestination
+                  ? 'Enter your destination'
+                  : 'Enter stop $index',
+              hintStyle: AppTextStyles.bodySmallBold.copyWith(
+                color: searchtextGrey,
+              ),
+              fillColor: focusNode.hasFocus ? Colors.white : searchButtonGrey,
+              filled: true,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide.none,
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: const BorderSide(color: primaryColor),
+              ),
+              suffixIcon: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (focusNode.hasFocus)
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Image.asset(
+                        "assets/images/location.png",
+                        width: 24,
+                        height: 24,
                       ),
-                    if (isStopover)
-                      IconButton(
-                        icon: const Icon(Icons.cancel, color: Colors.grey),
-                        onPressed: () => _removeStopover(index),
-                      ),
-                  ],
-                ),
+                    ),
+                  if (controller.text.isNotEmpty)
+                    IconButton(
+                      icon: const Icon(Icons.clear, color: Colors.grey),
+                      onPressed: () {
+                        setState(() {
+                          controller.clear();
+                        });
+                      },
+                    ),
+                  if (isStopover)
+                    IconButton(
+                      icon: const Icon(Icons.cancel, color: Colors.grey),
+                      onPressed: () => _removeStopover(index),
+                    ),
+                ],
               ),
             ),
           ),
-          const SizedBox(width: 8),
-          if (isStopover || (_stopoverControllers.length > 2 && isDestination))
-            const Icon(Icons.drag_handle),
-        ],
-      ),
-    );
-  }
+        ),
+        const SizedBox(width: 8),
+        if (isStopover || (_stopoverControllers.length > 2 && isDestination))
+          const Icon(Icons.drag_handle),
+      ],
+    ),
+  );
+}
 
   @override
   Widget build(BuildContext context) {
@@ -443,10 +479,11 @@ class _EnterTripDetailsScreenState extends State<EnterTripDetailsScreen> {
                           final selectedPrediction = prediction.description;
 
                           if (_locationFocusNode.hasFocus) {
-                            _locationController.text = selectedPrediction;
+                            //_locationController.text = selectedPrediction;
+                            rideServiceController.locationController.text = selectedPrediction;
                             _locationFocusNode.unfocus();
                           } else if (_destinationFocusNode.hasFocus) {
-                            _destinationController.text = selectedPrediction;
+                            rideServiceController.destinationController.text = selectedPrediction;
                             _destinationFocusNode.unfocus();
                           } else {
                             for (int i = 1; i < _stopoverControllers.length - 1; i++) {
@@ -486,12 +523,13 @@ class _EnterTripDetailsScreenState extends State<EnterTripDetailsScreen> {
                         ),
                       ),
                       child: ListTile(
-                        onTap: () {
+                        onTap: () async {
                           if (_destinationFocusNode.hasFocus) {
-                            _destinationController.text = destination;
+                            rideServiceController.destinationController.text = destination;
                             _destinationFocusNode.requestFocus();
                           } else if (_locationFocusNode.hasFocus) {
-                            _locationController.text = destination;
+                            //_locationController.text = destination;
+                            rideServiceController.locationController.text = destination;
                             _locationFocusNode.requestFocus();
                           } else {
                             for (int i = 1; i < _stopoverControllers.length - 1; i++) {
@@ -502,7 +540,19 @@ class _EnterTripDetailsScreenState extends State<EnterTripDetailsScreen> {
                               }
                             }
                           }
-                          _onPredictionSelected(Prediction(description: destination, placeId: ''));
+
+                          await rideServiceController.uploadCustomerLocationWithDestination(destination, rideServiceController.locationController.text);
+                          debugPrint('past destination Location: ${rideServiceController.locationController.text}');
+                          debugPrint('past destination Destination: ${destination}');
+
+                          //await rideServiceController.uploadCustomerLocation();
+                          Get.toNamed(AppRoutes.selectRide, arguments: {
+                            'type': 'pastDestination',
+                            'value': destination,
+                            'location': rideServiceController.locationController.text,
+                            'destination': rideServiceController.destinationController.text,
+                          });
+                          //_onPredictionSelected(Prediction(description: destination, placeId: ''));
                         },
                         leading: const Icon(
                           Icons.history,

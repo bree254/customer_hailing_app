@@ -48,7 +48,7 @@ class _SearchLocationScreenState extends State<SearchLocationScreen> {
 
   Future<String> _fetchPredictions(String input) async {
     final url = Uri.parse(
-      'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input&key=AIzaSyAFFMad-10qvSw8wZl7KgDp0jVafz4La6E',
+      'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input&key=AIzaSyAFFMad-10qvSw8wZl7KgDp0jVafz4La6E&components=country:ke',
     );
     final response = await http.get(url);
     debugPrint(jsonEncode(response.body));
@@ -62,7 +62,8 @@ class _SearchLocationScreenState extends State<SearchLocationScreen> {
   }
 
   void _onLocationSelected(Prediction prediction) {
-    Get.toNamed(AppRoutes.nameLocation, arguments: prediction.description);
+    Get.toNamed(AppRoutes.nameLocation,
+        arguments: prediction.description);
   }
 
   @override

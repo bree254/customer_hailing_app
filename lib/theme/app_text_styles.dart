@@ -128,7 +128,7 @@ class AppTextStyles {
     fontWeight: FontWeight.w400,
   );
   static get bodySmallBold => theme.textTheme.bodySmall!.copyWith(
-    fontSize: 12.0,
+    fontSize: 12.adaptSize,
     color:formTextLabelColor,
     fontWeight: FontWeight.w500,
   );

@@ -1,6 +1,9 @@
 import 'package:customer_hailing/core/app_export.dart';
+import 'package:customer_hailing/data/repos/ride_service_repository.dart';
+import 'package:customer_hailing/presentation/order_request/controller/ride_service_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:intl/intl.dart';
 
 import '../../widgets/custom_stepper.dart';
 class HistoryDetailsScreen extends StatefulWidget {
@@ -11,6 +14,7 @@ class HistoryDetailsScreen extends StatefulWidget {
 }
 
 class _HistoryDetailsScreenState extends State<HistoryDetailsScreen> {
+  final RideServiceController controller = Get.put(RideServiceController(rideServiceRepository: RideServiceRepository()));
   late final _ratingController;
   late double _rating;
 
@@ -29,8 +33,22 @@ class _HistoryDetailsScreenState extends State<HistoryDetailsScreen> {
     _rating = _initialRating;
   }
 
+  String extractDate(DateTime dateTime) {
+    return '${dateTime.day}/${dateTime.month}/${dateTime.year}';
+  }
+
+  String formatDateTime(String dateTime) {
+    final DateTime parsedDateTime = DateTime.parse(dateTime);
+    final DateFormat formatter = DateFormat('d MMM yyyy - h:mm a');
+    return formatter.format(parsedDateTime);
+  }
+
   @override
   Widget build(BuildContext context) {
+    final historyDetails = controller.historyDetails.value.data!.first;
+    final String date = extractDate(historyDetails.startTime!);
+    final num rating = historyDetails.driver?.rating ?? 0.0;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -56,9 +74,11 @@ class _HistoryDetailsScreenState extends State<HistoryDetailsScreen> {
             padding: const EdgeInsets.symmetric(vertical: 24,horizontal: 16),
                 child: Column(
                   children: [
-                    const Center(
-                      child: Text(
-                        '5th, August, 2024',
+                     Center(
+                      child:
+                      Text(
+                        date,
+                        //'5th, August, 2024',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: Color(0xFF767676),
@@ -96,7 +116,8 @@ class _HistoryDetailsScreenState extends State<HistoryDetailsScreen> {
                         ),
                       ),
                       subtitle: Text(
-                        'James Smith',
+                       '${ controller.historyDetails.value.data!.first.driver!.firstName} ${ controller.historyDetails.value.data!.first.driver!.lastName}',
+                        //'James Smith',
                         style:AppTextStyles.text14Black600.copyWith(
                           color: formTextLabelColor,
 
@@ -104,7 +125,8 @@ class _HistoryDetailsScreenState extends State<HistoryDetailsScreen> {
 
                       ),
                       trailing: RatingBarIndicator(
-                        rating: _userRating,
+                        rating: rating.toDouble(),
+                        //_userRating,
                         itemBuilder: (context, index) => Icon(
                           _selectedIcon ?? Icons.star,
                           color: Colors.amber,
@@ -119,12 +141,12 @@ class _HistoryDetailsScreenState extends State<HistoryDetailsScreen> {
                     CustomStepperWidget(
                       steps: [
                         CustomStep(
-                          title: 'GPO Stage, Kenyatta Avenue',
-                          subtitle: '12:00 pm',
+                          title: controller.historyDetails.value.data!.first.origin!,
+                          subtitle: formatDateTime(controller.historyDetails.value.data!.first.startTime!.toString()),
                         ),
                         CustomStep(
-                          title: 'Mövenpick Residences Nairobi',
-                          subtitle:'12:00 pm',
+                          title: controller.historyDetails.value.data!.first.destination!,
+                          subtitle: formatDateTime(controller.historyDetails.value.data!.first.endTime!.toString()),
                         ),
                       ],
                       activeStep: 1, // You can adjust this based on your logic
@@ -143,7 +165,8 @@ class _HistoryDetailsScreenState extends State<HistoryDetailsScreen> {
                           ),
                         ),
                         trailing:Text(
-                          'KES 260.00',
+                          controller.historyDetails.value.data!.first.fare!,
+                         // 'KES 260.00',
                           textAlign: TextAlign.right,
                           style: AppTextStyles.bodySmall.copyWith(
                             color: searchtextGrey,
@@ -152,37 +175,37 @@ class _HistoryDetailsScreenState extends State<HistoryDetailsScreen> {
                         )
                     ),
 
-                     ListTile(
-                        title: Text(
-                          'Surge ',
-                          style: AppTextStyles.bodySmall.copyWith(
-                            color: searchtextGrey,
-                          ),
-                        ),
-                        trailing:Text(
-                          'KES 30.00',
-                          textAlign: TextAlign.right,
-                          style: AppTextStyles.bodySmall.copyWith(
-                            color: searchtextGrey,
-                          ),
-                        ),
-                    ),
+                    //  ListTile(
+                    //     title: Text(
+                    //       'Surge ',
+                    //       style: AppTextStyles.bodySmall.copyWith(
+                    //         color: searchtextGrey,
+                    //       ),
+                    //     ),
+                    //     trailing:Text(
+                    //       'KES 30.00',
+                    //       textAlign: TextAlign.right,
+                    //       style: AppTextStyles.bodySmall.copyWith(
+                    //         color: searchtextGrey,
+                    //       ),
+                    //     ),
+                    // ),
 
-                     ListTile(
-                        title: Text(
-                          'Tip',
-                          style: AppTextStyles.bodySmall.copyWith(
-                            color: searchtextGrey,
-                          ),
-                        ),
-                        trailing: Text(
-                          'KES 250.00',
-                          textAlign: TextAlign.right,
-                          style: AppTextStyles.bodySmall.copyWith(
-                            color: searchtextGrey,
-                          ),
-                        )
-                    ),
+                    //  ListTile(
+                    //     title: Text(
+                    //       'Tip',
+                    //       style: AppTextStyles.bodySmall.copyWith(
+                    //         color: searchtextGrey,
+                    //       ),
+                    //     ),
+                    //     trailing: Text(
+                    //       'KES 250.00',
+                    //       textAlign: TextAlign.right,
+                    //       style: AppTextStyles.bodySmall.copyWith(
+                    //         color: searchtextGrey,
+                    //       ),
+                    //     )
+                    // ),
 
                      ListTile(
                         title: Text(
@@ -192,7 +215,8 @@ class _HistoryDetailsScreenState extends State<HistoryDetailsScreen> {
                           ),
                         ),
                         trailing: Text(
-                          'Cash',
+                          controller.historyDetails.value.data!.first.paymentMethod!,
+                          //'Cash',
                           textAlign: TextAlign.right,
                           style: AppTextStyles.bodySmall.copyWith(
                             color: searchtextGrey,
@@ -213,7 +237,8 @@ class _HistoryDetailsScreenState extends State<HistoryDetailsScreen> {
                           ),
                         ),
                         trailing: Text(
-                          'KES 460',
+                          controller.historyDetails.value.data!.first.fare!,
+                          //'KES 460',
                           textAlign: TextAlign.right,
                           style: AppTextStyles.text14Black500.copyWith(
                             color: darkerGrey,

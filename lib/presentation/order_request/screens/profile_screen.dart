@@ -2,6 +2,7 @@ import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/routes/routes.dart';
 import 'package:flutter/material.dart';
 
+import '../../../core/constants/constants.dart';
 import '../../auth/controller/auth_controller.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -17,6 +18,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    String initials = '${authController.user.value.firstName?[0]}${authController.user.value.lastName?[0]}';
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -37,172 +39,187 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24),
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                children: [
-                  Center(
-                    child: Stack(
-                      children: [
-                        CircleAvatar(
-                            backgroundColor:Colors.transparent,
-                            child: Image.asset(
-                              width: 56,
-                              height: 56,
-                              'assets/images/driver.png',
-                            ),
-                        ),
-                        Positioned(
-                          left: 28,
-                            child: 
-                            GestureDetector(
-                                child: Image.asset(
-                                    width: 15,
-                                    height: 15,
-                                    "assets/images/pen-outline.png")
-                            ),
-                        )
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 13,),
-                  Text(
-                    '${authController.user.value.firstName} ${authController.user.value.lastName}',
-                    style: AppTextStyles.text14Black500.copyWith(
-                      color: searchtextGrey,
-                    ),
-                  ),
-                  const SizedBox(height: 8,),
-                   Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.star,color: primaryColor,size: 10,),
-                      SizedBox(width: 5,),
-                      Text(
-                        '${authController.user.value.ratingAverage} rating',
-                        style: AppTextStyles.text14Black400.copyWith(
-                          color: searchtextGrey,
-                        ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  children: [
+                    Center(
+                      child: Stack(
+                        children: [
+                          CircleAvatar(
+                            backgroundColor: primaryColor,
+                            backgroundImage: authController.user.value.profileUrl != null
+                                ? NetworkImage('${authController.user.value.profileUrl}')
+                                : null,
+                            child: authController.user.value.profileUrl == null
+                                ? Text(
+                              initials,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            )
+                                : null,
+                          ),
+                          Positioned(
+                            left: 28,
+                              child: 
+                              GestureDetector(
+                                  child: Image.asset(
+                                      width: 15,
+                                      height: 15,
+                                      "assets/images/pen-outline.png")
+                              ),
+                          )
+                        ],
                       ),
-                    ],
-                  )
-                ],
-              ),
-            ),
-            const SizedBox(height: 32,),
-            Container(
-              width: 328,
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              margin: const EdgeInsets.symmetric(vertical: 8),
-              decoration: ShapeDecoration(
-                color: Colors.white,
-                shape: RoundedRectangleBorder(
-                  side: const BorderSide(width: 1, color: Color(0xFFF5F5F5)),
-                  borderRadius: BorderRadius.circular(8),
+                    ),
+                    const SizedBox(height: 13,),
+                    Obx(() => Text(
+                      '${authController.user.value.firstName} ${authController.user.value.lastName}',
+                      style: AppTextStyles.text14Black500.copyWith(
+                        color: searchtextGrey,
+                      ),
+                    )),
+                    const SizedBox(height: 8,),
+                    Obx(() => Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.star, color: primaryColor, size: 10),
+                        SizedBox(width: 5),
+                        Text(
+                          '${authController.user.value.avgRating} rating',
+                          style: AppTextStyles.text14Black400.copyWith(
+                            color: searchtextGrey,
+                          ),
+                        ),
+                      ],
+                    )),
+                  ],
                 ),
               ),
-              child: ListTile(
-                leading:  Image.asset(
-                  width: 24,
-                    height: 24,
-                    'assets/images/user-circle-outline.png'
-                ),
-                title:  Text(
-                  'Edit Profile',
-                  style: AppTextStyles.bodySmall.copyWith(
-                    color: listileText,
+              const SizedBox(height: 32,),
+              Container(
+                width: 328,
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                margin: const EdgeInsets.symmetric(vertical: 8),
+                decoration: ShapeDecoration(
+                  color: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    side: const BorderSide(width: 1, color: Color(0xFFF5F5F5)),
+                    borderRadius: BorderRadius.circular(8),
                   ),
                 ),
-                trailing: const Icon(Icons.arrow_forward_ios_outlined,color: searchtextGrey,size: 14,),
-                onTap: () {
-                  Get.toNamed(AppRoutes.editProfile);
-                },
-              ),
-            ),
-            Container(
-              width: 328,
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              margin: const EdgeInsets.symmetric(vertical: 8),
-              decoration: ShapeDecoration(
-                color: Colors.white,
-                shape: RoundedRectangleBorder(
-                  side: const BorderSide(width: 1, color: Color(0xFFF5F5F5)),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              child: ListTile(
-                leading:  Image.asset(
+                child: ListTile(
+                  leading:  Image.asset(
                     width: 24,
-                    height: 24,
-                    'assets/images/shield-outline.png'
+                      height: 24,
+                      'assets/images/user-circle-outline.png'
+                  ),
+                  title:  Text(
+                    'Edit Profile',
+                    style: AppTextStyles.bodySmall.copyWith(
+                      color: listileText,
+                    ),
+                  ),
+                  trailing: const Icon(Icons.arrow_forward_ios_outlined,color: searchtextGrey,size: 14,),
+                  onTap: () async {
+                    final result = await Get.toNamed(AppRoutes.editProfile);
+                    if (result == true) {
+                      setState(() {
+                        // Refresh the values
+                      });
+                    }
+                  },
                 ),
-                title:  Text(
-                  'Password & Security',
-                  style: AppTextStyles.bodySmall.copyWith(
-                    color: listileText,
+              ),
+              Container(
+                width: 328,
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                margin: const EdgeInsets.symmetric(vertical: 8),
+                decoration: ShapeDecoration(
+                  color: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    side: const BorderSide(width: 1, color: Color(0xFFF5F5F5)),
+                    borderRadius: BorderRadius.circular(8),
                   ),
                 ),
-                trailing: const Icon(Icons.arrow_forward_ios_outlined,color: searchtextGrey,size: 14,),
-                onTap: () {
-                  Get.toNamed(AppRoutes.passwordSecurity);
-                },
-              ),
-            ),
-            Container(
-              width: 328,
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              margin: const EdgeInsets.symmetric(vertical: 8),
-              decoration: ShapeDecoration(
-                color: Colors.white,
-                shape: RoundedRectangleBorder(
-                  side: const BorderSide(width: 1, color: Color(0xFFF5F5F5)),
-                  borderRadius: BorderRadius.circular(8),
+                child: ListTile(
+                  leading:  Image.asset(
+                      width: 24,
+                      height: 24,
+                      'assets/images/shield-outline.png'
+                  ),
+                  title:  Text(
+                    'Password & Security',
+                    style: AppTextStyles.bodySmall.copyWith(
+                      color: listileText,
+                    ),
+                  ),
+                  trailing: const Icon(Icons.arrow_forward_ios_outlined,color: searchtextGrey,size: 14,),
+                  onTap: () {
+                    Get.toNamed(AppRoutes.passwordSecurity);
+                  },
                 ),
               ),
-              child: ListTile(
-                leading:  Image.asset(
-                    width: 24,
-                    height: 24,
-                    'assets/images/map-pin-alt-outline.png'
-                ),
-                title:  Text(
-                  'Saved Locations',
-                  style: AppTextStyles.bodySmall.copyWith(
-                    color: listileText,
+              Container(
+                width: 328,
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                margin: const EdgeInsets.symmetric(vertical: 8),
+                decoration: ShapeDecoration(
+                  color: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    side: const BorderSide(width: 1, color: Color(0xFFF5F5F5)),
+                    borderRadius: BorderRadius.circular(8),
                   ),
                 ),
-                trailing: const Icon(Icons.arrow_forward_ios_outlined,color: searchtextGrey,size: 14,),
-                onTap: () {
-                  Get.toNamed(AppRoutes.savedLocation);
-                },
-              ),
-            ),
-            Container(
-              width: 328,
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              margin: const EdgeInsets.symmetric(vertical: 8),
-              child: ListTile(
-                leading:  Image.asset(
-                    width: 24,
-                    height: 24,
-                    'assets/images/logout.png'
-                ),
-                title:  Text(
-                  'Logout',
-                  style: AppTextStyles.bodySmall.copyWith(
-                    color: deleteIcon,
+                child: ListTile(
+                  leading:  Image.asset(
+                      width: 24,
+                      height: 24,
+                      'assets/images/map-pin-alt-outline.png'
                   ),
+                  title:  Text(
+                    'Saved Locations',
+                    style: AppTextStyles.bodySmall.copyWith(
+                      color: listileText,
+                    ),
+                  ),
+                  trailing: const Icon(Icons.arrow_forward_ios_outlined,color: searchtextGrey,size: 14,),
+                  onTap: () {
+                    Get.toNamed(AppRoutes.savedLocation);
+                  },
                 ),
-                onTap: () {
-                  authController.logout();
-                },
               ),
-            ),
-          ],
+              Container(
+                width: 328,
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                margin: const EdgeInsets.symmetric(vertical: 8),
+                child: ListTile(
+                  leading:  Image.asset(
+                      width: 24,
+                      height: 24,
+                      'assets/images/logout.png'
+                  ),
+                  title:  Text(
+                    'Logout',
+                    style: AppTextStyles.bodySmall.copyWith(
+                      color: deleteIcon,
+                    ),
+                  ),
+                  onTap: () {
+                    authController.logout();
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

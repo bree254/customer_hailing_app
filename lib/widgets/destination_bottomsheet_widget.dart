@@ -1,7 +1,10 @@
 import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/presentation/order_request/controller/home_controller.dart';
+import 'package:customer_hailing/presentation/order_request/controller/ride_service_controller.dart';
+import 'package:customer_hailing/presentation/order_request/models/data.dart';
 import 'package:customer_hailing/routes/routes.dart';
 import 'package:flutter/material.dart';
+import '../data/repos/ride_service_repository.dart';
 
 class DestinationBottomSheet extends StatelessWidget {
   final String? currentAddress;
@@ -11,7 +14,7 @@ class DestinationBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final HomeController homeController = Get.find<HomeController>();
-    // final RideRequestController controller = Get.find<RideRequestController>();
+    final RideServiceController controller = Get.put(RideServiceController(rideServiceRepository: RideServiceRepository()));
     List<String> pastDestinations = PrefUtils().getPastDestinations();
 
     return DraggableScrollableSheet(
@@ -75,8 +78,8 @@ class DestinationBottomSheet extends StatelessWidget {
                         scrollDirection: Axis.vertical,
                         itemCount: homeController.pastDestinations.length,
                         itemBuilder: (context, index) {
-                          var destination =
-                              homeController.pastDestinations[index];
+                         
+                          var pastDestination = homeController.pastDestinations[index];
                           return Container(
                             margin: const EdgeInsets.fromLTRB(16, 0, 16, 8),
                             decoration: ShapeDecoration(
@@ -91,10 +94,14 @@ class DestinationBottomSheet extends StatelessWidget {
                               ),
                             ),
                             child: ListTile(
-                              onTap: () {
+            
+                              onTap: () async {
+                                await controller.uploadCustomerLocationWithDestination(pastDestination, currentAddress!);
                                 Get.toNamed(AppRoutes.selectRide, arguments: {
-                                  'type': 'destination',
-                                  'value': destination.toString()
+                                  'type': 'pastDestination',
+                                  'value': pastDestination.toString(),
+                                  'pastHistory': pastDestination,
+                                  'currentLocation': currentAddress, // Ensure this is passed if needed
                                 });
                               },
                               leading: const Icon(
@@ -102,8 +109,8 @@ class DestinationBottomSheet extends StatelessWidget {
                                 color: historyIcon,
                               ),
                               title: Text(
-                                destination,
-                                style: AppTextStyles.bodySmallBold.copyWith(
+                                pastDestination,
+                                style:AppTextStyles.bodySmallBold.copyWith(
                                   color: searchtextGrey,
                                 ),
                               ),
