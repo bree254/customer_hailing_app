@@ -59,7 +59,7 @@ dependencies:
   lottie: ^3.1.3
   firebase_messaging: ^15.1.3
   #awesome_notifications: ^0.10.0
-  firebase_crashlytics: ^4.1.3
+  firebase_crashlytics:
   google_directions_api: ^0.10.0
   flutter_dotenv: ^5.2.1
   flutter_easyloading:
@@ -74,8 +74,8 @@ dependencies:
   #contacts_service:
   flutter_contacts: ^1.1.9+2
 #  polyline_do: ^0.1.0
-  flutter_local_notifications: ^19.0.0
-  firebase_analytics: ^11.4.5
+  flutter_local_notifications: ^18.0.0
+  firebase_analytics:
 
 
 dev_dependencies:
