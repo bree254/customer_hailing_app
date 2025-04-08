@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:customer_hailing/core/app_export.dart';
 import 'package:customer_hailing/data/models/auth/update_profile_response.dart';
 import 'package:customer_hailing/data/models/auth/validate_otp.dart';
@@ -38,12 +40,14 @@ class AuthController extends GetxController {
   final Map<String ,String> uploadedUrls = {};
 
  // var url = UploadFileResponse().obs;
-
+  String? customerToken;
   @override
   void onInit() async {
     // TODO: implement onInit
     super.onInit();
     accessToken = await PrefUtils().retrieveToken('access_token');
+    // Retrieve the FCM token
+    customerToken = await PrefUtils().getFcmToken();
 
     // Get the username from SharedPreferences
     usernameController.text = await PrefUtils().retrieveUsername() ?? '';
@@ -95,7 +99,9 @@ Future<void> validateOtp() async {
   EasyLoading.show(status: 'loading...');
   var requestData = {
     'username': usernameController.text.trim(),
-    'otp': otpController.text.trim()
+    'otp': otpController.text.trim(),
+    'customerToken': customerToken,
+    'platform': Platform.operatingSystem,
   };
 
   try {
