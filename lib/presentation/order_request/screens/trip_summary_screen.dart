@@ -36,7 +36,8 @@ class _TripSummaryScreenState extends State<TripSummaryScreen> {
                 ),
 
                  Text(
-                   '5th, August, 2024',
+                   // '5th, August, 2024',
+                   rideServiceController.tripDetails.value.tripDetails!.tripDate.toString(),
                    textAlign: TextAlign.center,
                    style: AppTextStyles.bodySmall.copyWith(
                      color: searchtextGrey,
@@ -67,7 +68,7 @@ class _TripSummaryScreenState extends State<TripSummaryScreen> {
 
                  ),
                  Text(
-                   rideServiceController.tripDetails.value.tripDetails!.estimatedFare.toString(),
+                   rideServiceController.tripDetails.value.tripDetails!.totalFare.toString(),
                  // 'KES 290',
                   textAlign: TextAlign.center,
                   style:AppTextStyles.bodyHeading.copyWith(

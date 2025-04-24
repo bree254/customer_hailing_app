@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:customer_hailing/core/utils/colors.dart';
 import 'package:customer_hailing/presentation/order_request/controller/ride_service_controller.dart';
 import 'package:customer_hailing/presentation/order_request/controller/ride_status_controller.dart';

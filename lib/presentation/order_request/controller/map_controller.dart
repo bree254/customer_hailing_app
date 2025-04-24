@@ -188,29 +188,6 @@ class MapController extends GetxController {
   }
 
 
-
-  // void startLocationUpdates() {
-  //   const LocationSettings locationSettings = LocationSettings(
-  //     accuracy: LocationAccuracy.high,
-  //     distanceFilter: 10, // Minimum distance (in meters) to trigger an update
-  //   );
-  //
-  //   positionStreamSubscription = Geolocator.getPositionStream(locationSettings: locationSettings)
-  //       .listen((Position position) {
-  //         // update driver location from the stream
-  //
-  //     currentPosition.value = position;
-  //     print('New position: ${position.latitude}, ${position.longitude}');
-  //
-  //     getLocationUpdates(rideServiceController.tripDetails.value.tripId.toString());
-  //     // Update the map with the new position
-  //     updateMapWithLocation(LocationsUpdatesResponse(
-  //       latitude: position.latitude,
-  //       longitude: position.longitude,
-  //     ));
-  //   });
-  // }
-
   Future<LocationsUpdatesResponse> getLocationUpdates(String tripId) async {
    // final RideServiceController rideServiceController = Get.put(RideServiceController(rideServiceRepository: RideServiceRepository()));
     final status = rideServiceController.tripDetails.value.tripStatus;
@@ -251,75 +228,6 @@ class MapController extends GetxController {
       throw Exception('Error fetching location updates');
     }
   }
-
-  //
-  // Future<void> updateMapWithLocation(LocationsUpdatesResponse response) async {
-  //   // Assuming response contains the new location data
-  //   final newLocation = LatLng(response.latitude ?? 0.0, response.longitude ?? 0.0);
-  //
-  //   debugPrint(newLocation.toString());
-  //   debugPrint('new location for location updates : $newLocation');
-  //
-  //   // Construct the full URL for the car icon
-  //   String carIconUrl = imageBaseUrl + (response.carIcon ?? 'assets/images/mid_car_marker.png');
-  //   print(' car icon url for updates  : $carIconUrl');
-  //
-  //   // Load the car icon from the URL
-  //   BitmapDescriptor carIcon = await _getNetworkImageMarker(carIconUrl);
-  //
-  //   //
-  //   // // Update the center of the map
-  //   // center.value = newLocation;
-  //
-  //   // Update the marker
-  //   markers.removeWhere((marker) => marker.markerId.value == 'driverLocation');
-  //   markers.add(Marker(
-  //     markerId: MarkerId('driverLocation'),
-  //     position: newLocation,
-  //     infoWindow: InfoWindow(
-  //       title: response.vehicleDetails?.numberPlate ?? 'Unknown Vehicle',
-  //       snippet: 'Rating: ${response.rating}',
-  //     ),
-  //     icon: carIcon,
-  //   ));
-  //
-  //   print("Adding marker for driver ${response.driverId} at (${newLocation.latitude}, ${newLocation.longitude})");
-  //   print("Adding car marker for driver ${response.carIcon} at (${offsetLatitude}, ${offsetLongitude})");
-  //
-  //   //final RideServiceController rideServiceController = Get.find<RideServiceController>();
-  //   // Get the trip status and locations
-  //   final tripStatus = rideServiceController.tripDetails.value.tripStatus;
-  //   debugPrint('trip status in update map with location : $tripStatus');
-  //
-  //   final pickupLocation = rideServiceController.tripDetails.value.tripDetails!.pickupLocation!;
-  //   debugPrint('pickup location in update map with location : ${pickupLocation.address}');
-  //
-  //   final destinationLocation = rideServiceController.tripDetails.value.tripDetails!.dropOffLocation!;
-  //   debugPrint('destination location in update map with location : ${destinationLocation.address}');
-  //
-  //   String driverAddress = await convertToAddress(newLocation.latitude, newLocation.longitude);
-  //   debugPrint('driver address in update map with driver location : $driverAddress');
-  //
-  //   // Update polylines based on trip status
-  //   if (tripStatus == 'ACCEPTED' || tripStatus == 'DRIVER_ARRIVED') {
-  //     print('updating polylines for driver location: $driverAddress');
-  //     print('updating polylines for driver location: $pickupLocation');
-  //     print('Updating polyline: Driver at ${newLocation.latitude}, ${newLocation.longitude}');
-  //
-  //     updateLatLngPolylines(pickupLocation.latitude!, pickupLocation.longitude!, newLocation.latitude, newLocation.longitude);
-  //   } else if (tripStatus == 'IN_PROGRESS') {
-  //     updateLatLngPolylines(newLocation.latitude, newLocation.longitude, destinationLocation.latitude!, destinationLocation.longitude!);
-  //   } else if (tripStatus == 'COMPLETED') {
-  //     _locationUpdateTimer?.cancel();
-  //   } else {
-  //     stopLocationUpdates();
-  //   }
-  //
-  //   update(); // Update the view
-  //
-  // }
-
-
 
   Future<void> updateMapWithLocation(LocationsUpdatesResponse response) async {
     // Assuming response contains the new location data

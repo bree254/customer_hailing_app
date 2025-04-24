@@ -17,47 +17,107 @@ class NotificationService {
   static final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
-  static Future<void> setUpNotificationService(
-      BuildContext buildContext) async {
-    await Firebase.initializeApp();
+  // static Future<void> setUpNotificationService(
+  //     BuildContext buildContext) async {
+  //   // if (Firebase.apps.isEmpty) {
+  //   //   await Firebase.initializeApp();
+  //   // }
+  //   FirebaseMessaging messaging = FirebaseMessaging.instance;
+  //
+  //   // Request notification permissions explicitly
+  //   if (!(await isLocalNotificationAllowed())) {
+  //     await Permission.notification.request();
+  //   }
+  //
+  //   NotificationSettings settings = await messaging.getNotificationSettings();
+  //   await messaging.getToken().then((value) {
+  //     // if (Platform.isAndroid && value != null) {
+  //     //   debugPrint('FCM Token: $value');
+  //     //   PrefUtils().setFcmToken(value);
+  //     // }
+  //
+  //     if (value != null) {
+  //       debugPrint('FCM Token: $value');
+  //       PrefUtils().setFcmToken(value);
+  //     }
+  //   });
+  //
+  //   if (settings.authorizationStatus != AuthorizationStatus.authorized) {
+  //     settings = await messaging.requestPermission(
+  //       alert: true,
+  //       badge: true,
+  //       sound: true,
+  //     );
+  //   }
+  //
+  //   if (buildContext.mounted) {
+  //     initNotificationListener(buildContext);
+  //   }
+  //
+  //   const AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
+  //   const DarwinInitializationSettings initializationSettingsDarwin = DarwinInitializationSettings();
+  //   const InitializationSettings initializationSettings = InitializationSettings(
+  //       android: initializationSettingsAndroid,
+  //       iOS: initializationSettingsDarwin
+  //   );
+  //
+  //
+  //   await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+  //       onDidReceiveNotificationResponse: onDidReceiveNotificationResponse);
+  // }
+
+  static Future<void> setUpNotificationService(BuildContext buildContext) async {
     FirebaseMessaging messaging = FirebaseMessaging.instance;
 
-    // Request notification permissions explicitly
-    if (!(await isLocalNotificationAllowed())) {
-      await Permission.notification.request();
-    }
+    // Request permission BEFORE getting token or settings
+    NotificationSettings settings = await messaging.requestPermission(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
 
-    NotificationSettings settings = await messaging.getNotificationSettings();
-    await messaging.getToken().then((value) {
-      if (Platform.isAndroid && value != null) {
-        debugPrint('FCM Token: $value');
-        PrefUtils().setFcmToken(value);
+    // Save the FCM token (Android & iOS)
+    // Retrieve and log the APNs token (iOS only)
+    if (Platform.isIOS) {
+      String? apnsToken = await messaging.getAPNSToken();
+      if (apnsToken != null) {
+        debugPrint('APNs Token: $apnsToken');
+      } else {
+        debugPrint('APNs Token not available yet.');
       }
-    });
-
-    if (settings.authorizationStatus != AuthorizationStatus.authorized) {
-      settings = await messaging.requestPermission(
-        alert: true,
-        badge: true,
-        sound: true,
-      );
     }
 
+// Retrieve and save the FCM token (Android & iOS)
+    if (Platform.isAndroid || Platform.isIOS) {
+      await messaging.getToken().then((value) {
+        if (value != null) {
+          debugPrint('FCM Token: $value');
+          PrefUtils().setFcmToken(value);
+        }
+      });
+    }
+
+    // Initialize local notifications plugin
+    const AndroidInitializationSettings initializationSettingsAndroid =
+    AndroidInitializationSettings('@mipmap/ic_launcher');
+
+    const DarwinInitializationSettings initializationSettingsDarwin =
+    DarwinInitializationSettings();
+
+    const InitializationSettings initializationSettings = InitializationSettings(
+      android: initializationSettingsAndroid,
+      iOS: initializationSettingsDarwin,
+    );
+
+    await flutterLocalNotificationsPlugin.initialize(
+      initializationSettings,
+      onDidReceiveNotificationResponse: onDidReceiveNotificationResponse,
+    );
+
+    // Only if context is mounted (safety check)
     if (buildContext.mounted) {
       initNotificationListener(buildContext);
     }
-
-    const AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
-    const DarwinInitializationSettings initializationSettingsDarwin =
-     DarwinInitializationSettings();
-    const InitializationSettings initializationSettings =
-        InitializationSettings(android: initializationSettingsAndroid,
-        iOS: initializationSettingsDarwin);
-
-
-    await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onDidReceiveNotificationResponse: onDidReceiveNotificationResponse);
   }
 
   // static AndroidNotificationChannel channel;
@@ -133,7 +193,7 @@ class NotificationService {
 
   static Future<void> firebaseMessagingBackgroundHandler(
       RemoteMessage message) async {
-    await Firebase.initializeApp();
+    //await Firebase.initializeApp();
     if (Platform.isAndroid) {
       createLocalNotification(dimissable: true, message: message);
     }
