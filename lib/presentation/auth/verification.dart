@@ -114,6 +114,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
             ),
             const SizedBox(height: 32),
             PinCodeTextField(
+              keyboardType: TextInputType.number,
               appContext: context,
               length: 6,
               animationType: AnimationType.none,

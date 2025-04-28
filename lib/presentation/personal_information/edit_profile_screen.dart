@@ -113,12 +113,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           });
         }
 
-        // setState(() {
-        //   uploadProgress[section] = 1.0;
-        //   uploadStatus[section] = 'Upload complete';
-        //   imageUrl = '$imageBaseUrl${image.name}';
-        //  // _checkAllUploaded();
-        // });
       }
     } catch (e) {
       debugPrint('Error picking image: $e');
@@ -160,12 +154,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             uploadStatus[section] = 'Failed to get URL';
           });
         }
-        // setState(() {
-        //   uploadProgress[section] = 1.0;
-        //   uploadStatus[section] = 'Upload complete';
-        //   imageUrl = '$imageBaseUrl${image.name}';
-        // //  _checkAllUploaded();
-        // });
       }
     } catch (e) {
       debugPrint('Error taking photo: $e');
@@ -249,6 +237,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         ),
                       ),
                       child:  CircleAvatar(
+                        radius: 80,
                         backgroundColor: primaryColor,
                         backgroundImage: imageUrl != null ? NetworkImage(imageUrl!) : null,
                         child: imageUrl == null
@@ -278,7 +267,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               shape: BoxShape.circle,
                               color: Colors.white
                             ),
-                              child: const Icon(Icons.camera_alt_outlined,color: primaryColor,size: 18,))
+                              child: const Icon(Icons.camera_alt_outlined,color: searchtextGrey,size: 18,))
                       ),
                     ),
                   ],

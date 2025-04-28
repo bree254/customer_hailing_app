@@ -48,7 +48,7 @@ class DestinationBottomSheet extends StatelessWidget {
                   Get.toNamed(AppRoutes.search, arguments: currentAddress);
                 },
                 child: Container(
-                  margin: const EdgeInsets.fromLTRB(10, 8, 10, 0),
+                  margin: const EdgeInsets.fromLTRB(16, 8, 16, 0),
                   child: AbsorbPointer(
                     child: TextField(
                       decoration: InputDecoration(
@@ -94,7 +94,6 @@ class DestinationBottomSheet extends StatelessWidget {
                               ),
                             ),
                             child: ListTile(
-            
                               onTap: () async {
                                 await controller.uploadCustomerLocationWithDestination(pastDestination, currentAddress!);
                                 Get.toNamed(AppRoutes.selectRide, arguments: {
