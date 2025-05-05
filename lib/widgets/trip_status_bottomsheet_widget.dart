@@ -211,7 +211,7 @@ class TripStatusBottomSheet extends StatelessWidget {
                                     width: double.infinity,
                                     child: CustomElevatedButton(
                                       onPressed: () {
-                                        // Get.back();
+                                        // Navigator.pop(context);
                                       },
                                       buttonStyle: ElevatedButton.styleFrom(
                                         backgroundColor: countryTextFieldColor,
@@ -494,7 +494,7 @@ class TripStatusBottomSheet extends StatelessWidget {
                         alignment: Alignment.topRight,
                         child: GestureDetector(
                           onTap: () {
-                            Get.back();
+                            Navigator.pop(context);
                           },
                           child: const Icon(Icons.close),
                         ),

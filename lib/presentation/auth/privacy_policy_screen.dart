@@ -84,7 +84,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
             const SizedBox(height: 24,),
             GestureDetector(
               onTap: (){
-                Get.back();
+                Navigator.pop(context);
               },
               child:  Center(
                 child: Text(

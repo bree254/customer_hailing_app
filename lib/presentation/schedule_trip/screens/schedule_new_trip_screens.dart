@@ -55,7 +55,7 @@ class _ScheduleNewTripScreenState extends State<ScheduleNewTripScreen> {
         automaticallyImplyLeading: false,
         leading: IconButton(
           onPressed: () {
-            Get.back();
+            Navigator.pop(context);
           },
           icon: const Icon(
             Icons.arrow_back_outlined,
@@ -146,7 +146,7 @@ class _ScheduleNewTripScreenState extends State<ScheduleNewTripScreen> {
             SizedBox(height: 20.v),
             CustomElevatedButton(
               onPressed: () {
-                Get.back();
+                Navigator.pop(context);
               },
               text: 'Cancel',
               buttonStyle: ElevatedButton.styleFrom(

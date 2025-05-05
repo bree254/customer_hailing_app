@@ -76,7 +76,7 @@ class _SavedLocationsScreenState extends State<SavedLocationsScreen> {
         iconTheme: const IconThemeData(color: Colors.black),
         leading: IconButton(
           onPressed: () {
-            Get.back();
+            Navigator.pop(context);
           },
           icon: const Icon(
             Icons.arrow_back,

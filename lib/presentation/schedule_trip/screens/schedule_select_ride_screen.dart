@@ -161,7 +161,7 @@ class _ScheduleSelectRideScreenState extends State<ScheduleSelectRideScreen> {
                   border: InputBorder.none,
                   prefixIcon: GestureDetector(
                     onTap: () {
-                      Get.back();
+                      Navigator.pop(context);
                     },
                     child: const Icon(
                       Icons.arrow_back,

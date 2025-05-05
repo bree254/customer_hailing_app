@@ -235,7 +235,7 @@ class _EnterYourDetailsScreenState extends State<EnterYourDetailsScreen> {
               ),
               GestureDetector(
                 onTap: (){
-                  Get.back();
+                  Navigator.pop(context);
                 },
                 child: Center(
                   child: Text(

@@ -51,7 +51,7 @@ class _TripDetailsScreenState extends State<TripDetailsScreen> {
         iconTheme: const IconThemeData(color: Colors.black),
         leading: IconButton(
           onPressed: () {
-            Get.back();
+            Navigator.pop(context);
           },
           icon: const Icon(
             Icons.close,
@@ -212,7 +212,7 @@ class _TripDetailsScreenState extends State<TripDetailsScreen> {
                   padding: const EdgeInsets.only(bottom: 10.0),
                   child: CustomElevatedButton(
                     onPressed: () {
-                      Get.back();
+                      Navigator.pop(context);
                     },
                     text: 'Cancel Trip',
                     buttonStyle: ElevatedButton.styleFrom(

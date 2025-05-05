@@ -15,7 +15,6 @@ import 'package:customer_hailing/data/models/ride_requests/search_locations_resp
 import 'package:customer_hailing/data/models/ride_requests/share_trip_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/trip_details_response.dart';
 import 'package:customer_hailing/data/models/ride_requests/trip_history_response.dart';
-import 'package:customer_hailing/presentation/order_request/screens/search_location_screen.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/material.dart';
 import '../../core/utils/logger.dart';
@@ -88,6 +87,36 @@ class ApiClient extends GetConnect {
     }
     return false;
   }
+  void _handleResponse(dio.Response response) {
+    if (!_isSuccessCall(response)) {
+      final errorMessage = response.data['message'] ?? 'An error occurred';
+      throw Exception(errorMessage);
+    }
+  }
+
+  void _handleError(dynamic error) {
+    if (error is dio.DioError) {
+      if (error.type == dio.DioErrorType.connectionTimeout) {
+        throw Exception('Connection timeout. Please try again.');
+      } else if (error.type == dio.DioErrorType.receiveTimeout) {
+        throw Exception('Receive timeout. Please try again.');
+      } else if (error.response != null) {
+        // Check for 500 status code
+        if (error.response?.statusCode == 500) {
+          final errorMessage = error.response?.data['message'] ?? 'Internal Server Error. Please try again later.';
+          throw Exception(errorMessage);
+        } else {
+          final errorMessage = error.response?.data['message'] ?? 'An error occurred';
+          throw Exception(errorMessage);
+        }
+      } else {
+        throw Exception('Unexpected error: ${error.message}');
+      }
+    } else {
+      throw Exception('Unexpected error: $error');
+    }
+  }
+
   Future<AuthResponse> login(
       {required Map<String, String> headers, required Map requestData}) async {
     isNetworkConnected();
@@ -581,12 +610,15 @@ class ApiClient extends GetConnect {
       debugPrint('Save destination #####Request URL: ${response.requestOptions.uri}');
       debugPrint('Save destination  #####Response status: ${response.statusCode}');
       debugPrint('Save destination #####Response data: ${response.data}');
-      if (_isSuccessCall(response)) {
-        return SaveDestinationResponse.fromJson(response.data);
-      } else {
-        return SaveDestinationResponse.fromJson(response.data);
-      }
+      // if (_isSuccessCall(response)) {
+      //   return SaveDestinationResponse.fromJson(response.data);
+      // } else {
+      //   return SaveDestinationResponse.fromJson(response.data);
+      // }
+      _handleResponse(response);
+      return SaveDestinationResponse.fromJson(response.data);
     } catch (error, stackTrace) {
+      _handleError(error);
       Logger.log(
         error,
         stackTrace: stackTrace,

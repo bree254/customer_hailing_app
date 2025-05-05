@@ -19,7 +19,7 @@ class EmergencyServicesScreen extends StatelessWidget {
         ),
         leading: IconButton(
             onPressed: (){
-              Get.back();
+              Navigator.pop(context);
             },
             icon: const Icon(
                 Icons.arrow_back_outlined,

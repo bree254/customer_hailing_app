@@ -29,7 +29,7 @@ class _TripSummaryScreenState extends State<TripSummaryScreen> {
                   alignment: Alignment.topRight,
                   child: GestureDetector(
                     onTap: () {
-                      Get.back();
+                      Navigator.pop(context);
                     },
                     child: const Icon(Icons.close),
                   ),
@@ -251,7 +251,7 @@ class _TripSummaryScreenState extends State<TripSummaryScreen> {
                                   alignment: Alignment.topRight,
                                   child: GestureDetector(
                                     onTap: () {
-                                      Get.back();
+                                      Navigator.pop(context);
                                     },
                                     child: const Icon(Icons.close),
                                   ),

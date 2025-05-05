@@ -214,7 +214,7 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
                         )),
                     suffixIcon: GestureDetector(
                       onTap: () {
-                        Get.back();
+                      Navigator.pop(context);
                       },
                       child: const Icon(
                         Icons.add_circle_outlined,

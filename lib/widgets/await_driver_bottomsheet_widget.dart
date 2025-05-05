@@ -113,7 +113,7 @@ class AwaitDriverBottomsheetWidget extends StatelessWidget {
                           width: double.infinity,
                           child: CustomElevatedButton(
                             onPressed: () {
-                               Get.back();
+                              Navigator.pop(context);
                             },
                             buttonStyle: ElevatedButton.styleFrom(
                               backgroundColor: countryTextFieldColor,
@@ -355,7 +355,7 @@ class AwaitDriverBottomsheetWidget extends StatelessWidget {
                           width: double.infinity,
                           child: CustomElevatedButton(
                             onPressed: () {
-                               Get.back();
+                               Navigator.pop(context);
                             },
                             buttonStyle: ElevatedButton.styleFrom(
                               backgroundColor: countryTextFieldColor,

@@ -695,6 +695,7 @@ class RideServiceController extends GetxController {
 
       if (response != null) {
         print('Destination  saved  message}');
+        Get.snackbar('Success', 'Destination saved successfully');
         Get.offNamed(AppRoutes.savedLocation);
       } else {
         print('Failed to save destination }');
@@ -702,6 +703,7 @@ class RideServiceController extends GetxController {
     } catch (e) {
       print('schedule Trip Error: ${e.toString()}');
     }
+
   }
 
   Future<void> getFrequentDestinations(String customerId) async {

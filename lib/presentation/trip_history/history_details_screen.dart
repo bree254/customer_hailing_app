@@ -60,7 +60,7 @@ class _HistoryDetailsScreenState extends State<HistoryDetailsScreen> {
         iconTheme: const IconThemeData(color: Colors.black),
         leading: IconButton(
           onPressed: () {
-            Get.back();
+            Navigator.pop(context);
           },
           icon: const Icon(
             Icons.arrow_back,
@@ -249,7 +249,7 @@ class _HistoryDetailsScreenState extends State<HistoryDetailsScreen> {
                     const SizedBox(height: 32,),
                     CustomElevatedButton(
                       onPressed: (){
-                        Get.back();
+                        Navigator.pop(context);
                       },
                       text: 'Rebook',
                       buttonStyle: ElevatedButton.styleFrom(
@@ -265,7 +265,7 @@ class _HistoryDetailsScreenState extends State<HistoryDetailsScreen> {
                       padding: const EdgeInsets.only(bottom: 10.0),
                       child: CustomElevatedButton(
                         onPressed: (){
-                          Get.back();
+                          Navigator.pop(context);
                         },
                         text: 'Download Receipt',
                         buttonStyle: ElevatedButton.styleFrom(

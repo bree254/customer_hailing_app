@@ -12,7 +12,7 @@ class CallController extends GetxController {
 
   void endCall() {
     callStatus.value = 'Ended';
-    Get.back();
+   Get.back();
   }
 
   void rejectCall() {

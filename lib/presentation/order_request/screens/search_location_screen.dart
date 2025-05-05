@@ -75,7 +75,7 @@ class _SearchLocationScreenState extends State<SearchLocationScreen> {
         iconTheme: const IconThemeData(color: Colors.black),
         leading: IconButton(
           onPressed: () {
-            Get.back();
+            Navigator.pop(context);
           },
           icon: const Icon(
             CupertinoIcons.multiply,

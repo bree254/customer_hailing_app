@@ -98,7 +98,7 @@ class _SearchScreenState extends State<SearchScreen> {
         iconTheme: const IconThemeData(color: Colors.black),
         leading: IconButton(
           onPressed: () {
-            Get.back();
+            Navigator.pop(context);
           },
           icon: const Icon(
             Icons.arrow_back,
@@ -483,7 +483,7 @@ class _SearchScreenState extends State<SearchScreen> {
 //                   iconTheme: const IconThemeData(color: Colors.black),
 //                   leading: IconButton(
 //                     onPressed: () {
-//                       Get.back();
+//                       Navigator.pop(context);
 //                     },
 //                     icon: const Icon(
 //                       Icons.arrow_back,
