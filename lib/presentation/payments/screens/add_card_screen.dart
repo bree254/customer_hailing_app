@@ -29,9 +29,9 @@ class _AddCardScreenState extends State<AddCardScreen> {
 
   void _updateButtonState() {
     setState(() {
-      _isButtonEnabled = cardController.text.isNotEmpty;
-      _isButtonEnabled = expiryDateController.text.isNotEmpty;
-      _isButtonEnabled = cvvController.text.isNotEmpty;
+      _isButtonEnabled = cardController.text.isNotEmpty &&
+          expiryDateController.text.isNotEmpty &&
+          cvvController.text.isNotEmpty;
     });
   }
 
@@ -71,6 +71,7 @@ class _AddCardScreenState extends State<AddCardScreen> {
         padding: const EdgeInsets.symmetric(vertical: 32,horizontal: 16),
         child: Form(
             key: _formKey,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -95,10 +96,7 @@ class _AddCardScreenState extends State<AddCardScreen> {
                   autofocus: false,
                   contentPadding: EdgeInsets.symmetric(vertical: 15.v, horizontal: 10.h),
                   validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Card Number is required';
-                    }
-                    return null;
+                    return validateCardNumber(value);
                   },
                   borderDecoration: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.h),
@@ -143,10 +141,7 @@ class _AddCardScreenState extends State<AddCardScreen> {
 
                               contentPadding: EdgeInsets.symmetric(vertical: 15.v, horizontal: 10.h),
                               validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'Date is required';
-                                }
-                                return null;
+                                return validateExpiryDate(value);
                               },
                               borderDecoration: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10.h),
@@ -185,12 +180,10 @@ class _AddCardScreenState extends State<AddCardScreen> {
                               autofocus: false,
                               width: 164,
                               contentPadding: EdgeInsets.symmetric(vertical: 15.v, horizontal: 10.h),
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'CVV is required';
-                                }
-                                return null;
-                              },
+                              validator: validateCVV,
+                              // validator: (value) {
+                              //   return validateCvv(value);
+                              // },
                               borderDecoration: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10.h),
                                 borderSide: const BorderSide(color: Colors.transparent, width: 0),

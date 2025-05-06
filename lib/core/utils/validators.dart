@@ -64,4 +64,52 @@ bool isValidEmail(
   return isInputStringValid;
 }
 
+//Card Validators
+String ? cardNumberValidator(String value) {
+  final regex = RegExp(r'^[0-9]{16}$');
+  if (!regex.hasMatch(value)) {
+    return 'Enter a valid card number (16 digits)';
+  }
+  return null;
+}
+
+String? validateCardNumber(String? value) {
+  if (value == null || value.isEmpty) {
+    return 'Card number is required.';
+  } else if (!RegExp(r'^\d+$').hasMatch(value)) {
+    return 'Card number must contain only digits.';
+  } else if (value.length != 16) {
+    return 'Card number must be 16 digits long.';
+  }
+  return null;
+}
+
+String? validateExpiryDate(String? value) {
+  if (value == null || value.isEmpty) {
+    return 'Expiry date is required.';
+  } else if (!RegExp(r'^(0[1-9]|1[0-2])/\d{2}$').hasMatch(value)) {
+    return 'Expiry date must be in MM/YY format.';
+  }
+  return null;
+}
+
+String? validateCvv(String? value) {
+  if (value == null || value.isEmpty) {
+    return 'CVV is required.';
+  } else if (!RegExp(r'^\d{3}$').hasMatch(value)) {
+    return 'CVV must be 3 digits long.';
+  }
+  return null;
+}
+
+String? validateCVV(String? value) {
+  if (value == null || value.isEmpty) {
+    return 'CVV is required.';
+  } else if (!RegExp(r'^\d+$').hasMatch(value)) {
+    return 'CVV must contain only digits.';
+  } else if (value.length < 3 || value.length > 4) {
+    return 'CVV must be 3 or 4 digits long.';
+  }
+  return null;
+}
 

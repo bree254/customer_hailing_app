@@ -36,7 +36,8 @@ class CustomTextFormField extends StatefulWidget {
         this.validator,
         this.margin,
         this.maxLength,
-        this.onChanged, this.readOnly,
+        this.onChanged,
+        this.readOnly,
       });
 
   final Alignment? alignment;
@@ -113,7 +114,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
   FocusNode? _focusNode;
   bool _isFocused = false;
   bool _isNotEmpty = false;
-
+  bool _hasError = false;
   @override
   void initState() {
     super.initState();
@@ -128,13 +129,24 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
     if (_focusNode?.hasFocus != _isFocused) {
       setState(() {
         _isFocused = _focusNode!.hasFocus;
+
+        // Validate when losing focus
+        if (!_isFocused) _validateField();
       });
     }
   }
 
+
   void _handleTextChange() {
+    // Validate on each change for real-time feedback
+    _validateField();
+    widget.onChanged?.call(widget.controller?.text ?? '');
+  }
+
+  void _validateField() {
+    final isValid = widget.validator?.call(widget.controller?.text ?? '') == null;
     setState(() {
-      _isNotEmpty = widget.controller?.text.isNotEmpty ?? false;
+      _hasError = !isValid;
     });
   }
 
@@ -188,12 +200,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
           keyboardType: widget.textInputType,
           maxLines: widget.maxLines ?? 1,
           decoration: decoration,
-          validator: (value) {
-            if (_isNotEmpty) {
-              return null;
-            }
-            return widget.validator?.call(value);
-          },
+          validator: widget.validator,
           maxLength: widget.maxLength,
           readOnly: widget.readOnly ?? false,
         ),
