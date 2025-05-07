@@ -338,7 +338,7 @@ class AwaitDriverBottomsheetWidget extends StatelessWidget {
                           child:  CustomElevatedButton(
                             onPressed: () {
                               rideServiceController.canceltrip();
-                              Get.toNamed(AppRoutes.home);
+                             Get.offNamed(AppRoutes.home);
                             },
                             buttonStyle: ElevatedButton.styleFrom(
                               backgroundColor: cancelButton,

@@ -75,19 +75,19 @@ class EmergencyServicesScreen extends StatelessWidget {
                       ),
                     ),
 
-                    // Center(
-                    //   child: IconButton(
-                    //       onPressed: () async {
-                    //         await controller.raiseSos();
-                    //         const emergencyNumber = 'tel:999';
-                    //         if (await canLaunch(emergencyNumber)) {
-                    //           await launch(emergencyNumber);
-                    //         } else {
-                    //           throw 'Could not launch $emergencyNumber';
-                    //         }
-                    //       },
-                    //       icon: const Icon(Icons.phone,size: 24,color: redColor,)),
-                    // ),
+                    Center(
+                      child: IconButton(
+                          onPressed: () async {
+                            await controller.raiseSos();
+                            const emergencyNumber = 'tel:999';
+                            if (await canLaunch(emergencyNumber)) {
+                              await launch(emergencyNumber);
+                            } else {
+                              throw 'Could not launch $emergencyNumber';
+                            }
+                          },
+                          icon: const Icon(Icons.phone,size: 24,color: redColor,)),
+                    ),
                   ],
                 )
             ),

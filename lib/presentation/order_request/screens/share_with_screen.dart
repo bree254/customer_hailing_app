@@ -11,6 +11,7 @@ import 'package:customer_hailing/core/app_export.dart';
 
   import '../controller/map_controller.dart';
   import '../controller/ride_service_controller.dart';
+import 'map_screen.dart';
 
   class ShareWithScreen extends StatefulWidget {
     const ShareWithScreen({super.key});
@@ -99,25 +100,26 @@ import 'package:customer_hailing/core/app_export.dart';
         drawer: DrawerWidget(),
         body: Stack(
           children: [
-            Obx(() => mapController.center.value == null
-                ? Image.asset(
-              'assets/images/map.png',
-              fit: BoxFit.cover,
-              width: double.infinity,
-              height: double.infinity,
-            )
-                : SizedBox(
-              height: double.infinity,
-              child: GoogleMap(
-                onMapCreated: mapController.onMapCreated,
-                initialCameraPosition: CameraPosition(
-                  target: mapController.center.value!,
-                  zoom: 16.0,
-                ),
-                markers: mapController.markers,
-                polylines: mapController.polylines,
-              ),
-            )),
+            MapScreen(),
+            // Obx(() => mapController.center.value == null
+            //     ? Image.asset(
+            //   'assets/images/map.png',
+            //   fit: BoxFit.cover,
+            //   width: double.infinity,
+            //   height: double.infinity,
+            // )
+            //     : SizedBox(
+            //   height: double.infinity,
+            //   child: GoogleMap(
+            //     onMapCreated: mapController.onMapCreated,
+            //     initialCameraPosition: CameraPosition(
+            //       target: mapController.center.value!,
+            //       zoom: 16.0,
+            //     ),
+            //     markers: mapController.markers,
+            //     polylines: mapController.polylines,
+            //   ),
+            // )),
             DraggableScrollableSheet(
               initialChildSize: 0.3,
               minChildSize: 0.3,

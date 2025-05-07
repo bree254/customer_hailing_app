@@ -1,3 +1,4 @@
+import 'package:customer_hailing/presentation/order_request/screens/map_screen.dart';
 import 'package:customer_hailing/widgets/destination_bottomsheet_widget.dart';
 import 'package:customer_hailing/widgets/drawer_widget.dart';
 import 'package:customer_hailing/widgets/menu_icon_widget.dart';
@@ -17,25 +18,7 @@ class HomeScreen extends StatelessWidget {
       drawer:  DrawerWidget(),
       body: Stack(
         children: [
-          Obx(() => _mapController.center.value == null
-              ? Image.asset(
-            'assets/images/map.png', // Path to your cached map image
-            fit: BoxFit.cover,
-            width: double.infinity,
-            height: double.infinity,
-          )
-              : SizedBox(
-            height: double.infinity,
-            child: GoogleMap(
-              onMapCreated: _mapController.onMapCreated,
-              initialCameraPosition: CameraPosition(
-                target: _mapController.center.value!,
-                zoom: 15.0,
-              ),
-              //markers: _mapController.markers,
-              markers: Set<Marker>.from(_mapController.markers),
-            ),
-          )),
+          MapScreen(),
           Obx(() => DestinationBottomSheet(currentAddress: _mapController.currentAddress.value)),
           Positioned(
             top: 40,

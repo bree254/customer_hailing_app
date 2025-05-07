@@ -246,7 +246,7 @@ class RideServiceController extends GetxController {
     final status = tripDetails.value.tripStatus;
 
     if (status == 'ACCEPTED') {
-      Get.toNamed(AppRoutes.tripStatus);
+     Get.toNamed(AppRoutes.tripStatus);
     }
   }
 
@@ -375,7 +375,7 @@ class RideServiceController extends GetxController {
 
       if ( response.status == "200") {
         print( 'trip rated : ${response.message}');
-        Get.toNamed(AppRoutes.home);
+       Get.toNamed(AppRoutes.home);
 
       }
     } catch (e) {
@@ -608,7 +608,7 @@ class RideServiceController extends GetxController {
 
       if ( response.status == "200") {
         print( 'trip cancelled : ${response.message}');
-        Get.toNamed(AppRoutes.home);
+       Get.toNamed(AppRoutes.home);
 
       }
     } catch (e) {
@@ -648,7 +648,7 @@ class RideServiceController extends GetxController {
 
       if ( response.status == "200") {
         print( 'trip cancelled : ${response.message}');
-        Get.toNamed(AppRoutes.home);
+       Get.toNamed(AppRoutes.home);
 
       }
     } catch (e) {

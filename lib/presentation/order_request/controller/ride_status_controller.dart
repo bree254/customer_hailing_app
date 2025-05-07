@@ -18,7 +18,7 @@
 //         bool driverFound = _checkForDriver();
 //
 //         if (driverFound) {
-//           Get.toNamed(AppRoutes.tripStatus); // Navigate to the ride confirmed screen
+//          Get.toNamed(AppRoutes.tripStatus); // Navigate to the ride confirmed screen
 //         } else {
 //           updateStatus(RideStatus.lookingForAnother);
 //         }

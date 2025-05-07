@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../controller/map_controller.dart';
+import 'map_screen.dart';
 class AwaitDriverScreen extends StatefulWidget {
   const AwaitDriverScreen({super.key});
 
@@ -21,25 +22,26 @@ class _AwaitDriverScreenState extends State<AwaitDriverScreen> {
         drawer:  DrawerWidget(),
       body:Stack(
         children :[
-          Obx(() => mapController.center.value == null
-              ? Image.asset(
-            'assets/images/map.png',
-            fit: BoxFit.cover,
-            width: double.infinity,
-            height: double.infinity,
-          )
-              : SizedBox(
-            height: double.infinity,
-            child: GoogleMap(
-              onMapCreated: mapController.onMapCreated,
-              initialCameraPosition: CameraPosition(
-                target: mapController.center.value!,
-                zoom: 16.0,
-              ),
-              markers: mapController.markers,
-              polylines: mapController.polylines,
-            ),
-          )),
+          MapScreen(),
+          // Obx(() => mapController.center.value == null
+          //     ? Image.asset(
+          //   'assets/images/map.png',
+          //   fit: BoxFit.cover,
+          //   width: double.infinity,
+          //   height: double.infinity,
+          // )
+          //     : SizedBox(
+          //   height: double.infinity,
+          //   child: GoogleMap(
+          //     onMapCreated: mapController.onMapCreated,
+          //     initialCameraPosition: CameraPosition(
+          //       target: mapController.center.value!,
+          //       zoom: 16.0,
+          //     ),
+          //     markers: mapController.markers,
+          //     polylines: mapController.polylines,
+          //   ),
+          // )),
            Positioned(
             top: 40,
             left: 20,

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../controller/map_controller.dart';
+import 'map_screen.dart';
 
 class ShareTripDetailsScreen extends StatefulWidget {
   const ShareTripDetailsScreen({super.key});
@@ -22,25 +23,26 @@ class _ShareTripDetailsScreenState extends State<ShareTripDetailsScreen> {
         drawer:  DrawerWidget(),
         body: Stack(
       children: [
-        Obx(() => mapController.center.value == null
-            ? Image.asset(
-          'assets/images/map.png',
-          fit: BoxFit.cover,
-          width: double.infinity,
-          height: double.infinity,
-        )
-            : SizedBox(
-          height: double.infinity,
-          child: GoogleMap(
-            onMapCreated: mapController.onMapCreated,
-            initialCameraPosition: CameraPosition(
-              target: mapController.center.value!,
-              zoom: 16.0,
-            ),
-            markers: mapController.markers,
-            polylines: mapController.polylines,
-          ),
-        )),
+        MapScreen(),
+        // Obx(() => mapController.center.value == null
+        //     ? Image.asset(
+        //   'assets/images/map.png',
+        //   fit: BoxFit.cover,
+        //   width: double.infinity,
+        //   height: double.infinity,
+        // )
+        //     : SizedBox(
+        //   height: double.infinity,
+        //   child: GoogleMap(
+        //     onMapCreated: mapController.onMapCreated,
+        //     initialCameraPosition: CameraPosition(
+        //       target: mapController.center.value!,
+        //       zoom: 16.0,
+        //     ),
+        //     markers: mapController.markers,
+        //     polylines: mapController.polylines,
+        //   ),
+        // )),
         DraggableScrollableSheet(
           initialChildSize: 0.3,
           minChildSize: 0.2,

@@ -13,6 +13,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../../core/constants/constants.dart';
 import '../../../data/models/ride_requests/locations_update_response.dart';
 import '../controller/trip_status_controller.dart';
+import 'map_screen.dart';
 
 class TripStatusScreen extends StatefulWidget {
   const TripStatusScreen({super.key});
@@ -82,6 +83,7 @@ class _TripStatusScreenState extends State<TripStatusScreen> {
         mapController.updateLatLngPolylines(pickupLocation.latitude!, pickupLocation.longitude!, newLocation.latitude, newLocation.longitude);
         break;
       case 'IN_PROGRESS':
+        print('Updating polyline IN_PROGRESS : Driver at ${newLocation.latitude}, ${newLocation.longitude}');
         mapController.updateLatLngPolylines(newLocation.latitude, newLocation.longitude, destinationLocation.latitude!, destinationLocation.longitude!);
         break;
       case 'COMPLETED':
@@ -119,25 +121,26 @@ class _TripStatusScreenState extends State<TripStatusScreen> {
       drawer: DrawerWidget(),
       body: Stack(
         children: [
-          Obx(() => mapController.center.value == null
-              ? Image.asset(
-            'assets/images/map.png',
-            fit: BoxFit.cover,
-            width: double.infinity,
-            height: double.infinity,
-          )
-              : SizedBox(
-            height: double.infinity,
-            child: GoogleMap(
-              onMapCreated: mapController.onMapCreated,
-              initialCameraPosition: CameraPosition(
-                target: mapController.center.value!,
-                zoom: 16.0,
-              ),
-              markers: mapController.markers,
-              polylines: mapController.polylines,
-            ),
-          )),
+          MapScreen(),
+          // Obx(() => mapController.center.value == null
+          //     ? Image.asset(
+          //   'assets/images/map.png',
+          //   fit: BoxFit.cover,
+          //   width: double.infinity,
+          //   height: double.infinity,
+          // )
+          //     : SizedBox(
+          //   height: double.infinity,
+          //   child: GoogleMap(
+          //     onMapCreated: mapController.onMapCreated,
+          //     initialCameraPosition: CameraPosition(
+          //       target: mapController.center.value!,
+          //       zoom: 16.0,
+          //     ),
+          //     markers: mapController.markers,
+          //     polylines: mapController.polylines,
+          //   ),
+          // )),
           TripStatusBottomSheet(),
           Positioned(
             top: 40,

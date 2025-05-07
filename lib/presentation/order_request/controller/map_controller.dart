@@ -1,13 +1,10 @@
 import 'dart:async';
-import 'dart:math';
 import 'dart:typed_data';
 import 'package:customer_hailing/presentation/order_request/controller/ride_service_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:get/get_connect/http/src/response/response.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart' as polyline;
@@ -55,9 +52,6 @@ class MapController extends GetxController {
 
   var locationUpdates = LocationsUpdatesResponse().obs;
 
-  Timer? _animationTimer;
-  int _currentIndex = 0;
-  List<LatLng> _interpolatedPoints = [];
   StreamSubscription<Position>? positionStreamSubscription;
 
   @override
@@ -75,13 +69,13 @@ class MapController extends GetxController {
     // webSocketService.connect();
 
     getUserLocation();
-    //updatePolyline;
+    updatePolyline;
+
     _loadCustomMarker();
     //getDriverLocations();
 
     // Start the periodic update
     _startDriverLocations();
-    //ever(drivers, (_) => updateDriverMarkers());// Auto-update markers when drivers list changes
 
   }
 
@@ -411,7 +405,7 @@ class MapController extends GetxController {
       Marker(
         markerId: const MarkerId('center'),
         position: position,
-        icon: customMarker!,
+        icon: destinationMarker!,
         infoWindow: const InfoWindow(title: 'Your Location'),
       ),
     );
@@ -423,14 +417,14 @@ class MapController extends GetxController {
       Marker(
         markerId: const MarkerId('destination'),
         position: position,
-        icon: destinationMarker!,
+        icon: customMarker!,
         infoWindow: const InfoWindow(title: 'Destination'),
       ),
     );
     update();
   }
 
-  // Update the polyline on the map
+  // Update the polyline on the map when the current location used is the one one from the geolocator
   void updatePolyline(String destinationAddress) async {
     LatLng? destinationCoords = await getCoordinatesFromAddress(destinationAddress);
 
@@ -462,13 +456,22 @@ class MapController extends GetxController {
           ),
         );
 
+        // Add destination marker
+        markers.add(
+          Marker(
+            markerId: const MarkerId('destination'),
+            position: LatLng(destinationCoords.latitude, destinationCoords.longitude),
+            icon: customMarker!,
+          ),
+        );
+        //addDestinationMarker(destinationCoords);
+
         // Start the animation
         //startPolylineAnimation(polylineCoordinates);
-
       }
     }
   }
-
+//update polyline method using coordinates
   void updateLatLngPolylines(double originLat, double originLng, double destLat, double destLng) async {
     LatLng originCoords = LatLng(originLat, originLng);
     LatLng destinationCoords = LatLng(destLat, destLng);
@@ -499,13 +502,23 @@ class MapController extends GetxController {
         ),
       );
 
-      addDestinationMarker(destinationCoords);
+      // Add destination marker
+      markers.add(
+        Marker(
+          markerId: const MarkerId('destination'),
+          position: LatLng(destinationCoords.latitude, destinationCoords.longitude),
+          icon: customMarker!,
+        ),
+      );
+      //addDestinationMarker(destinationCoords);
       // Force refresh the observable set
       polylines.refresh();
       update(); // Ensure this is called to notify GetX of the state change
       print('Polylines ltling  updated: ${polylines.length}');
     }
   }
+
+  //update polyline method when the destination and origin address keep changing
 
   void updatePolylines(String originAddress, String destinationAddress) async {
     LatLng? originCoords = await getCoordinatesFromAddress(originAddress);
@@ -541,74 +554,18 @@ class MapController extends GetxController {
             points: polylineCoordinates,
           ),
         );
-
-        // Start the animation
-        //startPolylineAnimation(polylineCoordinates);
-
-        addDestinationMarker(destinationCoords);
-        update(); // Update the view
+        // Add destination marker
+        markers.add(
+          Marker(
+            markerId: const MarkerId('destination'),
+            position: LatLng(destinationCoords.latitude, destinationCoords.longitude),
+            icon: customMarker!,
+          ),
+        );
+        //addDestinationMarker(destinationCoords);
+        update();
       }
     }
-  }
-
-  List<LatLng> _interpolatePolyline(List<LatLng> polylineCoordinates, double stepDistance) {
-    List<LatLng> interpolatedPoints = [];
-
-    for (int i = 0; i < polylineCoordinates.length - 1; i++) {
-      LatLng start = polylineCoordinates[i];
-      LatLng end = polylineCoordinates[i + 1];
-
-      double distance = _calculateDistance(start, end);
-      int steps = (distance / stepDistance).floor();
-
-      for (int j = 0; j < steps; j++) {
-        double fraction = j / steps;
-        double lat = start.latitude + (end.latitude - start.latitude) * fraction;
-        double lng = start.longitude + (end.longitude - start.longitude) * fraction;
-        interpolatedPoints.add(LatLng(lat, lng));
-      }
-    }
-
-    return interpolatedPoints;
-  }
-
-  double _calculateDistance(LatLng start, LatLng end) {
-    const double earthRadius = 6371000; // in meters
-    double dLat = _toRadians(end.latitude - start.latitude);
-    double dLng = _toRadians(end.longitude - start.longitude);
-    double a = sin(dLat / 2) * sin(dLat / 2) +
-        cos(_toRadians(start.latitude)) *
-            cos(_toRadians(end.latitude)) *
-            sin(dLng / 2) *
-            sin(dLng / 2);
-    double c = 2 * atan2(sqrt(a), sqrt(1 - a));
-    return earthRadius * c;
-  }
-
-  double _toRadians(double degrees) {
-    return degrees * (pi / 180);
-  }
-
-  void startPolylineAnimation(List<LatLng> polylineCoordinates) {
-    // Interpolate the polyline points
-    _interpolatedPoints = _interpolatePolyline(polylineCoordinates, 10); // 10 meters between steps
-
-    // Start the animation timer
-    _currentIndex = 0;
-    _animationTimer?.cancel();
-    _animationTimer = Timer.periodic(const Duration(milliseconds: 1000), (timer) {
-      if (_currentIndex < _interpolatedPoints.length) {
-        // Update the marker's position
-        updateMapWithLocation(LocationsUpdatesResponse(
-          latitude: _interpolatedPoints[_currentIndex].latitude,
-          longitude: _interpolatedPoints[_currentIndex].longitude,
-        ));
-        _currentIndex++;
-      } else {
-        // Stop the timer when the animation is complete
-        timer.cancel();
-      }
-    });
   }
 
 }

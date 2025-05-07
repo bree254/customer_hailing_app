@@ -3,6 +3,7 @@ import 'package:customer_hailing/core/utils/colors.dart';
 import 'package:customer_hailing/presentation/order_request/controller/ride_service_controller.dart';
 import 'package:customer_hailing/presentation/order_request/controller/ride_status_controller.dart';
 import 'package:customer_hailing/presentation/order_request/models/data.dart';
+import 'package:customer_hailing/presentation/order_request/screens/map_screen.dart';
 import 'package:customer_hailing/routes/routes.dart';
 import 'package:customer_hailing/widgets/custom_elevated_button.dart';
 import 'package:customer_hailing/widgets/drawer_widget.dart';
@@ -149,34 +150,29 @@ class _SelectRideScreenState extends State<SelectRideScreen> {
       drawer:  DrawerWidget(),
       body: Stack(
         children: [
-          Obx(() => mapController.center.value == null
-              ? Image.asset(
-            'assets/images/map.png',
-            fit: BoxFit.cover,
-            width: double.infinity,
-            height: double.infinity,
-          )
-              : SizedBox(
-            height: double.infinity,
-            child: GoogleMap(
-              onMapCreated: mapController.onMapCreated,
-              initialCameraPosition: CameraPosition(
-                target: mapController.center.value!,
-                zoom: 16.0,
-              ),
-              markers: mapController.markers,
-              // markers: {
-              //   ...mapController.markers,
-              //   ...rideServiceController.availableRides.map((ride) => Marker(
-              //     markerId: MarkerId(ride.driverId ?? ''),
-              //     position: LatLng(ride.latitude ?? 0, ride.longitude ?? 0),
-              //     icon: _customIcon ?? BitmapDescriptor.defaultMarker,
-              //    // icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueYellow),
-              //   )),
-              // },
-              polylines: Set<Polyline>.of(mapController.polylines),
-            ),
-          )),
+          MapScreen(
+            showMarkers: true,
+            showPolylines: true,
+          ),
+          // Obx(() => mapController.center.value == null
+          //     ? Image.asset(
+          //   'assets/images/map.png',
+          //   fit: BoxFit.cover,
+          //   width: double.infinity,
+          //   height: double.infinity,
+          // )
+          //     : SizedBox(
+          //   height: double.infinity,
+          //   child: GoogleMap(
+          //     onMapCreated: mapController.onMapCreated,
+          //     initialCameraPosition: CameraPosition(
+          //       target: mapController.center.value!,
+          //       zoom: 16.0,
+          //     ),
+          //     markers: mapController.markers,
+          //     polylines: Set<Polyline>.of(mapController.polylines),
+          //   ),
+          // )),
           Positioned(
             top: 50,
             left: 16,
