@@ -71,26 +71,41 @@ class Driver {
   String? firstName;
   @JsonKey(name: "lastName")
   String? lastName;
+  @JsonKey(name: "profileUrl")
+  dynamic profileUrl;
   @JsonKey(name: "phoneNumber")
   String? phoneNumber;
   @JsonKey(name: "rideCategory")
   dynamic rideCategory;
+  @JsonKey(name: "rideCategoryIcon")
+  dynamic rideCategoryIcon;
   @JsonKey(name: "makeAndModel")
   String? makeAndModel;
   @JsonKey(name: "numberPlate")
   String? numberPlate;
+  @JsonKey(name: "fleetId")
+  dynamic fleetId;
   @JsonKey(name: "rating")
-  int? rating;
+  double? rating;
+  @JsonKey(name: "firebaseToken")
+  String? firebaseToken;
+  @JsonKey(name: "platform")
+  String? platform;
 
   Driver({
     this.id,
     this.firstName,
     this.lastName,
+    this.profileUrl,
     this.phoneNumber,
     this.rideCategory,
+    this.rideCategoryIcon,
     this.makeAndModel,
     this.numberPlate,
+    this.fleetId,
     this.rating,
+    this.firebaseToken,
+    this.platform,
   });
 
   factory Driver.fromJson(Map<String, dynamic> json) => _$DriverFromJson(json);

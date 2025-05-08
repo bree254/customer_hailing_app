@@ -40,8 +40,6 @@ class RideServiceController extends GetxController {
   RxList<FareAmount> fareAmounts = <FareAmount>[].obs;
   RxList<AvailableRide> availableRides = <AvailableRide>[].obs;
 
- // late final Rx<Data> data = Data().obs;
-
   RxList<DriverLocationsResponse> drivers = <DriverLocationsResponse>[].obs;
 
   var tripDetails = TripDetailsResponse().obs;
@@ -320,14 +318,11 @@ class RideServiceController extends GetxController {
 
   Future<void> getTripHistoryDetails(String tripId) async {
     try {
-      //final authController = Get.find<AuthController>();
 
       Map<String, String> headers = {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $accessToken',
       };
-
-      //final driverId = authController.driver.value.id.toString();
 
       // Log the request URL and parameters
       print('Trip history details  with tripId: $tripId');
@@ -340,8 +335,9 @@ class RideServiceController extends GetxController {
       );
 
 // Ensure the history variable is of type TripHistoryDetailsResponse
-      historyDetails.value = response;
-      print('Trip history details fetched successfully: ${response.toJson()}');
+      if (response.status == "200") {
+        historyDetails.value = response;
+      }
     } catch (e) {
       // Handle any errors
       print('Error fetching Trip history details: $e');

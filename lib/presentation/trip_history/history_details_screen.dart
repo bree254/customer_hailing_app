@@ -15,13 +15,10 @@ class HistoryDetailsScreen extends StatefulWidget {
 
 class _HistoryDetailsScreenState extends State<HistoryDetailsScreen> {
   final RideServiceController controller = Get.put(RideServiceController(rideServiceRepository: RideServiceRepository()));
-  late final _ratingController;
-  late double _rating;
+  late final ratingController;
+  late double rating;
 
-  final double _userRating = 3.0;
-  final int _ratingBarMode = 1;
   final double _initialRating = 2.0;
-  final bool _isRTLMode = false;
   final bool _isVertical = false;
 
   IconData? _selectedIcon;
@@ -29,8 +26,12 @@ class _HistoryDetailsScreenState extends State<HistoryDetailsScreen> {
   @override
   void initState() {
     super.initState();
-    _ratingController = TextEditingController(text: '3.0');
-    _rating = _initialRating;
+    ratingController = TextEditingController(text: '3.0');
+    rating = _initialRating;
+
+    final String tripId = Get.arguments as String;
+    print('history details trip id $tripId');
+    controller.getTripHistoryDetails(tripId);
   }
 
   String extractDate(DateTime dateTime) {
@@ -45,9 +46,41 @@ class _HistoryDetailsScreenState extends State<HistoryDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if (controller.historyDetails.value.data == null || controller.historyDetails.value.data!.isEmpty) {
+      return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0,
+          title: Text(
+            'History',
+            style: AppTextStyles.largeAppBarText,
+          ),
+          iconTheme: const IconThemeData(color: Colors.black),
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(
+              Icons.arrow_back,
+              size: 17,
+              color: blackTextColor,
+            ),
+          ),
+        ),
+        body: Center(
+          child: Text(
+            'No trip history details available.',
+            style: TextStyle(fontSize: 16, color: Colors.grey),
+          ),
+        ),
+      );
+    }
     final historyDetails = controller.historyDetails.value.data!.first;
+    print('#########history details ######### $historyDetails');
     final String date = extractDate(historyDetails.startTime!);
     final num rating = historyDetails.driver?.rating ?? 0.0;
+
+    String initials = '${controller.historyDetails.value.data!.first.driver!.firstName?[0]}${controller.historyDetails.value.data!.first.driver!.lastName?[0]}';
 
     return Scaffold(
       appBar: AppBar(
@@ -78,7 +111,6 @@ class _HistoryDetailsScreenState extends State<HistoryDetailsScreen> {
                       child:
                       Text(
                         date,
-                        //'5th, August, 2024',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: Color(0xFF767676),
@@ -105,8 +137,20 @@ class _HistoryDetailsScreenState extends State<HistoryDetailsScreen> {
                     const SizedBox(height: 31,),
                     ListTile(
                       leading: CircleAvatar(
-                        backgroundColor: Colors.transparent,
-                        child: Image.asset('assets/images/driver.png'),
+                        backgroundColor: primaryColor,
+                        backgroundImage: controller.historyDetails.value.data!.first.driver!.profileUrl != null
+                            ? NetworkImage('${controller.historyDetails.value.data!.first.driver!.profileUrl}')
+                            : null,
+                        child: controller.historyDetails.value.data!.first.driver!.profileUrl == null
+                            ? Text(
+                          initials,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )
+                            : null,
                       ),
                       title:  Text(
                         'Your trip with',
@@ -247,19 +291,19 @@ class _HistoryDetailsScreenState extends State<HistoryDetailsScreen> {
                         )
                     ),
                     const SizedBox(height: 32,),
-                    CustomElevatedButton(
-                      onPressed: (){
-                        Navigator.pop(context);
-                      },
-                      text: 'Rebook',
-                      buttonStyle: ElevatedButton.styleFrom(
-                        backgroundColor: primaryColor,
-                        elevation: 0,
-                      ),
-                      buttonTextStyle: AppTextStyles.bodySmallPrimary.copyWith(
-                        color: Colors.white,
-                      ),
-                    ),
+                    // CustomElevatedButton(
+                    //   onPressed: (){
+                    //     Navigator.pop(context);
+                    //   },
+                    //   text: 'Rebook',
+                    //   buttonStyle: ElevatedButton.styleFrom(
+                    //     backgroundColor: primaryColor,
+                    //     elevation: 0,
+                    //   ),
+                    //   buttonTextStyle: AppTextStyles.bodySmallPrimary.copyWith(
+                    //     color: Colors.white,
+                    //   ),
+                    // ),
                     const SizedBox(height: 8,),
                     Padding(
                       padding: const EdgeInsets.only(bottom: 10.0),

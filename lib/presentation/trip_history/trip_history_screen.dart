@@ -99,7 +99,7 @@ class _TripHistoryScreenState extends State<TripHistoryScreen> {
                       ],
                     ),
                     onTap: () {
-                      Get.toNamed(AppRoutes.historyDetails);
+                      Get.toNamed(AppRoutes.historyDetails, arguments: history!.id);
                     },
                   ),
                 );
