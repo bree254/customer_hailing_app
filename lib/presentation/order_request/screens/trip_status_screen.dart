@@ -1,9 +1,6 @@
 import 'dart:async';
-
 import 'package:customer_hailing/core/app_export.dart';
-import 'package:customer_hailing/data/repos/ride_service_repository.dart';
 import 'package:customer_hailing/presentation/order_request/controller/map_controller.dart';
-import 'package:customer_hailing/presentation/order_request/controller/ride_service_controller.dart';
 import 'package:customer_hailing/widgets/drawer_widget.dart';
 import 'package:customer_hailing/widgets/menu_icon_widget.dart';
 import 'package:customer_hailing/widgets/trip_status_bottomsheet_widget.dart';
@@ -12,7 +9,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../../core/constants/constants.dart';
 import '../../../data/models/ride_requests/locations_update_response.dart';
-import '../controller/trip_status_controller.dart';
 import 'map_screen.dart';
 
 class TripStatusScreen extends StatefulWidget {

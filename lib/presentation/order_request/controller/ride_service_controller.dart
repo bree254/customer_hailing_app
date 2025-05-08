@@ -375,7 +375,7 @@ class RideServiceController extends GetxController {
 
       if ( response.status == "200") {
         print( 'trip rated : ${response.message}');
-       Get.toNamed(AppRoutes.home);
+       Get.offAllNamed(AppRoutes.home);
 
       }
     } catch (e) {
